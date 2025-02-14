@@ -1,0 +1,99 @@
+.nav-tabs .nav-link {
+    color: black;
+  }
+  
+  .nav-tabs .nav-link.active {
+    border-bottom: 2px solid red !important;
+  }
+  
+  .btn-danger {
+    border-radius: 30px;.event-details {
+        max-width: 900px;
+        margin: auto;
+      }
+      
+      .event-img {
+        max-width: 250px;
+        height: auto;
+      }
+      
+      .nav-pills .nav-link {
+        text-align: left;
+        padding: 10px;
+        font-size: 16px;
+        border-radius: 5px;
+        margin-bottom: 5px;
+      }
+      
+      .nav-pills .nav-link.active {
+        background-color: #dc3545 !important;
+      }
+      
+      .tab-content {
+        min-height: 200px;
+      }
+      
+      .btn-danger {
+        border-radius: 30px;
+        padding: 12px 20px;
+        font-size: 18px;
+      }
+      
+      @media (max-width: 768px) {
+        .nav-pills {
+          flex-direction: row;
+          justify-content: center;
+        }
+      
+        .nav-pills .nav-item {
+          flex-grow: 1;
+          text-align: center;
+        }
+      
+        .col-md-3 {
+          width: 100%;
+          margin-bottom: 20px;
+        }
+      }
+      
+    padding: 12px 20px;
+    font-size: 18px;
+  }
+  
+  .bg-danger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+  }
+  
+  .status{
+    border: 0.5px solid #ff3366 ;
+    padding: 6px 33px;
+    border-radius: 12px;
+    color: #ff3366;
+  }
+
+
+  .cards11{
+  
+      position: absolute;
+      /* z-index: 6; */
+      background-color: #ffffff;
+      opacity: 87%;
+      width: 95%;
+      height: 82px;
+      bottom: 18px;
+      /* padding: 20px; */
+      left: 0;
+      padding: 0 20px;
+      /* margin: 0 20px; */
+      right: 0;
+      border: 1px solid #ff3366;
+      border-radius: 20px;
+      margin: 0px 0px 0px 11px;
+    
+  
+  }

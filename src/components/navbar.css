@@ -1,0 +1,155 @@
+
+.mainClass1{
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  border-radius:50px;
+  margin: 20px 0 0 0;
+}
+
+/* nab */
+.navAttach a{
+  text-decoration: none !important;
+  color: #817d7d;
+
+}
+
+  .navAttach {
+    font-size: 24px;
+    text-transform: capitalize;
+}
+
+.navbar-container {
+    position: sticky;
+    margin-top: 5px;
+    z-index: 1000; /* Ensures it stays above other content */
+  /* Keep background visible */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.5); /* Optional shadow */
+    padding: 20px;
+    border-radius: 20px;
+    width: 100%;
+    color: white;
+  }
+  ul{
+     
+    border-radius: 20px;
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+   font-weight: bold;
+    justify-content: space-between;
+  }
+  /* Default Navbar styling (for large screens) */
+.navbar {
+  background-color: #ffffff;
+  padding: 1rem 2rem;
+}
+
+.navbar .nav-link {
+  color: #FF3366;
+  font-weight: bold;
+  padding: 10px 15px;
+}
+
+.hideinDESK{
+  display: none;
+}
+
+.navbar .nav-link:hover {
+  color: #cc0052;
+  transition: color 0.3s ease;
+}
+
+.navbar .navbar-brand {
+  color: #FF3366;
+  font-size: 1.5rem;
+}
+
+/* Ensure the navbar items are aligned properly in large screens */
+.navbar-nav {
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Hide the navbar links when on smaller screens (default behavior) */
+.navbar-collapse {
+  display: flex;
+  justify-content: space-between;
+}
+
+.navbar-toggler {
+  border: none;
+  background: transparent;
+}
+
+.navbar-toggler-icon {
+  background-color: #FF3366;
+}
+
+/* Media Queries for smaller screen sizes */
+@media (max-width: 768px) {
+
+  .hideinDESK{
+    display: none;
+  }
+.mainClass1{
+  display: none;
+}
+  .navbar-nav {
+    display: none; /* Hide navbar items on small screens */
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .navbar-nav .nav-link {
+    padding: 10px 20px;
+    text-align: center;
+    display: flex;
+    justify-content: center;
+  }
+  .navlist .nav-link{
+    display: flex;
+    justify-content: center;
+  }
+
+  .navbar-toggler {
+    display: block;
+    border: none !important;
+  }
+
+  .navbar-collapse.show {
+    display: flex; /* Show the navbar items when toggled */
+  }
+
+  .navbar-toggler-icon {
+    width: 30px;
+    height: 30px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3E%3Cpath fill='%23FF3366' d='M0 5h30v2H0zm0 6h30v2H0zm0 6h30v2H0z'%3E%3C/path%3E%3C/svg%3E");
+  }
+}
+
+/* When the navbar is toggled open */
+/* @media (max-width: 768px) {
+  .navbar-collapse.show {
+    display: flex !important;
+    flex-direction: column;
+    background-color: #ffffff;
+    border-top: 2px solid #FF3366;
+    width: 100%;
+    padding-top: 10px;
+  }
+} */
+@media(max-width:767px){
+  .navbar-collapse.show {
+    /* display: flex; */
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 64px;
+    z-index: 1;
+    background-color: #ffffff;
+}
+
+}

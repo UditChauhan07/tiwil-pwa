@@ -1,0 +1,65 @@
+/* Container */
+.dropdown-container {
+    position: relative;
+    display: inline-block;
+  }
+  
+  /* Plus Button */
+  .dropdown-button {
+    background: #ff3366;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    transition: background 0.3s ease;
+  }
+  
+  .dropdown-button:hover {
+    background: #cc0044;
+  }
+  
+  /* Dropdown Menu (Hidden by default) */
+  .dropdown-menu {
+    position: absolute;
+    top: 60px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.9);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    width: 140px;
+    text-align: center;
+  }
+  
+  /* Show the dropdown when active */
+  .dropdown-menu.show {
+    transform: translateX(-50%) scale(1);
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  /* Dropdown Options */
+  .dropdown-option {
+    background: #ff3366;
+    color: white;
+    border: none;
+    padding: 8px;
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+  }
+  
+  .dropdown-option:hover {
+    background: #cc0044;
+  }
+  

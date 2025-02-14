@@ -1,0 +1,29 @@
+.swal-popup {
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+  }
+  
+  .swal-title {
+    font-size: 2rem;
+    color: #FF3366;
+    text-align: center;
+  }
+  
+  .swal-text {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #333;
+  }
+  
+  .swal-confirm-btn {
+    background-color: #FF3366;
+    color: white;
+    border-radius: 25px;
+    padding: 10px 20px;
+    font-size: 1rem;
+  }
+  
+  .swal-confirm-btn:hover {
+    background-color: #FF2A59;
+  }
+  
