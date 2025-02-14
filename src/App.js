@@ -26,48 +26,51 @@ import LoginPage from "./components/Login";
 import InvitationList from "./components/InvitationList";
 import InvitePag from "../src/components/InvitPage";
 function App() {
-  const [deferredPrompt, setDeferredPrompt] = useState(null);
-  const [showInstallButton, setShowInstallButton] = useState(false);
-
-  useEffect(() => {
-    const handler = (event) => {
-      event.preventDefault();
-      setDeferredPrompt(event);
-      setShowInstallButton(true);
+  
+    const [deferredPrompt, setDeferredPrompt] = useState(null);
+    const [showInstallDialog, setShowInstallDialog] = useState(false);
+  
+    useEffect(() => {
+      const handler = (event) => {
+        event.preventDefault();
+        setDeferredPrompt(event);
+        setShowInstallDialog(true);
+      };
+  
+      window.addEventListener("beforeinstallprompt", handler);
+  
+      return () => {
+        window.removeEventListener("beforeinstallprompt", handler);
+      };
+    }, []);
+  
+    const handleInstallClick = () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        deferredPrompt.userChoice.then((choiceResult) => {
+          if (choiceResult.outcome === "accepted") {
+            console.log("User accepted the PWA install");
+          } else {
+            console.log("User dismissed the PWA install");
+          }
+          setDeferredPrompt(null);
+          setShowInstallDialog(false);
+        });
+      }
     };
-
-    window.addEventListener("beforeinstallprompt", handler);
-
-    return () => {
-      window.removeEventListener("beforeinstallprompt", handler);
-    };
-  }, []);
-
-  const handleInstallClick = () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      deferredPrompt.userChoice.then((choiceResult) => {
-        if (choiceResult.outcome === "accepted") {
-          console.log("User accepted the PWA install");
-        } else {
-          console.log("User dismissed the PWA install");
-        }
-        setDeferredPrompt(null);
-        setShowInstallButton(false);
-      });
-    }
-  };
-
 
   return (
     <>
-    <div style={{ textAlign: "center", padding: "20px" }}>
+     <div style={{ textAlign: "center", padding: "20px" }}>
       <h1>PWA Concept App</h1>
       <p>Install this app on your home screen for a better experience.</p>
-      {showInstallButton && (
-        <button onClick={handleInstallClick} style={{ padding: "10px", fontSize: "16px" }}>
-          Add to Home Screen
-        </button>
+      {showInstallDialog && (
+        <div style={{ position: "fixed", top: "20%", left: "50%", transform: "translate(-50%, -50%)", padding: "20px", background: "white", boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)", borderRadius: "10px" }}>
+          <p>Add this app to your home screen for quick access.</p>
+          <button onClick={handleInstallClick} style={{ padding: "10px", fontSize: "16px" }}>
+            Add to Home Screen
+          </button>
+        </div>
       )}
     </div>
     <Router>
