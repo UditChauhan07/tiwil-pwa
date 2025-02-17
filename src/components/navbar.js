@@ -7,16 +7,16 @@ import axios from "axios";
 import notificationbell from '../img/notification.svg'
 
 const Navbar = () => {
-  // const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   const user = localStorage.getItem("user.emailOrphone");
-  //   if (user) {
-  //     setIsLoggedIn(true);
-  //   }
-  // }, []);
+  useEffect(() => {
+    const user = localStorage.getItem("user.emailOrphone");
+    if (user) {
+      setIsLoggedIn(true);
+    }
+  }, []);
 
   const toggleMobileMenu = () => {
     setIsMobileMenuOpen(!isMobileMenuOpen);

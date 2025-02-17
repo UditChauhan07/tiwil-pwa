@@ -62,11 +62,11 @@ function App() {
   return (
     <>
      <div style={{ textAlign: "center", padding: "20px" }}>
-      <h1>PWA Concept App</h1>
-      <p>Install this app on your home screen for a better experience.</p>
+   
+    
       {showInstallDialog && (
         <div style={{ position: "fixed", top: "20%", left: "50%", transform: "translate(-50%, -50%)", padding: "20px", background: "white", boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)", borderRadius: "10px" }}>
-          <p>Add this app to your home screen for quick access.</p>
+       
           <button onClick={handleInstallClick} style={{ padding: "10px", fontSize: "16px" }}>
             Add to Home Screen
           </button>

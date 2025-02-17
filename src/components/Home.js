@@ -33,121 +33,66 @@ const HomePage = () => {
   const [value, setValue] = React.useState('one');
   // const [daysLeft, setDaysLeft] = useState(null);
   // const [eventDate, setEventDate] = useState("");
+  const fetchEvents = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("User not authenticated.");
+      return;
+    }
+
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+      const response = await axios.get("http://localhost:3001/api/events", config);
+      
+      // Format the event date using moment.js
+      const formattedEvents = response.data.map((event) => ({
+        ...event,
+        formattedDate: moment(event.date).format("MMMM Do YYYY, h:mm:ss a"), // Format date
+      }));
+      
+      // Process the response data here
+      setEvents(formattedEvents);
+    } catch (error) {
+      console.error("Error fetching events:", error);
+      setError("Failed to fetch events.");
+    }
+  };
+
+  // Fetch invitations
+  const fetchInvitations = async () => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      setError("User not authenticated.");
+      return;
+    }
+
+    try {
+      const config = {
+        headers: { Authorization: `Bearer ${token}` },
+      };
+      const response = await axios.get("http://localhost:3001/api/invitation", config);
+      
+      // Format the invitation date using moment.js
+      const formattedInvitations = response.data.map((invitation) => ({
+        ...invitation,
+        formattedDate: moment(invitation.date).format("MMMM Do YYYY, h:mm:ss a"), // Format date
+      }));
+      
+      setInvitations(formattedInvitations);
+    } catch (error) {
+      console.error("Error fetching invitations:", error);
+      setError("Failed to fetch invitations.");
+    }
+  };
+
+  // Fetch data on mount
   useEffect(() => {
-    const fetchEvents = async () => {
-      try {
-          // Retrieve JWT token from localStorage (or sessionStorage if preferred)
-          const token = localStorage.getItem('token'); // Assuming the token is stored in localStorage
-
-          if (!token) {
-            console.error('No token found. Please log in.');
-            return;
-          }
-  
-          // Set JWT token in Authorization header for the request
-          const config = {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          };
-  
-        const response = await axios.get(`http://localhost:3001/api/events/${userId}`,config) // Adjust API URL as needed
-  const eventId=response.data._id;
-        const formattedEvents = response.data.map((event) => {
-          const today = new Date();
-          const eventDate = new Date(event.eventDate);
-  
-          // Extract day and month from the event
-          const eventDay = eventDate.getDate();
-          const eventMonth = eventDate.getMonth();
-  
-          // Set event date for the current year
-          let nextEventDate = new Date(today.getFullYear(), eventMonth, eventDay);
-  
-          // If the event has already passed this year, calculate for the next year
-          if (nextEventDate < today) {
-            nextEventDate = new Date(today.getFullYear() + 1, eventMonth, eventDay);
-          }
-  
-          // Format the event date to "12 March"
-          const formattedDate = nextEventDate.toLocaleDateString("en-US", {
-            day: "2-digit",
-            month: "long",
-          });
-  
-          // Calculate days left
-          const timeDifference = nextEventDate.getTime() - today.getTime();
-          const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24)); // Convert ms to days
-  
-          return {
-            ...event,
-            formattedDate: formattedDate, // e.g., "12 March"
-            daysLeft: `${daysLeft} `,
-          };
-        });
-  
-        setEvents(formattedEvents);
-      } catch (error) {
-        console.error("Error fetching events:", error);
-      }
-    };
-  
     fetchEvents();
+    fetchInvitations();
+  }, []);
 
-    const fetchInvitation = async () => {
-      try {
-        // Fetch invitation data from the API
-        const response = await axios.get(`http://localhost:3001/api/invitation/${userId}`);
-
-        // Map through the response data to format the invitations
-        const formattedInvitation = response.data.map((invitation) => {
-          const today = new Date();
-          const eventDate = new Date(invitation.eventId.eventDate); // Ensure you have eventDate from eventId
-
-          // Extract day and month from the event
-          const eventDay = eventDate.getDate();
-          const eventMonth = eventDate.getMonth();
-
-          // Set event date for the current year
-          let nextEventDate = new Date(today.getFullYear(), eventMonth, eventDay);
-
-          // If the event has already passed this year, calculate for the next year
-          if (nextEventDate < today) {
-            nextEventDate = new Date(today.getFullYear() + 1, eventMonth, eventDay);
-          }
-
-          // Format the event date to "12 March"
-          const formattedDate = nextEventDate.toLocaleDateString("en-US", {
-            day: "2-digit",
-            month: "long",
-          });
-
-          // Calculate days left
-          const timeDifference = nextEventDate.getTime() - today.getTime();
-          const daysLeft = Math.ceil(timeDifference / (1000 * 60 * 60 * 24)); // Convert ms to days
-
-          return {
-            ...invitation,
-            formattedDate: formattedDate, // e.g., "12 March"
-            daysLeft: `${daysLeft} days left`,
-            eventType: invitation.eventId.eventType, // Accessing eventType
-            fullName: invitation.eventId.fullName, // Accessing fullName
-          };
-        });
-
-        setInvitations(formattedInvitation);
-      } catch (error) {
-        console.error("Error fetching invitations:", error);
-        setError("Failed to fetch invitations.");
-      }
-    };
-
-    // Fetch invitation when component is mounted or `userId` changes
-    fetchInvitation();
-  }, [userId]);
-
-
-    
     // Fetch invitation when component is mounted or `eventId` and `userId` change
   // Add eventId and userId to dependency array if they change
     

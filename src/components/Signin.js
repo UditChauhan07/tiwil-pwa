@@ -19,7 +19,7 @@ const SignInForm = () => {
       console.log("OTP sent:", response.data);
 
       setOtpSent(true);
-
+      localStorage.setItem("user.emailOrphone", emailOrphone);
       Swal.fire({
         title: "OTP Sent Successfully",
         text: `Your OTP is: ${response.data.otp}`,
