@@ -15,7 +15,7 @@ const SplashScreen3 = () => (
       className="img-fluid my-3"
       style={{ maxHeight:"180px" }}
     />
-    <p className="fw-semibold " style={{color:"white"}}>
+    <p className="fw-semibold " style={{color:"#ff3366"}}>
     Create wishlists, view friends' wishes, and <br/>mark gifts for purchase.
     </p>
   </div>

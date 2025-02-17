@@ -25,6 +25,7 @@ import FamilyList from "./components/Profile/Familyinfo";
 import LoginPage from "./components/Login";
 import InvitationList from "./components/InvitationList";
 import InvitePag from "../src/components/InvitPage";
+
 function App() {
   
     const [deferredPrompt, setDeferredPrompt] = useState(null);
@@ -75,7 +76,8 @@ function App() {
     </div>
     <Router>
       <Routes>
-<Route path="/" element={<SignIn/>}></Route>
+      <Route path="/" element={<Starting/>}></Route>
+<Route path="/signin" element={<SignIn/>}></Route>
         {/* Public Routes */}
         <Route path="/signin" element={<SignIn />} />
         <Route path="/signup" element={<SignUp />} />

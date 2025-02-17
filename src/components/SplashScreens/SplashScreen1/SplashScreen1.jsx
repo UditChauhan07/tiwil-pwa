@@ -16,7 +16,7 @@ const SplashScreen1 = () => (
       className="img-fluid my-3"
       style={{ maxHeight:"180px" }} // Ensuring height matches other screens
     />
-    <p className="fw-semibold " style={{color:"white"}}>
+    <p className="fw-semibold " style={{color:"#ff3366"}}>
       Add & Organize Events and Celebrate<br/> Moments, gather.
     </p>
   </div>

@@ -18,7 +18,7 @@ const SplashScreen4 = () => (
         style={{ maxHeight:"180px" }}
       />
       {/* Text */}
-      <p className="fw-semibold " style={{color:"white"}}>
+      <p className="fw-semibold " style={{color:"#ff3366"}}>
         Join forces with friends to pool money for expensive gifts <br />
         and make someone's day even more special.
       </p>

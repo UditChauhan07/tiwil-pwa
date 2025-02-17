@@ -16,7 +16,7 @@ const SplashScreen2 = () => (
       className="img-fluid my-3"
       style={{ maxHeight:"180px" }}
     />
-    <p className="fw-semibold " style={{color:"white"}}>
+    <p className="fw-semibold "style={{color:"#ff3366"}}>
     Send invites to friends and family, making every<br/> celebration more meaningful.
     </p>
   </div>
