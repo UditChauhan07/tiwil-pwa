@@ -115,9 +115,9 @@ const Eventlst = () => {
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
   
     // If the birthday is today
-    if (diffDays === 0) {
-      return `Happy Birthday! ${age} years old today!`;
-    }
+    // if (diffDays === 0) {
+    //   return `Happy Birthday! ${age} years old today!`;
+    // }
   
     // If the birthday has passed this year, set the target date to next year
     if (diffDays < 0) {
@@ -154,7 +154,7 @@ const Eventlst = () => {
                 
                   <h6 style={{marginRight:'50px' ,marginBottom:'5px'}}>{formatDateWithCurrentYear(event.date)}</h6> <div >
                   </div>
-                  <div ><h2 style={{background:'white',color:"#ff3366",border:'1px solid #ff3366' , paddingleft:'10px', padding:'3px 27px 0px 26px',borderRadius:'10px' }}>{event.relation}</h2></div>
+                  <div ><h4 style={{background:'white',color:"#ff3366",border:'1px solid #ff3366' , paddingleft:'10px', padding:'3px 27px 0px 26px',borderRadius:'10px' }}>{event.relation}</h4></div>
                   </div>
                
               </Card.Text>
