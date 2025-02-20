@@ -171,7 +171,8 @@ h3 {
 .saveButton {
   width: 50%;
   padding: 14px;
-  background: linear-gradient(135deg, #ff5c5c 0%, #ff5c5c 100%); /* Gradient pink */
+   /* Gradient pink */
+  background: linear-gradient(135deg, #e50707 0%, #db0707 100%);
   color: white;
   border: none;
   border-radius: 10px;
@@ -181,7 +182,20 @@ h3 {
   transition: all 0.3s ease-in-out;
   margin-top: 20px;
 }
-
+.skipButton{
+  width: 50%;
+  padding: 14px;
+  background: linear-gradient(135deg, #ff5c5c 0%, #ff5c5c 100%);/* Gradient pink */
+  color: white;
+  border: none;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  margin-top: 20px;
+  margin-left: 4px;
+}
 .saveButton:hover {
   background: linear-gradient(135deg, #ff5c5c 0%, #ff5c5c 100%);
   transform: scale(1.02);

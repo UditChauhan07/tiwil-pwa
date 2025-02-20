@@ -11,15 +11,15 @@ import { useNavigate } from "react-router-dom";
 
 
 const AddEvents = ({ show, setShow, setActiveTab }) => {
-    const userId = localStorage.getItem("user.id");
-    console.log(userId); // Retrieve userId from localStorage
+   const token=localStorage.getItem('token')
+    // Retrieve userId from localStorage
   
     // Initialize formData with userId and eventId
     const [formData, setFormData] = useState({
-      userId: userId || "", // Ensure it's not null
+     // Ensure it's not null
       fullName: "",
       location: "",
-      eventDate: "",
+      dob: "",
       description: "",
     });
   
@@ -38,7 +38,10 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
       try {
         console.log('hyy all');
         // Post the formData to the backend
-        await axios.post("http://localhost:3001/api/addevents", formData); // Adjust API URL
+        await axios.post( `${process.env.REACT_APP_BASE_URL}/createevents`,
+        formData,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
         setShow(false); // Close modal
      
       } catch (error) {
@@ -82,8 +85,8 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
               <Form.Label className="fw-bold">Event Date</Form.Label>
               <Form.Control
                 type="date"
-                name="eventDate"
-                value={formData.eventDate}
+                name="dob"
+                value={formData.dob}
                 onChange={handleInputChange}
                 placeholder="Enter Date of event"
               />

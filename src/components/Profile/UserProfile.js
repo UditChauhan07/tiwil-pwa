@@ -223,7 +223,7 @@ function Profile() {
       <div className={styles.saveBtnBox} style={{display:"flex", justifyContent:'space-between'}}>
   <button className={styles.saveButton} onClick={handleSave} style={{display:"flex",justifyContent:"space-between"}}>
     
-    Save
+   <span style={{paddingTop:'6px'}}> Save </span>
     <img src={arrow} alt="arrow"  />
   </button>
 </div>

@@ -1,8 +1,8 @@
 import type { CapacitorConfig } from '@capacitor/cli';
 
 const config: CapacitorConfig = {
-  appId: 'com.example.app',
-  appName: 'tiwil-frontend',
+  appId: 'www.tiwildesginerx.com',
+  appName: 'Tiwil',
   webDir: 'build'
 };
 

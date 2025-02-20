@@ -13,6 +13,7 @@ import axios from "axios";
 import { Link, useParams } from "react-router-dom";
 import img2 from "../img/ps5.webp"; // Assuming this is a placeholder for wishlist items
 import arrow from "../img/Group 33582.svg";
+import InviteButton from "./userview/Invitetest";
 
 const EventDetails = () => {
   const [activeTab, setActiveTab] = useState("details");
@@ -145,22 +146,31 @@ const  getEvent = async () => {
                 </Dropdown>
               </div>
             </div>
-
-            {/* Event Image */}
-            <div className="mt-3">
-              <img
-                src={img1}
-                className="img-fluid rounded"
-                alt="Event"
-                height="100px"
-                width="100%"
-              />
-            </div>
-
-            {/* Map over events to display them dynamically */}
             {events.length > 0 ? (
               events.map((event) => (
                 <div key={event._id}>
+            {/* Event Image */}
+            <div
+style={{
+  backgroundImage: `url(${
+    event.image && event.image == "null" && event.image !== `${process.env.REACT_APP_BASE_URL}/null`
+      ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
+      : img1
+  })`,
+  position: "relative",
+  backgroundRepeat: "no-repeat",
+  backgroundSize: "cover",
+  height: "175px",
+  width: "300px"
+}}
+
+
+>
+             </div>
+       
+
+            {/* Map over events to display them dynamically */}
+           
                   <h2 className="mt-3 fw-bold">
                     {event.name} 
                   </h2>
@@ -182,7 +192,7 @@ const  getEvent = async () => {
                       </li>
                     ))}
                   </ul>
-
+<InviteButton/>
                   {/* Tab Content */}
                   <div className="tab-content p-3 mt-3 border rounded shadow-sm bg-white">
                     {activeTab === "details" && (

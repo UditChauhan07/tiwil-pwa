@@ -213,7 +213,9 @@ function AddInformation() {
       console.error("Error saving family information:", error.message);
     }
   };
-  
+  const handleSkip=()=>{
+    navigate('/home')
+  }
   // console.log(parentAnniversary,"44444444444444444444444444")
 // console.log(document.getElementById)
 
@@ -455,6 +457,9 @@ function AddInformation() {
       <div className={styles.saveBtnBox}>
         <button onClick={handleSave} className={styles.saveButton}>
           Save
+        </button>
+        <button onClick={handleSkip} className={styles.skipButton}>
+          Skip
         </button>
       </div>
     </div>
