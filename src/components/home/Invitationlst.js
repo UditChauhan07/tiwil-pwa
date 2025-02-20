@@ -92,7 +92,7 @@ function Invitationlst() {
                 </Card.Text>
 
                 {/* Plan and Celebrate button */}
-                <Button variant="danger" style={{ backgroundColor: "#FF3366" }} onClick={() => handleInvitation(invitation.eventId._id)}>
+                <Button variant="danger" style={{ backgroundColor: "#FF3366" }} onClick={() => handleInvitation(invitation.eventId.eventId)}>
                   Plan and celebrate
                 </Button>
               </Card.Body>
