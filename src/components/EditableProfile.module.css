@@ -1,0 +1,132 @@
+.container {
+  padding: 20px;
+  font-family: Arial, sans-serif;
+  background-color: #fff;
+  margin-top: 80px; /* Add margin to push content below the navbar */
+  max-width: 600px; /* Reduce the form width */
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.backButton {
+  font-size: 16px;
+  font-weight: bold;
+  color: #c2185b;
+  border: none;
+  background: none;
+  cursor: pointer;
+}
+
+.profileSection {
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profileImageWrapper {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  margin: 0 auto;
+}
+
+.profileImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+.cameraIcon {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background-color: #ff5c5c;
+  color: #fff;
+  border-radius: 50%;
+  padding: 5px;
+  cursor: pointer;
+}
+
+.profileName {
+  font-size: 18px;
+  font-weight: bold;
+  margin-top: 10px;
+}
+
+.subText {
+  font-size: 14px;
+  color: #888;
+}
+
+.form {
+  margin-top: 20px;
+}
+
+.formGroup {
+  margin-bottom: 15px;
+}
+
+.formGroup label {
+  display: block;
+  font-size: 14px;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.formGroup input,
+.formGroup select {
+  width: 100%;
+  padding: 10px; /* Ensure consistent padding */
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box; /* Prevent padding from affecting width */
+  appearance: none; /* Remove default browser styles for select dropdown */
+}
+
+.formGroup select {
+  background-color: #fff; /* Optional: Ensure consistent background with input */
+}
+
+.saveButtonWrapper {
+  text-align: center;
+  margin-top: 20px;
+}
+
+.saveButton {
+  background-color: #ff5c5c;
+  color: #fff;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+}
+
+.saveButton:hover {
+  background-color: #e04848;
+}
+
+.editableName {
+  font-size: 18px;
+  font-weight: bold;
+  text-align: center;
+  width: 100%;
+  border: none;
+  outline: none;
+  background-color: transparent;
+}
+
+.editableName:focus {
+  border-bottom: 1px solid #ddd;
+}

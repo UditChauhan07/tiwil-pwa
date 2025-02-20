@@ -1,0 +1,219 @@
+/* === Modal Overlay === */
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+}
+
+/* === Modal Content === */
+.modalContent {
+  background-color: white;
+  width: 90%;
+  max-width: 400px;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+  position: relative;
+  animation: fadeIn 0.3s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* === Fade-in Animation === */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* === Modal Title === */
+.modalContent h2 {
+  font-size: 22px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+/* === Image Upload Container === */
+.imageUpload {
+  position: relative;
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 15px;
+}
+
+/* === Profile Image === */
+.profileImage {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #ddd;
+}
+
+/* === Camera Icon (for Image Upload) === */
+.cameraIcon {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 6px;
+  border-radius: 50%;
+  font-size: 18px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.cameraIcon:hover {
+  background-color: rgba(0, 0, 0, 0.8);
+}
+
+/* === Hidden File Input === */
+.fileInput {
+  display: none;
+}
+
+/* === Form Fields === */
+.formGroup {
+  width: 100%;
+  margin-bottom: 15px;
+  display: flex;
+  flex-direction: column;
+}
+
+.formGroup label {
+  font-size: 14px;
+  font-weight: bold;
+  color: #555;
+  margin-bottom: 5px;
+}
+
+.formGroup input,
+.formGroup select {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+/* === Anniversary Date Field (for Anniversaries) === */
+.anniversaryDateField {
+  width: 100%;
+  margin-bottom: 15px;
+}
+
+/* === Button Container === */
+.buttonGroup {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 20px;
+}
+
+/* === Save Button === */
+.saveButton {
+  background-color: #ff3366;
+  color: white;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  flex: 1;
+  margin-right: 10px;
+}
+
+.saveButton:hover {
+  background-color: #ff3366;
+}
+
+/* === Cancel Button === */
+.cancelButton {
+  background-color: #f5f5f5;
+  color: #333;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  flex: 1;
+}
+
+.cancelButton:hover {
+  background-color: #ddd;
+}
+
+/* === Responsive Design (Small Screens) === */
+@media screen and (max-width: 480px) {
+  .modalContent {
+    width: 95%;
+    max-width: 350px;
+    padding: 15px;
+  }
+
+  .saveButton,
+  .cancelButton {
+    font-size: 14px;
+    padding: 8px 15px;
+  }
+
+  .profileImage {
+    width: 100px;
+    height: 100px;
+  }
+
+  .cameraIcon {
+    font-size: 14px;
+    padding: 5px;
+  }
+}
+
+@media screen and (max-width: 360px) {
+  .modalContent {
+    width: 95%;
+    max-width: 320px;
+    padding: 12px;
+  }
+
+  .saveButton,
+  .cancelButton {
+    font-size: 13px;
+    padding: 7px 12px;
+  }
+
+  .profileImage {
+    width: 90px;
+    height: 90px;
+  }
+
+  .cameraIcon {
+    font-size: 12px;
+    padding: 4px;
+  }
+}

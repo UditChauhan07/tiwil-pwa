@@ -1,0 +1,241 @@
+/* History Page Container */
+.historyContainer {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  /* Event Card */
+  .eventCard {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* Header */
+  .eventHeader {
+    background: #e91e63;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    font-weight: bold;
+    border-radius: 8px 8px 0 0;
+  }
+  
+  /* Event Name */
+  .eventTitle {
+    font-size: 16px;
+  }
+  
+  /* Event Date */
+  .eventDate {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    gap: 5px;
+  }
+  
+  .calendarIcon {
+    font-size: 16px;
+  }
+  
+  /* Content */
+  .eventContent {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+  }
+  
+  /* Event Image */
+  .eventImage {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  /* Wishlist */
+  .wishlist {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-grow: 1;
+  }
+  
+  .wishlistItem {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+  
+  /* View Full Wishlist Button */
+  .viewWishlist {
+    background: #fce4ec;
+    color: #e91e63;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  /* Guests */
+  .guests {
+    padding: 10px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  /* Mobile Responsive */
+  @media (max-width: 600px) {
+    .eventContent {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .wishlist {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+  
+    .viewWishlist {
+      width: 100%;
+      text-align: center;
+    }
+  }
+/* History Page Container */
+.historyContainer {
+    width: 100%;
+    max-width: 1200px;
+    margin: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+  
+  /* Event Card */
+  .eventCard {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.15);
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* Header */
+  .eventHeader {
+    background: #e91e63;
+    color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    font-weight: bold;
+    border-radius: 8px 8px 0 0;
+  }
+  
+  /* Event Name */
+  .eventTitle {
+    font-size: 16px;
+  }
+  
+  /* Event Date */
+  .eventDate {
+    display: flex;
+    align-items: center;
+    font-size: 14px;
+    gap: 5px;
+  }
+  
+  .calendarIcon {
+    font-size: 16px;
+  }
+  
+  /* Content */
+  .eventContent {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 10px;
+  }
+  
+  /* Event Image */
+  .eventImage {
+    width: 70px;
+    height: 70px;
+    border-radius: 50%;
+    object-fit: cover;
+  }
+  
+  /* Wishlist */
+  .wishlist {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-grow: 1;
+  }
+  
+  .wishlistItem {
+    width: 50px;
+    height: 50px;
+    border-radius: 10px;
+    object-fit: cover;
+  }
+  
+  /* View Full Wishlist Button */
+  .viewWishlist {
+    background: #fce4ec;
+    color: #e91e63;
+    border: none;
+    padding: 5px 12px;
+    border-radius: 5px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+  }
+  
+  /* Guests */
+  .guests {
+    padding: 10px;
+    font-size: 14px;
+    color: #555;
+  }
+  
+  /* Mobile Responsive */
+  @media (max-width: 600px) {
+    .eventContent {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  
+    .wishlist {
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+  
+    .viewWishlist {
+      width: 100%;
+      text-align: center;
+    }
+  }
+    

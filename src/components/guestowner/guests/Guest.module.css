@@ -1,0 +1,95 @@
+.container {
+    padding: 20px;
+    background: #000;
+    border-radius: 12px;
+    max-width: 450px;
+    margin: auto;
+  }
+  
+  .title {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: white;
+    margin-bottom: 15px;
+  }
+  
+  .noGuestText {
+    color: white;
+    font-size: 1.2em;
+    text-align: center;
+  }
+  
+  .guestList {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .guestItem {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 0;
+    border-bottom: 1px solid #222;
+  }
+  
+  .guestDetails {
+    display: flex;
+    align-items: center;
+  }
+  
+  .avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 15px;
+    border: 2px solid #fff;
+  }
+  
+  .guestName {
+    font-size: 1.1em;
+    color: white;
+    font-weight: 500;
+  }
+  
+  .guestStatus {
+    font-size: 1em;
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+  
+  .accepted {
+    color: #4caf50;
+  }
+  
+  .declined {
+    color: #ff4b5c;
+  }
+  
+  .invited {
+    color: #ffcc00;
+  }
+  
+  .actions {
+    display: flex;
+    gap: 10px;
+  }
+  
+  .acceptBtn {
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .declineBtn {
+    background: #ff4b5c;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  

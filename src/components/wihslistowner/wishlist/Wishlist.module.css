@@ -1,0 +1,133 @@
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+  background-color: #fdeff4;
+  min-height: 100vh;
+}
+
+/* Header */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.backButton {
+  background: none;
+  border: none;
+  color: #EE4266;
+  font-size: 16px;
+  cursor: pointer;
+}
+
+/* Wishlist Items */
+.wishlistItems {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items: center;
+}
+
+.wishlistItem {
+  position: relative;
+  width: 90%;
+  max-width: 600px;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.wishlistImageContainer {
+  width: 100%;
+  height: 180px;
+  position: relative;
+  border-radius: 15px;
+}
+
+.wishlistImageContainer img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.wishlistContent {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  right: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border-radius: 12px;
+  padding: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.wishlistUser {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.userImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.wishlistText {
+  font-size: 16px;
+  font-weight: bold;
+  color: #222;
+}
+
+.wishlistDescription {
+  font-size: 14px;
+  color: #555;
+}
+
+.viewButton {
+  background: #EE4266;
+  color: white;
+  border: none;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.viewButton:hover {
+  background: #d81b5e;
+}
+
+/* Button */
+.buttonContainer {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 90%;
+}
+
+.addWishlist {
+  background-color: #EE4266;
+  color: white;
+  font-size: 18px;
+  padding: 12px;
+  border-radius: 8px;
+  border: none;
+  width: 100%;
+  cursor: pointer;
+}
+
+.addWishlist:hover {
+  background-color: #d81b5e;
+}

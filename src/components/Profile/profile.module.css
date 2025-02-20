@@ -1,0 +1,214 @@
+/* Global Container */
+body {
+    background-color: #fdeff4; /* Light pink background for the entire page */
+    margin: 0;
+    padding: 0;
+    font-family: "Arial", sans-serif;
+  }
+  
+  .container {
+    padding: 24px;
+    max-width: 80%;
+    margin: 40px auto;
+    background: #ffffff; /* White background for the form container */
+    border-radius: 12px;
+    box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .container:hover {
+    box-shadow: 0px 6px 20px rgba(0, 0, 0, 0.12);
+  }
+  
+  /* Section Headings */
+  h2 {
+    font-size: 28px;
+    color: #c2185b; /* Dark pink heading */
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 24px;
+  }
+  
+  h3 {
+    font-size: 20px;
+    color: #d81b60; /* Bold pink for section titles */
+    font-weight: 600;
+    margin-bottom: 16px;
+    border-bottom: 2px solid #ec407a; /* Lighter pink border for separation */
+    padding-bottom: 8px;
+  }
+  
+  /* Form Group */
+  .formGroup {
+    margin-bottom: 18px;
+  }
+  
+  .formGroup label {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    color: #d81b60; /* Purple for labels */
+    margin-bottom: 8px;
+  }
+  
+  .formGroup input,
+  .formGroup select {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+    border: 1.5px solid #f48fb1; /* Light pink border */
+    border-radius: 8px;
+  /* Subtle pink background for inputs */
+    transition: all 0.3s ease-in-out;
+    box-sizing: border-box; /* Prevent padding from affecting width */
+    appearance: none;
+  }
+  
+  .formGroup input:focus,
+  .formGroup select:focus {
+    border-color: #f48fb1; /* Darker pink border on focus */
+    box-shadow: 0px 0px 6px rgba(236, 64, 122, 0.4);
+    outline: none;
+  }
+  
+  /* Child Counter */
+  .childCounter {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: 12px;
+  }
+  
+  .childCounter button {
+    background-color: #ff5c5c; /* Dark pink button */
+    color: white;
+    padding: 8px 14px;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .childCounter button:hover {
+    background-color: #ff5c5c; /* Slightly darker pink on hover */
+  }
+  
+  .childCounter span {
+    font-size: 18px;
+    font-weight: 600;
+    color: #4a148c; /* Deep purple text */
+  }
+  
+  .profileSection {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+  
+  .profileImageWrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto;
+  }
+  
+  .profileImage {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #ddd;
+  }
+  
+  .cameraIcon {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: #ff5c5c;
+    color: #fff;
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+  }
+  
+  /* Add & Remove Buttons */
+  .addButton, .removeButton {
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  .addButton {
+    background-color: #81c784; /* Green for adding siblings/children */
+    color: white;
+  }
+  
+  .addButton:hover {
+    background-color: #66bb6a; /* Darker green on hover */
+  }
+  
+  .removeButton {
+    background-color: #e57373; 
+    color: white;
+    margin-left: 5px;
+  }
+  
+  .removeButton:hover {
+    background-color: #ef5350; /* Darker red on hover */
+  }
+  .saveBtnBox {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  /* Save Button */
+  .saveButton {
+    width: 50%;
+    padding: 14px;
+    background: linear-gradient(135deg, #ff5c5c 0%, #ff5c5c 100%); /* Gradient pink */
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 18px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    margin-top: 20px;
+    background: none !important;
+    color: #ff3366 !important;
+    border: 0.5px solid #ff3366 !important;
+    border-radius: 28px !important;
+    padding: 4px 7px 4px 20px !important;
+  }
+  
+  .saveButton:hover {
+    background: linear-gradient(135deg, #ff5c5c 0%, #ff5c5c 100%);
+    transform: scale(1.02);
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 768px) {
+    .container {
+      max-width: 90%;
+      padding: 20px;
+    }
+  
+    h2 {
+      font-size: 24px;
+    }
+  
+    h3 {
+      font-size: 18px;
+    }
+  }
+  /* .forms{
+    display: flex;
+    flex-direction: column;
+  } */
+  

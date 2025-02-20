@@ -1,0 +1,85 @@
+.tabnav{
+    display: none;
+}
+
+.floating-action{
+    display: block;
+}
+.heading-control{
+    position: relative;
+    margin: 20px 0 30px 0;
+
+}
+.searchbarw{
+    margin-top: 11px;
+    margin-bottom: 11px;
+width: 100%;
+}
+
+.css-1usuzwp-MuiButtonBase-root-MuiTab-root.Mui-selected{
+color: white !important;
+background-color: #ff3366;
+border-radius: 26px !important;
+}
+.css-1qltlow-MuiTabs-indicator{
+    display: none;
+}
+
+.css-1wxkzlj-MuiTabs-flexContainer{
+    display: flex;
+    justify-content: space-between;
+
+}
+ .btn1{
+    width: 50%;
+}
+/*.MuiButtonBase-root-MuiTab-root-MuiTab-textColorPrimary-Mui-selected-css-1usuzwp-MuiButtonBase-root-MuiTab-root{
+
+} */
+.SearLast{
+    width: 100% !important;
+
+
+}
+
+
+.css-13xfq8m-MuiTabPanel-root{
+padding: 0px !important;
+}
+@media(max-width:500px){
+.slick-track{
+    display: block !important;
+}
+.position-relative{
+    display: none;
+}  
+}
+
+@media(max-width:767px){
+    .tabnav{
+        display: block;
+        z-index: 99;
+    }
+    .floating-action{
+      display: none;
+    }
+}
+
+@media(max-width:500px){
+    .buttonevent{
+        font-size: 16px;
+    }
+    .mobileMode{
+        display: block;
+    }
+}
+
+@media (min-width: 500px) {
+    .mobileMode {
+        display: none;
+    }
+}
+
+
+
+

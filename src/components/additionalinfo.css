@@ -1,0 +1,11 @@
+label{
+    color: black;
+    font-weight: 400;
+}
+Accordion.Item{
+    background-color: #FFD6DF;
+    
+}
+input{
+    width: 100%;
+}

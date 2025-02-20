@@ -1,0 +1,153 @@
+
+.container {
+  min-height: 100vh;
+  background-color: #f9f9f9;
+  padding: 1rem;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  padding: 20px;
+}
+.navbar {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 60px; /* Adjust as needed */
+  background-color: white;
+  z-index: 1000;
+  box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+.pageContainer {
+  padding-top: 70px; /* Adjust based on navbar height */
+}
+
+
+.card {
+  max-width: 500px;
+  width: 100%;
+  background: white;
+  border-radius: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid #ddd;
+}
+
+.backButton {
+  font-size: 1rem;
+  font-weight: bold;
+  background: none;
+  border: none;
+  color: #EE4266;
+}
+
+.menuContainer {
+  position: relative;
+}
+
+.menuButton {
+  font-size: 1.5rem;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+.dropdownMenu {
+  position: absolute;
+  right: 0;
+  top: 2rem;
+  background: white;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  overflow: hidden;
+  z-index: 10;
+}
+
+.menuItem {
+  display: block;
+  width: 100%;
+  padding: 0.5rem 1rem;
+  text-align: left;
+  cursor: pointer;
+}
+
+.menuItem:hover {
+  background-color: #f0f0f0;
+}
+
+.eventImage {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+}
+
+.content {
+  padding: 1rem;
+}
+
+.eventTitle {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.tabs {
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 2px solid #eee;
+  padding: 0.5rem 0;
+}
+
+.tab {
+  cursor: pointer;
+  color: gray;
+}
+
+.activeTab {
+  font-weight: bold;
+  border-bottom: 2px solid #ff3366;
+  color: #ff3366;
+}
+
+.details {
+  margin-top: 1rem;
+}
+
+.eventDate,
+.eventLocation {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.aboutTitle {
+  font-weight: bold;
+  margin-top: 1rem;
+}
+
+.aboutText {
+  color: #555;
+}
+
+.readMore {
+  color: #ff3366;
+  cursor: pointer;
+}
+
+.buttonContainer {
+  padding: 1rem;
+}
+
+.saveButton {
+  width: 100%;
+  background: #ff3366;
+  color: white;
+  font-size: 1.2rem;
+  padding: 0.8rem;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
