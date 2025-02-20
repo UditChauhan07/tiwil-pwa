@@ -246,7 +246,7 @@ console.log(wishlistItems)
                               <div key={item._id}>
                                 <div className="row">
                                   <div className="col-lg-4 col-md-6 col-sm-12">
-                                    <div className="card" style={{ backgroundImage: `url(${img2})`, position: "relative", backgroundRepeat: "no-repeat", backgroundSize: "cover" }}>
+                                    <div className="card" style={{ backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/${item.imageUrl})`, position: "relative", backgroundRepeat: "no-repeat", backgroundSize: "cover" }}>
                                       <div className="card-img-top" style={{height:"226px"}}  >
                                      <div className="d-flex justify-content-end m-2" > <p className="card-text status d-flex justify-content-center" style={{background:"cornsilk"}} >{item.status}</p></div>
                                       </div>
