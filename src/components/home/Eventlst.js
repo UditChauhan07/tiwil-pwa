@@ -152,9 +152,9 @@ const Eventlst = () => {
                   <img className="m-0.5" src={calender} height={"17px"} alt="calendar" />
                 
                 
-                  <h6>{formatDateWithCurrentYear(event.date)}</h6> <div >
+                  <h6 style={{marginRight:'86px' ,marginBottom:'5px'}}>{formatDateWithCurrentYear(event.date)}</h6> <div >
                   </div>
-                  <div ><h2 style={{background:'#ff3366',color:"white",border:'1px solid #ff3366' , paddingleft:'10px', padding:'3px 27px 0px 26px',borderRadius:'10px' }}>{event.relation}</h2></div>
+                  <div ><h2 style={{background:'white',color:"#ff3366",border:'1px solid #ff3366' , paddingleft:'10px', padding:'3px 27px 0px 26px',borderRadius:'10px' }}>{event.relation}</h2></div>
                   </div>
                
               </Card.Text>
@@ -163,7 +163,7 @@ const Eventlst = () => {
               </Card.Text> */}
               <div style={{ display: "flex", gap: "8px" }}>
                 <Button
-                  variant="danger"
+                 
                   style={{
                     height: "34px",
                     backgroundColor: "#FF3366",
