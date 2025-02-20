@@ -36,7 +36,7 @@ const SignUpForm = () => {
       if (response.data.success) {
         setOtpGenerated(response.data.otp); // Display OTP for demo
         setIsOtpSent(true);
-        Swal.fire("Success", "OTP Sent Successfully!", "success");
+        Swal.fire("Success", `${response.data.otp}`, "success");
       } else {
         Swal.fire("Error", response.data.message, "error");
       }

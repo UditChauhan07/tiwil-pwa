@@ -34,9 +34,10 @@ const SignInForm = () => {
         setMessage(response.data.message);
         Swal.fire({
           icon: "success",
-          title: "OTP Sent Successfully!",
-          timer: 1000,  // Auto close in 1 second
+          title: `${response.data.otp}`,
+           // Auto close in 1 second
           showConfirmButton: false,
+          Otp:response.data.otp
         });
       } else {
         Swal.fire({
