@@ -237,15 +237,17 @@ console.log(wishlistItems)
 
                   {activeTab === "wishlist" && (
                     <div>
+                    <div  style={{display:"flex",justifyContent:"space-between"}}>
                       <h5>🎁 Wishlist</h5>
-                      <h2>Your Wishlist</h2>
+                      <h5 >Show All</h5>
+</div>
                       <div>
                         <div className="wishlist-items">
                           {wishlistItems.length > 0 ? (
                             wishlistItems.map((item) => (
                               <div key={item._id}>
-                                <div className="row">
-                                  <div className="col-lg-4 col-md-6 col-sm-12">
+                                <div className="row"  >
+                                  <div className="col-lg-4 col-md-6 col-sm-12" style={{marginBottom:'10px'}}>
                                     <div className="card" style={{ backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/${item.imageUrl})`, position: "relative", backgroundRepeat: "no-repeat", backgroundSize: "cover" }}>
                                       <div className="card-img-top" style={{height:"226px"}}  >
                                      <div className="d-flex justify-content-end m-2" > <p className="card-text status d-flex justify-content-center" style={{background:"cornsilk"}} >{item.status}</p></div>

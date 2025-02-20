@@ -209,15 +209,17 @@ const  getEvent = async () => {
                     )}
 
                     {activeTab === "wishlist" && (
-        <div>
+        <div >
+        <div style={{display:"flex",justifyContent:"space-between"}}>
           <h5>🎁 Wishlist</h5>
-          <h2>Your Wishlist</h2>
+          <h5>Show All</h5>
+          </div>
           <div>
             <div className="wishlist-items">
               {wishlist.length > 0 ? (
                 wishlist.map((item) => (
                   <div key={item._id} className="row">
-                    <div className="col-lg-4 col-md-6 col-sm-12">
+                    <div className="col-lg-4 col-md-6 col-sm-12" style={{marginBottom:"8px"}}>
                       <div
                         className="card"
                         style={{

@@ -154,7 +154,12 @@ const Eventlst = () => {
                 
                   <h6 style={{marginRight:'50px' ,marginBottom:'5px'}}>{formatDateWithCurrentYear(event.date)}</h6> <div >
                   </div>
-                  <div ><h4 style={{background:'white',color:"#ff3366",border:'1px solid #ff3366' , paddingleft:'10px', padding:'3px 27px 0px 26px',borderRadius:'10px' }}>{event.relation}</h4></div>
+                  
+                  <div > {
+                    event.relation !== "Parent Anniversary" ?
+                  <h4 style={{background:'white',color:"#ff3366",border:'1px solid #ff3366' , paddingleft:'10px', padding:'3px 27px 0px 26px',borderRadius:'10px' }}>{event.relation}</h4>:""
+                  }
+                  </div>
                   </div>
                
               </Card.Text>
