@@ -2,9 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { Button, Card, Row, Col } from 'react-bootstrap';
 import { FaCheckCircle, FaTimes } from 'react-icons/fa';
 import Header from '../Header';
-
-import Image2 from '../../img/userimage2.jpg'
-
 import Footer from '../Footer';
 import Navbar from '../navbar';
 import './notification.css';
@@ -13,16 +10,20 @@ import axios from 'axios';
 
 const NotificationList = () => {
  const[notifications,setNotification]=useState([])
-const userId=localStorage.getItem("user.id")
+const token =localStorage.getItem('token')
 useEffect(() => {
   const fetchNotification = async () => {
     try {
-      const response = await axios.get(`http://localhost:3001/api/notifications/${userId}`);
-      setNotification(response.data);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/notification`, {
+        headers: { Authorization: `Bearer ${token}` }, // ✅ Properly closed headers object
+      });
+  
+      setNotification(response.data); // ✅ Call setNotification after response is received
     } catch (error) {
-      console.log(error, 'error');
+      console.log(error, "error");
     }
   };
+  
   fetchNotification();
 }, []); // Dependency array to fetch once when the component mounts
 
@@ -42,7 +43,7 @@ useEffect(() => {
     <div key={index} className="notiControlb">
       <div className="headingimage">
         <div className="mainimage">
-          <img src={Image2} alt="image1" />
+          <img src={`${process.env.PUBLIC_URL}/img/userimage2.jpg`}  alt="image1" />
         </div>
         <div>
           <h5 className="mb-0">{notification.fullName}</h5>

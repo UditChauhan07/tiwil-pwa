@@ -5,8 +5,7 @@ import SplashScreen1 from "../components/SplashScreens/SplashScreen1/SplashScree
 import SplashScreen2 from "../components/SplashScreens/SplashScreen2/SplashScreen2"; 
 import SplashScreen3 from "../components/SplashScreens/SplashScreen3/SplashScreen3";
 import SplashScreen4 from "../components/SplashScreens/SplashScreen4/Splashscreen4"// Import your slide components
-import backphone from '../img/home-phones.png'
-import logo from '../img/TiwilLOGO1.png'
+
 import { Link } from "react-router-dom";
 
 
@@ -27,14 +26,14 @@ const LoginPage = () => {
       {/* Phone images (Hide on small screens) */}
       <div className="phone-container d-none d-md-block">
         <div className="back-phone" style={{marginRight:"12px"}}>
-          <img src={backphone} alt="Phone Back" height={"50%"}/>
+          <img src={`${process.env.PUBLIC_URL}/img/home-phones.png`} alt="Phone Back" height={"50%"}/>
         </div>
         <div className="front-phone fade-in">{slides[currentSlide]}</div>
       </div>
 
       {/* Login Form */}
       <div className="login-box p-4">
-       <img src={logo} alt="logo" style={{maxHeight:"100px"}} />
+       <img src={`${process.env.PUBLIC_URL}/img/TiwilLOGO1.png`}  alt="logo" style={{maxHeight:"100px"}} />
 
        <h3 className="m-2">Sign In</h3>
         <input type="text" className="form-control mt-3" placeholder="Phone number, username or email address" />

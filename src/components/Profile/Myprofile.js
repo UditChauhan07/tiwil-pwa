@@ -4,13 +4,16 @@ import { FaBell, FaUserFriends, FaShieldAlt, FaSignOutAlt, FaUserSlash, FaEdit }
 import Header from "../Header";
 import Navbar from "../navbar";
 import Footer from "../Footer";
-import image1 from '../../img/userimage3.jpg'
 import { Link } from "react-router-dom";
 import Swal from 'sweetalert2'
-import logo from '../../img/letsgo.png'
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import './Myprofile.css'
+
+
+
+
+
 function MyProfile() {
   const [notifications, setNotifications] = useState(true);
   const [user,setUser]=useState([]);
@@ -40,7 +43,7 @@ const navigate=useNavigate();
           confirmButton: 'swal-confirm-btn',
           text: 'swal-text',
         },
-        imageUrl: logo, // Optional: Set a custom icon or use the default one
+        imageUrl:   `${process.env.PUBLIC_URL}/img/letsgo.png`, // Optional: Set a custom icon or use the default one
         imageWidth: 80,
         imageHeight: 80,
         imageAlt: 'Close Account ',
@@ -103,7 +106,7 @@ const handleeditprofile=()=>{
             }}
           >
             <img
-              src={image1} // Replace with actual profile picture
+               src={`${process.env.PUBLIC_URL}/img/userimage3.jpg`} // Replace with actual profile picture
               alt="Profile"
               style={{ width: "100%", height: "100%" }}
             />

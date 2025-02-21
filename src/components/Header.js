@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { FaSearch, FaBell, FaUser, FaBars, FaTimes } from "react-icons/fa";
-import logo from "../img/TiwilLOGO1.png";
 import './Hedaer.css'
 import { useNavigate } from "react-router-dom";
 const Header = () => {
@@ -31,7 +30,7 @@ const navigate=useNavigate();
       <div className="row align-items-center header22 ">
         {/* Logo Section */}
         <div className=" d-flex justify-content-between p-0">
-          <img src={logo} alt="logo" style={{ width: "130px" }} />
+          <img   src={`${process.env.PUBLIC_URL}/img/TiwilLOGO1.png`} alt="logo" style={{ width: "130px" }} />
           
        
         <div className="SearLast">

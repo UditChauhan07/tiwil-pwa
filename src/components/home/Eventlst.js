@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Card, Button } from 'react-bootstrap';
-import calender from '../../img/calender.svg';
-import Hearticon from '../../img/Hearticon.svg';
-import image1 from '../../img/image.png';
+
 import { useNavigate } from 'react-router-dom';
 import '../Home.css';
 
@@ -142,7 +140,7 @@ const Eventlst = () => {
             backgroundImage: `url(${
               event.image && event.image !== "null" && event.image !== `${process.env.REACT_APP_BASE_URL}/null`
                 ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
-                : image1
+                :   `${process.env.PUBLIC_URL}/img/image.png`
             })`,
             position: "relative",
             backgroundRepeat: "no-repeat",
@@ -162,7 +160,7 @@ const Eventlst = () => {
               <Card.Text className="d-flex justify-content-between" style={{ gap: "10px" }}>
                 
                 <div style={{display:'flex',justifyContent:'space-between'}}>
-                  <img className="m-0.5" src={calender} height={"17px"} alt="calendar" />
+                  <img className="m-0.5"    src={`${process.env.PUBLIC_URL}/img/calender.svg`} height={"17px"} alt="calendar" />
                 
                 
                   <h6 style={{marginRight:'50px' ,marginBottom:'5px'}}>{formatDateWithCurrentYear(event.date)}</h6> <div >
@@ -224,7 +222,7 @@ const Eventlst = () => {
                   }}
                 >
                   <img
-                    src={Hearticon}
+                   src={`${process.env.PUBLIC_URL}/img/Hearticon.svg`}
                     alt="wishlist"
                     style={{ width: "26px", height: "20px" }}
                   />

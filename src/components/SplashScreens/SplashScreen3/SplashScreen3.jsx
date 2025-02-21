@@ -1,6 +1,5 @@
 import React from "react";
-import image3 from "../../../img/SplashScreen3.png"; // Ensure correct image path
-import logo from "../../../img/TiwilLOGO1.png";
+
 
 
 const SplashScreen3 = () => (
@@ -8,9 +7,9 @@ const SplashScreen3 = () => (
 
   <br/>
   <div className="d-flex flex-column justify-content-center align-items-center vh-80 vw-20 text-center">
-    <img src={logo} alt="logo" className="pb-1" style={{maxHeight:"100px"}} />
+    <img   src={`${process.env.PUBLIC_URL}/img/TiwilLOGO1.png`} alt="logo" className="pb-1" style={{maxHeight:"100px"}} />
     <img
-      src={image3}
+     src={`${process.env.PUBLIC_URL}/img/SplashScreen3.png`}
       alt="Enjoy"
       className="img-fluid my-3"
       style={{ maxHeight:"180px" }}

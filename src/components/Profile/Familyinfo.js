@@ -1,6 +1,5 @@
 import React from "react";
 import "./Familyinfo.css"; // Import CSS file
-import  Image1  from "../../img/userimage1.jpg";
 import Header from "../Header";
 import Navbar from "../navbar";
 import Footer from "../Footer";
@@ -56,7 +55,7 @@ const FamilyList = () => {
         <div className="family-card" key={index}>
           <div className="headerss">{member.role} <span className="dots">⋮</span></div>
           <div className="bod">
-            <img src={Image1} alt={member.role} className="profile-pic" />
+            <img   src={`${process.env.PUBLIC_URL}/img/userimage3.jpg`} alt={member.role} className="profile-pic" />
             <div className="details">
               <p><span>Name:</span> {member.name}</p>
               <p><span>Date of Birth:</span> {member.dob}</p>

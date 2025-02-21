@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
-import logo from '../img/TiwilLOGO1.png';
+
 
 const SignInForm = () => {
   const [formData, setFormData] = useState({
@@ -106,7 +106,7 @@ const SignInForm = () => {
     <section className="page-controls">
       <div className="container d-flex flex-column align-items-center justify-content-center mt-3">
         <div className="text-center mb-1">
-          <img src={logo} alt="tiwillogo" height={"200px"} width={"200px"} />
+          <img  src={`${process.env.PUBLIC_URL}/img/TiwilLOGO1.png`} alt="tiwillogo" height={"200px"} width={"200px"} />
           <h2 className="font-weight-bold mt-3">Welcome</h2>
           <p className="text-muted">Connect with your friends today!</p>
           <h1 className="fw-bold" style={{ fontFamily: "Poppins, sans-serif" }}>Sign In</h1>

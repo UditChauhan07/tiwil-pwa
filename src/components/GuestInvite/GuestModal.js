@@ -29,7 +29,7 @@ const InviteModal = ({ show, setShow, activeTab }) => {
 
     fetchUsers();
   }, [token, show]);
-  console.log(token,'uuuuuuuuuuuuuuuuuuuuuu')
+
   // Send notification to selected users
   const sendNotification = async () => {
     if (selectedInvites.length === 0) return;
@@ -47,7 +47,7 @@ const InviteModal = ({ show, setShow, activeTab }) => {
           },
         }
       );
-    
+
       console.log("✅ Notification sent:", response.data);
     } catch (error) {
       console.error("❌ Error sending notification:", error);
@@ -73,11 +73,27 @@ const InviteModal = ({ show, setShow, activeTab }) => {
       return;
     }
 
+    // Prepare the data by fetching additional user details like fullName and phoneNumber
+    const guestDetails = users
+      .filter((user) => selectedInvites.includes(user._id))
+      .map((user) => ({
+        fullName: user.fullName,
+        phoneNumber: user.phoneNumber, // Add phoneNumber here
+      }));
+
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/sendInvite`, {
-        userIds: selectedInvites,
-        eventId,
-      });
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/guests/invite`,
+        {
+          guests: guestDetails,  // Send the full guest data (not just userId)
+          eventId,  // Include the eventId
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,  // Include token in the header
+          },
+        }
+      );
 
       console.log("✅ Invite sent successfully:", response.data);
 
@@ -124,7 +140,7 @@ const InviteModal = ({ show, setShow, activeTab }) => {
                 <Button
                   variant="link"
                   onClick={() => toggleInvite(user._id)}
-                  style={{ color: selectedInvites.includes(user._id) ? "green" : "gray" ,display:"flex",justifyContent:"end"}}
+                  style={{ color: selectedInvites.includes(user._id) ? "green" : "gray", display: "flex", justifyContent: "end" }}
                 >
                   {selectedInvites.includes(user._id) ? <FaCheckCircle /> : <FaCircle />}
                 </Button>

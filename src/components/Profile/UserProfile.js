@@ -4,8 +4,6 @@ import Swal from "sweetalert2"; // Import SweetAlert2
 import styles from  "../Profile/profile.module.css"
 import axios from "axios";
 import { IoMdCamera } from "react-icons/io";
-import arrow from '../../img/Arrow.svg'
-import logo from '../../img/letsgo.png'
 
 function Profile() {
   const navigate = useNavigate();
@@ -112,7 +110,7 @@ function Profile() {
             confirmButton: 'swal-confirm-btn',
             text: 'swal-text',
           },
-          imageUrl: logo, // Optional: Set a custom icon or use the default one
+          imageUrl: `${process.env.PUBLIC_URL}/img/letsgo.png`, // Optional: Set a custom icon or use the default one
           imageWidth: 80,
           imageHeight: 80,
           imageAlt: 'Data Added',
@@ -224,7 +222,7 @@ function Profile() {
   <button className={styles.saveButton} onClick={handleSave} style={{display:"flex",justifyContent:"space-between"}}>
     
    <span style={{paddingTop:'6px'}}> Save </span>
-    <img src={arrow} alt="arrow"  />
+    <img  src={`${process.env.PUBLIC_URL}/img/Arrow.svg`} alt="arrow"  />
   </button>
 </div>
 

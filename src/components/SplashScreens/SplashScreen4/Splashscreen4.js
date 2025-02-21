@@ -1,6 +1,5 @@
 import React from "react";
-import image4 from "../../../img/SplashScreen4.png";
-import logo from "../../../img/TiwilLOGO1.png";
+
 
 const SplashScreen4 = () => (
   <>
@@ -9,10 +8,10 @@ const SplashScreen4 = () => (
     {/* Splash Screen Container */}
     <div className="d-flex flex-column justify-content-center align-items-center vw-20 text-center">
       {/* Logo */}
-      <img src={logo} alt="logo" className="pb-1" style={{maxHeight:"100px"}} />
+      <img      src={`${process.env.PUBLIC_URL}/img/TiwilLOGO1.png`}alt="logo" className="pb-1" style={{maxHeight:"100px"}} />
       {/* Image */}
       <img
-        src={image4}
+             src={`${process.env.PUBLIC_URL}/img/SplashScreen4.png`}
         alt="Plan"
         className="img-fluid my-3"
         style={{ maxHeight:"180px" }}

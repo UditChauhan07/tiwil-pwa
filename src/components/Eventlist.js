@@ -1,7 +1,7 @@
 import React from "react";
 import Footer from "./Footer";
 import Navbar from "./navbar";
-import image1 from "../img/SplashScreen3.png";
+
 import Header from "./Header";
 import { useNavigate } from "react-router-dom";
 import { useState, useEffect, useRef } from "react";
@@ -237,7 +237,7 @@ const EventList = () => {
                   <div className="col-md-4">
                     <div>
                       <img
-                        src={image1}
+                        src={`${process.env.PUBLIC_URL}/img/SplashScreen3.png`}
                         className="rounded-start imgmain"
                         alt="event"
                         height={"10px"}

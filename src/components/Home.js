@@ -3,17 +3,14 @@ import Slider from "react-slick"; // Importing Slick Slider
 import { Button, Card } from "react-bootstrap";
 import Footer from "./Footer";
 import Navbar from "./navbar";
-import image1 from "../img/SplashScreen3.png"; // Static image for events and invitations
+// Static image for events and invitations
 import Header from "./Header";
-import wishlistimg from '../img/wishlist.png'
 import { useNavigate } from "react-router-dom";
-import Hearticon from '../img/Hearticon.svg'
+
 import { useEffect,useState } from "react";
 import axios from "axios";
-import calender from '../img/calender.svg'
 import FooterNavBar from "./TabFooter";
 import FloatingActionButton from "./Floating Plus/FloatingTab";
-import eye from '../img/EyeIcon.svg'
 import Eventlst from "./home/Eventlst";
 import Invitationlst from "./home/Invitationlst";
 import './Home.css'
@@ -24,7 +21,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { FaSearch} from "react-icons/fa";
 import '../components/Hedaer.css'
-import filterIcon from '../img/filterIcon.svg'
+
 
 
 
@@ -47,7 +44,7 @@ const HomePage = () => {
       const config = {
         headers: { Authorization: `Bearer ${token}` },
       };
-      const response = await axios.get("http://localhost:3001/api/events", config);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/events`, config);
       
       // Format the event date using moment.js
       const formattedEvents = response.data.map((event) => ({
@@ -72,7 +69,7 @@ const HomePage = () => {
     }
 
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/getInvite`, {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/invitations`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       
@@ -231,7 +228,7 @@ const handleAllinvitation=()=>{
               />
               <FaSearch className="me-3 text-muted" style={{ fontSize: "1.5rem", fill: "#FF3366"}} />
             </div>
-            <img src={filterIcon} alt="filterIcon"/>
+            <img src={`${process.env.PUBLIC_URL}/img/filterIcon.svg`} alt="filterIcon"/>
             
             </div>
 </div>
@@ -257,19 +254,19 @@ const handleAllinvitation=()=>{
       <div className="  homemain">
         <div className="heading-control"><h2 className="" style={{ color: "#FF3366" }}>Upcoming Events</h2> 
         <div style={{display:"flex" ,justifyContent:"center",alignItems:"center", position:"absolute", top:"0px", right:"0px"}}>
-        <button className="buttonevent"  style={{backgroundColor:"#fff",border:"0.5px solid #ff3366",color:"#ff3366",padding:"5px 10px",borderRadius:"6px",fontWeight:"500"}} onClick={handleAllevent}> <img src={eye} alt="view" /> ALL </button></div></div>
+        <button className="buttonevent"  style={{backgroundColor:"#fff",border:"0.5px solid #ff3366",color:"#ff3366",padding:"5px 10px",borderRadius:"6px",fontWeight:"500"}} onClick={handleAllevent}> <img   src={`${process.env.PUBLIC_URL}/img/EyeIcon.svg`} alt="view" /> ALL </button></div></div>
         <Slider {...eventSliderSettings} style={{ height: "250px" }} > {/* Minimized height */}
           {events.map((event, index) => (
             <div key={index} style={{ gap: "30px", display: "flex", justifyContent: "center" }}>
               <Card style={{  width: "100%", minWidth:"310px",     border: "0.5px solid rgb(229 229 229)", borderRadius: "10px"}}>
-                <div style={{height:"150px"}}><Card.Img variant="top" src={image1} style={{ width:"100%" , height:"100%",objectFit:"contain"}} /></div>
+                <div style={{height:"150px"}}><Card.Img variant="top"        src={`${process.env.PUBLIC_URL}/img/SplashScreen3.png`} style={{ width:"100%" , height:"100%",objectFit:"contain"}} /></div>
                 <Card.Body>
                 <Card.Title>{event.eventType}</Card.Title>
                   <Card.Title>{event.fullName}</Card.Title>
                   <Card.Text className="d-flex justify-content-between" style={{
                     gap:"10px"
                   }}>
-                <div className="d-flex" >  <img className="m-0.5" src={calender} height={"17px"}/>
+                <div className="d-flex" >  <img className="m-0.5" src={`${process.env.PUBLIC_URL}/img/calender.svg`} height={"17px"}/>
                     <h6 className="">{event.formattedDate}</h6></div>
                     <div className="eventperson"> 
                     
@@ -287,7 +284,7 @@ const handleAllinvitation=()=>{
                   </Button>
                  <div className="heartimage " style={{backgroundColor:"#FF3366",padding:"5px",width: "40px", height: "34px", display: "flex",alignItems: "center",justifyContent:"center",borderBottomRightRadius:'5px',
     borderTopLeftRadius:'0px',borderTopRightRadius:'5px',}}>
-                 <img src={Hearticon} alt="wishlist" style={{width: "26px", height: "20px",}} onClick={handlefavourite}/></div>
+                 <img  src={`${process.env.PUBLIC_URL}/img/Hearticon.svg`} alt="wishlist" style={{width: "26px", height: "20px",}} onClick={handlefavourite}/></div>
                  </div>
                 </Card.Body>
               </Card>

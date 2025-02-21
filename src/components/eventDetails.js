@@ -5,14 +5,11 @@ import "./Eventdetails.css";
 import Footer from "./Footer";
 import Header from "./Header";
 import Navbar from "./navbar";
-import img1 from "../img/userimage1.jpg";
 import WishlistModal from "./Wishlist/addWishlist";
 import InviteModal from "./GuestInvite/GuestModal";
 import EditEventModal from "./Events/eventModal";
 import axios from "axios";
-import { Link, useParams } from "react-router-dom";
-import img2 from "../img/ps5.webp"; // Assuming this is a placeholder for wishlist items
-import arrow from "../img/Group 33582.svg";
+import { useParams } from "react-router-dom";
 import InviteButton from "./userview/Invitetest";
 
 const EventDetails = () => {
@@ -155,7 +152,7 @@ style={{
   backgroundImage: `url(${
     event.image && event.image == "null" && event.image !== `${process.env.REACT_APP_BASE_URL}/null`
       ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
-      : img1
+      :  `${process.env.PUBLIC_URL}/img/userimage1.jpg`
   })`,
   position: "relative",
   backgroundRepeat: "no-repeat",
@@ -267,7 +264,7 @@ style={{
                               <p className="card-text text-secondary m-1">
                                 {item.description}
                               </p>
-                              <img src={arrow} alt="svg" />
+                              <img  src={`${process.env.PUBLIC_URL}/img/Group 33582.svg`} alt="svg" />
                             </div>
                           </div>
                       

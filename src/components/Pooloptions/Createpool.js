@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Button, Card, ProgressBar } from "react-bootstrap";
 import { FaArrowRight } from "react-icons/fa";
-import img1 from "../../img/image.png";
 import Header from "../Header";
 import Navbar from "../navbar";
 import Footer from "../Footer";
@@ -97,7 +96,7 @@ const PoolingWish = () => {
           {/* Image Section */}
           <div className="col-12 mb-3">
             <img
-              src={img1}
+            src={`${process.env.PUBLIC_URL}/img/image.png`}
               className="img-fluid rounded"
               alt="Berlin Trip"
               style={{ maxHeight: "300px", objectFit: "cover" }}

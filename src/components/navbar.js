@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaBars, FaTimes, FaSearch, FaBell, FaUser } from "react-icons/fa";
-import logo from "../img/TiwilLOGO1.png";
 import "./navbar.css";
 import axios from "axios";
-import notificationbell from '../img/notification.svg'
+
 
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -67,13 +66,18 @@ const Navbar = () => {
         <div className="container-fluid">
           {/* Logo */}
           <Link to="/home" className="navbar-brand">
-            <img src={logo} alt="Logo" style={{ width: "50px" }} />
+            <img     src={`${process.env.PUBLIC_URL}/img/TiwilLOGO1.png`} alt="Logo" style={{ width: "50px" }} />
           </Link>
 <div >     
     {/* Hamburger Toggle Button */}
     <div className="d-flex">
-      <img src={notificationbell} alt="notification"/>
-   
+    <Link to="/notifications">
+  <img 
+    src={`${process.env.PUBLIC_URL}/img/notification.svg`} 
+    alt="notification" 
+    style={{ width: "25px", height: "25px", cursor: "pointer" ,marginTop:'5px'}} // Optional styling
+  />
+</Link>
           <button className="navbar-toggler" type="button" onClick={toggleMobileMenu}>
             {isMobileMenuOpen ? (
               <FaTimes style={{ fontSize: "1.5rem", color: "#FF3366" }} />

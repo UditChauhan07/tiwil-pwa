@@ -2,8 +2,7 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from 'sweetalert2';
-import logo from '../img/letsgo.png';
-import logo1 from '../img/TiwilLOGO1.png';
+
 
 const SignUpForm = () => {
   const [formData, setFormData] = useState({
@@ -88,7 +87,7 @@ const SignUpForm = () => {
       <section className="page-controls">
         <div className="container d-flex flex-column align-items-center justify-content-center ">
           <div className="text-center mb-4">
-            <img src={logo1} alt="logo" height={"200px"} width={"200px"} />
+            <img  src={`${process.env.PUBLIC_URL}/img/TiwilLOGO1.png`} alt="logo" height={"200px"} width={"200px"} />
             <h2 className="font-weight-bold mt-3">Welcome</h2>
             <p className="text-muted">Connect with your friends today!</p>
             <h1 className="fw-bold" style={{ fontFamily: "Poppins, sans-serif" }}>Sign Up</h1>

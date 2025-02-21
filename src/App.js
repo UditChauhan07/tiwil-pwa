@@ -27,6 +27,7 @@ import InvitationList from "./components/InvitationList";
 import InvitePag from "../src/components/InvitPage";
 import Account from "./components/Account";
 import FamilyInformation from "./components/FamilyInformation";
+import ChatApp from "./components/Chat";
 
 function App() {
   
@@ -108,6 +109,7 @@ function App() {
         <Route path='/login' element={<LoginPage/>}/>
         <Route path='/invitation' element={<InvitationList/>}/>
         <Route path="/invite" element={<InvitePag/>} />
+        <Route path="/chat" element={<ChatApp/>}/>
 
       </Routes>
     </Router>

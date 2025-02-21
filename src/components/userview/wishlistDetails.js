@@ -3,8 +3,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Header from "../Header";
 import Navbar from "../navbar";
 import Footer from "../Footer";
-import Image1 from "../../img/userimage1.jpg";
-import Image2 from "../../img/image.png";
+
 import Swal from "sweetalert2";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
@@ -120,7 +119,7 @@ function WishlistCard() {
               </div>
             </div> */}
 <div >
-<img src={Image2} alt="image" style={{width:'-webkit-fill-available'}}/>
+<img src={`${process.env.PUBLIC_URL}/img/image.png`} alt="image" style={{width:'-webkit-fill-available'}}/>
 </div>
             {/* Card Body */}
             <div className="card-body">
