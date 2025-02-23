@@ -48,11 +48,7 @@ fetchWishlist();  // Fetch updated event details
       }
     } catch (error) {
       console.error("Error updating event:", error);
-      Swal.fire({
-        icon: "error",
-        title: "An error occurred.",
-        text: "Please try again later.",
-      });
+      
     }
   };
 

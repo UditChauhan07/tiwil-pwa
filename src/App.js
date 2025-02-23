@@ -93,6 +93,7 @@ function App() {
         </Route>
     
         <Route path="/events" element={<Events />} />
+        <Route path="/event/:id" element={<EventDetails/>} />
         {/* Default Route */}
         <Route path="/" element={<Home />} />
         <Route path="/dashboard" element={<Dashboard/>} />

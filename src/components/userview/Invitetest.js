@@ -1,6 +1,8 @@
 import React from "react";
-
+import Swal from 'sweetalert2'
+import { useParams } from "react-router-dom";
 const InviteButton = () => {
+    const {eventId}=useParams();
   const handleInvite = async () => {
     if ("contacts" in navigator && "select" in navigator.contacts) {
       try {
@@ -11,12 +13,14 @@ const InviteButton = () => {
           console.log("Selected Contacts:", contacts);
 
           // Send contacts to backend for processing
-          const response = await fetch(`${process.env.REACT_APP_BASE_URL}/contactss`, {
+          const response = await fetch(`${process.env.REACT_APP_BASE_URL}/contactss/eventId`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ contacts }),
           });
-
+Swal.fire({
+    title: 'Are you sure?',
+})
           const data = await response.json();
           alert(data.message);
         }

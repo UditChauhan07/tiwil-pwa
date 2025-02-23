@@ -6,7 +6,7 @@ import "../Home.css";
 
 function Invitationlst() {
   const [invitations, setInvitations] = useState([]);
-  const [filteredEvents, setFilteredEvents] = useState([]);
+  const [filteredInvitations, setFilteredInvitations] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -15,13 +15,16 @@ function Invitationlst() {
   useEffect(() => {
     const fetchInvitations = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/invitations`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/invitations`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
         if (response.data) {
-          setInvitations(response.data.data); // Use response.data.data
-          setFilteredEvents(response.data.data); // Set filtered data initially
+          setInvitations(response.data.data);
+          setFilteredInvitations(response.data.data);
         }
       } catch (error) {
         console.error("Error fetching invitations:", error);
@@ -41,7 +44,7 @@ function Invitationlst() {
         invitation.eventDetails.name.toLowerCase().includes(query) ||
         invitation.eventDetails.eventType.toLowerCase().includes(query)
     );
-    setFilteredEvents(filtered);
+    setFilteredInvitations(filtered);
   };
 
   const handleInvitation = (eventId, invitationId) => {
@@ -49,11 +52,8 @@ function Invitationlst() {
       console.error("Error: Event ID or Invitation ID is missing");
       return;
     }
-    console.log("Invitation ID:", invitationId);
-
-    // Pass the invitation._id as the state
     navigate(`/invitation-detail/${eventId}`, {
-      state: { invitationId }, // Now you're passing the _id of the invitation
+      state: { invitationId },
     });
   };
 
@@ -81,8 +81,8 @@ function Invitationlst() {
       />
 
       {/* Display Invitations */}
-      {filteredEvents.length > 0 ? (
-        filteredEvents.map((invitation) => (
+      {filteredInvitations.length > 0 ? (
+        filteredInvitations.map((invitation) => (
           <div key={invitation._id} className="d-flex justify-content-center mb-3">
             <Card
               style={{
@@ -123,7 +123,7 @@ function Invitationlst() {
                     variant="danger"
                     style={{ backgroundColor: "#FF3366" }}
                     onClick={() =>
-                      handleInvitation(invitation.eventDetails.eventId, inv._id) // Send the correct invitation ID here
+                      handleInvitation(invitation.eventDetails.eventId, inv._id)
                     }
                   >
                     Plan and Celebrate

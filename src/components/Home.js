@@ -27,6 +27,7 @@ import '../components/Hedaer.css'
 
 const HomePage = () => {
   const [events, setEvents] = useState([]);
+  const [searchQuery, setSearchQuery] = useState("");
   const [innvitations,setInvitations]=useState([])
   const userId=localStorage.getItem("user.id")
   const [error, setError] = useState(null);
@@ -222,9 +223,12 @@ const handleAllinvitation=()=>{
             <div className=" d-flex searchbarw justify-content-between">
               <input
                 type="text"
+                value={searchQuery}
+
                 placeholder="Find amazing events"
                 className="text-mute"
                 style={{ width: "100%",height:'30%' }}
+                onChange={(e) => setSearchQuery(e.target.value)}
               />
               <FaSearch className="me-3 text-muted" style={{ fontSize: "1.5rem", fill: "#FF3366"}} />
             </div>
@@ -241,8 +245,9 @@ const handleAllinvitation=()=>{
             <Tab  className="btn1" label="Invitation" value="2" />
           </TabList>
         </Box>
-        <TabPanel value="1">{<Eventlst/>}</TabPanel>
-        <TabPanel value="2">{<Invitationlst/>}</TabPanel>
+        <TabPanel value="1"> <Eventlst searchQuery={searchQuery} />
+        </TabPanel>
+        <TabPanel value="2"><Invitationlst searchQuery={searchQuery}/></TabPanel>
       
       </TabContext>
     </Box>
