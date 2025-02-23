@@ -13,14 +13,12 @@ const InviteButton = () => {
           console.log("Selected Contacts:", contacts);
 
           // Send contacts to backend for processing
-          const response = await fetch(`${process.env.REACT_APP_BASE_URL}/contactss/eventId`, {
+          const response = await fetch(`${process.env.REACT_APP_BASE_URL}/contactss`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ contacts }),
           });
-Swal.fire({
-    title: 'Are you sure?',
-})
+
           const data = await response.json();
           alert(data.message);
         }
