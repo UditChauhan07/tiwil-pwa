@@ -111,6 +111,7 @@ function App() {
         <Route path='/invitation' element={<InvitationList/>}/>
         <Route path="/invite" element={<InvitePag/>} />
         <Route path="/chat" element={<ChatApp/>}/>
+        <Route path='/:eventId' element={<UserEventSection/>}/>
 
       </Routes>
     </Router>
