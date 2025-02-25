@@ -239,7 +239,7 @@ const handleAllinvitation=()=>{
 <div>
       <Box sx={{ width: '100%', typography: 'body1' }}>
       <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+        <Box sx={{ borderBottom: 1, borderColor: 'divider',backgroundColor:'' }}>
           <TabList onChange={handleChange} aria-label=" " style={{backgroundColor:"#FFEFF3",borderRadius:'40px',display:"flex",justifyContent:'space-between',marginBottom:'10px'}}>
             <Tab className="btn1" label="My events" value="1" />
             <Tab  className="btn1" label="Invitation" value="2" />
@@ -336,7 +336,7 @@ const handleAllinvitation=()=>{
       <div className="tabnav">
 <FooterNavBar/></div>
 <div className="floating-action"><FloatingActionButton/></div>
-      <Footer />
+      {/* <Footer /> */}
       </section>
     </>
   );

@@ -108,7 +108,7 @@ function Invitationlst() {
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
             height: "162px",
-           maxWidth: "311px"
+           maxWidth: "100%"
           }}
         
               />

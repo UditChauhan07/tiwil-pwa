@@ -134,7 +134,7 @@ const Eventlst = () => {
     <>
     <div className='mt-4'>      {filteredEvents.map((event, index) => (
         <div key={index} style={{ gap: "30px", display: "flex", justifyContent: "center" }}>
-          <Card style={{ width: "100%", minWidth: "310px", border: "0.5px solid rgb(229 229 229)", borderRadius: "10px" }}>
+          <Card style={{ width: "100%", minWidth: "310px", border: "0.5px solid rgb(229 229 229)", borderRadius: "10px",marginBottom:"10px" }}>
             <div style={{ height: "150px" }}>
               <Card variant="top"   style={{
             backgroundImage: `url(${
@@ -146,7 +146,7 @@ const Eventlst = () => {
             backgroundRepeat: "no-repeat",
             backgroundSize: "cover",
             height: "162px",
-            width: "311px"
+            width: "100%"
           }}
         
               >
