@@ -70,15 +70,15 @@ function Invitationlst() {
   };
 
   return (
-    <div className="container mt-4">
+    <div className="containers1 mt-4">
       {/* Search Bar */}
-      <input
+      {/* <input
         type="text"
         className="form-control mb-3"
         placeholder="Search events..."
         value={searchQuery}
         onChange={handleSearch}
-      />
+      /> */}
 
       {/* Display Invitations */}
       {filteredInvitations.length > 0 ? (
@@ -96,14 +96,21 @@ function Invitationlst() {
               <Card
                 variant="top"
                 style={{
-                  backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/${invitation.eventDetails.image})`,
-                  position: "relative",
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: "cover",
-                  height: "150px",
-                  objectFit: "cover",
-                  marginTop: "5px",
-                }}
+            backgroundImage: `url(${
+  invitation.eventDetails?.image &&
+  invitation.eventDetails.image !== "null" &&
+  invitation.eventDetails.image !== `${process.env.REACT_APP_BASE_URL}/null`
+    ? `${process.env.REACT_APP_BASE_URL}/${invitation.eventDetails.image}`
+    : `${process.env.PUBLIC_URL}/img/defaultUser.png`
+})`,
+
+            position: "relative",
+            backgroundRepeat: "no-repeat",
+            backgroundSize: "cover",
+            height: "162px",
+            width: "311px"
+          }}
+        
               />
 
               <Card.Body>

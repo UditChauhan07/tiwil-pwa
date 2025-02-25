@@ -15,6 +15,7 @@ import InviteButton from "./userview/Invitetest";
 const EventDetails = () => {
   const [activeTab, setActiveTab] = useState("details");
   const [showWishlistModal, setShowWishlistModal] = useState(false);
+  const [guest,setGuest]=useState([])
   console.log("showWishlistModal", showWishlistModal);
   const [showGuestModal, setGuestModal] = useState(false);
   const [wishlist, setWishlist] = useState([]);
@@ -94,6 +95,25 @@ const EventDetails = () => {
 
   //   getEvent();
   // }, [eventId]); // Dependency array ensures this effect runs when eventId changes
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const fetchGuest = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests/${eventId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (response.data && response.data.data) {
+          setGuest(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchGuest();
+  }, []);
+
 const  getEvent = async () => {
       try {
         const response = await axios.get(
@@ -112,6 +132,12 @@ const  getEvent = async () => {
     useEffect(()=> {
       getEvent()
     },[eventId])
+
+
+
+    const handleStartChat=()=>{
+      navigate('/chat')
+    }
   //   getEvent();
   return (
     <>
@@ -293,19 +319,64 @@ style={{
 
                     {activeTab === "guests" && (
                       <div>
-                        <h5>👥 Guest List</h5>
-                        <p>List of guests attending the event.</p>
-                        <div className="text-center mt-4">
-                          <button
-                            className="btn btn-danger w-25 d-flex align-items-center justify-content-center"
-                            style={{fontSize:"12px"}} onClick={() => setGuestModal(true)}
-                          >
-                            INVITE <FaArrowRight className="ms-2"  />
-                          </button>
-                        </div>
-                      </div>
-                    )}
+  <h5>👥 Guest List</h5>
+  <p>List of guests attending the event.</p>
 
+  {guest && guest.length > 0 ? (
+    <>
+      <ul>
+        {guest.map((g) => (
+          <li key={g._id}>
+          
+            {g.name}
+
+            {/* <p
+              style={{
+                border: "1px solid #ff3366",
+                maxWidth: "28%",
+                padding: "3px",
+                margin: "3px",
+              }}
+            >
+              {g.fullName}
+            </p> */}
+          </li>
+        ))}
+      </ul>
+      
+      {/* ADD MORE and START CHAT buttons when guests are available */}
+      <div className="text-center mt-4 d-flex">
+        <button
+          className="btn btn-primary w-25 d-flex align-items-center justify-content-center"
+          style={{ fontSize: "12px", marginRight: "10px" }}
+          onClick={() => setGuestModal(true)}
+        >
+          ADD MORE
+        </button>
+
+        <button
+          className="btn btn-success w-25 d-flex align-items-center justify-content-center"
+          style={{ fontSize: "12px" }}
+          onClick={handleStartChat} // Define this function to start chat
+        >
+          START CHAT
+        </button>
+      </div>
+    </>
+  ) : (
+    // Invite button only when there are no guests
+    <div className="text-center mt-4">
+      <button
+        className="btn btn-danger w-25 d-flex align-items-center justify-content-center"
+        style={{ fontSize: "12px" }}
+        onClick={() => setGuestModal(true)}
+      >
+        INVITE <FaArrowRight className="ms-2" />
+      </button>
+    </div>
+  )}
+</div>
+                    )}
                     {activeTab === "history" && (
                       <div>
                         <h5>📜 Event History</h5>
@@ -342,6 +413,7 @@ style={{
         fetchevent={getEvent} // Pass fetchWishlist as a prop
           />
         </div>
+        
         <Footer />
       </section>
     </>

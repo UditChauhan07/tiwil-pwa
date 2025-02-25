@@ -157,6 +157,16 @@ const InviteModal = ({ show, setShow, activeTab }) => {
         <Button variant="primary" style={{ backgroundColor: "#ff3366" }} onClick={handleSendInvite}>
           Send Invite
         </Button>
+        <div >
+        <button onClick={() => setIsModalOpen(true)}>
+          Add More
+        </button>
+      
+          <button  >
+            Start Chat
+          </button>
+    
+      </div>
       </Modal.Footer>
     </Modal>
   );

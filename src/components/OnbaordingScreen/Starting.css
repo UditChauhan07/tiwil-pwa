@@ -21,13 +21,18 @@
   }
   
   .next-btn {
-    background: #ff4d6d;
-    color: white;
-    border: none;
-    padding: 10px 20px;
+    background: #ffff;
+    color: #ff3366;
+    border: 1px solid #ff3366;
+    padding: 6px 20px;
     border-radius: 20px;
     font-size: 16px;
     cursor: pointer;
+    height: 40px;
+    width: 200px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
   }
   
   .skip-btn {

@@ -37,7 +37,7 @@ const PoolingWish = () => {
 
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/savecontributiondata`,
+        `${process.env.REACT_APP_BASE_URL}/pool/contribute`,
         contributionData,
         {
           headers: { Authorization: `Bearer ${token}` },

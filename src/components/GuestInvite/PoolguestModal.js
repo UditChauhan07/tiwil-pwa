@@ -6,7 +6,7 @@ import { useParams } from "react-router-dom";
 
 const InviteModal = ({ show, setShow }) => {
   const [selectedInvites, setSelectedInvites] = useState([]);  // Track selected users
-  const [users, setUser] = useState([]); // List of guests
+  const [users, setUsers] = useState([]); // List of guests
   const [searchQuery, setSearchQuery] = useState("");  // Search input for filtering users
 
   // Get the eventId from localStorage or URL params

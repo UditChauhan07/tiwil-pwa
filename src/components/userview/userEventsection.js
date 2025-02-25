@@ -23,13 +23,12 @@ const EventDetails = () => {
   const navigate = useNavigate();
   const { invitationId } = location.state || {};
 
-
-
   useEffect(() => {
     if (invitationId) {
       fetchInvitationStatus();
     }
   }, [invitationId]);
+
   // Fetch wishlist data from the server
   const fetchWishlist = async () => {
     const token = localStorage.getItem("token");
@@ -63,7 +62,7 @@ const EventDetails = () => {
         });
 
         if (response.data.success) {
-          setEvents([response.data.data]);
+          setEvents(response.data.data); // Set data directly (not in array)
           localStorage.setItem('eventId1', eventId);
         } else {
           console.error("Event fetch failed:", response.data.message);
@@ -85,7 +84,7 @@ const EventDetails = () => {
     const token = localStorage.getItem("token");
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/users`, {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}//guests/${eventId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -104,7 +103,7 @@ const EventDetails = () => {
   const fetchInvitationStatus = async () => {
     const token = localStorage.getItem('token');
     try {
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests/${eventId}`, {
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests-status/${eventId}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -118,8 +117,7 @@ const EventDetails = () => {
     }
   };
 
-
-
+  // Handle Accept Invitation
   const handleAccept = async () => {
     const token = localStorage.getItem('token');
     try {
@@ -138,6 +136,7 @@ const EventDetails = () => {
     }
   };
 
+  // Handle Decline Invitation
   const handleDecline = async () => {
     Swal.fire({
       title: "Are you sure?",
@@ -204,9 +203,9 @@ const EventDetails = () => {
             />
           </div>
 
-          {events && events.length > 0 && (
+          {events && (
             <div>
-              <h2 className="mt-3 fw-bold">{events[0].name}</h2>
+              <h2 className="mt-3 fw-bold">{events.name}</h2>
               <ul className="nav nav-tabs mt-3">
                 {[
                   "details",
@@ -217,9 +216,7 @@ const EventDetails = () => {
                   .map((tab) => (
                     <li className="nav-item" key={tab}>
                       <button
-                        className={`nav-link ${
-                          activeTab === tab ? "active text-danger fw-bold" : ""
-                        }`}
+                        className={`nav-link ${activeTab === tab ? "active text-danger fw-bold" : ""}`}
                         onClick={() => setActiveTab(tab)}
                       >
                         {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -233,11 +230,11 @@ const EventDetails = () => {
                   <>
                     <p className="d-flex align-items-center">
                       <span className="bg-danger text-white p-2 rounded me-2">📅</span>
-                      {formatDateWithCurrentYear(events[0].date) || "Date not available"}
+                      {formatDateWithCurrentYear(events.date) || "Date not available"}
                     </p>
                     <p className="d-flex align-items-center">
                       <span className="bg-danger text-white p-2 rounded me-2">📍</span>
-                      {events[0].location || "Location not available"}
+                      {events.location || "Location not available"}
                     </p>
                     {invitationStatus === null ? (
                       <div className="text-center mt-4 d-flex gap-1">
@@ -267,12 +264,91 @@ const EventDetails = () => {
                   </>
                 )}
 
-                {/* Add additional tabs like 'wishlist' and 'guests' here based on status */}
+             
+                {activeTab === "wishlist" && (
+                    <div>
+                    <div  style={{display:"flex",justifyContent:"space-between"}}>
+                      <h5>🎁 Wishlist</h5>
+                      <h5 >Show All</h5>
+</div>
+                      <div>
+                        <div className="wishlist-items">
+                          {wishlistItems.length > 0 ? (
+                            wishlistItems.map((item) => (
+                              <div key={item._id}>
+                                <div className="row"  >
+                                  <div className="col-lg-4 col-md-6 col-sm-12" style={{marginBottom:'10px'}}>
+                                    <div className="card" style={{ backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/${item.imageUrl})`, position: "relative", backgroundRepeat: "no-repeat", backgroundSize: "cover" }}>
+                                      <div className="card-img-top" style={{height:"226px"}}  >
+                                     <div className="d-flex justify-content-end m-2" > <p className="card-text status d-flex justify-content-center" style={{background:"cornsilk"}} >{item.status}</p></div>
+                                      </div>
+                                      <Link to={`/wishlistdetails/${item._id}`} >
+                                        <div className="card-body cards11 " >
+                                          <div className="d-flex justify-content-between " style={{paddingTop:"11px"}}>
+                                            <h6 className="card-title " style={{color:"black"}}>{item.giftName}</h6>
+                                            <p className="card-text " style={{color:"#ff3366",fontWeight:"600"}}>${item.price}</p>
+                                        
+                                          </div>
+                                 <div className="d-flex justify-content-between">                                          <p className="card-text text-secondary m-1">{item.description}</p><img   src={`${process.env.PUBLIC_URL}/img/Group 33582.svg`} alt="svg"/></div>
 
+                                        </div>
+                                      </Link>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            ))
+                          ) : (
+                            <p>No wishlist items found.</p>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {activeTab === "guests" && (
+                    <div>
+                      <h5>👥 Guest List</h5>
+                      {users.length > 0 ? (
+                        <ul>
+                          {users.map((g) => (
+                           <li key={g._id}>{g.name}
+                              
+                                <p style={{ border: "1px solid #ff3366", maxWidth: "28%", padding: "3px", margin: "3px" }}>
+                                  {g.fullName}
+                                </p>
+                              </li>
+                            ))
+                          }
+                        </ul>
+                      ) : (
+                        <p>No guests yet.</p>
+                      )}
+                    </div>
+                  )}
+                </div>
               </div>
-            </div>
-          )}
-        </div>
+            )}
+          </div>
+
+                {/* {activeTab === "guests" && invitationStatus === "Accepted" && (
+                  <div>
+                    <h5>Guests</h5>
+                  
+                    {users.length > 0 ? (
+                      <ul>
+                        {users.map((user, index) => (
+                          <li key={index}>{user.name}</li>
+                        ))}
+                      </ul>
+                    ) : (
+                      <p>No guests</p>
+                    )}
+                  </div>
+                )} */}
+             
+          
+        
       </section>
       <Footer />
     </>
