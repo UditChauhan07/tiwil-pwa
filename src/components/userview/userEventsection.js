@@ -131,6 +131,7 @@ const EventDetails = () => {
       Swal.fire("Error!", error.response?.data?.message || "Something went wrong", "error");
     }
   };
+  
 
   // Handle Decline Invitation
   const handleDecline = async () => {
@@ -189,8 +190,24 @@ const EventDetails = () => {
 
     return eventDate.toLocaleDateString("en-GB");
   };
+  const handleClick = (item) => {
+    // Check if the status is "Purchased" or "Marked"
+    if (item.status === "Purchased" || item.status === "Marked") {
+      // Check if the current user is the one who marked or purchased it
+      if (item.userId === currentUserId) {
+        // Allow the user to open the item
+        navigate(`/wishlistdetails/${item._id}`, { state: { item } });
+      } else {
+        // Show an alert that the user cannot view this item
+        alert("You cannot open this item because it has already been purchased or marked by someone else.");
+      }
+    } else if (item.status === "Unmark" || item.status === "CreatePool") {
+      // Allow opening for "Unmark" and "CreatePool" items
+      navigate(`/wishlistdetails/${item._id}`, { state: { item } });
+    }
+  };
 
-
+console.log(wishlistItems)
   return (
     <>
       <section className="page-controls">
@@ -268,39 +285,40 @@ const EventDetails = () => {
                       <h5 >Show All</h5>
                     </div>
                     <div className="wishlist-items">
-                      {wishlistItems.length > 0 ? (
-                        wishlistItems.map((item) => (
-                          <div key={item._id}>
-                            <div className="row">
-                              <div className="col-lg-4 col-md-6 col-sm-12" style={{marginBottom:'10px'}}>
-                                <div className="card" style={{ backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/${item.imageUrl})`, position: "relative", backgroundRepeat: "no-repeat", backgroundSize: "cover" }}>
-                                  <div className="card-img-top" style={{height:"226px"}}  >
-                                    <div className="d-flex justify-content-end m-2">
-                                      <p className="card-text status d-flex justify-content-center" style={{background:"cornsilk"}}>{item.status}</p>
-                                    </div>
-                                  </div>
-                                  <Link to={`/wishlistdetails/${item._id}`} >
-                                    <div className="card-body cards11">
-                                      <div className="d-flex justify-content-between " style={{paddingTop:"11px"}}>
-                                        <h6 className="card-title " style={{color:"black"}}>{item.giftName}</h6>
-                                        <p className="card-text " style={{color:"#ff3366",fontWeight:"600"}}>${item.price}</p>
-                                      </div>
-                                      <div className="d-flex justify-content-between">
-                                        <p className="card-text text-secondary m-1">{item.description}</p>
-                                        <img src={`${process.env.PUBLIC_URL}/img/Group 33582.svg`} alt="svg"/>
-                                      </div>
-                                    </div>
-                                  </Link>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-                        ))
-                      ) : (
-                        <p>No wishlist items found.</p>
-                      )}
-                    </div>
-                  </div>
+  {wishlistItems.length > 0 ? (
+    wishlistItems.map((item) => (
+      <div key={item._id}>
+        <div className="row">
+          <div className="col-lg-4 col-md-6 col-sm-12" style={{marginBottom:'10px'}}>
+            <div className="card" style={{ backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/${item.imageUrl})`, position: "relative", backgroundRepeat: "no-repeat", backgroundSize: "cover" }}>
+              <div className="card-img-top" style={{height:"226px"}}>
+                <div className="d-flex justify-content-end m-2">
+                  <p className="card-text status d-flex justify-content-center" style={{background:"cornsilk"}}>{item.status}</p>
+                </div>
+              </div>
+              <div onClick={() => handleClick(item)} style={{ cursor: 'pointer' }}>
+              <div className="card-body cards11">
+                <div className="d-flex justify-content-between" style={{paddingTop:"11px"}}>
+                  <h6 className="card-title" style={{color:"black"}}>{item.giftName}</h6>
+                  <p className="card-text" style={{color:"#ff3366",fontWeight:"600"}}>${item.price}</p>
+                </div>
+                <div className="d-flex justify-content-between">
+                  <p className="card-text text-secondary m-1">{item.description}</p>
+                  <img src={`${process.env.PUBLIC_URL}/img/Group 33582.svg`} alt="svg"/>
+                </div>
+              </div>
+            </div>
+          </div>
+          {/* Move the onClick handler here, within the item */}
+          </div>
+        </div>
+      </div>
+    ))
+  ) : (
+    <p>No wishlist items found.</p>
+  )}
+</div>
+</div>
                 )}
 
                 {activeTab === "guests" && (

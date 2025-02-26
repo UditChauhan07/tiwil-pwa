@@ -21,7 +21,7 @@
 }
 
 .cardHeader {
-  background-color: #ff3366;
+  background-color: #ff3366 !important;
   color: white;
   padding: 10px;
   border-top-left-radius: 8px;

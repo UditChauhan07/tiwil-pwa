@@ -4,16 +4,19 @@ import Header from "../Header";
 import Navbar from "../navbar";
 import Footer from "../Footer";
 import Swal from "sweetalert2";
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams ,useLocation} from "react-router-dom";
 import axios from "axios";
 
 function WishlistCard() {
+  const location=useLocation();
   const [selected, setSelected] = useState(""); // Track selected status
   const [wishlistItem, setWishlistItem] = useState(null); // Wishlist item data
   const navigate = useNavigate();
   const { itemId } = useParams();
+  const [Loading,setLoading]=useState(false)
   const token = localStorage.getItem("token");
-
+  const { item } = location.state || {};
+console.log(item)
   useEffect(() => {
     const getData = async () => {
       try {
@@ -66,12 +69,12 @@ function WishlistCard() {
       setLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/pool/create`,
-        { wishId: item._id, totalAmount: item.price },
+        { wishId: itemId, totalAmount: item.price },
         { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
 
       if (response.data.success) {
-        navigate("/pooling", { state: { item } });
+        navigate("/createpool", { state: { item } });
       }
     } catch (error) {
       console.error("❌ Error creating pool:", error);
@@ -101,16 +104,18 @@ function WishlistCard() {
                     onChange={handlePurchase}
                     value={wishlistItem.status || "Unmark"}
                   >
+                     
                     <option value="Unmark">Unmark</option>
                     <option value="Mark">Mark</option>
                     <option value="Purchased">Purchased</option>
+                    <option value="CreatePool">Create Pool</option>
                   </select>
                 </div>
               </div>
               <p className="mb-3" style={{ color: "#EE4266" }}>
                 {wishlistItem.createdAt ? new Date(wishlistItem.createdAt).toLocaleString() : "Date not available"}
               </p>
-              {wishlistItem.status === "Unmark" && (
+              {wishlistItem.status === "CreatePool" && (
                 <button
                   className="btn mb-4 createpoolbtn"
                   style={{ backgroundColor: "#EE4266", color: "white" }}

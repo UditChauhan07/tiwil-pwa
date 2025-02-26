@@ -76,9 +76,9 @@ const FamilyCard = ({ relation, detail, onEdit }) => {
       <div className={styles.cardHeader}>
         <h2>{relation.toUpperCase()}</h2>
         <div className={styles.menuContainer}>
-          <button className={styles.menuButton} onClick={onEdit}>⋮</button>
+          {/* <button className={styles.menuButton} onClick={onEdit}>⋮</button> */}
           <div className={styles.menuOptions}>
-            <button onClick={onEdit}>Edit Details</button>
+            <button onClick={onEdit} style={{color:'#ff3366',border:'1px solid #ff3366', background:'cornsilk',borderRadius:'5px',padding:'2px',top:'-20px'}}>Edit Details</button>
           </div>
         </div>
       </div>
