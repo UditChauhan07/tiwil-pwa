@@ -11,6 +11,8 @@ import EditEventModal from "./Events/eventModal";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import InviteButton from "./userview/Invitetest";
+import { useNavigate } from "react-router-dom";
+
 
 const EventDetails = () => {
   const [activeTab, setActiveTab] = useState("details");
@@ -24,6 +26,7 @@ const EventDetails = () => {
   const token = localStorage.getItem("token");
   const { eventId } = useParams(); // Get eventId from URL parameters
   console.log(eventId)
+  const navigate=useNavigate();
   // Fetch wishlist data from the server
   // useEffect(() => {
   //   const fetchWishlist = async () => {
@@ -140,7 +143,7 @@ const  getEvent = async () => {
         const token = localStorage.getItem("token");
         const response = await axios.post(
           `${process.env.REACT_APP_BASE_URL}/chats/group`,
-          { eventId: eventData.eventId },
+          { eventId: eventId },
           { headers: { Authorization: `Bearer ${token}` } }
         );
     

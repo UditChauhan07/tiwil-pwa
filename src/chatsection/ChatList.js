@@ -49,7 +49,7 @@ const Chatlist = () => {
       {/* 🔍 Search Bar */}
       <FiArrowLeft
             className={styles.backIcon}
-            onClick={() => navigate("/dashboard")}
+            onClick={() => navigate("/home")}
           />
       <div className={styles.searchContainer}>
         <FaSearch className={styles.searchIcon} />
