@@ -50,8 +50,8 @@ const Starting = () => {
           {/* Navigation Buttons */}
           <div className="onboarding-footer">
             <button onClick={handleNext} className="next-btn">
-              {currentSlide === slides.length - 1 ? "Get Started" : "Next"}
-              <img  src={`${process.env.PUBLIC_URL}/img/Arrow.svg`} alt="arrow"  />
+              {currentSlide === slides.length - 1 ? "Start" : "Next"}
+              <img  src={`${process.env.PUBLIC_URL}/img/Arrow.svg`} alt="arrow" className="image" />
             </button>
             <button onClick={handleSkip} className="skip-btn">Skip</button>
           </div>

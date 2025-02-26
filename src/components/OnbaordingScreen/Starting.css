@@ -48,6 +48,9 @@
     gap: 5px;
     margin-top: 10px;
   }
+  .image{
+    margin-left: 13px;
+  }
   
   .dot {
     height: 8px;

@@ -16,7 +16,7 @@ const SplashScreen2 = () => (
       style={{ maxHeight:"180px" }}
     />
     <p className="fw-semibold "style={{color:"#ff3366",height:'70px'}}>
-    Send invites to friends and family, making every<br/> celebration more meaningful.
+    Send invites to friends and family, making <br/>every celebration more meaningful.
     </p>
   </div>
 
