@@ -77,6 +77,7 @@ const Account = () => {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("fullname");
+    localStorage.clear();
     navigate("/signin");
     window.dispatchEvent(new Event("storage"));
   };
