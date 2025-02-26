@@ -21,8 +21,8 @@ const EventDetails = () => {
   const location = useLocation();
   const { eventId } = useParams();
   const navigate = useNavigate();
-  const { invitationId } = location.state || {};
-
+  const { invite } = location.state || {};
+console.log(invite)
   useEffect(() => {
     if (invitationId) {
       fetchInvitationStatus();
@@ -114,28 +114,55 @@ const EventDetails = () => {
   // Handle Accept Invitation
   const handleAccept = async () => {
     const token = localStorage.getItem('token');
-    if(!token){
-      navigate('/signin')
-    }
+    
+    
+    // if (!token) {
+    //   navigate('/signin');
+    //   Swal.fire({
+    //     title: 'Error',
+    //     text: 'Please sign in to accept the invitation.',
+    //     icon: 'error'
+    //   })
+    //   return; 
+    
+    // }
+    
     try {
-      const response = await axios.put(
-        `${process.env.REACT_APP_BASE_URL}/invitations/${invitationId}`,
-        { status: "Accepted" },
-       
-      );
-
-      if (response.data.success) {
-        setInvitationStatus("Accepted");  // Change status to Accepted
-        Swal.fire("Success", "You have accepted the invitation!", "success");
+      if(token){
+        const response = await axios.put(
+          `${process.env.REACT_APP_BASE_URL}/invitations/${invitationId}`,
+          { status: "Accepted" },
+         
+        );
+        
+        // If the request was successful, update the invitation status and show a success alert
+        if (response.data.success) {
+          setInvitationStatus("Accepted");
+          Swal.fire("Success", "You have accepted the invitation!", "success");
+        }
+      }else{
+        navigate("/signin")
       }
+      
     } catch (error) {
+      // Show an error message if the request fails
       Swal.fire("Error!", error.response?.data?.message || "Something went wrong", "error");
     }
   };
   
-
   // Handle Decline Invitation
   const handleDecline = async () => {
+    if (!token) {
+      navigate('/signin');
+      Swal.fire({
+        title: 'Error',
+        text: 'Please sign in to accept the invitation.',
+        icon: 'error'
+      })
+      return; 
+    
+    }
+
     Swal.fire({
       title: "Are you sure?",
       text: "Once declined, you won't be able to change this!",
