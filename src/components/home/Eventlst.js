@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Card, Button, Spinner } from 'react-bootstrap';
+import { Card, Button, Spinner, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import '../Home.css';
 
@@ -8,6 +8,7 @@ const Eventlst = () => {
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [searchQuery, setSearchQuery] = useState('');  // State to store search query
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
@@ -131,6 +132,15 @@ const Eventlst = () => {
   return (
     <>
       <div className='mt-4'>
+        {/* Search bar */}
+        <Form.Control
+          type="text"
+          placeholder="Search for events..."
+          value={searchQuery}
+          onChange={handleSearch}
+          style={{ marginBottom:'18px', width: '98%' }}
+        />
+
         {/* Show loader if loading is true */}
         {loading ? (
           <div style={{ display: 'flex', justifyContent: 'center', marginTop: '50px' }}>
@@ -169,19 +179,22 @@ const Eventlst = () => {
                       <img className="m-0.5" src={`${process.env.PUBLIC_URL}/img/calender.svg`} height={"17px"} alt="calendar" />
                       <h6 style={{ marginRight: '50px', marginBottom: '5px' }}>{formatDateWithCurrentYear(event.date)}</h6>
                       <div>
-                        {event.relation ? (
-                          <h4 style={{
-                            background: "white",
-                            color: "#ff3366",
-                            border: "1px solid #ff3366",
-                            paddingLeft: "10px",
-                            padding: "3px 27px 0px 26px",
-                            borderRadius: "10px",
-                          }}>
-                            {event.relation}
-                          </h4>
-                        ) : null}
-                      </div>
+  {event.relation && event.relation.toLowerCase() !== "parent anniversary" ? (
+    <h4
+      style={{
+        background: "white",
+        color: "#ff3366",
+        border: "1px solid #ff3366",
+        paddingLeft: "10px",
+        padding: "3px 27px 0px 26px",
+        borderRadius: "10px",
+      }}
+    >
+      {event.relation}
+    </h4>
+  ) : null}
+</div>
+
                     </div>
                   </Card.Text>
                   <div style={{ display: "flex", gap: "8px" }}>

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Card, Button } from "react-bootstrap";
+import { Card, Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "../Home.css";
 
@@ -72,13 +72,14 @@ function Invitationlst() {
   return (
     <div className="containers1 mt-4">
       {/* Search Bar */}
-      {/* <input
+      <Form.Control
         type="text"
-        className="form-control mb-3"
-        placeholder="Search events..."
+        placeholder="Search invitations by event name or type"
         value={searchQuery}
         onChange={handleSearch}
-      /> */}
+        className="mb-3"
+        style={{ width: "99%", margin: "0 auto" }}
+      />
 
       {/* Display Invitations */}
       {filteredInvitations.length > 0 ? (
@@ -96,21 +97,19 @@ function Invitationlst() {
               <Card
                 variant="top"
                 style={{
-            backgroundImage: `url(${
-  invitation.eventDetails?.image &&
-  invitation.eventDetails.image !== "null" &&
-  invitation.eventDetails.image !== `${process.env.REACT_APP_BASE_URL}/null`
-    ? `${process.env.REACT_APP_BASE_URL}/${invitation.eventDetails.image}`
-    : `${process.env.PUBLIC_URL}/img/defaultUser.png`
-})`,
-
-            position: "relative",
-            backgroundRepeat: "no-repeat",
-            backgroundSize: "cover",
-            height: "162px",
-           maxWidth: "100%"
-          }}
-        
+                  backgroundImage: `url(${
+                    invitation.eventDetails?.image &&
+                    invitation.eventDetails.image !== "null" &&
+                    invitation.eventDetails.image !== `${process.env.REACT_APP_BASE_URL}/null`
+                      ? `${process.env.REACT_APP_BASE_URL}/${invitation.eventDetails.image}`
+                      : `${process.env.PUBLIC_URL}/img/defaultUser.png`
+                  })`,
+                  position: "relative",
+                  backgroundRepeat: "no-repeat",
+                  backgroundSize: "cover",
+                  height: "162px",
+                  maxWidth: "100%",
+                }}
               />
 
               <Card.Body>
