@@ -21,8 +21,8 @@ const EventDetails = () => {
   const location = useLocation();
   const { eventId } = useParams();
   const navigate = useNavigate();
-  const { invite } = location.state || {};
-console.log(invite)
+  const { invitationId } = location.state || {};
+
   useEffect(() => {
     if (invitationId) {
       fetchInvitationStatus();
