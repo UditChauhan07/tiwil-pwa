@@ -58,8 +58,8 @@
   
   .dot.active {
     background-color: #ff4d6d;
-    width: 12px;
-    height: 12px;
+    width: 8px;
+    height: 8px;
   }
   .onboarding-footer{
     display: flex;
