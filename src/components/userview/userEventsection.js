@@ -73,9 +73,7 @@ const EventDetails = () => {
       const token = localStorage.getItem("token");
 
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/events/${eventId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/events/${eventId}`);
 
         if (response.data.success) {
           setEvents(response.data.data);
@@ -116,6 +114,9 @@ const EventDetails = () => {
   // Handle Accept Invitation
   const handleAccept = async () => {
     const token = localStorage.getItem('token');
+    if(!token){
+      navigate('/signin')
+    }
     try {
       const response = await axios.put(
         `${process.env.REACT_APP_BASE_URL}/invitations/${invitationId}`,
@@ -265,7 +266,7 @@ console.log(wishlistItems)
                       {events.location || "Location not available"}
                     </p>
 
-                    {invitationStatus === "Pending" || invitationStatus === "Invited" ? (
+                    {invitationStatus === "Pending" || invitationStatus === "Invited" || null || !invitationStatus ? (
                       <div className="text-center mt-4 d-flex gap-1">
                         <button className="btn btn-danger w-30" onClick={handleAccept}>ACCEPT</button>
                         <button className="btn w-30" style={{ border: "1px solid" }} onClick={handleDecline}>DECLINE</button>
