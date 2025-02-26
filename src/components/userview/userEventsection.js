@@ -70,7 +70,7 @@ const EventDetails = () => {
   useEffect(() => {
     const fetchEventDetail = async () => {
       setLoading(true);
-      const token = localStorage.getItem("token");
+     
 
       try {
         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/events/${eventId}`);
@@ -98,7 +98,7 @@ const EventDetails = () => {
     const token = localStorage.getItem('token');
     try {
       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests-status/${eventId}`, {
-        headers: { Authorization: `Bearer ${token}` },
+       
       });
 
       if (response.data.success) {
@@ -121,7 +121,7 @@ const EventDetails = () => {
       const response = await axios.put(
         `${process.env.REACT_APP_BASE_URL}/invitations/${invitationId}`,
         { status: "Accepted" },
-        { headers: { Authorization: `Bearer ${token}` } }
+       
       );
 
       if (response.data.success) {
@@ -151,7 +151,7 @@ const EventDetails = () => {
           const response = await axios.put(
             `${process.env.REACT_APP_BASE_URL}/invitations/${invitationId}`,
             { status: "Declined" },
-            { headers: { Authorization: `Bearer ${token}` } }
+           
           );
 
           if (response.data.success) {
