@@ -24,8 +24,10 @@ const Navbar = () => {
   const handleLogout = () => {
     localStorage.removeItem("user.emailOrphone");
     localStorage.removeItem("user.id");
+    localStorage.clear();
     setIsLoggedIn(false);
     navigate("/signin");
+    
   };
 
   const handleDelete = async () => {
