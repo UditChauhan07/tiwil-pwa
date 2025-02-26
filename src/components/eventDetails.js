@@ -345,9 +345,10 @@ style={{
       <ul>
         {guest.map((g) => (
           <li key={g._id}>
-          
-            {g.name}
-
+          <div style={{display:'flex',justifyContent:'space-between'}}>
+           <span style={{}}> {g.name}</span><span>
+            {g.status}</span>
+            </div>
             {/* <p
               style={{
                 border: "1px solid #ff3366",
