@@ -28,8 +28,24 @@ const EventDetails = () => {
       fetchInvitationStatus();
     }
   }, [invitationId]);
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests/${eventId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
 
-  // Fetch wishlist data from the server
+        if (response.data && response.data.data) {
+          setUsers(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
   const fetchWishlist = async () => {
     const token = localStorage.getItem("token");
 
@@ -62,7 +78,7 @@ const EventDetails = () => {
         });
 
         if (response.data.success) {
-          setEvents(response.data.data); // Set data directly (not in array)
+          setEvents(response.data.data);
           localStorage.setItem('eventId1', eventId);
         } else {
           console.error("Event fetch failed:", response.data.message);
@@ -78,26 +94,6 @@ const EventDetails = () => {
       fetchEventDetail();
     }
   }, [eventId]);
-
-  // Fetch guest list based on eventId
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests/${eventId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (response.data && response.data.data) {
-          setUsers(response.data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
-
-    fetchUsers();
-  }, []);
 
   // Fetch invitation status from the backend
   const fetchInvitationStatus = async () => {
@@ -128,7 +124,7 @@ const EventDetails = () => {
       );
 
       if (response.data.success) {
-        setInvitationStatus("Accepted");
+        setInvitationStatus("Accepted");  // Change status to Accepted
         Swal.fire("Success", "You have accepted the invitation!", "success");
       }
     } catch (error) {
@@ -167,6 +163,24 @@ const EventDetails = () => {
     });
   };
 
+  // Handle Start Chat
+  const handleStartChat = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/chats/group`,
+        { eventId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (response.data.success) {
+        // Navigate to the existing or newly created chat
+        navigate(`/chats/${response.data.chat.groupId}`);
+      }
+    } catch (error) {
+      console.error("❌ Error starting chat:", error.response?.data || error.message);
+    }
+  };
   const formatDateWithCurrentYear = (dateString) => {
     if (!dateString) return "Invalid Date";
     const eventDate = new Date(dateString);
@@ -176,24 +190,6 @@ const EventDetails = () => {
     return eventDate.toLocaleDateString("en-GB");
   };
 
-  const handleStartChat = async () => {
-    const token = localStorage.getItem("token");
-    try {
-
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/chats/group`,
-        { eventId },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-  
-      if (response.data.success) {
-        // Navigate to the existing or newly created chat
-        navigate(`/chats/${response.data.chat.groupId}`);
-      }
-    } catch (error) {
-      console.error("❌ Error starting chat:", error.response?.data || error.message);
-    }
-  };
 
   return (
     <>
@@ -251,7 +247,8 @@ const EventDetails = () => {
                       <span className="bg-danger text-white p-2 rounded me-2">📍</span>
                       {events.location || "Location not available"}
                     </p>
-                    {invitationStatus === "Pending" || "Invited" ? (
+
+                    {invitationStatus === "Pending" || invitationStatus === "Invited" ? (
                       <div className="text-center mt-4 d-flex gap-1">
                         <button className="btn btn-danger w-30" onClick={handleAccept}>ACCEPT</button>
                         <button className="btn w-30" style={{ border: "1px solid" }} onClick={handleDecline}>DECLINE</button>
@@ -312,8 +309,7 @@ const EventDetails = () => {
                     {users.length > 0 ? (
                       <ul>
                         {users.map((g) => (
-                          <li key={g._id}>{g.name}
-                          </li>
+                          <li key={g._id}>{g.name}</li>
                         ))}
                       </ul>
                     ) : (

@@ -179,8 +179,8 @@ const handleSendMessage = async () => {
             className={styles.eventImage}
           />
           <div className={styles.eventText}  onClick={() => navigate(`/group/${groupId}/details`)}>
-            <h2>{eventDetails.eventName}</h2>
-            <p>Me and {eventDetails.totalMembers - 1} members</p>
+            <h2 style={{fontSize:'15px',margin:'5px'}}>{eventDetails.eventName}</h2>
+            <p style={{marginTop:'10px'}}>Me and {eventDetails.totalMembers - 1} members</p>
           </div>
           <FiSearch className={styles.searchIcon} />
         </div>

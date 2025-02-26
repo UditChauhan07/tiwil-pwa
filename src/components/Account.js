@@ -24,6 +24,24 @@ const Account = () => {
   });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    const fetchUsers = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests/${eventId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        if (response.data && response.data.data) {
+          setUsers(response.data.data);
+        }
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+
+    fetchUsers();
+  }, []);
 
   useEffect(() => {
     const fetchProfileData = async () => {
