@@ -3,6 +3,7 @@ import { Modal, Button } from "react-bootstrap";
 import { FaCheckCircle, FaCircle } from "react-icons/fa";
 import axios from "axios";
 import { useParams } from "react-router-dom";
+import Swal from 'sweetalert2'
 
 const InviteModal = ({ show, setShow, activeTab }) => {
   const [selectedInvites, setSelectedInvites] = useState([]);
@@ -94,17 +95,42 @@ const InviteModal = ({ show, setShow, activeTab }) => {
           },
         }
       );
+      setShow(false);
+Swal.fire({
+  title: "Invites sent successfully",
+  text: "Your guests have been invited to the event.",
+  icon: "success",
 
+})
       console.log("✅ Invite sent successfully:", response.data);
 
       await sendNotification(); // Send notification after invite
 
-      setShow(false); // Close modal
+     // Close modal
       setSelectedInvites([]); // Reset selection
     } catch (error) {
       console.error("❌ Error sending invite:", error);
     }
   };
+  const handleStartChat = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/chats/group`,
+        { eventId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+  
+      if (response.data.success) {
+        // Navigate to the existing or newly created chat
+        navigate(`/chats/${response.data.chat.groupId}`);
+
+      }
+    } catch (error) {
+      console.error("❌ Error starting chat:", error.response?.data || error.message);
+    }
+  };
+
 
   return (
     <Modal show={show} onHide={() => setShow(false)} centered size="md">
@@ -157,16 +183,7 @@ const InviteModal = ({ show, setShow, activeTab }) => {
         <Button variant="primary" style={{ backgroundColor: "#ff3366" }} onClick={handleSendInvite}>
           Send Invite
         </Button>
-        <div >
-        <button onClick={() => setIsModalOpen(true)}>
-          Add More
-        </button>
       
-          <button  >
-            Start Chat
-          </button>
-    
-      </div>
       </Modal.Footer>
     </Modal>
   );

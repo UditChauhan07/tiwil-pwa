@@ -1,0 +1,226 @@
+/* Container for the whole chat list */
+.container {
+  padding: 20px;
+  background-color: #fff;
+  height: 100vh;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  display: flex;
+  flex-direction: column;
+}
+
+/* 🔍 Search Bar */
+.searchContainer {
+  display: flex;
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 15px;
+}
+
+.searchIcon {
+  color: #999;
+  margin-right: 10px;
+}
+
+.searchInput {
+  border: none;
+  outline: none;
+  width: 100%;
+  background: transparent;
+  font-size: 16px;
+  color: #333;
+}
+
+/* 🔖 Tabs */
+.tabs {
+  display: flex;
+  justify-content: space-between;
+  background-color: #f5f5f5;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 20px;
+}
+
+.tabButton {
+  flex: 1;
+  text-align: center;
+  padding: 10px 0;
+  font-size: 16px;
+  border: none;
+  background: none;
+  color: #888;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.activeTab {
+  background-color: #ffdde1;
+  border-radius: 10px;
+  color: #ff4d6d;
+  font-weight: bold;
+}
+
+/* 💬 Chat List */
+.groupList {
+  flex-grow: 1;
+  overflow-y: auto;
+}
+
+.groupItem {
+  display: flex;
+  align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #f0f0f0;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.groupItem:hover {
+  background-color: #f9f9f9;
+}
+
+.profileImage {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  margin-right: 15px;
+  object-fit: cover;
+}
+
+.groupInfo {
+  flex-grow: 1;
+}
+
+.groupName {
+  margin: 0;
+  font-weight: bold;
+  font-size: 16px;
+  color: #333;
+}
+
+.lastMessage {
+  margin: 2px 0;
+  color: #999;
+  font-size: 14px;
+}
+
+/* 🕒 Timestamp */
+.time {
+  color: #999;
+  font-size: 12px;
+  margin-left: auto;
+}
+
+/* 🌐 Scrollbar styling for better UX */
+.groupList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.groupList::-webkit-scrollbar-thumb {
+  background-color: #ccc;
+  border-radius: 5px;
+}
+
+.groupList::-webkit-scrollbar-thumb:hover {
+  background-color: #aaa;
+}
+.profileImagePlaceholder {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: #ff4d6d;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  font-weight: bold;
+  margin-right: 15px;
+}
+.mediaUploadIcon {
+  font-size: 20px;
+  cursor: pointer;
+  margin-right: 10px;
+  color: #4a90e2;
+}
+
+.mediaPreview {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  background-color: #f0f0f0;
+  padding: 8px;
+  border-radius: 8px;
+}
+
+.mediaPreview {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  background-color: #f7f7f7;
+  padding: 8px;
+  border-radius: 10px;
+  max-width: 250px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+.previewImage {
+  width: 80px;   /* Reduced size */
+  height: 80px;  /* Keep it square */
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+}
+
+.previewVideo {
+  width: 120px;  /* Reduced width */
+  height: 80px;  /* Maintain aspect ratio */
+  border-radius: 8px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+}
+
+.previewAudio {
+  width: 200px;  /* Compact width */
+  margin-right: 10px;
+}
+
+.removeMedia {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 4px;
+  font-size: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.removeMedia:hover {
+  background-color: #e63946;
+}
+
+
+.chatInput {
+  flex-grow: 1;
+  padding: 10px;
+  border-radius: 20px;
+  border: 1px solid #ddd;
+  outline: none;
+}
+
+.sendButton {
+  background-color: #4a90e2;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 50%;
+  margin-left: 10px;
+  cursor: pointer;
+}

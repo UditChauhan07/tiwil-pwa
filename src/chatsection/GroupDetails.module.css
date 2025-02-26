@@ -1,0 +1,60 @@
+.container {
+    padding: 20px;
+  }
+  
+  .header {
+    text-align: center;
+  }
+  
+  .eventImage {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+  }
+  
+  .wishlistButton {
+    background-color: #ff4d6d;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 25px;
+    margin-top: 10px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .creationDate {
+    margin: 10px 0;
+    text-align: center;
+  }
+  
+  .mediaContainer {
+    display: flex;
+    gap: 10px;
+    overflow-x: scroll;
+  }
+  
+  .mediaItem img,
+  .mediaItem video {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  
+  .memberList {
+    margin-top: 20px;
+  }
+  
+  .memberItem {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  .profileImage {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  

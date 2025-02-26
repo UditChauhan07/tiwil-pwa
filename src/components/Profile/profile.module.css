@@ -191,7 +191,15 @@ body {
     background: linear-gradient(135deg, #ff5c5c 0%, #ff5c5c 100%);
     transform: scale(1.02);
   }
-  
+
+
+  .loaderWrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
   /* Responsive Design */
   @media (max-width: 768px) {
     .container {

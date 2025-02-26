@@ -23,7 +23,7 @@ body {
 /* Section Headings */
 h2 {
   font-size: 28px;
-  color: #c2185b; /* Dark pink heading */
+  color: black; /* Dark pink heading */
   font-weight: 700;
   text-align: center;
   margin-bottom: 24px;
@@ -31,7 +31,7 @@ h2 {
 
 h3 {
   font-size: 20px;
-  color: #d81b60; /* Bold pink for section titles */
+  color: #ff3366; /* Bold pink for section titles */
   font-weight: 600;
   margin-bottom: 16px;
   border-bottom: 2px solid #ec407a; /* Lighter pink border for separation */

@@ -84,7 +84,7 @@ const EventDetails = () => {
     const token = localStorage.getItem("token");
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}//guests/${eventId}`, {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests/${eventId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
 
@@ -176,8 +176,23 @@ const EventDetails = () => {
     return eventDate.toLocaleDateString("en-GB");
   };
 
-  const handleChat = () => {
-    navigate('/chat');
+  const handleStartChat = async () => {
+    const token = localStorage.getItem("token");
+    try {
+
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/chats/group`,
+        { eventId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+  
+      if (response.data.success) {
+        // Navigate to the existing or newly created chat
+        navigate(`/chats/${response.data.chat.groupId}`);
+      }
+    } catch (error) {
+      console.error("❌ Error starting chat:", error.response?.data || error.message);
+    }
   };
 
   return (
@@ -236,119 +251,80 @@ const EventDetails = () => {
                       <span className="bg-danger text-white p-2 rounded me-2">📍</span>
                       {events.location || "Location not available"}
                     </p>
-                    {invitationStatus === null ? (
+                    {invitationStatus === "Pending" || "Invited" ? (
                       <div className="text-center mt-4 d-flex gap-1">
-                        <button
-                          className="btn btn-danger w-30 d-flex align-items-center justify-content-center"
-                          onClick={handleAccept}
-                        >
-                          ACCEPT
-                        </button>
-                        <button
-                          className="btn w-30 d-flex align-items-center justify-content-center"
-                          style={{ border: "1px solid" }}
-                          onClick={handleDecline}
-                        >
-                          DECLINE
-                        </button>
+                        <button className="btn btn-danger w-30" onClick={handleAccept}>ACCEPT</button>
+                        <button className="btn w-30" style={{ border: "1px solid" }} onClick={handleDecline}>DECLINE</button>
                       </div>
                     ) : invitationStatus === "Accepted" ? (
                       <div className="text-center mt-4">
-                        <button className="btn btn-danger w-30 d-flex align-items-center justify-content-center" onClick={handleChat}>
-                          START CHAT
-                        </button>
+                        <button className="btn btn-danger w-30" onClick={handleStartChat}>START CHAT</button>
                       </div>
-                    ) : (
-                      ""
-                    )}
+                    ) : null}
                   </>
                 )}
 
-             
                 {activeTab === "wishlist" && (
-                    <div>
+                  <div>
                     <div  style={{display:"flex",justifyContent:"space-between"}}>
                       <h5>🎁 Wishlist</h5>
                       <h5 >Show All</h5>
-</div>
-                      <div>
-                        <div className="wishlist-items">
-                          {wishlistItems.length > 0 ? (
-                            wishlistItems.map((item) => (
-                              <div key={item._id}>
-                                <div className="row"  >
-                                  <div className="col-lg-4 col-md-6 col-sm-12" style={{marginBottom:'10px'}}>
-                                    <div className="card" style={{ backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/${item.imageUrl})`, position: "relative", backgroundRepeat: "no-repeat", backgroundSize: "cover" }}>
-                                      <div className="card-img-top" style={{height:"226px"}}  >
-                                     <div className="d-flex justify-content-end m-2" > <p className="card-text status d-flex justify-content-center" style={{background:"cornsilk"}} >{item.status}</p></div>
-                                      </div>
-                                      <Link to={`/wishlistdetails/${item._id}`} >
-                                        <div className="card-body cards11 " >
-                                          <div className="d-flex justify-content-between " style={{paddingTop:"11px"}}>
-                                            <h6 className="card-title " style={{color:"black"}}>{item.giftName}</h6>
-                                            <p className="card-text " style={{color:"#ff3366",fontWeight:"600"}}>${item.price}</p>
-                                        
-                                          </div>
-                                 <div className="d-flex justify-content-between">                                          <p className="card-text text-secondary m-1">{item.description}</p><img   src={`${process.env.PUBLIC_URL}/img/Group 33582.svg`} alt="svg"/></div>
-
-                                        </div>
-                                      </Link>
+                    </div>
+                    <div className="wishlist-items">
+                      {wishlistItems.length > 0 ? (
+                        wishlistItems.map((item) => (
+                          <div key={item._id}>
+                            <div className="row">
+                              <div className="col-lg-4 col-md-6 col-sm-12" style={{marginBottom:'10px'}}>
+                                <div className="card" style={{ backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/${item.imageUrl})`, position: "relative", backgroundRepeat: "no-repeat", backgroundSize: "cover" }}>
+                                  <div className="card-img-top" style={{height:"226px"}}  >
+                                    <div className="d-flex justify-content-end m-2">
+                                      <p className="card-text status d-flex justify-content-center" style={{background:"cornsilk"}}>{item.status}</p>
                                     </div>
                                   </div>
+                                  <Link to={`/wishlistdetails/${item._id}`} >
+                                    <div className="card-body cards11">
+                                      <div className="d-flex justify-content-between " style={{paddingTop:"11px"}}>
+                                        <h6 className="card-title " style={{color:"black"}}>{item.giftName}</h6>
+                                        <p className="card-text " style={{color:"#ff3366",fontWeight:"600"}}>${item.price}</p>
+                                      </div>
+                                      <div className="d-flex justify-content-between">
+                                        <p className="card-text text-secondary m-1">{item.description}</p>
+                                        <img src={`${process.env.PUBLIC_URL}/img/Group 33582.svg`} alt="svg"/>
+                                      </div>
+                                    </div>
+                                  </Link>
                                 </div>
                               </div>
-                            ))
-                          ) : (
-                            <p>No wishlist items found.</p>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  )}
-
-                  {activeTab === "guests" && (
-                    <div>
-                      <h5>👥 Guest List</h5>
-                      {users.length > 0 ? (
-                        <ul>
-                          {users.map((g) => (
-                           <li key={g._id}>{g.name}
-                              
-                                <p style={{ border: "1px solid #ff3366", maxWidth: "28%", padding: "3px", margin: "3px" }}>
-                                  {g.fullName}
-                                </p>
-                              </li>
-                            ))
-                          }
-                        </ul>
+                            </div>
+                          </div>
+                        ))
                       ) : (
-                        <p>No guests yet.</p>
+                        <p>No wishlist items found.</p>
                       )}
                     </div>
-                  )}
-                </div>
-              </div>
-            )}
-          </div>
+                  </div>
+                )}
 
-                {/* {activeTab === "guests" && invitationStatus === "Accepted" && (
+                {activeTab === "guests" && (
                   <div>
-                    <h5>Guests</h5>
-                  
+                    <h5>👥 Guest List</h5>
                     {users.length > 0 ? (
                       <ul>
-                        {users.map((user, index) => (
-                          <li key={index}>{user.name}</li>
+                        {users.map((g) => (
+                          <li key={g._id}>{g.name}
+                          </li>
                         ))}
                       </ul>
                     ) : (
-                      <p>No guests</p>
+                      <p>No guests yet.</p>
                     )}
                   </div>
-                )} */}
-             
-          
-        
+                )}
+              </div>
+            </div>
+          )}
+        </div>
       </section>
       <Footer />
     </>

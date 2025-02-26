@@ -135,9 +135,24 @@ const  getEvent = async () => {
 
 
 
-    const handleStartChat=()=>{
-      navigate('/chat')
-    }
+    const handleStartChat = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.post(
+          `${process.env.REACT_APP_BASE_URL}/chats/group`,
+          { eventId: eventData.eventId },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+    
+        if (response.data.success) {
+          // Navigate to the existing or newly created chat
+          navigate(`/chats/${response.data.chat.groupId}`);
+        }
+      } catch (error) {
+        console.error("❌ Error starting chat:", error.response?.data || error.message);
+      }
+    };
+  
   //   getEvent();
   return (
     <>

@@ -38,7 +38,7 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
       try {
         console.log('hyy all');
         // Post the formData to the backend
-        await axios.post( `${process.env.REACT_APP_BASE_URL}/createevents`,
+        await axios.post( `${process.env.REACT_APP_BASE_URL}/createcustomevent`,
         formData,
         { headers: { Authorization: `Bearer ${token}` } }
       );

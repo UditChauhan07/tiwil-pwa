@@ -32,6 +32,7 @@ const HomePage = () => {
   const userId=localStorage.getItem("user.id")
   const [error, setError] = useState(null);
   const [value, setValue] = React.useState('1');
+  const [filteredEvents, setFilteredEvents] = useState([]);
   // const [daysLeft, setDaysLeft] = useState(null);
   // const [eventDate, setEventDate] = useState("");
   const fetchEvents = async () => {
@@ -55,6 +56,7 @@ const HomePage = () => {
       
       // Process the response data here
       setEvents(formattedEvents);
+      setFilteredEvents(response.data.data);
     } catch (error) {
       console.error("Error fetching events:", error);
       setError("Failed to fetch events.");
@@ -206,11 +208,39 @@ const handleAllinvitation=()=>{
     
   }
 
-  
+  const filterItem = (toSearch) => {
+    if(value == 1){
+      const filtered = events.filter(
+        (event) =>
+          event.name.toLowerCase().includes(toSearch) || event.date.includes(toSearch)
+      );
+      setFilteredEvents(filtered);
+    }
+    if(value == 2){
+      const filtered = innvitations.filter(
+        (event) =>
+          event.name.toLowerCase().includes(toSearch) || event.date.includes(toSearch)
+      );
+      setFilteredEvents(filtered);
+    }
+  }
+
+  // const filterItem = (data) => {
+  //   const filtered = data.filter(
+  //           (event) =>
+  //             event.name.toLowerCase().includes(searchQuery) || event.date.includes(searchQuery)
+  //         );
+  // }
   
     const handleChange = (event, newValue) => {
       setValue(newValue);
     };
+    const handleSearch = (e) => {
+      const query = e.target.value.toLowerCase();
+      setSearchQuery(query);
+      filterItem(searchQuery)
+    }
+   
   return (
     <>
     <section className="page-controls">
@@ -228,7 +258,7 @@ const handleAllinvitation=()=>{
                 placeholder="Find amazing events"
                 className="text-mute"
                 style={{ width: "100%",height:'30%' }}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={handleSearch}
               />
               <FaSearch className="me-3 text-muted" style={{ fontSize: "1.5rem", fill: "#FF3366"}} />
             </div>

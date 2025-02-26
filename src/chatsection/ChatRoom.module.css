@@ -1,0 +1,486 @@
+/* Chat Room Container */
+.chatRoomContainer {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background-color: #f5f5f5;
+  padding: 10px;
+  font-family: "Arial", sans-serif;
+}
+
+/* Header */
+.header {
+  padding: 15px;
+  background-color: #fff;
+  font-weight: bold;
+  font-size: 18px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+/* Messages Container */
+.messagesContainer {
+  flex: 1;
+  overflow-y: auto;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  background-color: #eef2f5;
+  border-radius: 15px;
+  margin: 15px 0;
+}
+
+/* Sent Message */
+.sentMessage {
+  align-self: flex-end;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+  flex-direction: row-reverse;
+}
+
+/* Received Message */
+.receivedMessage {
+  align-self: flex-start;
+  display: flex;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+/* Profile Image */
+.profileImage {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* Sender Name */
+.senderName {
+  font-weight: bold;
+  font-size: 12px;
+  color: #333;
+  margin-bottom: 5px;
+  display: block;
+}
+
+/* Message Bubble */
+.messageBubble {
+  background-color: #fff;
+  padding: 12px 16px;
+  border-radius: 18px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  max-width: 65%;
+  word-wrap: break-word;
+}
+
+/* Sent Message Bubble */
+.sentMessage .messageBubble {
+  background-color: #ff4b77;
+  color: #fff;
+  border-bottom-right-radius: 4px;
+}
+
+/* Received Message Bubble */
+.receivedMessage .messageBubble {
+  background-color: #fff;
+  color: #333;
+  border-bottom-left-radius: 4px;
+}
+
+/* Message Text */
+.messageText {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+/* Message Time */
+.messageTime {
+  font-size: 10px;
+  color: #888;
+  margin-top: 5px;
+  text-align: right;
+}
+
+/* Input Container */
+.inputContainer {
+  display: flex;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 30px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-top: 10px;
+}
+
+/* Chat Input */
+.chatInput {
+  flex: 1;
+  padding: 12px;
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  margin-right: 10px;
+  outline: none;
+  font-size: 14px;
+  background-color: #f0f0f0;
+}
+
+/* Send Button */
+.sendButton {
+  padding: 12px 20px;
+  background-color: #ff4b77;
+  color: white;
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-weight: bold;
+}
+
+.sendButton:hover {
+  background-color: #d6365f;
+}
+
+/* Loading Text */
+.loadingText {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 14px;
+  color: #666;
+}
+
+/* Empty Message */
+.emptyMessage {
+  text-align: center;
+  color: #aaa;
+  font-size: 14px;
+}
+
+/* Responsive Design */
+@media (max-width: 600px) {
+  .messageBubble {
+    max-width: 80%;
+  }
+
+  .profileImage {
+    width: 30px;
+    height: 30px;
+  }
+
+  .senderName {
+    font-size: 10px;
+  }
+
+  .chatInput {
+    font-size: 12px;
+  }
+
+  .sendButton {
+    padding: 10px 14px;
+  }
+}
+/* Event Info */
+.eventInfo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  justify-content: space-between;
+}
+
+/* Back Icon */
+.backIcon {
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+  margin-right: 10px;
+}
+
+/* Search Icon */
+.searchIcon {
+  font-size: 20px;
+  cursor: pointer;
+  color: #333;
+  margin-left: auto;
+}
+
+/* Event Image */
+.eventImage {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+
+/* Event Name */
+.eventInfo h2 {
+  font-size: 18px;
+  font-weight: bold;
+  margin: 0;
+}
+/* 📎 Attachment Button */
+.attachmentWrapper {
+  position: relative;
+}
+
+.attachmentButton {
+  background: transparent;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+/* 📷 Attachment Dropdown Menu */
+.attachmentMenu {
+  position: absolute;
+  bottom: 40px;
+  left: 0;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 5px 10px;
+  z-index: 10;
+}
+
+.attachmentOption {
+  display: flex;
+  align-items: center;
+  padding: 5px 0;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.attachmentOption:hover {
+  background-color: #f0f0f0;
+}
+
+/* ✅ Media Styling */
+.mediaContent {
+  margin-top: 10px;
+}
+
+.mediaImage {
+  max-width: 200px;
+  border-radius: 10px;
+}
+
+.mediaVideo {
+  max-width: 200px;
+  border-radius: 10px;
+}
+
+/* ✅ Preview Modal */
+.previewModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.previewModal h3 {
+  color: #fff;
+  margin-bottom: 20px;
+}
+
+/* ✅ Image Preview */
+.previewModal img {
+  max-width: 80%;
+  max-height: 60%;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  object-fit: contain;
+}
+
+/* ✅ Video Preview */
+.previewModal video {
+  max-width: 80%;
+  max-height: 60%;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ✅ Document Preview (PDF, DOC) */
+.previewModal iframe {
+  width: 80%;
+  height: 60%;
+  border: none;
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+/* ✅ Action Buttons (Send/Cancel) */
+.previewActions {
+  margin-top: 20px;
+  display: flex;
+  gap: 20px;
+}
+
+.previewActions button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.previewActions button:first-child {
+  background-color: #007bff;
+  color: white;
+}
+
+.previewActions button:last-child {
+  background-color: #ff4d4f;
+  color: white;
+}
+
+/* ✅ Attachment Menu */
+.attachmentMenu {
+  position: absolute;
+  bottom: 60px;
+  left: 10px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  padding: 10px;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.attachmentOption {
+  cursor: pointer;
+  padding: 8px 12px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+}
+
+.attachmentOption:hover {
+  background-color: #f5f5f5;
+}
+
+/* ✅ Attachments Button */
+.attachmentButton {
+  background: transparent;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+/* ✅ File Type Previews */
+.fileTypePreview {
+  font-size: 24px;
+  color: white;
+  margin-top: 10px;
+}
+/* ✅ Optional Message Input with Media */
+/* 📎 Media Upload Icon */
+.mediaButton {
+  font-size: 20px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+/* 🎨 File Input (Hidden) */
+.fileInput {
+  display: none;
+}
+
+/* 📷 Media Preview Container */
+.mediaPreview {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+  background-color: #f7f7f7;
+  padding: 8px;
+  border-radius: 10px;
+  max-width: 250px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  position: relative;
+}
+
+/* 📷 Image Preview */
+.previewImage {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+}
+
+/* 🎥 Video Preview */
+.previewVideo {
+  width: 120px;
+  height: 80px;
+  border-radius: 8px;
+  margin-right: 10px;
+  border: 1px solid #ddd;
+}
+
+/* 🎵 Audio Preview */
+.previewAudio {
+  width: 200px;
+  margin-right: 10px;
+}
+
+/* ❌ Remove Button */
+.removeMedia {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background-color: #ff4d4f;
+  color: white;
+  border: none;
+  padding: 4px;
+  font-size: 12px;
+  border-radius: 50%;
+  cursor: pointer;
+}
+/* 📷 Chat Image */
+.chatMediaImage {
+  max-width: 200px;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 5px;
+  object-fit: cover;
+}
+.eventText{
+  cursor: pointer;
+  line-height: 7px;
+}
+/* 🎥 Chat Video */
+.chatMediaVideo {
+  max-width: 250px;
+  height: auto;
+  border-radius: 8px;
+  margin-top: 5px;
+  background-color: black;
+}
+
+/* 🎵 Chat Audio */
+.chatMediaAudio {
+  width: 200px;
+  margin-top: 5px;
+}

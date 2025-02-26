@@ -18,9 +18,41 @@ const PoolingWish = () => {
   const [myContribution, setMyContribution] = useState(null);
   const [contributionSaved, setContributionSaved] = useState(false);
   const [showGuestModal, setGuestModal] = useState(false);
-
+console.log(wishlistItem,'677777777777777777')
   const pendingAmount = wishlistItem?.price - myContribution;
 
+  useEffect(() => {
+    const fetchPoolData = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/pool/${item._id}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+
+        if (response.data.success) {
+          const fetchedPool = response.data.data;
+          setPool(fetchedPool);
+
+          // ✅ Check if pool is completed & update status in backend
+          if (fetchedPool.collectedAmount >= fetchedPool.totalAmount && fetchedPool.status !== "Completed") {
+            await axios.put(
+              `${process.env.REACT_APP_BASE_URL}/update-status/${item._id}`,
+              { status: "Completed" },
+              { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+            );
+
+            // ✅ Update pool state after marking as completed
+            setPool((prev) => ({ ...prev, status: "Completed" }));
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching pool data:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPoolData();
+  }, [item._id]);
   // Handle saving contribution
   const handleSaveContribution = async () => {
     const token = localStorage.getItem("token"); 

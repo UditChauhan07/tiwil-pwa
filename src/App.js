@@ -28,6 +28,9 @@ import InvitePag from "../src/components/InvitPage";
 import Account from "./components/Account";
 import FamilyInformation from "./components/FamilyInformation";
 import ChatApp from "./components/Chat";
+import ChatList from "./chatsection/ChatList";
+import ChatRoom from "./chatsection/ChatRoom";
+import GroupDetails from "./chatsection/GroupDetails";
 
 function App() {
   
@@ -112,7 +115,9 @@ function App() {
         <Route path="/invite" element={<InvitePag/>} />
         <Route path="/chat" element={<ChatApp/>}/>
         <Route path='/:eventId' element={<UserEventSection/>}/>
-
+        <Route path="/chats" element={<ChatList />} /> {/* 📌 Chat List */}
+<Route path="/chats/:groupId" element={<ChatRoom />} /> {/* 📌 Individual Chat Room */}
+<Route path="/group/:groupId/details" element={<GroupDetails />} />
       </Routes>
     </Router>
 </>

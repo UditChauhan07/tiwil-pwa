@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import styles from "../components/AddInfomation.module.css";
 import Swal from "sweetalert2"; // Import SweetAlert2
 import axios from "axios";
+import '../components/additionalinfo.css'
+import Loader from '../components/Loader/Loader'
 
 function AddInformation() {
   const navigate = useNavigate();
@@ -22,9 +24,11 @@ function AddInformation() {
     maritalStatus: "",
     images: {},
   });
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
+      setLoading(true);
       try {
         console.log("Fetching user data...");
         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/user-profile`, {
@@ -41,8 +45,12 @@ function AddInformation() {
           }));
         }
       } catch (error) {
+        Swal.fire()
         console.error("Failed to fetch user data:", error);
+      }finally {
+        setLoading(false); 
       }
+
     };
 
     fetchUserData();
@@ -79,6 +87,7 @@ function AddInformation() {
 
   const handleSave = async () => {
     try {
+      setLoading(true);
       console.log("Saving family information...");
       const formDataToSend = new FormData();
       const userId = localStorage.getItem("userId");
@@ -212,6 +221,9 @@ function AddInformation() {
     } catch (error) {
       console.error("Error saving family information:", error.message);
     }
+    finally {
+      setLoading(false); // Set loading to false after saving
+    }
   };
   const handleSkip=()=>{
     navigate('/home')
@@ -220,103 +232,110 @@ function AddInformation() {
 // console.log(document.getElementById)
 
   return (
-    <div className={styles.container}>
+    <div className={styles.container}
+    >
       <h2>Family Information</h2>
 
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
       {/* Father Information */}
       <div className={styles.section}>
         <h3>Father</h3>
         <label>Full Name</label>
+        <br/>
         <input
           type="text"
           placeholder="Father's Name"
           value={formData.father.name}
           onChange={(e) => handleInputChange("name", e.target.value, "father")}
         />
+         <br/>
 
-        <label>Date of Birth</label>
+        <label>Date of Birth</label> <br/>
         <input
           type="date"
           value={formData.father.dob}
           onChange={(e) => handleInputChange("dob", e.target.value, "father")}
         /><br/>
-        <label>Image</label>
+        <label>Image</label> <br/>
         <input type="file" name="fatherImage" accept="image/*" onChange={(e) => handleImageChange(e, "fatherImage")} />
       </div>
-
+      <br/>
       {/* Mother Information */}
       <div className={styles.section}>
         <h3>Mother</h3>
-        <label>Full Name</label>
+        <label>Full Name</label> <br/>
         <input
           type="text"
           placeholder="Mother's Name"
           value={formData.mother.name}
           onChange={(e) => handleInputChange("name", e.target.value, "mother")}
         />
-
-        <label>Date of Birth</label>
+ <br/>
+        <label>Date of Birth</label> <br/>
         <input
           type="date"
           value={formData.mother.dob}
           onChange={(e) => handleInputChange("dob", e.target.value, "mother")}
         />
         <br/>
-        <label>Image</label>
+        <label>Image</label> <br/>
         <input type="file" name="motherImage" accept="image/*" onChange={(e) => handleImageChange(e, "motherImage")} />
       </div>
-
+      <br/>
       {/* Parent Anniversary */}
       <div className={styles.section}>
-        <h3>Parent Anniversary</h3>
-        <label>Date</label>
+        <h3>Parent Anniversary</h3> <br/>
+        <label>Date</label> <br/>
         <input
           type="date"
           value={formData.parentAnniversary.date}
           onChange={(e) => handleInputChange("date", e.target.value, "parentAnniversary")}
         /><br/>
-        <label>Image</label>
+        <label>Image</label> <br/>
         <input type="file" name="parentAnniversaryImage" accept="image/*" onChange={(e) => handleImageChange(e, "parentAnniversaryImage")} />
       </div>
-
+      <br/>
       {/* Spouse Section */}
       {formData.maritalStatus === "Married" && (
         <>
           <div className={styles.section}>
-            <h3>{formData.gender === "Male" ? "Wife" : "Husband"}</h3>
-            <label>Full Name</label>
+            <h3>{formData.gender === "Male" ? "Wife" : "Husband"}</h3> <br/>
+            <label>Full Name</label> <br/>
             <input
               type="text"
               placeholder="Spouse's Name"
               value={formData.spouse.name}
               onChange={(e) => handleInputChange("name", e.target.value, "spouse")}
-            />
+            /> <br/>
 
-            <label>Date of Birth</label>
+            <label>Date of Birth</label> <br/>
             <input
               type="date"
               value={formData.spouse.dob}
               onChange={(e) => handleInputChange("dob", e.target.value, "spouse")}
             />
             <br/>
-            <label>Image</label>
+            <label>Image</label> <br/>
             <input type="file" name="spouseImage" accept="image/*" onChange={(e) => handleImageChange(e, "spouseImage")} />
             </div>
 
           <div className={styles.section}>
-            <h3>Marriage Anniversary</h3>
-            <label>Date</label>
+            <h3>Marriage Anniversary</h3> <br/>
+            <label>Date</label> <br/>
             <input
               type="date"
               value={formData.marriageAnniversary.date}
               onChange={(e) => handleInputChange("date", e.target.value, "marriageAnniversary")}
-            />
+            /> <br/>
 <input type="file" name="marriageAnniversaryImage" accept="image/*" onChange={(e) => handleImageChange(e, "marriageAnniversaryImage")} />
           </div>
 
           {/* Children Section */}
           <div className={styles.section}>
-            <h3>Do you have children?</h3>
+            <h3>Do you have children?</h3> <br/>
             <select
               value={formData.hasChildren}
               onChange={(e) =>
@@ -367,17 +386,17 @@ function AddInformation() {
                     onChange={(e) => handleInputChange("name", e.target.value, "children", index)}
                   />
 
-                  <label>Date of Birth</label>
+                  <label>Date of Birth</label> <br/>
                   <input
                     type="date"
                     value={child.dob}
                     onChange={(e) => handleInputChange("dob", e.target.value, "children", index)}
                   /><br/>
-                  <label>Image</label>
+                  <label>Image</label> <br/>
                 
 <input type="file" name="childImages" accept="image/*" multiple onChange={(e) => handleImageChange(e, "childImages")} />
 
-                  <label>Gender</label>
+                  <label>Gender</label> <br/>
                   <select
                     value={child.gender}
                     onChange={(e) => handleInputChange("gender", e.target.value, "children", index)}
@@ -462,6 +481,8 @@ function AddInformation() {
           Skip
         </button>
       </div>
+      </>
+    )}
     </div>
   );
 }

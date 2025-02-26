@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import styles from "../wishlist/WishlistModal.module.css";
 import Swal from "sweetalert2";
+import Loader from '../../Loader/Loader'
+
 
 const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) => {
   const [giftName, setGiftName] = useState("");
@@ -10,6 +12,7 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
   const [desireRate, setDesireRate] = useState(40);
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
@@ -25,7 +28,7 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
 
   const handleSave = async () => {
     const token = localStorage.getItem("token");
-
+ 
     if (!eventId) {
       alert("Event ID is missing.");
       return;
@@ -44,7 +47,7 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
     } else {
       console.log("⚠️ No image selected.");
     }
-
+    setLoading(true);
     try {
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/wishlist`, formData, {
         headers: {
@@ -66,6 +69,9 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
       console.error("❌ Error saving wishlist item:", error);
       Swal.fire("Error", "Failed to add wishlist item.", "error");
     }
+    finally {
+      setLoading(false); // Set loading to false after the fetch
+    }
   };
 
   const handleClose = () => {
@@ -77,7 +83,11 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
       <div className={styles.modal}>
         <button className={styles.closeButton} onClick={handleClose}>×</button>
         <h2>Add Wishlist Item</h2>
-        
+         {/* If loading, show loader, else show the form */}
+      {loading ? (
+        <Loader />
+      ) : (
+        <>
         <div className={styles.imageContainer}>
           {imageFile ? (
             <img src={imageFile} alt="Wishlist Item" className={styles.wishlistImage} />
@@ -104,7 +114,10 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
           
           <button className={styles.saveButton} onClick={handleSave}>Save +</button>
         </div>
+        </>
+      )}
       </div>
+      
     </div>
   );
 };
