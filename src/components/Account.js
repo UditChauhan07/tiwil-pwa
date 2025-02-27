@@ -183,7 +183,7 @@ const Account = () => {
           </div>
         </div>
       )}
-    <Footer/>
+\
     </div>
   );
 };

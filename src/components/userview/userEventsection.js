@@ -19,15 +19,38 @@ const EventDetails = () => {
   const [invitationStatus, setInvitationStatus] = useState(null);
   const [loading, setLoading] = useState(false);
   const location = useLocation();
-  const { eventId } = useParams();
+  const { eventId,phoneNumber } = useParams();
   const navigate = useNavigate();
-  const { invitationId } = location.state || {};
+  const invitationId = location.state?.invitationId;
 
   useEffect(() => {
     if (invitationId) {
-      fetchInvitationStatus();
+      fetchInvitationStatus(); // For the route where invitationId is passed from state
+    } else if (phoneNumber) {
+      fetchInvitationStatusWithPhoneNumber(); // For the route with phoneNumber in URL
+    } else {
+      fetchInvitationStatus(); // Default logic for invitation status fetch if no phoneNumber
     }
-  }, [invitationId]);
+  }, [invitationId, phoneNumber]);
+
+
+  const fetchInvitationStatusWithPhoneNumber = async () => {
+    try {
+      setLoading(true);
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests-status/${eventId}/${phoneNumber}`);
+      if (response.data.success) {
+        setInvitationStatus(response.data.data.status);
+      } else {
+        console.error("Failed to fetch invitation status.");
+      }
+    } catch (error) {
+      console.error("Error fetching invitation status:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     const fetchUsers = async () => {
@@ -114,53 +137,46 @@ const EventDetails = () => {
   // Handle Accept Invitation
   const handleAccept = async () => {
     const token = localStorage.getItem('token');
-    
-    
-    // if (!token) {
-    //   navigate('/signin');
-    //   Swal.fire({
-    //     title: 'Error',
-    //     text: 'Please sign in to accept the invitation.',
-    //     icon: 'error'
-    //   })
-    //   return; 
-    
-    // }
-    
-    try {
-      if(token){
-        const response = await axios.put(
-          `${process.env.REACT_APP_BASE_URL}/invitations/${invitationId}`,
-          { status: "Accepted" },
-         
-        );
-        
-        // If the request was successful, update the invitation status and show a success alert
-        if (response.data.success) {
-          setInvitationStatus("Accepted");
-          Swal.fire("Success", "You have accepted the invitation!", "success");
-        }
-      }else{
-        navigate("/signin")
-      }
-      
-    } catch (error) {
-      // Show an error message if the request fails
-      Swal.fire("Error!", error.response?.data?.message || "Something went wrong", "error");
-    }
-  };
-  
-  // Handle Decline Invitation
-  const handleDecline = async () => {
     if (!token) {
       navigate('/signin');
       Swal.fire({
         title: 'Error',
         text: 'Please sign in to accept the invitation.',
-        icon: 'error'
-      })
-      return; 
-    
+        icon: 'error',
+      });
+      return;
+    }
+
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_BASE_URL}/invitations/${eventId}`,
+        {
+          status: "Accepted",
+          phoneNumber: phoneNumber || undefined,  // If phoneNumber is available, send it in the request
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (response.data.success) {
+        setInvitationStatus("Accepted");
+        Swal.fire("Success", "You have accepted the invitation!", "success");
+      }
+    } catch (error) {
+      Swal.fire("Error!", error.response?.data?.message || "Something went wrong", "error");
+    }
+  };
+  // Handle Decline Invitation
+  const handleDecline = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+      navigate('/signin');
+      Swal.fire({
+        title: 'Error',
+        text: 'Please sign in to decline the invitation.',
+        icon: 'error',
+      });
+      return;
     }
 
     Swal.fire({
@@ -173,14 +189,14 @@ const EventDetails = () => {
       confirmButtonText: "Yes, Decline",
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const token = localStorage.getItem('token');
         try {
           const response = await axios.put(
-            `${process.env.REACT_APP_BASE_URL}/invitations/${invitationId}`,
-            { status: "Declined" },
-           
+            `${process.env.REACT_APP_BASE_URL}/invitations/${eventId}`,
+            {
+              status: "Declined",
+              phoneNumber: phoneNumber || undefined,  // Include phoneNumber if present
+            }
           );
-
           if (response.data.success) {
             setInvitationStatus("Declined");
             Swal.fire("Declined", "You have declined the invitation.", "success");
@@ -191,7 +207,6 @@ const EventDetails = () => {
       }
     });
   };
-
   // Handle Start Chat
   const handleStartChat = async () => {
     const token = localStorage.getItem("token");

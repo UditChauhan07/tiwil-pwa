@@ -112,7 +112,7 @@ const Chatlist = () => {
                 </p>
               </div>
               {/* 🕒 Static time placeholder */}
-              <span className={styles.time}>12:08 PM</span>
+              {/* <span className={styles.time}>12:08 PM</span> */}
             </div>
           ))
         )}

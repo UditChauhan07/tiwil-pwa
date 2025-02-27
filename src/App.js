@@ -114,9 +114,9 @@ function App() {
         <Route path='/invitation' element={<InvitationList/>}/>
         <Route path="/invite" element={<InvitePag/>} />
         <Route path="/chat" element={<ChatApp/>}/>
-        <Route path='/:eventId' element={<UserEventSection/>}/>
-        <Route path="/chats" element={<ChatList />} /> {/* 📌 Chat List */}
-<Route path="/chats/:groupId" element={<ChatRoom />} /> {/* 📌 Individual Chat Room */}
+        <Route path='/:eventId/:phoneNumber' element={<UserEventSection/>}/>
+        <Route path="/chats" element={<ChatList />} /> 
+<Route path="/chats/:groupId" element={<ChatRoom />} /> 
 <Route path="/group/:groupId/details" element={<GroupDetails />} />
       </Routes>
     </Router>

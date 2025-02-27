@@ -3,6 +3,7 @@ import Swal from 'sweetalert2'
 import { useParams } from "react-router-dom";
 const InviteButton = () => {
     const {eventId}=useParams();
+    const token=localStorage.getItem('token')
   const handleInvite = async () => {
     if ("contacts" in navigator && "select" in navigator.contacts) {
       try {
@@ -15,7 +16,10 @@ const InviteButton = () => {
           // Send contacts to backend for processing
           const response = await fetch(`${process.env.REACT_APP_BASE_URL}/contactss/${eventId}`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`, // Add your token here
+              },
             body: JSON.stringify({ contacts }),
           });
 

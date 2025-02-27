@@ -204,7 +204,7 @@ console.log(wishlistItem,'677777777777777777')
         </div>
       </div>
       <InviteModal show={showGuestModal} setShow={setGuestModal} onSendInvites={handleSendInvites} />
-      <Footer />
+ 
     </section>
   );
 };

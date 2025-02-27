@@ -433,7 +433,7 @@ style={{
           />
         </div>
         
-        <Footer />
+       
       </section>
     </>
   );

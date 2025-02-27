@@ -74,7 +74,7 @@ useEffect(() => {
 
 
 
-    <Footer/>
+
     </section>
     </>
   );

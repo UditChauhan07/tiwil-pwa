@@ -269,7 +269,7 @@ const EventList = () => {
             ))}
           </div>
         </div>
-        <Footer />
+      
       </section>
     </>
   );
