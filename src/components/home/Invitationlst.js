@@ -123,18 +123,18 @@ function Invitationlst() {
                 </Card.Text>
 
                 {/* Plan and Celebrate Button */}
-                {invitation.invitations.map(() => (
-                  <Button
-                    
-                    variant="danger"
-                    style={{ backgroundColor: "#FF3366" }}
-                    onClick={() =>
-                      handleInvitation(invitation.eventDetails.eventId, inv._id)
-                    }
-                  >
-                    Plan and Celebrate
-                  </Button>
-                ))}
+                {invitation.invitations.length > 0 && (
+  <Button
+    variant="danger"
+    style={{ backgroundColor: "#FF3366" }}
+    onClick={() =>
+      handleInvitation(invitation.eventDetails.eventId, invitation.invitations[0]._id)
+    }
+  >
+    Plan and Celebrate
+  </Button>
+)}
+
               </Card.Body>
             </Card>
           </div>
