@@ -123,7 +123,7 @@ function Invitationlst() {
                 </Card.Text>
 
                 {/* Plan and Celebrate Button */}
-                {invitation.invitations.map((inv) => (
+               
                   <Button
                     key={inv._id}
                     variant="danger"
@@ -134,7 +134,7 @@ function Invitationlst() {
                   >
                     Plan and Celebrate
                   </Button>
-                ))}
+                
               </Card.Body>
             </Card>
           </div>
