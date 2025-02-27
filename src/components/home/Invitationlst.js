@@ -123,7 +123,7 @@ function Invitationlst() {
                 </Card.Text>
 
                 {/* Plan and Celebrate Button */}
-                {invitation.invitations.map((inv) => (
+                {invitation.invitations.map(() => (
                   <Button
                     
                     variant="danger"
