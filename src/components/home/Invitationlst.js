@@ -123,9 +123,9 @@ function Invitationlst() {
                 </Card.Text>
 
                 {/* Plan and Celebrate Button */}
-               
+                {invitation.invitations.map((inv) => (
                   <Button
-                    key={inv._id}
+                    
                     variant="danger"
                     style={{ backgroundColor: "#FF3366" }}
                     onClick={() =>
@@ -134,7 +134,7 @@ function Invitationlst() {
                   >
                     Plan and Celebrate
                   </Button>
-                
+                ))}
               </Card.Body>
             </Card>
           </div>
