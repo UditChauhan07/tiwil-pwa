@@ -8,7 +8,7 @@ const InviteButton = () => {
     if ("contacts" in navigator && "select" in navigator.contacts) {
       try {
         // Ask user to select contacts
-        const contacts = await navigator.contacts.select( "tel", { multiple: true });
+        const contacts = await navigator.contacts.select(["name", "email", "tel"], { multiple: true });
 
         if (contacts.length > 0) {
           console.log("Selected Contacts:", contacts);
