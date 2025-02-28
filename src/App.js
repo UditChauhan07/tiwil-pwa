@@ -32,54 +32,75 @@ import ChatList from "./chatsection/ChatList";
 import ChatRoom from "./chatsection/ChatRoom";
 import GroupDetails from "./chatsection/GroupDetails";
 
+const isIos = () => {
+  return (
+    /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream
+  );
+};
+
 function App() {
-  
-    const [deferredPrompt, setDeferredPrompt] = useState(null);
-    const [showInstallDialog, setShowInstallDialog] = useState(false);
-  
-    useEffect(() => {
-      const handler = (event) => {
-        event.preventDefault();
-        setDeferredPrompt(event);
-        setShowInstallDialog(true);
-      };
-  
-      window.addEventListener("beforeinstallprompt", handler);
-  
-      return () => {
-        window.removeEventListener("beforeinstallprompt", handler);
-      };
-    }, []);
-  
-    const handleInstallClick = () => {
-      if (deferredPrompt) {
-        deferredPrompt.prompt();
-        deferredPrompt.userChoice.then((choiceResult) => {
-          if (choiceResult.outcome === "accepted") {
-            console.log("User accepted the PWA install");
-          } else {
-            console.log("User dismissed the PWA install");
-          }
-          setDeferredPrompt(null);
-          setShowInstallDialog(false);
-        });
-      }
+  const [deferredPrompt, setDeferredPrompt] = useState(null);
+  const [showInstallDialog, setShowInstallDialog] = useState(false);
+  const [showIosPrompt, setShowIosPrompt] = useState(false);
+
+  useEffect(() => {
+    // ✅ Handle PWA install prompt (Only works on Android & Chrome)
+    const handler = (event) => {
+      event.preventDefault();
+      setDeferredPrompt(event);
+      setShowInstallDialog(true);
     };
 
+    window.addEventListener("beforeinstallprompt", handler);
+
+    return () => {
+      window.removeEventListener("beforeinstallprompt", handler);
+    };
+  }, []);
+
+  useEffect(() => {
+    // ✅ Show custom iOS install prompt if user is on iOS & not using standalone mode
+    if (isIos() && !window.navigator.standalone) {
+      setShowIosPrompt(true);
+    }
+  }, []);
+
+  const handleInstallClick = () => {
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      deferredPrompt.userChoice.then((choiceResult) => {
+        if (choiceResult.outcome === "accepted") {
+          console.log("User accepted the PWA install");
+        } else {
+          console.log("User dismissed the PWA install");
+        }
+        setDeferredPrompt(null);
+        setShowInstallDialog(false);
+      });
+    }
+  };ss
   return (
     <>
-     <div style={{ textAlign: "center" }}>
-   
-    
-      {showInstallDialog && (
+  {/* ✅ Show Install Prompt for Android/Chrome Users */}
+  {showInstallDialog && (
         <div style={{ position: "fixed", top: "20%", left: "50%", transform: "translate(-50%, -50%)", padding: "20px", background: "white", boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)", borderRadius: "10px" }}>
-       
           <button onClick={handleInstallClick} style={{ padding: "10px", fontSize: "16px" }}>
             Add to Home Screen
           </button>
         </div>
       )}
-    </div>
+
+      {/* ✅ Show Custom iOS Install Prompt */}
+      {showIosPrompt && (
+        <div style={{ position: "fixed", bottom: "0", left: "0", right: "0", background: "#333", color: "white", padding: "10px", textAlign: "center", zIndex: "1000" }}>
+          <p>
+            Install this app on your iPhone: <strong>Tap the share icon and select "Add to Home Screen".</strong>
+          </p>
+          <button onClick={() => setShowIosPrompt(false)} style={{ padding: "5px 10px", background: "white", color: "black", borderRadius: "5px", border: "none", cursor: "pointer" }}>
+            Close
+          </button>
+        </div>
+      )}
     <Router>
       <Routes>
       <Route path="/" element={<Starting/>}></Route>
