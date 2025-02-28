@@ -128,7 +128,42 @@ const Eventlst = () => {
     // If the birthday is in the future
     return `${nextDiffDays} Days Left `;
   };
-
+  const calculateAge = (eventDate) => {
+    const today = new Date();
+    const targetDate = new Date(eventDate);  // Convert event date into a Date object
+    
+    // Set the target date to the current year
+    targetDate.setFullYear(today.getFullYear());
+  
+    // Calculate age based on the event date
+    let age = today.getFullYear() - targetDate.getFullYear();
+    age++; // Assuming this event's "birthday" is celebrated this year
+    
+    // If the event date hasn't occurred yet this year, subtract 1 from the age
+    if (today < targetDate) {
+      age--;
+    }
+  
+    // Determine the ordinal suffix (1st, 2nd, 3rd, nth)
+    const getOrdinalSuffix = (number) => {
+      const j = number % 10,
+            k = number % 100;
+      if (j === 1 && k !== 11) {
+        return number + "st";
+      }
+      if (j === 2 && k !== 12) {
+        return number + "nd";
+      }
+      if (j === 3 && k !== 13) {
+        return number + "rd";
+      }
+      return number + "th";
+    };
+  
+    // Return the age with the ordinal suffix
+    return getOrdinalSuffix(age);
+  }
+  
   return (
     <>
       <div className='mt-4'>
@@ -172,12 +207,12 @@ const Eventlst = () => {
                 </div>
                 <Card.Body>
                   <div className='d-flex'>
-                    <Card.Title>{event.name}</Card.Title>
+                    <Card.Title>{event.name}'s{calculateAge(event.date)}{event.eventType}</Card.Title>
                   </div>
                   <Card.Text className="d-flex justify-content-between" style={{ gap: "10px" }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <img className="m-0.5" src={`${process.env.PUBLIC_URL}/img/calender.svg`} height={"17px"} alt="calendar" />
-                      <h6 style={{ marginRight: '50px', marginBottom: '5px' }}>{formatDateWithCurrentYear(event.date)}</h6>
+                      <h6 style={{ marginRight: '50px', marginBottom: '5px', fontWeight:'600',marginLeft:'5px'}}>{formatDateWithCurrentYear(event.date)}</h6></div>
                       <div>
   {event.relation && event.relation.toLowerCase() !== "parent anniversary" ? (
     <h4
@@ -195,7 +230,7 @@ const Eventlst = () => {
   ) : null}
 </div>
 
-                    </div>
+                    
                   </Card.Text>
                   <div style={{ display: "flex", gap: "8px" }}>
                     <Button

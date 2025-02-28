@@ -19,11 +19,14 @@ body {
 /* Apply Poppins font globally */
 body {
   font-family: 'Poppins', sans-serif;
+  
 }
 /* #root{
   background-color: #fbe4e4;
 } */
-
+#root{
+  padding: 10px;
+}
 
 .container{
   max-width: 1920px !important;

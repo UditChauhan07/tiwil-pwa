@@ -149,7 +149,7 @@ const EventDetails = () => {
 
     try {
       const response = await axios.put(
-        `${process.env.REACT_APP_BASE_URL}/invitations/${eventId}`,
+        `${process.env.REACT_APP_BASE_URL}/invitations/${InvitationId}`,
         {
           status: "Accepted",
           phoneNumber: phoneNumber || undefined,  // If phoneNumber is available, send it in the request

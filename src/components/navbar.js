@@ -41,7 +41,9 @@ const Navbar = () => {
       console.error("Error during delete:", error);
     }
   };
-
+const handleUser=()=>{
+  navigate('/userdetail')
+}
   return (
     <>
       <div className="mainClass1" style={{ backgroundColor: "#e3e3e3" }}>
@@ -84,7 +86,7 @@ const Navbar = () => {
             {isMobileMenuOpen ? (
               <FaTimes style={{ fontSize: "1.5rem", color: "#FF3366" }} />
             ) : (
-              <FaUser style={{ fontSize: "1.5rem", color: "#FF3366" }} />
+              <FaUser style={{ fontSize: "1.5rem", color: "#FF3366" }} onClick={handleUser} />
             )}
           </button>
 
