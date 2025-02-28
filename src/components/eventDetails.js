@@ -157,30 +157,23 @@ const  getEvent = async () => {
     };
   
   //   getEvent();
-
-
-const handleShare = () => {
-  const shareData = {
-    title: "Check out this event!",
-    text: "I found an awesome event for you!",
-    url: window.location.href, // Current event URL
+  const handleShare = () => {
+    const shareData = {
+      title: event.title,
+      text: `Check out this event: ${event.title}`,
+      url: window.location.href,  // Share the current event page URL
+    };
+  
+    if (navigator.share) {
+      navigator.share(shareData)
+        .then(() => console.log('Event shared successfully!'))
+        .catch((error) => console.error('Error sharing:', error));
+    } else {
+      // Fallback for unsupported browsers: Copy link to clipboard
+      navigator.clipboard.writeText(shareData.url);
+      alert("Link copied to clipboard!");
+    }
   };
-
-  if (navigator.share) {
-    navigator.share(shareData)
-      .then(() => console.log("Shared successfully!"))
-      .catch((error) => console.error("Error sharing:", error));
-  } else {
-    // Fallback: Copy link to clipboard
-    navigator.clipboard.writeText(shareData.url);
-    alert("Link copied to clipboard!");
-  }
-};
-
-return (
-  <FaShareAlt className="me-3 fs-5 cursor-pointer text-blue-500" onClick={handleShare} />
-);
-
   
   return (
     <>
