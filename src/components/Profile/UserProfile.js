@@ -15,7 +15,7 @@ function Profile() {
     phoneNumber: localStorage.getItem("phoneNumber") || "",
     gender: "",
     dob: "",
-    location: "",
+   
     maritalStatus: "",
     profileImage: "",
   });
@@ -210,14 +210,7 @@ function Profile() {
             />
           </div>
 
-          <div className={styles.formGroup}>
-            <label>Location</label>
-            <input
-              type="text"
-              value={userData.location}
-              onChange={(e) => setUserData({ ...userData, location: e.target.value })}
-            />
-          </div>
+         
 
           <div className={styles.formGroup}>
             <label>Marital Status</label>
