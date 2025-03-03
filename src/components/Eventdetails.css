@@ -68,7 +68,13 @@
     height: 35px;
     border-radius: 50%;
   }
-  
+  .p-main{
+    display: -webkit-box;
+  -webkit-line-clamp: 2;  /* Limits to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+
+  }
   .status{
     border: 0.5px solid #ff3366 ;
     padding: 6px 33px;

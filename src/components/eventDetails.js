@@ -319,7 +319,9 @@ const  getEvent = async () => {
                               </p>
                             </div>
                             <div className="d-flex justify-content-between">
-                              <p className="card-text text-secondary m-1">
+                              <p className="card-text text-secondary m-1 p-main" 
+             style={{fontSize:'12px'}}
+                              >
                                 {item.description}
                               </p>
                               <img  src={`${process.env.PUBLIC_URL}/img/Group 33582.svg`} alt="svg" />

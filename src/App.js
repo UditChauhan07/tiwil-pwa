@@ -101,7 +101,7 @@ if (window.navigator.standalone === false) {
 
   return (
     <>
-     <div style={{ textAlign: "center" }}>
+    <div className="mainapp">     <div style={{ textAlign: "center" }}>
    
     
       {showInstallDialog && (
@@ -153,6 +153,8 @@ if (window.navigator.standalone === false) {
 <Route path="/group/:groupId/details" element={<GroupDetails />} />
       </Routes>
     </Router>
+</div>
+
 </>
   );
 }

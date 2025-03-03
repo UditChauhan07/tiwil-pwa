@@ -24,9 +24,7 @@ body {
 /* #root{
   background-color: #fbe4e4;
 } */
-#root{
-  padding: 10px;
-}
+
 
 .container{
   max-width: 1920px !important;

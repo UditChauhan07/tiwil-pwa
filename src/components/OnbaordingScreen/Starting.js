@@ -53,7 +53,8 @@ const Starting = () => {
               {currentSlide === slides.length - 1 ? "Start" : "Next"}
               <img  src={`${process.env.PUBLIC_URL}/img/Arrow.svg`} alt="arrow" className="image" />
             </button>
-            <button onClick={handleSkip} className="skip-btn">Skip</button>
+            <button onClick={handleSkip} className="skip-btn">
+            {currentSlide === 4 ? "Skip" : null}Skip</button>
           </div>
 
           {/* Pagination Dots */}
