@@ -8,7 +8,15 @@ import { Spinner } from "react-bootstrap"; // Import the Bootstrap Spinner for l
 
 function Profile() {
   const navigate = useNavigate();
+  const [today, setToday] = useState('');
 
+  useEffect(() => {
+    // Get today's date in YYYY-MM-DD format
+    const todayDate = new Date().toISOString().split('T')[0];
+
+    // Set the state with today's date
+    setToday(todayDate);
+  }, []);
   const [userData, setUserData] = useState({
     fullName: localStorage.getItem("fullName") || "",
     email: "",
@@ -67,10 +75,7 @@ function Profile() {
       return;
     }
 
-    if (!userData.location.trim()) {
-      setErrorMessage("Please enter your Location.");
-      return;
-    }
+ 
 
     if (!userData.gender) {
       setErrorMessage("Please select your gender.");
@@ -205,7 +210,7 @@ function Profile() {
             <label>Date of Birth</label>
             <input
               type="date"
-              value={userData.dob}
+              value={userData.dob}  min="1900-12-1"  max={today} 
               onChange={(e) => setUserData({ ...userData, dob: e.target.value })}
             />
           </div>

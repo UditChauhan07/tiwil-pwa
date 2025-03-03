@@ -83,16 +83,15 @@ const handleUser=()=>{
   />
 </Link>
           <button className="navbar-toggler" type="button" onClick={toggleMobileMenu}>
-            {isMobileMenuOpen ? (
-              <FaTimes style={{ fontSize: "1.5rem", color: "#FF3366" }} />
-            ) : (
+          
+            
               <FaUser style={{ fontSize: "1.5rem", color: "#FF3366" }} onClick={handleUser} />
-            )}
+            
           </button>
 
           </div>
-          {/* Collapsed Menu */}
-          <div className={`collapse navbar-collapse ${isMobileMenuOpen ? "show" : ""}`} id="navbarNav">
+        
+          {/* <div className={`collapse navbar-collapse ${isMobileMenuOpen ? "show" : ""}`} id="navbarNav">
             <ul className="navbar-nav ms-auto text-center navlist">
               <li className="nav-item">
                 <Link className="nav-link" to="/home">
@@ -110,7 +109,7 @@ const handleUser=()=>{
                 </Link>
               </li>
 
-              {/* Notifications and User Options (Mobile Only) */}
+              
               <li className="nav-item">
                 <Link className="nav-link" to="/notifications">
                   Notification
@@ -119,7 +118,7 @@ const handleUser=()=>{
 
               {isLoggedIn ? (
                 <>
-                  {/* Mobile View for Logged-In User */}
+             
                   <li className="nav-item">
                     <Link className="nav-link" to="/userdetail">
                       <FaUser className="me-2" />
@@ -139,7 +138,7 @@ const handleUser=()=>{
                 </>
               ) : (
                 <>
-                  {/* Mobile View for Not Logged-In User */}
+             
                   <li className="nav-item">
                     <Link className="nav-link" to="/signin">
                       Sign In
@@ -153,7 +152,7 @@ const handleUser=()=>{
                 </>
               )}
             </ul>
-          </div>
+          </div> */}
         </div>
         </div>
       </nav>

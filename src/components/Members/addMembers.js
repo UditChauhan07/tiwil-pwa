@@ -14,7 +14,15 @@ const Memberform = ({ show, setShow }) => {
     gender: "",
     image: null,
   });
+  const [today, setToday] = useState('');
 
+  useEffect(() => {
+    // Get today's date in YYYY-MM-DD format
+    const todayDate = new Date().toISOString().split('T')[0];
+
+    // Set the state with today's date
+    setToday(todayDate);
+  }, []);
   // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -42,7 +50,7 @@ const Memberform = ({ show, setShow }) => {
       formDataToSend.append("fullName", eventData.fullName);
       formDataToSend.append("dob", eventData.dob);
       formDataToSend.append("relationType", eventData.relation);
-      formDataToSend.append("eventType", eventData.eventType || 'Other');
+      formDataToSend.append("eventType", eventData.eventType || 'Birthday');
 
       if (eventData.image) {
         formDataToSend.append("image", eventData.image);
@@ -54,6 +62,13 @@ const Memberform = ({ show, setShow }) => {
 
       if (response.data.success) {
         console.log(response.data);
+        setFormData({
+          fullName: '',
+          relation: '',
+          dob,
+          eventType: '',
+          image: null,
+        });
       }
     } catch (error) {
       console.error("Error creating event:", error);
@@ -120,7 +135,8 @@ const Memberform = ({ show, setShow }) => {
             <InputGroup>
               <Form.Control
                 type="date"
-                name="dob"
+                name="dob"   min="1900-01-01" // Minimum date is fixed to 1900-01-01
+                max={today} 
                 value={formData.dob}
                 onChange={handleInputChange}
               />

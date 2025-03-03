@@ -9,7 +9,9 @@ import Loader from '../components/Loader/Loader'
 function AddInformation() {
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
+  const [today, setToday] = useState('');
 
+ 
   const [formData, setFormData] = useState({
     father: { name: "", dob: "" },
     mother: { name: "", dob: "" },
@@ -25,7 +27,13 @@ function AddInformation() {
     images: {},
   });
   const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    // Get today's date in YYYY-MM-DD format
+    const todayDate = new Date().toISOString().split('T')[0];
 
+    // Set the state with today's date
+    setToday(todayDate);
+  }, []);
   useEffect(() => {
     const fetchUserData = async () => {
       setLoading(true);
@@ -257,6 +265,8 @@ function AddInformation() {
         <input
           type="date"
           value={formData.father.dob}
+          min="1900-01-01" // Minimum date is fixed to 1900-01-01
+          max={today} 
           onChange={(e) => handleInputChange("dob", e.target.value, "father")}
         /><br/>
         <label>Image</label> <br/>
@@ -277,7 +287,8 @@ function AddInformation() {
         <label>Date of Birth</label> <br/>
         <input
           type="date"
-          value={formData.mother.dob}
+          value={formData.mother.dob}   min="1900-01-01" // Minimum date is fixed to 1900-01-01
+          max={today} 
           onChange={(e) => handleInputChange("dob", e.target.value, "mother")}
         />
         <br/>
@@ -291,7 +302,8 @@ function AddInformation() {
         <label>Date</label> <br/>
         <input
           type="date"
-          value={formData.parentAnniversary.date}
+          value={formData.parentAnniversary.date}   min="1900-01-01" // Minimum date is fixed to 1900-01-01
+          max={today} 
           onChange={(e) => handleInputChange("date", e.target.value, "parentAnniversary")}
         /><br/>
         <label>Image</label> <br/>
@@ -314,7 +326,8 @@ function AddInformation() {
             <label>Date of Birth</label> <br/>
             <input
               type="date"
-              value={formData.spouse.dob}
+              value={formData.spouse.dob}   min="1900-01-01" // Minimum date is fixed to 1900-01-01
+              max={today} 
               onChange={(e) => handleInputChange("dob", e.target.value, "spouse")}
             />
             <br/>
@@ -327,7 +340,8 @@ function AddInformation() {
             <label>Date</label> <br/>
             <input
               type="date"
-              value={formData.marriageAnniversary.date}
+              value={formData.marriageAnniversary.date}   min="1900-01-01" // Minimum date is fixed to 1900-01-01
+              max={today} 
               onChange={(e) => handleInputChange("date", e.target.value, "marriageAnniversary")}
             /> <br/>
 <input type="file" name="marriageAnniversaryImage" accept="image/*" onChange={(e) => handleImageChange(e, "marriageAnniversaryImage")} />
@@ -389,7 +403,8 @@ function AddInformation() {
                   <label>Date of Birth</label> <br/>
                   <input
                     type="date"
-                    value={child.dob}
+                    value={child.dob}   min="1900-01-01" // Minimum date is fixed to 1900-01-01
+                    max={today} 
                     onChange={(e) => handleInputChange("dob", e.target.value, "children", index)}
                   /><br/>
                   <label>Image</label> <br/>
@@ -441,7 +456,8 @@ function AddInformation() {
             <label>Date of Birth</label>
             <input
               type="date"
-              value={sibling.dob}
+              value={sibling.dob}   min="1900-01-01" // Minimum date is fixed to 1900-01-01
+              max={today} 
               onChange={(e) => handleInputChange("dob", e.target.value, "siblings", index)}
             />
 

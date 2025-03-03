@@ -141,7 +141,7 @@ const Eventlst = () => {
     
     // If the event date hasn't occurred yet this year, subtract 1 from the age
     if (today < targetDate) {
-      age--;
+      age;
     }
   
     // Determine the ordinal suffix (1st, 2nd, 3rd, nth)
@@ -192,7 +192,7 @@ const Eventlst = () => {
                     backgroundImage: `url(${
                       event.image && event.image !== "null" && event.image !== `${process.env.REACT_APP_BASE_URL}/null`
                         ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
-                        : `${process.env.PUBLIC_URL}/img/image.png`
+                        : `${process.env.PUBLIC_URL}/img/eventdefault.png`
                     })`,
                     position: "relative",
                     backgroundRepeat: "no-repeat",
@@ -207,14 +207,16 @@ const Eventlst = () => {
                 </div>
                 <Card.Body>
                   <div className='d-flex'>
-                    <Card.Title>{event.name}'s{calculateAge(event.date)}{event.eventType}</Card.Title>
+                    <Card.Title>{event.name}  {calculateAge(event.date)} {event.eventType}</Card.Title>
                   </div>
                   <Card.Text className="d-flex justify-content-between" style={{ gap: "10px" }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <img className="m-0.5" src={`${process.env.PUBLIC_URL}/img/calender.svg`} height={"17px"} alt="calendar" />
                       <h6 style={{ marginRight: '50px', marginBottom: '5px', fontWeight:'600',marginLeft:'5px'}}>{formatDateWithCurrentYear(event.date)}</h6></div>
                       <div>
-  {event.relation && event.relation.toLowerCase() !== "parent anniversary" ? (
+  {event.relation &&
+  event.relation.toLowerCase() !== "parent anniversary" &&
+  event.relation.toLowerCase() !== "marriage anniversary" ? (
     <h4
       style={{
         background: "white",
@@ -229,6 +231,7 @@ const Eventlst = () => {
     </h4>
   ) : null}
 </div>
+
 
                     
                   </Card.Text>

@@ -12,13 +12,15 @@ const EditEventModal = ({ show, setShow, event, fetchevent  }) => {
 
   const [location, setLocation] = useState(event.location || "");
   const [description, setDescription] = useState(event.aboutEvent || "");
+  const [eventname, setEventname] = useState(event.eventname || "");
+  const [date, setDate] = useState(event.date || "");
   const { eventId } = useParams();
 
   // Handle form submission
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("token");
-      const updatedEvent = { description, location };
+      const updatedEvent = { description, location,eventname,date };
       const response = await axios.put(
         `${process.env.REACT_APP_BASE_URL}/events/${eventId}`,
         updatedEvent,
@@ -61,6 +63,26 @@ fetchWishlist();  // Fetch updated event details
       <Modal.Body>
         <Form className="mt-4">
           <Form.Group className="mb-3">
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-bold">Event Name</Form.Label>
+            <Form.Control
+              type="text"
+              name="eventname"
+              value={eventname}
+              onChange={(e) => setEventname(e.target.value)}
+              placeholder="Enter event name"
+            />
+          </Form.Group>
+          <Form.Group className="mb-3">
+            <Form.Label className="fw-bold">Event date</Form.Label>
+            <Form.Control
+              type="date"
+              name="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              
+            />
+          </Form.Group>
             <Form.Label className="fw-bold">Location</Form.Label>
             <InputGroup>
               <Form.Control
@@ -79,7 +101,7 @@ fetchWishlist();  // Fetch updated event details
               name="aboutEvent"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter event details"
+              placeholder="Enter event description"
             />
           </Form.Group>
         </Form>

@@ -22,7 +22,15 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
       dob: "",
       description: "",
     });
+    const [today, setToday] = useState('');
+
+    useEffect(() => {
+      // Get today's date in YYYY-MM-DD format
+      const todayDate = new Date().toISOString().split('T')[0];
   
+      // Set the state with today's date
+      setToday(todayDate);
+    }, []);  
     console.log(formData);
   
     const handleInputChange = (e) => {

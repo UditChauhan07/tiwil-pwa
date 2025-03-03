@@ -209,22 +209,18 @@ const  getEvent = async () => {
               events.map((event) => (
                 <div key={event._id}>
             {/* Event Image */}
-            <div
-style={{
-  backgroundImage: `url(${
-    event.image && event.image == "null" && event.image !== `${process.env.REACT_APP_BASE_URL}/null`
+            <div>
+            <img 
+  src={
+    event.image && event.image !== "null" && event.image !== `${process.env.REACT_APP_BASE_URL}/null`
       ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
-      :  `${process.env.PUBLIC_URL}/img/userimage1.jpg`
-  })`,
-  position: "relative",
-  backgroundRepeat: "no-repeat",
-  backgroundSize: "cover",
-  height: "175px",
-  width: "300px"
-}}
+      : `${process.env.PUBLIC_URL}/img/eventdefault.png`
+  }
+  alt="event"
+  className="img-fluid"
+  style={{ width: "100%", height: "300px", objectFit: "cover", borderRadius: "10px" }} 
+/>
 
-
->
              </div>
        
 

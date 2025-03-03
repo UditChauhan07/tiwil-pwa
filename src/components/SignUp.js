@@ -160,7 +160,7 @@ const SignUpForm = () => {
           </div>
 
           <p className="text-muted mt-3">
-            Already registered? <a href="/signin" className="text-primary fw-semibold text-decoration-none">Sign In</a>
+            Already registered? <Link to="/signin" className="text-primary fw-semibold text-decoration-none">Sign In</Link>
           </p>
         </div>
       </section>

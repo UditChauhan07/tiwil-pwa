@@ -203,12 +203,12 @@ const SignInForm = () => {
           )}
           <p className="text-muted mt-3">
             New on TIWIL?{" "}
-            <a
-              href="/signup"
+            <Link
+              to="/signup"
               className="text-primary fw-semibold text-decoration-none"
             >
               Create an account
-            </a>
+            </Link>
           </p>
         </div>
       </div>
