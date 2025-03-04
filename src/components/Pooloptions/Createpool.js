@@ -98,21 +98,28 @@ function PoolingWish() {
 
       {/* Contribution Details */}
       <div className="text-center">
-        <h6 className="fw-bold">Total Amount: <strong>${totalAmount}</strong></h6>
-        <h6 className="text-muted">Collected: <strong>${collectedAmount}</strong></h6>
-        <h6 className="text-danger">Pending: <strong>${totalAmount - collectedAmount}</strong></h6>
+        <h6 className="fw-bold">Total Amount: <strong>&#8377;{totalAmount}</strong></h6>
+        <h6 className="text-muted">Collected: <strong>&#8377;{collectedAmount}</strong></h6>
+        <h6 className="text-danger">Pending: <strong>&#8377;{totalAmount - collectedAmount}</strong></h6>
       </div>
 </div>
 <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
 <h6 className="">My Contribution</h6>
       {/* Contribution Input */}
-      <Form.Group className="mt-3" style={{ width: "40px" }}>
-
+      <Form.Group className="mt-3" style={{ width: "70px" }}>
+      
         <Form.Control
           type="number"
-          placeholder="Enter amount"
+          placeholder="&#8377;"
           value={contributionAmount}
-          onChange={(e) => setContributionAmount(e.target.value)}
+          onChange={(e) => {
+      let value = parseFloat(e.target.value);
+      if (value > (totalAmount - collectedAmount)) {
+        Swal.fire("Error", `You cannot contribute more than &#8377;${totalAmount - collectedAmount}`, "error");
+        value = totalAmount - collectedAmount;
+      }
+      setContributionAmount(value);
+    }}
         />
       </Form.Group>
 </div>
@@ -124,7 +131,7 @@ function PoolingWish() {
           onClick={handleSaveContribution}
           disabled={loading || contributionExists}
         >
-          {loading ? "Processing..." : "POOL INVITES"} <FaArrowRight className="ms-2" />
+          {loading ? "Processing..." : "Contribute"} <FaArrowRight className="ms-2" />
         </Button>
       </div>
     </div>
