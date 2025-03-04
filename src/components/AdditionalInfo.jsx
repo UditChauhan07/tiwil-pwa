@@ -233,8 +233,24 @@ function AddInformation() {
       setLoading(false); // Set loading to false after saving
     }
   };
-  const handleSkip=()=>{
-    navigate('/home')
+
+  
+  const handleSkip=async()=>{
+    try{
+    const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/family-info`,  {
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
+    });
+
+    if (response.data.success) {
+      console.log("Family information saved successfully!");
+      localStorage.setItem("onboardingStatus", true);
+      navigate("/home");
+    } else {
+      console.error("Error saving family information:", response.data.message);
+    }
+  } catch (error) {
+    console.error("Error saving family information:", error.message);
+  }
   }
   // console.log(parentAnniversary,"44444444444444444444444444")
 // console.log(document.getElementById)

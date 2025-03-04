@@ -18,7 +18,7 @@ const Account = () => {
     phoneNumber: "",
     gender: "",
     dob: "",
-    location: "",
+
     maritalStatus: "",
     profileImage: "",
   });
@@ -143,7 +143,7 @@ const Account = () => {
             <img
               src={
                 profileData.profileImage
-                  ? `${process.env.REACT_APP_BASE_URL}${profileData.profileImage}`
+                  ? `${process.env.REACT_APP_BASE_URL}/${profileData.profileImage}`
                   : `${process.env.PUBLIC_URL}/assets/ProfilDefaulticon.png`
               }
               alt="Profile"

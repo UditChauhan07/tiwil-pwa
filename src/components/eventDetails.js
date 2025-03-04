@@ -12,7 +12,7 @@ import axios from "axios";
 import { useParams } from "react-router-dom";
 import InviteButton from "./userview/Invitetest";
 import { useNavigate } from "react-router-dom";
-
+import WishlistEditModal from "./Wishlist/wishlistModal";
 
 const EventDetails = () => {
   const [activeTab, setActiveTab] = useState("details");
@@ -20,9 +20,11 @@ const EventDetails = () => {
   const [guest,setGuest]=useState([])
   console.log("showWishlistModal", showWishlistModal);
   const [showGuestModal, setGuestModal] = useState(false);
+  const [showeditWishlistModal,setshoweditWishlistModal]=useState(false)
   const [wishlist, setWishlist] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [events, setEvents] = useState([]);
+  const [selectedWishlist, setSelectedWishlist] = useState(null);
   const token = localStorage.getItem("token");
   const { eventId } = useParams(); // Get eventId from URL parameters
   console.log(eventId)
@@ -47,6 +49,10 @@ const EventDetails = () => {
 
   //   fetchWishlist();
   // }, [eventId]);
+
+  useEffect(() => {
+    fetchWishlist();
+  }, [eventId]);
   const fetchWishlist = async () => {
     try {
       const response = await axios.get(
@@ -61,9 +67,7 @@ const EventDetails = () => {
     }
   };
 
-  useEffect(() => {
-    fetchWishlist();
-  }, [eventId]);
+  
   const formatDateWithCurrentYear = (dateString) => {
     if (!dateString) return "Invalid Date";
     const eventDate = new Date(dateString);
@@ -108,6 +112,8 @@ const EventDetails = () => {
 
         if (response.data && response.data.data) {
           setGuest(response.data.data);
+        
+          console.log(response.data);
         }
       } catch (error) {
         console.error("Error fetching users:", error);
@@ -247,7 +253,7 @@ const  getEvent = async () => {
                       </li>
                     ))}
                   </ul>
-<InviteButton/>
+
                   {/* Tab Content */}
                   <div className="tab-content p-3 mt-3 border rounded shadow-sm bg-white">
                     {activeTab === "details" && (
@@ -310,13 +316,17 @@ const  getEvent = async () => {
                        
                         
                           <div className="card-body cards11">
+                         
                             <div className="d-flex justify-content-between" style={{ paddingTop: "11px" }}>
                               <h6 className="card-title" style={{ color: "black" }}>
                                 {item.giftName}
                               </h6>
                               <p className="card-text" style={{ color: "#ff3366", fontWeight: "600" }}>
                                 ${item.price}
-                              </p>
+                              </p> <div style={{display:'flex',justifyContent:'end'}}    onClick={() => {
+      setSelectedWishlist(item); // Pass the selected wishlist item
+        setshoweditWishlistModal(true);
+    }}>edit</div>
                             </div>
                             <div className="d-flex justify-content-between">
                               <p className="card-text text-secondary m-1 p-main" 
@@ -381,13 +391,7 @@ const  getEvent = async () => {
       
       {/* ADD MORE and START CHAT buttons when guests are available */}
       <div className="text-center mt-4 d-flex">
-        <button
-          className="btn btn-primary w-25 d-flex align-items-center justify-content-center"
-          style={{ fontSize: "12px", marginRight: "10px" }}
-          onClick={() => setGuestModal(true)}
-        >
-          ADD MORE
-        </button>
+        <InviteButton/>
 
         <button
           className="btn btn-success w-25 d-flex align-items-center justify-content-center"
@@ -400,14 +404,8 @@ const  getEvent = async () => {
     </>
   ) : (
     // Invite button only when there are no guests
-    <div className="text-center mt-4">
-      <button
-        className="btn btn-danger w-25 d-flex align-items-center justify-content-center"
-        style={{ fontSize: "12px" }}
-        onClick={() => setGuestModal(true)}
-      >
-        INVITE <FaArrowRight className="ms-2" />
-      </button>
+    <div className=" mt-4">
+    <InviteButton/>
     </div>
   )}
 </div>
@@ -447,6 +445,13 @@ const  getEvent = async () => {
         setEvent={setEvents}
         fetchevent={getEvent} // Pass fetchWishlist as a prop
           />
+
+          <WishlistEditModal
+            show={showeditWishlistModal}
+            setShow={setshoweditWishlistModal}
+            wishlist={selectedWishlist}
+            fetchWishlist={fetchWishlist}
+            />
         </div>
         
        

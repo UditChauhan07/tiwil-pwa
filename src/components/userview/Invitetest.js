@@ -1,6 +1,7 @@
 import React from "react";
 import Swal from 'sweetalert2'
 import { useParams } from "react-router-dom";
+import {  FaArrowRight } from "react-icons/fa";
 const InviteButton = () => {
     const {eventId}=useParams();
     const token=localStorage.getItem('token')
@@ -36,7 +37,7 @@ const InviteButton = () => {
 
   return (
     <button onClick={handleInvite} style={styles.button}>
-      Invite Contacts
+      Invite <FaArrowRight />
     </button>
   );
 };
@@ -44,11 +45,12 @@ const InviteButton = () => {
 // Basic styles for button
 const styles = {
   button: {
+  
     padding: "10px 20px",
-    backgroundColor: "#007bff",
+    backgroundColor: "#ff3366",
     color: "white",
     border: "none",
-    borderRadius: "5px",
+    borderRadius: "25px",
     cursor: "pointer",
   },
 };

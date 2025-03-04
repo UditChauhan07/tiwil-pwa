@@ -1,212 +1,134 @@
 import React, { useState, useEffect } from "react";
-import { Button, Card, ProgressBar } from "react-bootstrap";
-import { FaArrowRight } from "react-icons/fa";
-import Header from "../Header";
-import Navbar from "../navbar";
-import Footer from "../Footer";
-import InviteModal from "../GuestInvite/PoolguestModal";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
+import Swal from "sweetalert2";
+import { Button, Form } from "react-bootstrap";
+import { FaArrowRight } from "react-icons/fa";
+import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
+import "react-circular-progressbar/dist/styles.css";
 
-const PoolingWish = () => {
-  const location = useLocation();
-  const { wishlistItem } = location.state || {};
-
-  const userId = localStorage.getItem("userId"); // Fixed userId retrieval
-  const token = localStorage.getItem("token"); // Ensure token is defined
-
-  const [myContribution, setMyContribution] = useState(null);
-  const [contributionSaved, setContributionSaved] = useState(false);
-  const [showGuestModal, setGuestModal] = useState(false);
-console.log(wishlistItem,'677777777777777777')
-  const pendingAmount = wishlistItem?.price - myContribution;
+function PoolingWish() {
+  const { wishId } = useParams();
+  const navigate = useNavigate();
+  const [pool, setPool] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [contributionAmount, setContributionAmount] = useState(""); // Dynamic input amount
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     const fetchPoolData = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/pool/${item._id}`, {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/pool/${wishId}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
-
-        if (response.data.success) {
-          const fetchedPool = response.data.data;
-          setPool(fetchedPool);
-
-          // ✅ Check if pool is completed & update status in backend
-          if (fetchedPool.collectedAmount >= fetchedPool.totalAmount && fetchedPool.status !== "Completed") {
-            await axios.put(
-              `${process.env.REACT_APP_BASE_URL}/update-status/${item._id}`,
-              { status: "Completed" },
-              { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
-            );
-
-            // ✅ Update pool state after marking as completed
-            setPool((prev) => ({ ...prev, status: "Completed" }));
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching pool data:", error);
-      } finally {
-        setLoading(false);
+        setPool(response.data.data);
+      } catch (err) {
+        console.error("Error fetching pool data:", err);
       }
     };
 
     fetchPoolData();
-  }, [item._id]);
-  // Handle saving contribution
+  }, [wishId]);
+
   const handleSaveContribution = async () => {
-    const token = localStorage.getItem("token"); 
-    if (!wishlistItem?._id || !userId) {
-      console.error("Missing wishlistItem ID or user ID");
+    if (!contributionAmount || contributionAmount <= 0) {
+      Swal.fire("Error", "Please enter a valid contribution amount.", "error");
       return;
     }
 
-    const contributionData = {
-      amount: myContribution,
-      wishlistId: wishlistItem._id,
-      userId,
-    };
-
     try {
+      setLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/pool/contribute`,
-        contributionData,
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
+        { wishId, amount: parseFloat(contributionAmount) },
+        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
       );
 
       if (response.data.success) {
-        setContributionSaved(true);
-      } else {
-        console.error("Error saving contribution:", response.data.message);
+        Swal.fire("Success!", "Your contribution has been saved.", "success");
+        navigate(`/createpool/${poolId}`);
       }
     } catch (error) {
-      console.error("API error:", error);
+      console.error("Error saving contribution:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
-  // Handle sending invites
-  const handleSendInvites = async () => {
-    if (!wishlistItem?._id || !userId) {
-      console.error("Missing wishlistItem ID or user ID");
-      return;
-    }
+  if (!pool) return <div className="text-center mt-5">Loading pool data...</div>;
 
-    const guests = []; // Replace with actual guest list
-
-    try {
-      const response = await axios.post(
-        "http://localhost:3001/api/send-invite",
-        { wishlistId: wishlistItem._id, userId, guests },
-        { headers: { "Content-Type": "application/json" } }
-      );
-
-      if (response.data.success) {
-        console.log("Invites sent successfully!");
-      } else {
-        console.error("Error sending invites:", response.data.message);
-      }
-    } catch (error) {
-      console.error("API error:", error);
-    }
-  };
-
-  useEffect(() => {
-    if (contributionSaved) {
-      setGuestModal(true);
-    }
-  }, [contributionSaved]);
+  const { totalAmount, collectedAmount, status, contributors } = pool;
+  const percentage = (collectedAmount / totalAmount) * 100;
+  const contributionExists = contributors.some(contributor => contributor.userId === userId);
 
   return (
-    <section className="page-controls">
-      <Header />
-      <Navbar />
-      <div className="container mt-4">
-        <h4 className="fw-bold mb-4">Pooling Wish</h4>
-        <div className="row">
-          {/* Image Section */}
-          <div className="col-12 mb-3">
-            <img
-            src={`${process.env.PUBLIC_URL}/img/image.png`}
-              className="img-fluid rounded"
-              alt="Berlin Trip"
-              style={{ maxHeight: "300px", objectFit: "cover" }}
-            />
-          </div>
+    <div className="container mt-3">
+      {/* Back Button */}
+      <div className="d-flex align-items-center mb-3">
+        <span className="me-2" onClick={() => navigate(-1)} style={{ cursor: "pointer" }}>
+          &larr;
+        </span>
+        <h5 className="mb-0">Pooling Wish</h5>
+      </div>
 
-          {/* Pool Info */}
-          <div className="col-12">
-            <Card className=" mb-3 shadow-sm">
-              <Card.Body style={{padding:"9px"}}>
-                <div className="d-flex justify-content-between align-items-center">
-                  <div>
-                    <h6 className="fw-bold">{wishlistItem?.giftName}</h6>
-                    <p className="text-muted">{wishlistItem?.description}</p>
-                  </div>
-                  <div>
-                    <span className="badge bg-danger text-white w-100 pt-2">
-                      Pool Amount ${wishlistItem?.price}
-                    </span>
-                    <br />
-                    <span className="text-muted">Pending Amount ${pendingAmount}</span>
-                  </div>
-                </div>
-
-                {/* Progress Bar */}
-                <div className="mt-3">
-                  <ProgressBar
-                    now={(myContribution / wishlistItem?.price) * 100}
-                    label={`$${myContribution} / $${wishlistItem?.price}`}
-                    variant="success"
-                    animated
-                  />
-                </div>
-
-                {/* Contribution */}
-                <div className="mt-3">
-                  <h6>Total amount wish: ${wishlistItem?.price}</h6>
-                  <div className="d-flex justify-content-between">
-                    <span>My Contribution</span>
-                    <span
-                      className="badge text-white d-flex"
-                      style={{ width: "70px" }}
-                    >
-                      {contributionSaved ? `$${myContribution}` : (
-                        <input
-                          type="number"
-                          value={myContribution}
-                          onChange={(e) => setMyContribution(Number(e.target.value))}
-                          className="form-control"
-                          min="1"
-                          style={{ border: "1px solid #ff3366", width: "70px" }}
-                        />
-                      )}
-                    </span>
-                  </div>
-                </div>
-              </Card.Body>
-            </Card>
-          </div>
-
-          {/* Save or Pool Invite Button */}
-          <div className="col-12 text-center mt-4">
-            <Button
-              variant="danger"
-              size="lg"
-              className="w-30"
-              onClick={contributionSaved ? () => setGuestModal(true) : handleSaveContribution}
-            >
-              {contributionSaved ? "POOL INVITES" : "SAVE AMOUNT"}{" "}
-              <FaArrowRight className="ms-2" />
-            </Button>
-          </div>
+      {/* Image Section */}
+      <div className="text-center">
+        <img
+          src={`${process.env.PUBLIC_URL}/img/userimage3.jpg`}
+          alt="Berlin Trip"
+          className="img-fluid rounded"
+        />
+      </div>
+      <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+      {/* Circular Progress Bar */}
+      <div className="d-flex justify-content-center my-4">
+        <div style={{ width: "150px", height: "150px" }}>
+          <CircularProgressbar
+            value={percentage}
+            text={`${percentage.toFixed(0)}%`}
+            styles={buildStyles({
+              pathColor: `#ff3366`,
+              textColor: "#ff3366",
+              trailColor: "#d6d6d6",
+              textSize: "16px",
+            })}
+          />
         </div>
       </div>
-      <InviteModal show={showGuestModal} setShow={setGuestModal} onSendInvites={handleSendInvites} />
- 
-    </section>
+
+      {/* Contribution Details */}
+      <div className="text-center">
+        <h6 className="fw-bold">Total Amount: <strong>${totalAmount}</strong></h6>
+        <h6 className="text-muted">Collected: <strong>${collectedAmount}</strong></h6>
+        <h6 className="text-danger">Pending: <strong>${totalAmount - collectedAmount}</strong></h6>
+      </div>
+</div>
+<div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+<h6 className="">My Contribution</h6>
+      {/* Contribution Input */}
+      <Form.Group className="mt-3" style={{ width: "40px" }}>
+
+        <Form.Control
+          type="number"
+          placeholder="Enter amount"
+          value={contributionAmount}
+          onChange={(e) => setContributionAmount(e.target.value)}
+        />
+      </Form.Group>
+</div>
+      {/* Pool Invites Button */}
+      <div className="mt-4 text-center">
+        <Button
+          variant="danger"
+          className="w-100 py-2 d-flex align-items-center justify-content-center"
+          onClick={handleSaveContribution}
+          disabled={loading || contributionExists}
+        >
+          {loading ? "Processing..." : "POOL INVITES"} <FaArrowRight className="ms-2" />
+        </Button>
+      </div>
+    </div>
   );
-};
+}
 
 export default PoolingWish;

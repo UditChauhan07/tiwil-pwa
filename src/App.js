@@ -140,7 +140,8 @@ if (window.navigator.standalone === false) {
         <Route path="/invitation-detail/:eventId" element={<UserEventSection/>}/>
         <Route path="/notifications" element={<NotificationList/>}/>
         <Route path='/wishlistdetails/:itemId'element={<WishlistDetails/>}></Route>
-        <Route path='/createpool' element={<PoolingWish/>}></Route>
+        <Route path="/createpool/:wishId" element={<PoolingWish />} />
+
         <Route path='/userdetail' element={<Account/>}/>
         <Route path="/familyinfo"  element={<FamilyInformation/>}/>
         <Route path='/login' element={<LoginPage/>}/>

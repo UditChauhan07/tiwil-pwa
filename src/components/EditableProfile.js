@@ -70,7 +70,7 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
               selectedImage
                 ? URL.createObjectURL(selectedImage)
                 : profileData.profileImage
-                ? `${process.env.REACT_APP_BASE_URL}${profileData.profileImage}`
+                ? `${process.env.REACT_APP_BASE_URL}/${profileData.profileImage}`
                 : `${process.env.PUBLIC_URL}/assets/profile-placeholder.png`
             }
             alt="Profile"
@@ -132,14 +132,7 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
         </div>
 
         {/* Location */}
-        <div className={styles.formGroup}>
-          <label>Location</label>
-          <input
-            type="text"
-            value={profileData.location}
-            onChange={(e) => handleChange("location", e.target.value)}
-          />
-        </div>
+     
 
         {/* Marital Status */}
         <div className={styles.formGroup}>

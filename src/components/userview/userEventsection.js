@@ -18,10 +18,11 @@ const EventDetails = () => {
   const [events, setEvents] = useState({});
   const [invitationStatus, setInvitationStatus] = useState(null);
   const [loading, setLoading] = useState(true);
-
+  const [guest,setGuest]=useState([])
   const location = useLocation();
   const { eventId, phoneNumber } = useParams();
   const navigate = useNavigate();
+  const currentUserId=localStorage.getItem('userId')
 
   // useEffect(() => {
   //   const fetchInvitationStatus = async () => {
@@ -48,20 +49,48 @@ const EventDetails = () => {
   // }, [eventId, phoneNumber]);
 
   useEffect(() => {
-    const fetchUsers = async () => {
+    const token = localStorage.getItem("token");
+    const fetchGuest = async () => {
       try {
-        const token = localStorage.getItem("token");
         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests/${eventId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-        setInvitationStatus(response.data.data || []);
+
+        if (response.data && response.data.data) {
+          setGuest(response.data.data);
+        
+          console.log(response.data);
+        }
       } catch (error) {
         console.error("Error fetching users:", error);
       }
     };
 
-    fetchUsers();
+    fetchGuest();
+  }, []);
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests-status/${eventId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        if (response?.data?.success) {
+          setInvitationStatus(response.data.data.status); // Extract status correctly
+        }
+      } catch (error) {
+        console.error("Error fetching users:", error);
+      }
+    };
+  
+    if (eventId) {
+      fetchUsers();
+    }
   }, [eventId]);
+  
+  
 
   useEffect(() => {
     const fetchWishlist = async () => {
@@ -192,19 +221,34 @@ const EventDetails = () => {
       console.error("❌ Error starting chat:", error.response?.data || error.message);
     }
   };
-
   const handleClick = (item) => {
-    // Check if the status is "Purchased" or "Marked"
-    if (item.status === "Purchased" || item.status === "Marked") {
-      if (item.userId === currentUserId) {
+    const isPurchasedOrMarked = item.status === "Purchased" || item.status === "Mark";
+    const isUnmarked = item.status === "Unmark";
+    const isPooling = item.status === "Pooling";
+    const isOwner = item.userId === currentUserId;
+  
+    if (isPurchasedOrMarked) {
+      if (isOwner) {
         navigate(`/wishlistdetails/${item._id}`, { state: { item } });
       } else {
-        alert("You cannot open this item because it has already been purchased or marked by someone else.");
+        Swal.fire({
+          title: "Error",
+          text: "Someone already wants to purchase it or it has already been purchased.",
+          icon: "warning",
+          confirmButtonColor: "#FF3366",
+        });
       }
-    } else if (item.status === "Unmark" || item.status === "CreatePool") {
+    } else if (isUnmarked) {
       navigate(`/wishlistdetails/${item._id}`, { state: { item } });
+    } else if (isPooling) {
+      if (isOwner) {
+        navigate(`/createpool/${item._id}`, { state: { item } });
+      } else {
+        navigate(`/createpool/${item._id}`, { state: { item } });
+      }
     }
   };
+  
 
   if (loading) return <div style={{display:'flex',justifyContent:'center', marginTop:'50%'}}>Loading...</div>;
 
@@ -285,27 +329,49 @@ const EventDetails = () => {
                       <h5 >Show All</h5>
                     </div>
                     <div className="wishlist-items">
-                      {wishlistItems.length > 0 ? (
-                        wishlistItems.map((item) => (
-                          <div key={item._id} className="wishlist-item" onClick={() => handleClick(item)}>
-                            <h6 className="wishlist-item-name">{item.name}</h6>
-                            <p className="wishlist-item-status">{item.status}</p>
-                          </div>
-                        ))
-                      ) : (
-                        <p>No wishlist items found</p>
-                      )}
-                    </div>
-                  </div>
+  {wishlistItems.length > 0 ? (
+    wishlistItems.map((item) => (
+      <div key={item._id}>
+        <div className="row">
+          <div className="col-lg-4 col-md-6 col-sm-12" style={{marginBottom:'10px'}}>
+            <div className="card" style={{ backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/${item.imageUrl})`, position: "relative", backgroundRepeat: "no-repeat", backgroundSize: "cover" }}>
+              <div className="card-img-top" style={{height:"226px"}}>
+                <div className="d-flex justify-content-end m-2">
+                  <p className="card-text status d-flex justify-content-center" style={{background:"cornsilk"}}>{item.status}</p>
+                </div>
+              </div>
+              <div onClick={() => handleClick(item)} style={{ cursor: 'pointer' }}>
+              <div className="card-body cards11">
+                <div className="d-flex justify-content-between" style={{paddingTop:"11px"}}>
+                  <h6 className="card-title" style={{color:"black"}}>{item.giftName}</h6>
+                  <p className="card-text" style={{color:"#ff3366",fontWeight:"600"}}>${item.price}</p>
+                </div>
+                <div className="d-flex justify-content-between">
+                  <p className="card-text text-secondary m-1">{item.description}</p>
+                  <img src={`${process.env.PUBLIC_URL}/img/Group 33582.svg`} alt="svg"/>
+                </div>
+              </div>
+            </div>
+          </div>
+        
+          </div>
+        </div>
+      </div>
+    ))
+  ) : (
+    <p>No wishlist items found.</p>
+  )}
+</div>
+</div>
                 )}
 
                 {activeTab === "guests" && (
                   <div>
                     <h5>💬 Guest List</h5>
-                    {users.length > 0 ? (
-                      users.map((user) => (
-                        <div key={user.id}>
-                          <p>{user.name}</p>
+                    {guest.length > 0 ? (
+                      guest.map((guest) => (
+                        <div key={guest.id}>
+                          <p>{guest.name}</p>
                         </div>
                       ))
                     ) : (

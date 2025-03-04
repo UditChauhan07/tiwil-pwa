@@ -128,41 +128,47 @@ const Eventlst = () => {
     // If the birthday is in the future
     return `${nextDiffDays} Days Left `;
   };
-  const calculateAge = (eventDate) => {
-    const today = new Date();
-    const targetDate = new Date(eventDate);  // Convert event date into a Date object
-    
-    // Set the target date to the current year
-    targetDate.setFullYear(today.getFullYear());
+
+
+
+
   
-    // Calculate age based on the event date
-    let age = today.getFullYear() - targetDate.getFullYear();
-    age++; // Assuming this event's "birthday" is celebrated this year
-    
-    // If the event date hasn't occurred yet this year, subtract 1 from the age
-    if (today < targetDate) {
-      age;
+  const getUpcomingBirthdayNumber = (eventDate) => {
+    if (!eventDate) return "N/A";  // Handle invalid dates
+  
+    const today = new Date();
+    const birthDate = new Date(eventDate);
+  
+    // Calculate the initial age (number of birthdays already passed)
+    let upcomingBirthday = today.getFullYear() - birthDate.getFullYear();
+  
+    // Check if their birthday hasn't occurred yet this year
+    const thisYearBirthday = new Date(birthDate);
+    thisYearBirthday.setFullYear(today.getFullYear());
+  
+    if (today < thisYearBirthday) {
+      upcomingBirthday--;  // Subtract 1 if the birthday hasn't occurred yet
     }
   
     // Determine the ordinal suffix (1st, 2nd, 3rd, nth)
-    const getOrdinalSuffix = (number) => {
-      const j = number % 10,
-            k = number % 100;
-      if (j === 1 && k !== 11) {
-        return number + "st";
-      }
-      if (j === 2 && k !== 12) {
-        return number + "nd";
-      }
-      if (j === 3 && k !== 13) {
-        return number + "rd";
-      }
-      return number + "th";
-    };
+    return getOrdinalSuffix(upcomingBirthday + 1);  // +1 since we start counting from the 1st birthday
+  };
   
-    // Return the age with the ordinal suffix
-    return getOrdinalSuffix(age);
-  }
+  // Determine the ordinal suffix (1st, 2nd, 3rd, nth)
+  const getOrdinalSuffix = (number) => {
+    const j = number % 10,
+          k = number % 100;
+    if (j === 1 && k !== 11) {
+      return number + "st";
+    }
+    if (j === 2 && k !== 12) {
+      return number + "nd";
+    }
+    if (j === 3 && k !== 13) {
+      return number + "rd";
+    }
+    return number + "th";
+  };
   
   return (
     <>
@@ -188,26 +194,46 @@ const Eventlst = () => {
             <div key={index} style={{ gap: "30px", display: "flex", justifyContent: "center" }}>
               <Card style={{ width: "100%", minWidth: "310px", border: "0.5px solid rgb(229 229 229)", borderRadius: "10px", marginBottom: "10px" }}>
                 <div style={{ height: "150px" }}>
-                  <Card variant="top" style={{
-                    backgroundImage: `url(${
-                      event.image && event.image !== "null" && event.image !== `${process.env.REACT_APP_BASE_URL}/null`
-                        ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
-                        : `${process.env.PUBLIC_URL}/img/eventdefault.png`
-                    })`,
-                    position: "relative",
-                    backgroundRepeat: "no-repeat",
-                    backgroundSize: "cover",
-                    height: "162px",
-                    width: "100%"
-                  }}>
-                    <small className="" style={{ color: "white", paddingRight: "24px", paddingTop: '5px', textAlign: 'end', color: "#ff3366", fontWeight: '600' }}>
-                      {calculateAgeAndBirthdayText(event.date)}
-                    </small>
+                <Card variant="top" style={{ position: "relative", width: "100%", height: "162px" }}>
+  <img
+    src={
+      event.image && event.image !== "null" && event.image !== `${process.env.REACT_APP_BASE_URL}/null`
+        ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
+        : `${process.env.PUBLIC_URL}/img/eventdefault.png`
+    }
+    alt="Event"
+    style={{
+      width: "100%",
+      height: "100%",
+      objectFit: "cover",  // Ensures the image covers the entire area without distortion
+    }}
+  />
+  <div
+    style={{
+      borderRadius: "0px 10px 0px 0px",  // Rounded corners on the right side
+      position: "absolute",  // Absolute positioning within the Card container
+      top: "0px",  // Adjust as needed
+      right: "1px", // Adjust as needed
+      color: "white", // Text color
+      fontSize: "15px", // Text size
+      fontWeight: "bold", // Optional for bold text
+      backgroundColor: "#ff3366", // Optional background for contrast
+      padding: "5px", // Padding for text
+    }}
+  >
+        {calculateAgeAndBirthdayText(event.date)}
+    
+  </div>
+
+
+                    {/* <small className="" style={{ color: "white", paddingRight: "24px", paddingTop: '5px', textAlign: 'end', color: "#ff3366", fontWeight: '600' }}>
+                
+                    </small> */}
                   </Card>
                 </div>
                 <Card.Body>
                   <div className='d-flex'>
-                    <Card.Title>{event.name}  {calculateAge(event.date)} {event.eventType}</Card.Title>
+                    <Card.Title>{event.name}  {getUpcomingBirthdayNumber(event.date)} {event.eventType}</Card.Title>
                   </div>
                   <Card.Text className="d-flex justify-content-between" style={{ gap: "10px" }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>

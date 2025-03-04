@@ -98,7 +98,6 @@ function Profile() {
     }
 
     setLoading(true); // Set loading true while saving the data
-
     try {
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/user-profile`, formData, {
         headers: {
@@ -106,11 +105,11 @@ function Profile() {
           "Content-Type": "multipart/form-data",
         },
       });
-
+    
       if (response.data.success) {
         localStorage.setItem("profileStatus", true);
         Swal.fire({
-          text: 'Profile added successfully ',
+          text: 'Profile added successfully',
           showCancelButton: false,
           confirmButtonText: 'Add family Info',
           confirmButtonColor: '#FF3366',
@@ -129,15 +128,33 @@ function Profile() {
         });
         navigate("/additionalinfo");
       } else {
-        setErrorMessage(response.data.message);
+        // Handle the case where the profile creation is unsuccessful
+        if (response.data.message.includes("duplicate key")) {
+          setErrorMessage("The email address is already in use. Please try a different one.");
+          Swal.fire({
+            icon: 'error',
+            title: 'Duplicate Email',
+            text: 'The email address you have entered is already associated with another account. Please use a different email.',
+            confirmButtonColor: '#FF3366',
+          });
+        } else {
+          setErrorMessage(response.data.message || "An unknown error occurred.");
+        }
       }
     } catch (error) {
-      console.error("Error updating profile:", error);
+      // Handle other errors like network issues, unexpected server responses, etc.
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: error.response?.data?.message || error.message || 'Error updating profile.',
+        confirmButtonColor: '#FF3366',
+      });
+      console.error("Error updating profile:", error.message);
       setErrorMessage("Failed to update profile.");
     } finally {
       setLoading(false); // Set loading false once the operation is done
     }
-  };
+  }    
 
   return (
     <div className={styles.container}>

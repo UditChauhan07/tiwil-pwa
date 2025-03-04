@@ -4,19 +4,18 @@ import Header from "../Header";
 import Navbar from "../navbar";
 import Footer from "../Footer";
 import Swal from "sweetalert2";
-import { useNavigate, useParams ,useLocation} from "react-router-dom";
+import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 
 function WishlistCard() {
-  const location=useLocation();
-  const [selected, setSelected] = useState(""); // Track selected status
-  const [wishlistItem, setWishlistItem] = useState(null); // Wishlist item data
+  const location = useLocation();
   const navigate = useNavigate();
   const { itemId } = useParams();
-  const [Loading,setLoading]=useState(false)
+  const [wishlistItem, setWishlistItem] = useState(null);
+  const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("token");
   const { item } = location.state || {};
-console.log(item)
+
   useEffect(() => {
     const getData = async () => {
       try {
@@ -34,10 +33,8 @@ console.log(item)
     }
   }, [itemId, token]);
 
-  // Handle purchase status change
   const handlePurchase = async (e) => {
     const value = e.target.value;
-    setSelected(value);
     try {
       const response = await axios.put(
         `${process.env.REACT_APP_BASE_URL}/wishlist/${itemId}`,
@@ -51,6 +48,10 @@ console.log(item)
         text: `Wishlist item status updated to: ${value}`,
         confirmButtonColor: "#FF3366",
       });
+
+      if (value === "CreatePool") {
+        handleCreatePool();
+      }
     } catch (err) {
       console.error("Error updating wishlist item:", err);
       Swal.fire({
@@ -61,16 +62,18 @@ console.log(item)
     }
   };
 
-  // Handle Pool Button Click
   const handleCreatePool = async () => {
-    if (status === "Pooling" || status === "Completed") return;
+    if (wishlistItem?.status === "Pooling" || wishlistItem?.status === "Completed") {
+      navigate("/createpool", { state: { item } });
+      return;
+    }
 
     try {
       setLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/pool/create`,
-        { wishId: itemId, totalAmount: item.price },
-        { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+        { wishId: itemId, totalAmount: wishlistItem?.price },
+        { headers: { Authorization: `Bearer ${token}` } }
       );
 
       if (response.data.success) {
@@ -93,7 +96,7 @@ console.log(item)
         ) : (
           <div className="card mb-3 mx-auto m-2" style={{ maxWidth: "720px" }}>
             <div>
-              <img src={`${process.env.PUBLIC_URL}/img/image.png`} alt="image" style={{ width: "-webkit-fill-available" }} />
+              <img src={`${process.env.PUBLIC_URL}/img/image.png`} alt="image" style={{ width: "100%" }} />
             </div>
             <div className="card-body">
               <div className="d-flex justify-content-between align-items-center mb-3">
@@ -104,7 +107,6 @@ console.log(item)
                     onChange={handlePurchase}
                     value={wishlistItem.status || "Unmark"}
                   >
-                     
                     <option value="Unmark">Unmark</option>
                     <option value="Mark">Mark</option>
                     <option value="Purchased">Purchased</option>
