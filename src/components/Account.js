@@ -24,24 +24,24 @@ const Account = () => {
   });
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    const fetchUsers = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests/${eventId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+  // useEffect(() => {
+  //   const token = localStorage.getItem("token");
+  //   const fetchUsers = async () => {
+  //     try {
+  //       const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests/${eventId}`, {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       });
 
-        if (response.data && response.data.data) {
-          setUsers(response.data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
+  //       if (response.data && response.data.data) {
+  //         setUsers(response.data.data);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching users:", error);
+  //     }
+  //   };
 
-    fetchUsers();
-  }, []);
+  //   fetchUsers();
+  // }, []);
 
   useEffect(() => {
     const fetchProfileData = async () => {
@@ -90,6 +90,7 @@ const Account = () => {
       });
       if (response.data.success) {
         alert("Account deleted successfully");
+        localStorage.clear();
         navigate("/signin");
       } else {
         alert("Failed to delete account");

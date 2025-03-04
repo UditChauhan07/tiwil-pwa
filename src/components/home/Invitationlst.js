@@ -41,8 +41,8 @@ function Invitationlst() {
 
     const filtered = invitations.filter(
       (invitation) =>
-        invitation.eventDetails.name.toLowerCase().includes(query) ||
-        invitation.eventDetails.eventType.toLowerCase().includes(query)
+        invitation.event.name.toLowerCase().includes(query) ||
+        invitation.event.eventType.toLowerCase().includes(query)
     );
     setFilteredInvitations(filtered);
   };
@@ -57,10 +57,6 @@ function Invitationlst() {
     });
   };
 
-  if (loading) {
-    return <div>Loading invitations...</div>;
-  }
-
   const formatDateWithCurrentYear = (dateString) => {
     if (!dateString) return "Invalid Date";
     const eventDate = new Date(dateString);
@@ -68,6 +64,10 @@ function Invitationlst() {
     eventDate.setFullYear(currentYear);
     return eventDate.toLocaleDateString("en-GB");
   };
+
+  if (loading) {
+    return <div>Loading invitations...</div>;
+  }
 
   return (
     <div className="containers1 mt-4">
@@ -98,10 +98,10 @@ function Invitationlst() {
                 variant="top"
                 style={{
                   backgroundImage: `url(${
-                    invitation.eventDetails?.image &&
-                    invitation.eventDetails.image !== "null" &&
-                    invitation.eventDetails.image !== `${process.env.REACT_APP_BASE_URL}/null`
-                      ? `${process.env.REACT_APP_BASE_URL}/${invitation.eventDetails.image}`
+                    invitation.event.image &&
+                    invitation.event.image !== "null" &&
+                    invitation.event.image !== `${process.env.REACT_APP_BASE_URL}/null`
+                      ? `${process.env.REACT_APP_BASE_URL}/${invitation.event.image}`
                       : `${process.env.PUBLIC_URL}/img/defaultUser.png`
                   })`,
                   position: "relative",
@@ -114,27 +114,29 @@ function Invitationlst() {
 
               <Card.Body>
                 {/* Event Name */}
-                <Card.Title>{invitation.eventDetails.name}</Card.Title>
+                <Card.Title>{invitation.event.name}</Card.Title>
                 {/* Event Date */}
                 <Card.Text>
                   <small className="text-muted">
-                    Date: {formatDateWithCurrentYear(invitation.eventDetails.date)}
+                    Date: {formatDateWithCurrentYear(invitation.event.date)}
                   </small>
                 </Card.Text>
 
                 {/* Plan and Celebrate Button */}
                 {invitation.invitations.length > 0 && (
-  <Button
-    variant="danger"
-    style={{ backgroundColor: "#FF3366" }}
-    onClick={() =>
-      handleInvitation(invitation.eventDetails.eventId, invitation.invitations[0]._id)
-    }
-  >
-    Plan and Celebrate
-  </Button>
-)}
-
+                  <Button
+                    variant="danger"
+                    style={{ backgroundColor: "#FF3366" }}
+                    onClick={() =>
+                      handleInvitation(
+                        invitation.event.eventId,
+                        invitation.invitations[0]._id
+                      )
+                    }
+                  >
+                    Plan and Celebrate
+                  </Button>
+                )}
               </Card.Body>
             </Card>
           </div>

@@ -17,124 +17,93 @@ const EventDetails = () => {
   const [wishlistItems, setWishlistItems] = useState([]);
   const [events, setEvents] = useState({});
   const [invitationStatus, setInvitationStatus] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
+
   const location = useLocation();
-  const { eventId,phoneNumber } = useParams();
+  const { eventId, phoneNumber } = useParams();
   const navigate = useNavigate();
-  const invitationId = location.state?.invitationId;
+
+  // useEffect(() => {
+  //   const fetchInvitationStatus = async () => {
+  //     setLoading(true);
+  //     try {
+  //       let response;
+  //       if (eventId && phoneNumber) {
+  //         response = await axios.get(`${process.env.REACT_APP_BASE_URL}/updatestatus/${eventId}/${phoneNumber}`);
+  //       } else if (eventId) {
+  //         response = await axios.get(`${process.env.REACT_APP_BASE_URL}/updatestatus/${eventId}`);
+  //       }
+
+  //       if (response?.data?.success) {
+  //         setInvitationStatus(response.data.data.status);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching invitation status:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchInvitationStatus();
+  // }, [eventId, phoneNumber]);
 
   useEffect(() => {
-    if (invitationId) {
-      fetchInvitationStatus(); // For the route where invitationId is passed from state
-    } else if (phoneNumber) {
-      fetchInvitationStatusWithPhoneNumber(); // For the route with phoneNumber in URL
-    } else {
-      fetchInvitationStatus(); // Default logic for invitation status fetch if no phoneNumber
-    }
-  }, [invitationId, phoneNumber]);
-
-
-  const fetchInvitationStatusWithPhoneNumber = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests-status/${eventId}/${phoneNumber}`);
-      if (response.data.success) {
-        setInvitationStatus(response.data.data.status);
-      } else {
-        console.error("Failed to fetch invitation status.");
-      }
-    } catch (error) {
-      console.error("Error fetching invitation status:", error);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-
-  useEffect(() => {
-    const token = localStorage.getItem("token");
     const fetchUsers = async () => {
       try {
+        const token = localStorage.getItem("token");
         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests/${eventId}`, {
           headers: { Authorization: `Bearer ${token}` },
         });
-
-        if (response.data && response.data.data) {
-          setUsers(response.data.data);
-        }
+        setInvitationStatus(response.data.data || []);
       } catch (error) {
         console.error("Error fetching users:", error);
       }
     };
 
     fetchUsers();
-  }, []);
-  const fetchWishlist = async () => {
-    const token = localStorage.getItem("token");
-
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/wishlist/event/${eventId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (response.data.success) {
-        setWishlistItems(response.data.data);
-      }
-    } catch (error) {
-      console.error("Error fetching wishlist:", error);
-    }
-  };
+  }, [eventId]);
 
   useEffect(() => {
+    const fetchWishlist = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/wishlist/event/${eventId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+        setWishlistItems(response.data.data || []);
+      } catch (error) {
+        console.error("Error fetching wishlist:", error);
+      }
+    };
+
     fetchWishlist();
   }, [eventId]);
 
-  // Fetch event details using eventId
   useEffect(() => {
     const fetchEventDetail = async () => {
-      setLoading(true);
-     
-
       try {
         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/events/${eventId}`);
-
         if (response.data.success) {
           setEvents(response.data.data);
-          localStorage.setItem('eventId1', eventId);
-        } else {
-          console.error("Event fetch failed:", response.data.message);
         }
       } catch (error) {
-        console.error("Error fetching event details:", error.response?.data || error.message);
+        console.error("Error fetching event details:", error);
       } finally {
         setLoading(false);
       }
     };
 
-    if (eventId) {
-      fetchEventDetail();
-    }
+    fetchEventDetail();
   }, [eventId]);
 
-  // Fetch invitation status from the backend
-  const fetchInvitationStatus = async () => {
-    const token = localStorage.getItem('token');
-    try {
-      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests-status/${eventId}`, {
-       
-      });
-
-      if (response.data.success) {
-        setInvitationStatus(response.data.data.status);
-      } else {
-        console.error("Failed to fetch invitation status:", response.data.message);
-      }
-    } catch (error) {
-      console.error("Error fetching invitation status:", error);
-    }
+  const formatDateWithCurrentYear = (dateString) => {
+    if (!dateString) return "Invalid Date";
+    const eventDate = new Date(dateString);
+    const currentYear = new Date().getFullYear();
+    eventDate.setFullYear(currentYear);
+    return eventDate.toLocaleDateString("en-GB");
   };
 
-  // Handle Accept Invitation
   const handleAccept = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -149,10 +118,10 @@ const EventDetails = () => {
 
     try {
       const response = await axios.put(
-        `${process.env.REACT_APP_BASE_URL}/invitations/${InvitationId}`,
+        `${process.env.REACT_APP_BASE_URL}/updatestatus/${eventId}`,
         {
           status: "Accepted",
-          phoneNumber: phoneNumber || undefined,  // If phoneNumber is available, send it in the request
+          phoneNumber: phoneNumber || undefined,
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -166,7 +135,7 @@ const EventDetails = () => {
       Swal.fire("Error!", error.response?.data?.message || "Something went wrong", "error");
     }
   };
-  // Handle Decline Invitation
+
   const handleDecline = async () => {
     const token = localStorage.getItem('token');
     if (!token) {
@@ -194,7 +163,7 @@ const EventDetails = () => {
             `${process.env.REACT_APP_BASE_URL}/invitations/${eventId}`,
             {
               status: "Declined",
-              phoneNumber: phoneNumber || undefined,  // Include phoneNumber if present
+              phoneNumber: phoneNumber || undefined,
             }
           );
           if (response.data.success) {
@@ -202,12 +171,12 @@ const EventDetails = () => {
             Swal.fire("Declined", "You have declined the invitation.", "success");
           }
         } catch (error) {
-          Swal.fire("Error!", error.response?.data?.message || "Something went wrong", "error");
+          Swal.fire("Error!", error.response?.message || "Something went wrong", "error");
         }
       }
     });
   };
-  // Handle Start Chat
+
   const handleStartChat = async () => {
     const token = localStorage.getItem("token");
     try {
@@ -216,41 +185,29 @@ const EventDetails = () => {
         { eventId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
       if (response.data.success) {
-        // Navigate to the existing or newly created chat
         navigate(`/chats/${response.data.chat.groupId}`);
       }
     } catch (error) {
       console.error("❌ Error starting chat:", error.response?.data || error.message);
     }
   };
-  const formatDateWithCurrentYear = (dateString) => {
-    if (!dateString) return "Invalid Date";
-    const eventDate = new Date(dateString);
-    const currentYear = new Date().getFullYear();
-    eventDate.setFullYear(currentYear);
 
-    return eventDate.toLocaleDateString("en-GB");
-  };
   const handleClick = (item) => {
     // Check if the status is "Purchased" or "Marked"
     if (item.status === "Purchased" || item.status === "Marked") {
-      // Check if the current user is the one who marked or purchased it
       if (item.userId === currentUserId) {
-        // Allow the user to open the item
         navigate(`/wishlistdetails/${item._id}`, { state: { item } });
       } else {
-        // Show an alert that the user cannot view this item
         alert("You cannot open this item because it has already been purchased or marked by someone else.");
       }
     } else if (item.status === "Unmark" || item.status === "CreatePool") {
-      // Allow opening for "Unmark" and "CreatePool" items
       navigate(`/wishlistdetails/${item._id}`, { state: { item } });
     }
   };
 
-console.log(wishlistItems)
+  if (loading) return <div style={{display:'flex',justifyContent:'center', marginTop:'50%'}}>Loading...</div>;
+
   return (
     <>
       <section className="page-controls">
@@ -266,23 +223,22 @@ console.log(wishlistItems)
 
           <div className="mt-3">
             <img
-              src={`${process.env.PUBLIC_URL}/img/SplashScreen2img.png`}
-              className="img-fluid rounded"
-              alt="Event"
-              height="100px"
-              width="100px"
-            />
+              src={
+    events.image && events.image !== "null" && events.image !== `${process.env.REACT_APP_BASE_URL}/null`
+      ? `${process.env.REACT_APP_BASE_URL}/${events.image}`
+      : `${process.env.PUBLIC_URL}/img/eventdefault.png`
+  }
+  alt="event"
+  className="img-fluid"
+  style={{ width: "100%", height: "300px", objectFit: "cover", borderRadius: "10px" }} 
+/>
           </div>
 
           {events && (
             <div>
               <h2 className="mt-3 fw-bold">{events.name}</h2>
               <ul className="nav nav-tabs mt-3">
-                {[
-                  "details",
-                  invitationStatus === "Accepted" ? "wishlist" : null,
-                  invitationStatus === "Accepted" ? "guests" : null,
-                ]
+                {[ "details", invitationStatus === "Accepted" ? "wishlist" : null, invitationStatus === "Accepted" ? "guests" : null ]
                   .filter((tab) => tab !== null)
                   .map((tab) => (
                     <li className="nav-item" key={tab}>
@@ -307,6 +263,7 @@ console.log(wishlistItems)
                       <span className="bg-danger text-white p-2 rounded me-2">📍</span>
                       {events.location || "Location not available"}
                     </p>
+                    <p className="d-flex align-items-center">{events.description}</p>
 
                     {invitationStatus === "Pending" || invitationStatus === "Invited" || null || !invitationStatus ? (
                       <div className="text-center mt-4 d-flex gap-1">
@@ -328,53 +285,31 @@ console.log(wishlistItems)
                       <h5 >Show All</h5>
                     </div>
                     <div className="wishlist-items">
-  {wishlistItems.length > 0 ? (
-    wishlistItems.map((item) => (
-      <div key={item._id}>
-        <div className="row">
-          <div className="col-lg-4 col-md-6 col-sm-12" style={{marginBottom:'10px'}}>
-            <div className="card" style={{ backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/${item.imageUrl})`, position: "relative", backgroundRepeat: "no-repeat", backgroundSize: "cover" }}>
-              <div className="card-img-top" style={{height:"226px"}}>
-                <div className="d-flex justify-content-end m-2">
-                  <p className="card-text status d-flex justify-content-center" style={{background:"cornsilk"}}>{item.status}</p>
-                </div>
-              </div>
-              <div onClick={() => handleClick(item)} style={{ cursor: 'pointer' }}>
-              <div className="card-body cards11">
-                <div className="d-flex justify-content-between" style={{paddingTop:"11px"}}>
-                  <h6 className="card-title" style={{color:"black"}}>{item.giftName}</h6>
-                  <p className="card-text" style={{color:"#ff3366",fontWeight:"600"}}>${item.price}</p>
-                </div>
-                <div className="d-flex justify-content-between">
-                  <p className="card-text text-secondary m-1">{item.description}</p>
-                  <img src={`${process.env.PUBLIC_URL}/img/Group 33582.svg`} alt="svg"/>
-                </div>
-              </div>
-            </div>
-          </div>
-          {/* Move the onClick handler here, within the item */}
-          </div>
-        </div>
-      </div>
-    ))
-  ) : (
-    <p>No wishlist items found.</p>
-  )}
-</div>
-</div>
+                      {wishlistItems.length > 0 ? (
+                        wishlistItems.map((item) => (
+                          <div key={item._id} className="wishlist-item" onClick={() => handleClick(item)}>
+                            <h6 className="wishlist-item-name">{item.name}</h6>
+                            <p className="wishlist-item-status">{item.status}</p>
+                          </div>
+                        ))
+                      ) : (
+                        <p>No wishlist items found</p>
+                      )}
+                    </div>
+                  </div>
                 )}
 
                 {activeTab === "guests" && (
                   <div>
-                    <h5>👥 Guest List</h5>
+                    <h5>💬 Guest List</h5>
                     {users.length > 0 ? (
-                      <ul>
-                        {users.map((g) => (
-                          <li key={g._id}>{g.name}</li>
-                        ))}
-                      </ul>
+                      users.map((user) => (
+                        <div key={user.id}>
+                          <p>{user.name}</p>
+                        </div>
+                      ))
                     ) : (
-                      <p>No guests yet.</p>
+                      <p>No guests invited yet</p>
                     )}
                   </div>
                 )}
@@ -383,7 +318,6 @@ console.log(wishlistItems)
           )}
         </div>
       </section>
-      <Footer />
     </>
   );
 };
