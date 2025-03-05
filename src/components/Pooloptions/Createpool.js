@@ -6,6 +6,7 @@ import { Button, Form } from "react-bootstrap";
 import { FaArrowRight } from "react-icons/fa";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import InviteModal from "../GuestInvite/PoolguestModal";
 
 function PoolingWish() {
   const { wishId } = useParams();
@@ -13,6 +14,7 @@ function PoolingWish() {
   const [pool, setPool] = useState(null);
   const [loading, setLoading] = useState(false);
   const [contributionAmount, setContributionAmount] = useState(""); // Dynamic input amount
+  const [showInviteModal, setShowInviteModal] = useState(false);
   const userId = localStorage.getItem("userId");
 
   // Fetching pool data which includes contributors
@@ -108,7 +110,7 @@ function PoolingWish() {
 
       {/* Image Section */}
      
-     <div style={{position:'absolute'}}> <div className="text-center">
+     <div > <div className="text-center">
         <img
           src={`${process.env.PUBLIC_URL}/img/userimage3.jpg`}
           alt="Berlin Trip"
@@ -116,10 +118,10 @@ function PoolingWish() {
         />
       </div>
 
-      <div className="d-flex justify-content-between align-items-center mt-4" style={{position:'relative'}}>
+      <div className="d-flex  align-items-center mt-4" style={{position:'absolute', top:'150px',backgroundColor:'#fff',borderRadius:'20px', opacity:'0.8',gap:'10px',margin:'12px',width:'80%',height:'20%'}}>
       {/* Circular Progress Bar */}
       <div className="d-flex justify-content-center my-4">
-        <div style={{ width: "150px", height: "150px" }}>
+        <div style={{ width: "50px", height: "70px" }}>
           <CircularProgressbar
             value={percentage}
             text={`${percentage.toFixed(0)}%`}
@@ -134,12 +136,12 @@ function PoolingWish() {
       </div>
 
       {/* Contribution Details */}
-      <div className="text-center">
-        <h6 className="fw-bold">
-          Total Amount: <strong>&#8377;{totalAmount}</strong>
+      <div className="text-center"  >
+        <h6 className="">
+          Total Amount: &#8377;{totalAmount}
         </h6>
         <h6 className="text-muted">
-          Collected: <strong>&#8377;{collectedAmount}</strong>
+          Collected: &#8377;{collectedAmount}
         </h6>
         <h6 className="text-danger">
           Pending: <strong>&#8377;{totalAmount - collectedAmount}</strong>
@@ -205,22 +207,49 @@ function PoolingWish() {
       )}
 
       {/* Contributors List */}
-      <div className="mt-4">
-        <h2>Contributors</h2>
-        <ul>
-          {otherContributors.map((contributor) => (
-            <li key={contributor.userId}>
-              <span><img  src={
-    contributor.profileImage && contributor.profileImage !== "null" && contributor.image !== `${process.env.REACT_APP_BASE_URL}/null`
-      ? `${process.env.REACT_APP_BASE_URL}/${contributor.profileImage}`
-      : `${process.env.PUBLIC_URL}/img/eventdefault.png`
-  }  alt='image'/></span><span>{contributor.name}</span>: <span>&#8377;{contributor.amount}</span>
-              
-            </li>
-          ))}
-        </ul>
-        <button style={{padding:'6px',background:'#ff3366',borderRadius:'20px'}}>Invite Member</button>
+      {/* Contributors List */}
+<div className="mt-4">
+  <h2>Contributors</h2>
+  {otherContributors.length > 0 ? (
+    <>
+      <ul>
+        {otherContributors.map((contributor) => (
+          <li key={contributor.userId}>
+            <span>
+              <img  
+                src={
+                  contributor.profileImage && contributor.profileImage !== "null" && 
+                  contributor.image !== `${process.env.REACT_APP_BASE_URL}/null`
+                    ? `${process.env.REACT_APP_BASE_URL}/${contributor.profileImage}`
+                    : `${process.env.PUBLIC_URL}/img/eventdefault.png`
+                }  
+                alt="image" 
+                style={{ width: "30px", height: "30px", borderRadius: "50%", marginRight: "10px" }}
+              />
+            </span>
+            <span>{contributor.name}</span>: <span>&#8377;{contributor.amount}</span>
+          </li>
+        ))}
+      </ul>
+      
+      {/* Buttons for contributors */}
+      <div className="d-flex gap-2 mt-3">
+        <button style={{ padding: "6px", background: "#ff3366", borderRadius: "20px" }}  onClick={() => setShowInviteModal(true)}>
+          Add More
+        </button>
+        <button style={{ padding: "6px", background: "#007bff", borderRadius: "20px", color: "#fff" }}>
+          Start Chat
+        </button>
       </div>
+    </>
+  ) : (
+    <button style={{ padding: "6px", background: "#ff3366", borderRadius: "20px" }}  onClick={() => setShowInviteModal(true)}>
+      Invite Member
+    </button>
+  )}
+  <InviteModal wishId={wishId} show={showInviteModal} setShow={setShowInviteModal} />
+</div>
+
     </div>
   );
 }
