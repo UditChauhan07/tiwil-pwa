@@ -109,62 +109,62 @@ const ChatRoom = () => {
   };
 
   // ✅ Handle Media Upload
-const handleMediaChange = (e) => {
-  const file = e.target.files[0];
-  if (file) {
-    setMediaFile(file);
-  }
-};
-
-const handleNewMessage = (message) => {
-  // ✅ Skip adding the message if the sender is the current user
-  if (message.senderId._id !== currentUserId) {
-    setMessages((prev) => [...prev, message]);
-  }
-};
-
-
-// ✅ Send Message
-const handleSendMessage = async () => {
-  if (!newMessage.trim() && !mediaFile) return;
-
-  const formData = new FormData();
-  formData.append("content", newMessage);
-  formData.append("messageType", mediaFile ? mediaFile.type.split("/")[0] : "text");
-  if (mediaFile) {
-    formData.append("media", mediaFile);
-  }
-
-  try {
-    const response = await axios.post(
-      `${process.env.REACT_APP_BASE_URL}/chats/${groupId}/messages`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
-        },
-      }
-    );
-
-    if (response.data.success) {
-      // ✅ Remove direct state update here
-      // Instead, the message will be automatically handled by the socket listener
-      setNewMessage("");
-      setMediaFile(null);
-      scrollToBottom();
+  const handleMediaChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setMediaFile(file);
     }
-  } catch (error) {
-    console.error("❌ Error sending message:", error);
-  }
-};
+  };
 
+  const handleNewMessage = (message) => {
+    // ✅ Skip adding the message if the sender is the current user
+    if (message.senderId._id !== currentUserId) {
+      setMessages((prev) => [...prev, message]);
+    }
+  };
+
+  // ✅ Send Message
+  const handleSendMessage = async () => {
+    if (!newMessage.trim() && !mediaFile) return;
+
+    const formData = new FormData();
+    formData.append("content", newMessage);
+    formData.append(
+      "messageType",
+      mediaFile ? mediaFile.type.split("/")[0] : "text"
+    );
+    if (mediaFile) {
+      formData.append("media", mediaFile);
+    }
+
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/chats/${groupId}/messages`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      if (response.data.success) {
+        // ✅ Remove direct state update here
+        // Instead, the message will be automatically handled by the socket listener
+        setNewMessage("");
+        setMediaFile(null);
+        scrollToBottom();
+      }
+    } catch (error) {
+      console.error("❌ Error sending message:", error);
+    }
+  };
 
   return (
     <div className={styles.chatRoomContainer}>
       {eventDetails && (
         <div className={styles.eventInfo}>
-           
           <FiArrowLeft
             className={styles.backIcon}
             onClick={() => navigate("/chats")}
@@ -178,9 +178,16 @@ const handleSendMessage = async () => {
             alt="Event"
             className={styles.eventImage}
           />
-          <div className={styles.eventText}  onClick={() => navigate(`/group/${groupId}/details`)}>
-            <h2 style={{fontSize:'15px',margin:'5px'}}>{eventDetails.eventName}</h2>
-            <p style={{marginTop:'10px'}}>Me and {eventDetails.totalMembers - 1} members</p>
+          <div
+            className={styles.eventText}
+            onClick={() => navigate(`/group/${groupId}/details`)}
+          >
+            <h2 style={{ fontSize: "15px", margin: "5px" }}>
+              {eventDetails.eventName}
+            </h2>
+            <p style={{ marginTop: "10px" }}>
+              Me and {eventDetails.totalMembers - 1} members
+            </p>
           </div>
           <FiSearch className={styles.searchIcon} />
         </div>
@@ -195,136 +202,134 @@ const handleSendMessage = async () => {
         {messages.length === 0 && !loading && (
           <p>No messages yet. Start the conversation!</p>
         )}
-       {messages.map((msg) => {
-  const isCurrentUser = msg.senderId._id === currentUserId;
-  return (
-    <div
-      key={msg._id}
-      className={
-        isCurrentUser ? styles.sentMessage : styles.receivedMessage
-      }
-    >
-      {/* ✅ Sender Info */}
-      <div className={styles.messageHeader}>
-        <img
-          src={
-            msg.senderProfileImage
-              ? `${process.env.REACT_APP_BASE_URL}${msg.senderProfileImage}`
-              : "/assets/ProfilDefaulticon.png"
-          }
-          alt="Profile"
-          className={styles.profileImage}
-        />
-        <span className={styles.senderName}>
-          {isCurrentUser ? "You" : msg.senderId?.fullName || "Unknown"}
-        </span>
-      </div>
+        {messages.map((msg) => {
+          const isCurrentUser = msg.senderId._id === currentUserId;
+          return (
+            <div
+              key={msg._id}
+              className={
+                isCurrentUser ? styles.sentMessage : styles.receivedMessage
+              }
+            >
+              {/* ✅ Sender Info */}
+              <div className={styles.messageHeader}>
+                <img
+                  src={
+                    msg.senderProfileImage
+                      ? `${process.env.REACT_APP_BASE_URL}${msg.senderProfileImage}`
+                      : "/assets/ProfilDefaulticon.png"
+                  }
+                  alt="Profile"
+                  className={styles.profileImage}
+                />
+                <span className={styles.senderName}>
+                  {isCurrentUser ? "You" : msg.senderId?.fullName || "Unknown"}
+                </span>
+              </div>
 
-      {/* ✅ Render Different Message Types */}
-      <div className={styles.messageBubble}>
-        {msg.messageType === "text" && (
-          <p className={styles.messageText}>{msg.content}</p>
-        )}
+              {/* ✅ Render Different Message Types */}
+              <div className={styles.messageBubble}>
+                {msg.messageType === "text" && (
+                  <p className={styles.messageText}>{msg.content}</p>
+                )}
 
-{msg.messageType === "image" && (
-  <img
-    src={`${process.env.REACT_APP_BASE_URL}${msg.mediaUrl}`}
-    alt="Sent Image"
-    className={styles.chatMediaImage}
-  />
-)}
+                {msg.messageType === "image" && (
+                  <img
+                    src={`${process.env.REACT_APP_BASE_URL}${msg.mediaUrl}`}
+                    alt="Sent Image"
+                    className={styles.chatMediaImage}
+                  />
+                )}
 
-{msg.messageType === "video" && (
-  <video
-    src={`${process.env.REACT_APP_BASE_URL}${msg.mediaUrl}`}
-    controls
-    className={styles.chatMediaVideo}
-  />
-)}
+                {msg.messageType === "video" && (
+                  <video
+                    src={`${process.env.REACT_APP_BASE_URL}${msg.mediaUrl}`}
+                    controls
+                    className={styles.chatMediaVideo}
+                  />
+                )}
 
-{msg.messageType === "audio" && (
-  <audio
-    src={`${process.env.REACT_APP_BASE_URL}${msg.mediaUrl}`}
-    controls
-    className={styles.chatMediaAudio}
-  />
-)}
+                {msg.messageType === "audio" && (
+                  <audio
+                    src={`${process.env.REACT_APP_BASE_URL}${msg.mediaUrl}`}
+                    controls
+                    className={styles.chatMediaAudio}
+                  />
+                )}
 
-
-        {/* ✅ Timestamp */}
-        <span className={styles.messageTime}>
-          {new Date(msg.timestamp).toLocaleTimeString([], {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
-        </span>
-      </div>
-    </div>
-  );
-})}
+                {/* ✅ Timestamp */}
+                <span className={styles.messageTime}>
+                  {new Date(msg.timestamp).toLocaleTimeString([], {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                  })}
+                </span>
+              </div>
+            </div>
+          );
+        })}
 
         <div ref={messagesEndRef} />
       </div>
 
-     <div className={styles.inputContainer}>
-  {/* ✅ Media Upload Button */}
-  <label htmlFor="mediaUpload" className={styles.mediaButton}>
-    📎
-  </label>
-  <input
-    id="mediaUpload"
-    type="file"
-    accept="image/*,video/*,audio/*"
-    onChange={handleMediaChange}
-    className={styles.fileInput}
-  />
+      <div className={styles.inputContainer}>
+        {/* ✅ Media Upload Button */}
+        <label htmlFor="mediaUpload" className={styles.mediaButton}>
+          📎
+        </label>
+        <input
+          id="mediaUpload"
+          type="file"
+          accept="image/*,video/*,audio/*"
+          onChange={handleMediaChange}
+          className={styles.fileInput}
+        />
 
-  {/* ✅ Media Preview */}
-  {mediaFile && (
-    <div className={styles.mediaPreview}>
-      {mediaFile.type.startsWith("image") && (
-        <img
-          src={URL.createObjectURL(mediaFile)}
-          alt="Preview"
-          className={styles.previewImage}
+        {/* ✅ Media Preview */}
+        {mediaFile && (
+          <div className={styles.mediaPreview}>
+            {mediaFile.type.startsWith("image") && (
+              <img
+                src={URL.createObjectURL(mediaFile)}
+                alt="Preview"
+                className={styles.previewImage}
+              />
+            )}
+            {mediaFile.type.startsWith("video") && (
+              <video
+                src={URL.createObjectURL(mediaFile)}
+                className={styles.previewVideo}
+                controls
+              />
+            )}
+            {mediaFile.type.startsWith("audio") && (
+              <audio src={URL.createObjectURL(mediaFile)} controls />
+            )}
+            <button
+              className={styles.removeMedia}
+              onClick={() => setMediaFile(null)}
+            >
+              ❌
+            </button>
+          </div>
+        )}
+
+        {/* ✅ Text Input */}
+        <input
+          type="text"
+          placeholder="Type a message..."
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
+          className={styles.chatInput}
         />
-      )}
-      {mediaFile.type.startsWith("video") && (
-        <video
-          src={URL.createObjectURL(mediaFile)}
-          className={styles.previewVideo}
-          controls
-        />
-      )}
-      {mediaFile.type.startsWith("audio") && (
-        <audio src={URL.createObjectURL(mediaFile)} controls />
-      )}
-      <button
-        className={styles.removeMedia}
-        onClick={() => setMediaFile(null)}
-      >
-        ❌
-      </button>
+
+        {/* ✅ Send Button */}
+        <button onClick={handleSendMessage} className={styles.sendButton}>
+          Send
+        </button>
+      </div>
     </div>
-  )}
-
-  {/* ✅ Text Input */}
-  <input
-    type="text"
-    placeholder="Type a message..."
-    value={newMessage}
-    onChange={(e) => setNewMessage(e.target.value)}
-    onKeyDown={(e) => e.key === "Enter" && handleSendMessage()}
-    className={styles.chatInput}
-  />
-
-  {/* ✅ Send Button */}
-  <button onClick={handleSendMessage} className={styles.sendButton}>
-    Send
-  </button>
-</div>
-</div>
-
   );
 };
 

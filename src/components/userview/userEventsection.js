@@ -309,7 +309,7 @@ const EventDetails = () => {
                     </p>
                     <p className="d-flex align-items-center">{events.description}</p>
 
-                    {invitationStatus === "Pending" || invitationStatus === "Invited" || null || !invitationStatus ? (
+                    {invitationStatus === "Pending" || invitationStatus === "invited" || null || !invitationStatus ? (
                       <div className="text-center mt-4 d-flex gap-1">
                         <button className="btn btn-danger w-30" onClick={handleAccept}>ACCEPT</button>
                         <button className="btn w-30" style={{ border: "1px solid" }} onClick={handleDecline}>DECLINE</button>
