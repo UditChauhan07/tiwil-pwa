@@ -12,56 +12,28 @@ function PoolingWish() {
   const navigate = useNavigate();
   const [pool, setPool] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [contributors, setContributors] = useState([]); // Contributors state
   const [contributionAmount, setContributionAmount] = useState(""); // Dynamic input amount
   const userId = localStorage.getItem("userId");
 
-  // Fetching pool data
+  // Fetching pool data which includes contributors
   useEffect(() => {
     const fetchPoolData = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/pool/${wishId}`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
-        setPool(response.data.data);
+
+        if (response.data.success) {
+          setPool(response.data.data);
+        } else {
+          console.error("Error fetching pool data");
+        }
       } catch (err) {
         console.error("Error fetching pool data:", err);
       }
     };
 
     fetchPoolData();
-  }, [wishId]);
-
-  // Fetching and combining contributors
-  useEffect(() => {
-    const fetchContributors = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/pool/contributors/${wishId}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        });
-
-        if (response.data.success) {
-          const combinedContributors = response.data.data.reduce((acc, contributor) => {
-            const existingContributor = acc.find(
-              (c) => c.userId._id === contributor.userId._id
-            );
-            if (existingContributor) {
-              existingContributor.amount += contributor.amount;
-            } else {
-              acc.push({ ...contributor });
-            }
-            return acc;
-          }, []);
-          setContributors(combinedContributors);
-        } else {
-          console.log("Error fetching contributors");
-        }
-      } catch (err) {
-        console.log("Error fetching contributors:", err);
-      }
-    };
-
-    fetchContributors();
   }, [wishId]);
 
   const handleSaveContribution = async () => {
@@ -91,20 +63,33 @@ function PoolingWish() {
 
   if (!pool) return <div className="text-center mt-5">Loading pool data...</div>;
 
-  const { totalAmount, collectedAmount, status } = pool;
+  const { totalAmount, collectedAmount, status, contributors } = pool;
   const percentage = (collectedAmount / totalAmount) * 100;
 
   // Check if the pool is completed
   const isPoolCompleted = totalAmount === collectedAmount;
 
+  // Combine contributions for the same user (aggregate the amounts)
+  const aggregatedContributors = contributors.reduce((acc, contributor) => {
+    const existingContributor = acc.find(
+      (c) => c.userId === contributor.userId
+    );
+    if (existingContributor) {
+      existingContributor.amount += contributor.amount;
+    } else {
+      acc.push({ ...contributor });
+    }
+    return acc;
+  }, []);
+
   // Find the user's own contribution
-  const myContribution = contributors.find(
-    (contributor) => contributor.userId._id === userId
+  const myContribution = aggregatedContributors.find(
+    (contributor) => contributor.userId === userId
   );
 
   // Filter out the user's contribution from the contributors list
-  const otherContributors = contributors.filter(
-    (contributor) => contributor.userId._id !== userId
+  const otherContributors = aggregatedContributors.filter(
+    (contributor) => contributor.userId !== userId
   );
 
   return (
@@ -122,7 +107,8 @@ function PoolingWish() {
       </div>
 
       {/* Image Section */}
-      <div className="text-center">
+     
+     <div style={{position:'absolute'}}> <div className="text-center">
         <img
           src={`${process.env.PUBLIC_URL}/img/userimage3.jpg`}
           alt="Berlin Trip"
@@ -130,6 +116,7 @@ function PoolingWish() {
         />
       </div>
 
+      <div className="d-flex justify-content-between align-items-center mt-4" style={{position:'relative'}}>
       {/* Circular Progress Bar */}
       <div className="d-flex justify-content-center my-4">
         <div style={{ width: "150px", height: "150px" }}>
@@ -157,8 +144,7 @@ function PoolingWish() {
         <h6 className="text-danger">
           Pending: <strong>&#8377;{totalAmount - collectedAmount}</strong>
         </h6>
-      </div>
-
+      </div></div></div>
       {/* If pool is completed, show message and don't allow further contributions */}
       {isPoolCompleted ? (
         <div className="text-center my-4">
@@ -173,7 +159,9 @@ function PoolingWish() {
       ) : (
         <>
           {/* Contribution Input */}
-          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+          <div
+            style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
+          >
             <h6>My Contribution</h6>
             <Form.Group className="mt-3" style={{ width: "70px" }}>
               <Form.Control
@@ -221,11 +209,17 @@ function PoolingWish() {
         <h2>Contributors</h2>
         <ul>
           {otherContributors.map((contributor) => (
-            <li key={contributor.userId._id}>
-              <span>{contributor.userId._id}</span>: <span>&#8377;{contributor.amount}</span>
+            <li key={contributor.userId}>
+              <span><img  src={
+    contributor.profileImage && contributor.profileImage !== "null" && contributor.image !== `${process.env.REACT_APP_BASE_URL}/null`
+      ? `${process.env.REACT_APP_BASE_URL}/${contributor.profileImage}`
+      : `${process.env.PUBLIC_URL}/img/eventdefault.png`
+  }  alt='image'/></span><span>{contributor.name}</span>: <span>&#8377;{contributor.amount}</span>
+              
             </li>
           ))}
         </ul>
+        <button style={{padding:'6px',background:'#ff3366',borderRadius:'20px'}}>Invite Member</button>
       </div>
     </div>
   );

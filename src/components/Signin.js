@@ -3,6 +3,9 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
+import PhoneInput from "react-phone-number-input";
+import "react-phone-number-input/style.css"; // Ensure you include the styles
+
 const SignInForm = () => {
   const [formData, setFormData] = useState({
     phoneNumber: "",
@@ -114,6 +117,7 @@ const SignInForm = () => {
       setIsLoading(false); // Stop loading
     }
   };
+  
 
   return (
     <section className="page-controls">
@@ -142,13 +146,11 @@ const SignInForm = () => {
                 <label htmlFor="phone" className="form-label">
                   Phone
                 </label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="phoneNumber"
-                  name="phoneNumber"
+                <PhoneInput
+                  international
+                  defaultCountry="IN" // You can change this default country if needed
                   value={formData.phoneNumber}
-                  onChange={handleChange}
+                  onChange={(value) => setFormData({ ...formData, phoneNumber: value })}
                   placeholder="Enter phone number"
                   required
                 />

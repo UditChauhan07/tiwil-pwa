@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import Swal from 'sweetalert2';
 import { Link } from "react-router-dom";
+import PhoneInput from 'react-phone-number-input';
+import 'react-phone-number-input/style.css';
 
 const SignUpForm = () => {
   const [formData, setFormData] = useState({
@@ -83,88 +85,87 @@ const SignUpForm = () => {
   };
 
   return (
-    <>
-      <section className="page-controls">
-        <div className="container d-flex flex-column align-items-center justify-content-center ">
-          <div className="text-center mb-4">
-            <img  src={`${process.env.PUBLIC_URL}/img/TiwilLOGO1.png`} alt="logo" height={"200px"} width={"200px"} />
-            <h2 className="font-weight-bold mt-3">Welcome</h2>
-            <p className="text-muted">Connect with your friends today!</p>
-            <h1 className="fw-bold" style={{ fontFamily: "Poppins, sans-serif" }}>Sign Up</h1>
-          </div>
-
-          <div className="w-100 p-4 rounded shadow-sm" style={{ maxWidth: "400px", backgroundColor: "#fff" }}>
-            {!isOtpSent ? (
-              <form onSubmit={handleSendOTP}>
-                <div className="mb-3">
-                  <label htmlFor="fullName" className="form-label">Full Name</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleChange}
-                    placeholder="Enter full name"
-                    required
-                  />
-                </div>
-                <div className="mb-3">
-                  <label htmlFor="phoneNumber" className="form-label">Phone</label>
-                  <input
-                    type="tel"
-                    className="form-control"
-                    name="phoneNumber"
-                    value={formData.phoneNumber}
-                    onChange={handleChange}
-                    placeholder="Enter phone"
-                    required
-                  />
-                </div>
-                <button type="submit" className="btn btn-danger w-100 py-2 mb-3" disabled={loading}>
-                  {loading ? (
-                    <>
-                      <span className="spinner-border spinner-border-sm me-2" role="status"></span>
-                      Sending OTP...
-                    </>
-                  ) : (
-                    "Send OTP"
-                  )}
-                </button>
-              </form>
-            ) : (
-              <form onSubmit={handleVerifyOTP}>
-                <div className="mb-3">
-                  <label htmlFor="otp" className="form-label">OTP</label>
-                  <input
-                    type="text"
-                    className="form-control"
-                    name="otp"
-                    value={formData.otp}
-                    onChange={handleChange}
-                    placeholder="Enter OTP"
-                    required
-                  />
-                </div>
-                <button type="submit" className="btn btn-danger w-100 py-2 mb-3" disabled={loading}>
-                  {loading ? (
-                    <>
-                      <span className="spinner-border spinner-border-sm me-2" role="status"></span>
-                      Verifying OTP...
-                    </>
-                  ) : (
-                    "Verify OTP"
-                  )}
-                </button>
-              </form>
-            )}
-          </div>
-
-          <p className="text-muted mt-3">
-            Already registered? <Link to="/signin" className="text-primary fw-semibold text-decoration-none">Sign In</Link>
-          </p>
+    <section className="page-controls">
+      <div className="container d-flex flex-column align-items-center justify-content-center ">
+        <div className="text-center mb-4">
+          <img  src={`${process.env.PUBLIC_URL}/img/TiwilLOGO1.png`} alt="logo" height={"200px"} width={"200px"} />
+          <h2 className="font-weight-bold mt-3">Welcome</h2>
+          <p className="text-muted">Connect with your friends today!</p>
+          <h1 className="fw-bold" style={{ fontFamily: "Poppins, sans-serif" }}>Sign Up</h1>
         </div>
-      </section>
-    </>
+
+        <div className="w-100 p-4 rounded shadow-sm" style={{ maxWidth: "400px", backgroundColor: "#fff" }}>
+          {!isOtpSent ? (
+            <form onSubmit={handleSendOTP}>
+              <div className="mb-3">
+                <label htmlFor="fullName" className="form-label">Full Name</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  placeholder="Enter full name"
+                  required
+                />
+              </div>
+              <div className="mb-3">
+                <label htmlFor="phoneNumber" className="form-label">Phone</label>
+                <PhoneInput
+                  international
+                  countryCallingCodeEditable={false}
+                  defaultCountry="IN"
+                  value={formData.phoneNumber}
+                  onChange={(value) => setFormData({ ...formData, phoneNumber: value })}
+                  className="form-control"
+                  placeholder="Enter phone"
+                  required style={{display:'flex'}}
+                />
+              </div>
+              <button type="submit" className="btn btn-danger w-100 py-2 mb-3" disabled={loading}>
+                {loading ? (
+                  <>
+                    <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+                    Sending OTP...
+                  </>
+                ) : (
+                  "Send OTP"
+                )}
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleVerifyOTP}>
+              <div className="mb-3">
+                <label htmlFor="otp" className="form-label">OTP</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  name="otp"
+                  value={formData.otp}
+                  onChange={handleChange}
+                  placeholder="Enter OTP"
+                  required
+                />
+              </div>
+              <button type="submit" className="btn btn-danger w-100 py-2 mb-3" disabled={loading}>
+                {loading ? (
+                  <>
+                    <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+                    Verifying OTP...
+                  </>
+                ) : (
+                  "Verify OTP"
+                )}
+              </button>
+            </form>
+          )}
+        </div>
+
+        <p className="text-muted mt-3">
+          Already registered? <Link to="/signin" className="text-primary fw-semibold text-decoration-none">Sign In</Link>
+        </p>
+      </div>
+    </section>
   );
 };
 

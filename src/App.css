@@ -45,3 +45,24 @@ body {
     transform: rotate(360deg);
   }
 }
+.PhoneInputCountry select {
+  width: 20% !important;
+  max-width: 20px !important;
+}
+.PhoneInputCountry select option {
+  font-size: 10px !important;
+}
+select.PhoneInputCountrySelect {
+  width: 20% !important;
+  max-width: 20px !important;
+  font-size: 10px !important;
+}
+option{
+  width: 20% !important;
+  max-width: 20px !important;
+  font-size: 10px !important;
+}
+.PhoneInputCountrySelect {
+  border :1px solid red !important ;
+  font-size: 10px !important;
+}
