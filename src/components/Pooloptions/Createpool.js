@@ -12,9 +12,11 @@ function PoolingWish() {
   const navigate = useNavigate();
   const [pool, setPool] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [contributors, setContributors] = useState([]); // Contributors state
   const [contributionAmount, setContributionAmount] = useState(""); // Dynamic input amount
   const userId = localStorage.getItem("userId");
 
+  // Fetching pool data
   useEffect(() => {
     const fetchPoolData = async () => {
       try {
@@ -28,6 +30,38 @@ function PoolingWish() {
     };
 
     fetchPoolData();
+  }, [wishId]);
+
+  // Fetching and combining contributors
+  useEffect(() => {
+    const fetchContributors = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/pool/contributors/${wishId}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+
+        if (response.data.success) {
+          const combinedContributors = response.data.data.reduce((acc, contributor) => {
+            const existingContributor = acc.find(
+              (c) => c.userId._id === contributor.userId._id
+            );
+            if (existingContributor) {
+              existingContributor.amount += contributor.amount;
+            } else {
+              acc.push({ ...contributor });
+            }
+            return acc;
+          }, []);
+          setContributors(combinedContributors);
+        } else {
+          console.log("Error fetching contributors");
+        }
+      } catch (err) {
+        console.log("Error fetching contributors:", err);
+      }
+    };
+
+    fetchContributors();
   }, [wishId]);
 
   const handleSaveContribution = async () => {
@@ -46,7 +80,7 @@ function PoolingWish() {
 
       if (response.data.success) {
         Swal.fire("Success!", "Your contribution has been saved.", "success");
-        navigate(`/createpool/${poolId}`);
+        navigate(`/createpool/${wishId}`);
       }
     } catch (error) {
       console.error("Error saving contribution:", error);
@@ -57,15 +91,31 @@ function PoolingWish() {
 
   if (!pool) return <div className="text-center mt-5">Loading pool data...</div>;
 
-  const { totalAmount, collectedAmount, status, contributors } = pool;
+  const { totalAmount, collectedAmount, status } = pool;
   const percentage = (collectedAmount / totalAmount) * 100;
-  const contributionExists = contributors.some(contributor => contributor.userId === userId);
+
+  // Check if the pool is completed
+  const isPoolCompleted = totalAmount === collectedAmount;
+
+  // Find the user's own contribution
+  const myContribution = contributors.find(
+    (contributor) => contributor.userId._id === userId
+  );
+
+  // Filter out the user's contribution from the contributors list
+  const otherContributors = contributors.filter(
+    (contributor) => contributor.userId._id !== userId
+  );
 
   return (
     <div className="container mt-3">
       {/* Back Button */}
       <div className="d-flex align-items-center mb-3">
-        <span className="me-2" onClick={() => navigate(-1)} style={{ cursor: "pointer" }}>
+        <span
+          className="me-2"
+          onClick={() => navigate(-1)}
+          style={{ cursor: "pointer" }}
+        >
           &larr;
         </span>
         <h5 className="mb-0">Pooling Wish</h5>
@@ -79,7 +129,7 @@ function PoolingWish() {
           className="img-fluid rounded"
         />
       </div>
-      <div style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
+
       {/* Circular Progress Bar */}
       <div className="d-flex justify-content-center my-4">
         <div style={{ width: "150px", height: "150px" }}>
@@ -98,41 +148,84 @@ function PoolingWish() {
 
       {/* Contribution Details */}
       <div className="text-center">
-        <h6 className="fw-bold">Total Amount: <strong>&#8377;{totalAmount}</strong></h6>
-        <h6 className="text-muted">Collected: <strong>&#8377;{collectedAmount}</strong></h6>
-        <h6 className="text-danger">Pending: <strong>&#8377;{totalAmount - collectedAmount}</strong></h6>
+        <h6 className="fw-bold">
+          Total Amount: <strong>&#8377;{totalAmount}</strong>
+        </h6>
+        <h6 className="text-muted">
+          Collected: <strong>&#8377;{collectedAmount}</strong>
+        </h6>
+        <h6 className="text-danger">
+          Pending: <strong>&#8377;{totalAmount - collectedAmount}</strong>
+        </h6>
       </div>
-</div>
-<div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-<h6 className="">My Contribution</h6>
-      {/* Contribution Input */}
-      <Form.Group className="mt-3" style={{ width: "70px" }}>
-      
-        <Form.Control
-          type="number"
-          placeholder="&#8377;"
-          value={contributionAmount}
-          onChange={(e) => {
-      let value = parseFloat(e.target.value);
-      if (value > (totalAmount - collectedAmount)) {
-        Swal.fire("Error", `You cannot contribute more than &#8377;${totalAmount - collectedAmount}`, "error");
-        value = totalAmount - collectedAmount;
-      }
-      setContributionAmount(value);
-    }}
-        />
-      </Form.Group>
-</div>
-      {/* Pool Invites Button */}
-      <div className="mt-4 text-center">
-        <Button
-          variant="danger"
-          className="w-100 py-2 d-flex align-items-center justify-content-center"
-          onClick={handleSaveContribution}
-         
-        >
-          {loading ? "Processing..." : "Contribute"} <FaArrowRight className="ms-2" />
-        </Button>
+
+      {/* If pool is completed, show message and don't allow further contributions */}
+      {isPoolCompleted ? (
+        <div className="text-center my-4">
+          <h4>Pool is Completed</h4>
+          {/* Show My Contribution */}
+          {myContribution && (
+            <div>
+              <h6>My Contribution: &#8377;{myContribution.amount}</h6>
+            </div>
+          )}
+        </div>
+      ) : (
+        <>
+          {/* Contribution Input */}
+          <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+            <h6>My Contribution</h6>
+            <Form.Group className="mt-3" style={{ width: "70px" }}>
+              <Form.Control
+                type="number"
+                placeholder="&#8377;"
+                value={contributionAmount}
+                onChange={(e) => {
+                  let value = parseFloat(e.target.value);
+                  if (value > totalAmount - collectedAmount) {
+                    Swal.fire(
+                      "Error",
+                      `You cannot contribute more than &#8377;${totalAmount - collectedAmount}`,
+                      "error"
+                    );
+                    value = totalAmount - collectedAmount;
+                  }
+                  setContributionAmount(value);
+                }}
+              />
+            </Form.Group>
+          </div>
+
+          {/* Save Contribution Button */}
+          <div className="mt-4 text-center">
+            <Button
+              variant="danger"
+              className="w-100 py-2 d-flex align-items-center justify-content-center"
+              onClick={handleSaveContribution}
+            >
+              {loading ? "Processing..." : "Contribute"} <FaArrowRight className="ms-2" />
+            </Button>
+          </div>
+        </>
+      )}
+
+      {/* Show My Contribution separately */}
+      {myContribution && !isPoolCompleted && (
+        <div className="mt-4">
+          <h6 className="fw-bold">My Contribution: &#8377;{myContribution.amount}</h6>
+        </div>
+      )}
+
+      {/* Contributors List */}
+      <div className="mt-4">
+        <h2>Contributors</h2>
+        <ul>
+          {otherContributors.map((contributor) => (
+            <li key={contributor.userId._id}>
+              <span>{contributor.userId._id}</span>: <span>&#8377;{contributor.amount}</span>
+            </li>
+          ))}
+        </ul>
       </div>
     </div>
   );
