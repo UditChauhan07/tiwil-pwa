@@ -129,7 +129,7 @@ function PoolingWish() {
           variant="danger"
           className="w-100 py-2 d-flex align-items-center justify-content-center"
           onClick={handleSaveContribution}
-          disabled={loading || contributionExists}
+         
         >
           {loading ? "Processing..." : "Contribute"} <FaArrowRight className="ms-2" />
         </Button>
