@@ -23,7 +23,7 @@ const EventDetails = () => {
   const { eventId, phoneNumber } = useParams();
   const navigate = useNavigate();
   const currentUserId=localStorage.getItem('userId')
-
+const token=localStorage.getItem('token')
   // useEffect(() => {
   //   const fetchInvitationStatus = async () => {
   //     setLoading(true);
@@ -221,11 +221,13 @@ const EventDetails = () => {
       console.error("❌ Error starting chat:", error.response?.data || error.message);
     }
   };
-  const handleClick = (item) => {
+  const handleClick = async (item) => {
     const isPurchasedOrMarked = item.status === "Purchased" || item.status === "Mark";
     const isUnmarked = item.status === "Unmark";
     const isPooling = item.status === "Pooling";
     const isOwner = item.userId === currentUserId;
+    const loggedInUserId = localStorage.getItem("userId");
+    const wishId = item._id;
   
     if (isPurchasedOrMarked) {
       if (isOwner) {
@@ -241,13 +243,44 @@ const EventDetails = () => {
     } else if (isUnmarked) {
       navigate(`/wishlistdetails/${item._id}`, { state: { item } });
     } else if (isPooling) {
-      if (isOwner) {
-        navigate(`/createpool/${item._id}`, { state: { item } });
-      } else {
-        navigate(`/createpool/${item._id}`, { state: { item } });
+      try {
+        const token = localStorage.getItem("token");
+  
+        if (!token) {
+          console.error("No token found in localStorage");
+          Swal.fire({
+            title: "Unauthorized",
+            text: "You must be logged in to access this feature.",
+            icon: "error",
+            confirmButtonColor: "#FF3366",
+          });
+          return;
+        }
+  
+        const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests/userId/${wishId}`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+  
+        const userIdString = loggedInUserId?.toString();
+
+        if (data.guestUsers?.some(user => user.userId.toString() === userIdString)) 
+          {
+          navigate(`/createpool/${item._id}`, { state: { item } });
+        } else {
+          Swal.fire({
+            title: "Access Denied",
+            text: "Only invited guests can access this pooling item.",
+            icon: "error",
+            confirmButtonColor: "#FF3366",
+          });
+        }
+      } catch (error) {
+        console.error("Error:", error);
       }
     }
   };
+  
+  
   
 
   if (loading) return <div style={{display:'flex',justifyContent:'center', marginTop:'50%'}}>Loading...</div>;

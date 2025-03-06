@@ -15,6 +15,9 @@ function PoolingWish() {
   const [loading, setLoading] = useState(false);
   const [contributionAmount, setContributionAmount] = useState(""); // Dynamic input amount
   const [showInviteModal, setShowInviteModal] = useState(false);
+  const [poolId, setPoolId] = useState(null);
+  const [userStatus, setUserStatus] = useState(null);
+  const [poolCreator,setpoolCreator]=useState(null) // For tracking user status (pending/declined)
   const userId = localStorage.getItem("userId");
 
   // Fetching pool data which includes contributors
@@ -27,6 +30,8 @@ function PoolingWish() {
 
         if (response.data.success) {
           setPool(response.data.data);
+          setPoolId(response.data.data._id);
+          setpoolCreator(response.data.data.userId)
         } else {
           console.error("Error fetching pool data");
         }
@@ -38,9 +43,40 @@ function PoolingWish() {
     fetchPoolData();
   }, [wishId]);
 
+  // Fetching the user's status
+  useEffect(() => {
+    const fetchUserStatus = async () => {
+      try {
+        const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests/userId/${wishId}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+
+        const loggedInUserId = localStorage.getItem("userId");
+
+        // Check if the user is in the guest list and find their status
+        const guest = data.guestUsers.find(user => user.userId === loggedInUserId);
+        if (guest) {
+          setUserStatus(guest.status);
+        }
+      } catch (err) {
+        console.error("Error fetching user status:", err);
+      }
+    };
+
+    fetchUserStatus();
+  }, [wishId]);
+
   const handleSaveContribution = async () => {
     if (!contributionAmount || contributionAmount <= 0) {
       Swal.fire("Error", "Please enter a valid contribution amount.", "error");
+      return;
+    }
+
+    if (userStatus === "pending") {
+      Swal.fire("Error", "Please accept the pool invitation first.", "error");
+      return;
+    } else if (userStatus === "declined") {
+      Swal.fire("Error", "You have declined the invitation. You can't contribute. Want to send a request to the pool admin?", "error");
       return;
     }
 
@@ -65,17 +101,14 @@ function PoolingWish() {
 
   if (!pool) return <div className="text-center mt-5">Loading pool data...</div>;
 
-  const { totalAmount, collectedAmount, status, contributors } = pool;
+  const { totalAmount, collectedAmount, status, contributors, ownerId } = pool;
   const percentage = (collectedAmount / totalAmount) * 100;
-
-  // Check if the pool is completed
   const isPoolCompleted = totalAmount === collectedAmount;
+  const isOwner = poolCreator === userId; // Check if the current user is the pool owner
 
-  // Combine contributions for the same user (aggregate the amounts)
+  // Filter contributors
   const aggregatedContributors = contributors.reduce((acc, contributor) => {
-    const existingContributor = acc.find(
-      (c) => c.userId === contributor.userId
-    );
+    const existingContributor = acc.find(c => c.userId === contributor.userId);
     if (existingContributor) {
       existingContributor.amount += contributor.amount;
     } else {
@@ -84,12 +117,9 @@ function PoolingWish() {
     return acc;
   }, []);
 
-  // Find the user's own contribution
   const myContribution = aggregatedContributors.find(
     (contributor) => contributor.userId === userId
   );
-
-  // Filter out the user's contribution from the contributors list
   const otherContributors = aggregatedContributors.filter(
     (contributor) => contributor.userId !== userId
   );
@@ -109,8 +139,7 @@ function PoolingWish() {
       </div>
 
       {/* Image Section */}
-     
-     <div > <div className="text-center">
+      <div className="text-center">
         <img
           src={`${process.env.PUBLIC_URL}/img/userimage3.jpg`}
           alt="Berlin Trip"
@@ -118,40 +147,37 @@ function PoolingWish() {
         />
       </div>
 
-      <div className="d-flex  align-items-center mt-4" style={{position:'absolute', top:'150px',backgroundColor:'#fff',borderRadius:'20px', opacity:'0.8',gap:'10px',margin:'12px',width:'80%',height:'20%'}}>
-      {/* Circular Progress Bar */}
-      <div className="d-flex justify-content-center my-4">
-        <div style={{ width: "50px", height: "70px" }}>
-          <CircularProgressbar
-            value={percentage}
-            text={`${percentage.toFixed(0)}%`}
-            styles={buildStyles({
-              pathColor: `#ff3366`,
-              textColor: "#ff3366",
-              trailColor: "#d6d6d6",
-              textSize: "16px",
-            })}
-          />
+      <div className="d-flex align-items-center mt-4" style={{position:'absolute', top:'102px',backgroundColor:'#fff',borderRadius:'20px', opacity:'0.8',gap:'10px',margin:'12px',width:'80%',height:'20%'}}>
+        {/* Circular Progress Bar */}
+        <div className="d-flex justify-content-center my-4">
+          <div style={{ width: "50px", height: "70px" }}>
+            <CircularProgressbar
+              value={percentage}
+              text={`${percentage.toFixed(0)}%`}
+              styles={buildStyles({
+                pathColor: `#ff3366`,
+                textColor: "#ff3366",
+                trailColor: "#d6d6d6",
+                textSize: "16px",
+              })}
+            />
+          </div>
+        </div>
+
+        {/* Contribution Details */}
+        <div className="text-center">
+          <h6>Total Amount: &#8377;{totalAmount}</h6>
+          <h6 className="text-muted">Collected: &#8377;{collectedAmount}</h6>
+          <h6 className="text-danger">
+            Pending: <strong>&#8377;{totalAmount - collectedAmount}</strong>
+          </h6>
         </div>
       </div>
 
-      {/* Contribution Details */}
-      <div className="text-center"  >
-        <h6 className="">
-          Total Amount: &#8377;{totalAmount}
-        </h6>
-        <h6 className="text-muted">
-          Collected: &#8377;{collectedAmount}
-        </h6>
-        <h6 className="text-danger">
-          Pending: <strong>&#8377;{totalAmount - collectedAmount}</strong>
-        </h6>
-      </div></div></div>
       {/* If pool is completed, show message and don't allow further contributions */}
       {isPoolCompleted ? (
         <div className="text-center my-4">
           <h4>Pool is Completed</h4>
-          {/* Show My Contribution */}
           {myContribution && (
             <div>
               <h6>My Contribution: &#8377;{myContribution.amount}</h6>
@@ -182,6 +208,7 @@ function PoolingWish() {
                   }
                   setContributionAmount(value);
                 }}
+                disabled={userStatus === "pending" || userStatus === "declined"} // Disable input if status is pending or declined
               />
             </Form.Group>
           </div>
@@ -192,6 +219,7 @@ function PoolingWish() {
               variant="danger"
               className="w-100 py-2 d-flex align-items-center justify-content-center"
               onClick={handleSaveContribution}
+              disabled={userStatus === "pending" || userStatus === "declined"} // Disable button if status is pending or declined
             >
               {loading ? "Processing..." : "Contribute"} <FaArrowRight className="ms-2" />
             </Button>
@@ -207,49 +235,58 @@ function PoolingWish() {
       )}
 
       {/* Contributors List */}
-      {/* Contributors List */}
-<div className="mt-4">
-  <h2>Contributors</h2>
-  {otherContributors.length > 0 ? (
-    <>
-      <ul>
-        {otherContributors.map((contributor) => (
-          <li key={contributor.userId}>
-            <span>
-              <img  
-                src={
-                  contributor.profileImage && contributor.profileImage !== "null" && 
-                  contributor.image !== `${process.env.REACT_APP_BASE_URL}/null`
-                    ? `${process.env.REACT_APP_BASE_URL}/${contributor.profileImage}`
-                    : `${process.env.PUBLIC_URL}/img/eventdefault.png`
-                }  
-                alt="image" 
-                style={{ width: "30px", height: "30px", borderRadius: "50%", marginRight: "10px" }}
-              />
-            </span>
-            <span>{contributor.name}</span>: <span>&#8377;{contributor.amount}</span>
-          </li>
-        ))}
-      </ul>
-      
-      {/* Buttons for contributors */}
-      <div className="d-flex gap-2 mt-3">
-        <button style={{ padding: "6px", background: "#ff3366", borderRadius: "20px" }}  onClick={() => setShowInviteModal(true)}>
-          Add More
-        </button>
-        <button style={{ padding: "6px", background: "#007bff", borderRadius: "20px", color: "#fff" }}>
-          Start Chat
-        </button>
+      <div className="mt-4">
+        <h2>Contributors</h2>
+        {otherContributors.length > 0 ? (
+          <>
+            <ul>
+              {otherContributors.map((contributor) => (
+                <li key={contributor.userId}>
+                  <span>
+                    <img
+                      src={
+                        contributor.profileImage && contributor.profileImage !== "null" && 
+                        contributor.image !== `${process.env.REACT_APP_BASE_URL}/null`
+                          ? `${process.env.REACT_APP_BASE_URL}/${contributor.profileImage}`
+                          : `${process.env.PUBLIC_URL}/img/eventdefault.png`
+                      }
+                      alt="image"
+                      style={{ width: "30px", height: "30px", borderRadius: "50%", marginRight: "10px" }}
+                    />
+                  </span>
+                  <span>{contributor.name}</span>: <span>&#8377;{contributor.amount}</span>
+                </li>
+              ))}
+            </ul>
+            {/* Buttons for contributors */}
+            {isOwner && (
+              <div className="d-flex gap-2 mt-3">
+                <button
+                  style={{ padding: "6px", background: "#ff3366", borderRadius: "20px" }}
+                  onClick={() => setShowInviteModal(true)}
+                >
+                  Add More
+                </button>
+                <button
+                  style={{ padding: "6px", background: "#007bff", borderRadius: "20px", color: "#fff" }}
+                >
+                  Start Chat
+                </button>
+              </div>
+            )}
+          </>
+        ) : (
+          isOwner && (
+            <button
+              style={{ padding: "6px", background: "#ff3366", borderRadius: "20px" }}
+              onClick={() => setShowInviteModal(true)}
+            >
+              Invite Member
+            </button>
+          )
+        )}
+        <InviteModal wishId={wishId} show={showInviteModal} poolId={poolId} setShow={setShowInviteModal} />
       </div>
-    </>
-  ) : (
-    <button style={{ padding: "6px", background: "#ff3366", borderRadius: "20px" }}  onClick={() => setShowInviteModal(true)}>
-      Invite Member
-    </button>
-  )}
-  <InviteModal wishId={wishId} show={showInviteModal} setShow={setShowInviteModal} />
-</div>
-
     </div>
   );
 }

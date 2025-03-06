@@ -2,26 +2,31 @@ import React, { useState, useEffect } from "react";
 import { Modal, Button } from "react-bootstrap";
 import { FaCheckCircle, FaCircle } from "react-icons/fa";
 import axios from "axios";
-import { useParams } from "react-router-dom";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
-const InviteModal = ({ show, setShow, wishId,activeTab }) => {
+const InviteModal = ({ show, setShow, wishId,poolId }) => {
   const [selectedInvites, setSelectedInvites] = useState([]);
   const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   const token = localStorage.getItem("token");
-console.log(wishId,'wishId')
+
+  console.log("📌 Modal Opened with Wish ID:", wishId);
+
   // Fetch users when modal opens
   useEffect(() => {
     if (!show) return; // Prevent fetching if modal is closed
 
     const fetchUsers = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/accepted-guests/${wishId}`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/accepted-guests/${wishId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
+        console.log("🟢 Users fetched:", response.data.data);
         setUsers(response.data.data || []);
       } catch (error) {
         console.error("❌ Failed to fetch users:", error);
@@ -29,29 +34,73 @@ console.log(wishId,'wishId')
     };
 
     fetchUsers();
-  }, [token, show]);
+  }, [token, show, wishId]);
 
-  // Send notification to selected users
-  const sendNotification = async () => {
-    if (selectedInvites.length === 0) return;
+  // Toggle invite selection
+  const toggleInvite = (userId) => {
+    if (!userId) {
+      console.error("❌ Invalid user ID:", userId);
+      return;
+    }
 
+    setSelectedInvites((prev) => {
+      const updatedInvites = prev.includes(userId)
+        ? prev.filter((item) => item !== userId) // Remove if already selected
+        : [...prev, userId]; // Add if not selected
+
+      console.log("✅ Updated selectedInvites:", updatedInvites);
+      return updatedInvites;
+    });
+  };
+
+  // Handle sending invites
+  const handleSendInvite = async () => {
+    console.log("📌 Current selectedInvites before sending:", selectedInvites);
+
+    if (selectedInvites.length === 0) {
+      Swal.fire({
+        title: "Error",
+        text: "Please select at least one valid guest.",
+        icon: "error",
+      });
+      return;
+    }
+
+    console.log("📤 Sending Invite with:", {
+      poolId,
+      wishId,
+      invitedUserIds: selectedInvites.filter(Boolean), // Remove null values
+    });
+console.log(poolId)
     try {
       const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/send-invitation-notification`,
+        `${process.env.REACT_APP_BASE_URL}/pool/invite`,
         {
-          userId: selectedInvites, // the selected invitees
-          eventId, // the event ID
+          poolId,
+          wishId,
+          invitedUserIds: selectedInvites.filter(Boolean), // Remove null values
         },
         {
-          headers: {
-            Authorization: `Bearer ${token}`, // Authorization header with Bearer token
-          },
+          headers: { Authorization: `Bearer ${token}` },
         }
       );
 
-      console.log("✅ Notification sent:", response.data);
+      Swal.fire({
+        title: "Invites sent successfully",
+        text: response.data.message,
+        icon: "success",
+      });
+
+      console.log("✅ Invite sent successfully:", response.data);
+      setShow(false); // Close modal
+      setSelectedInvites([]); // Reset selection
     } catch (error) {
-      console.error("❌ Error sending notification:", error);
+      console.error("❌ Error sending invite:", error.response?.data || error.message);
+      Swal.fire({
+        title: "Error",
+        text: "Failed to send invites. Please try again.",
+        icon: "error",
+      });
     }
   };
 
@@ -59,79 +108,6 @@ console.log(wishId,'wishId')
   const filteredUsers = users.filter((user) =>
     user.fullName.toLowerCase().includes(searchQuery.toLowerCase())
   );
-
-  // Toggle invite selection
-  const toggleInvite = (id) => {
-    setSelectedInvites((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
-    );
-  };
-
-  // Handle sending invites
-  const handleSendInvite = async () => {
-    if (selectedInvites.length === 0) {
-      alert("Please select at least one guest.");
-      return;
-    }
-
-    // Prepare the data by fetching additional user details like fullName and phoneNumber
-    const guestDetails = users
-      .filter((user) => selectedInvites.includes(user._id))
-      .map((user) => ({
-        userId:'user._id',
-    // Add phoneNumber here
-      }));
-
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/guests/invite`,
-        {
-         guestDetails,  // Send the full guest data (not just userId)
-
-          wishId,  // Include the eventId
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,  // Include token in the header
-          },
-        }
-      );
-      setShow(false);
-Swal.fire({
-  title: "Invites sent successfully",
-  text: "Your guests have been invited to the event.",
-  icon: "success",
-
-})
-      console.log("✅ Invite sent successfully:", response.data);
-
-      await sendNotification(); // Send notification after invite
-
-     // Close modal
-      setSelectedInvites([]); // Reset selection
-    } catch (error) {
-      console.error("❌ Error sending invite:", error);
-    }
-  };
-  const handleStartChat = async () => {
-    const token = localStorage.getItem("token");
-    try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/chats/group`,
-        { eventId },
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
-  
-      if (response.data.success) {
-        // Navigate to the existing or newly created chat
-        navigate(`/chats/${response.data.chat.groupId}`);
-
-      }
-    } catch (error) {
-      console.error("❌ Error starting chat:", error.response?.data || error.message);
-    }
-  };
-
 
   return (
     <Modal show={show} onHide={() => setShow(false)} centered size="md">
@@ -158,7 +134,7 @@ Swal.fire({
           ) : (
             filteredUsers.map((user) => (
               <div
-                key={user._id}
+                key={user.userId}
                 className="user-item d-flex justify-content-between align-items-center py-2 border-bottom"
               >
                 <div className="user-info d-flex align-items-center">
@@ -166,10 +142,14 @@ Swal.fire({
                 </div>
                 <Button
                   variant="link"
-                  onClick={() => toggleInvite(user._id)}
-                  style={{ color: selectedInvites.includes(user._id) ? "green" : "gray", display: "flex", justifyContent: "end" }}
+                  onClick={() => toggleInvite(user.userId)}
+                  style={{
+                    color: selectedInvites.includes(user.userId) ? "green" : "gray",
+                    display: "flex",
+                    justifyContent: "end",
+                  }}
                 >
-                  {selectedInvites.includes(user._id) ? <FaCheckCircle /> : <FaCircle />}
+                  {selectedInvites.includes(user.userId) ? <FaCheckCircle /> : <FaCircle />}
                 </Button>
               </div>
             ))
@@ -181,10 +161,13 @@ Swal.fire({
         <Button variant="secondary" onClick={() => setShow(false)}>
           Close
         </Button>
-        <Button variant="primary" style={{ backgroundColor: "#ff3366" }} onClick={handleSendInvite}>
+        <Button
+          variant="primary"
+          style={{ backgroundColor: "#ff3366" }}
+          onClick={handleSendInvite}
+        >
           Send Invite
         </Button>
-      
       </Modal.Footer>
     </Modal>
   );
