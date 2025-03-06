@@ -104,7 +104,8 @@ function PoolingWish() {
   const { totalAmount, collectedAmount, status, contributors, ownerId } = pool;
   const percentage = (collectedAmount / totalAmount) * 100;
   const isPoolCompleted = totalAmount === collectedAmount;
-  const isOwner = poolCreator === userId; // Check if the current user is the pool owner
+  const isOwner = String(poolCreator) === String(userId);
+ // Check if the current user is the pool owner
 
   // Filter contributors
   const aggregatedContributors = contributors.reduce((acc, contributor) => {
