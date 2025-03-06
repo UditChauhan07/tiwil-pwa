@@ -76,7 +76,59 @@ function PoolingWish() {
       Swal.fire("Error", "Please accept the pool invitation first.", "error");
       return;
     } else if (userStatus === "declined") {
-      Swal.fire("Error", "You have declined the invitation. You can't contribute. Want to send a request to the pool admin?", "error");
+      Swal.fire({
+        title: "Access Denied",
+        text: "Invited users can contribute to the pool!wana contribute click OK",
+        icon: "error",
+        showCancelButton: true,  // Show the Cancel button
+        confirmButtonText: "OK",
+        cancelButtonText: "Cancel",
+        confirmButtonColor: "#FF3366",
+      }).then(async (result) => {
+        if (result.isConfirmed) {
+          // If the user clicked "OK"
+          try {
+            const itemId = wishId;
+            const response = await axios.post(
+              `${process.env.REACT_APP_BASE_URL}/request`, // Replace with your actual API endpoint
+              { itemId}, // Sending userId in the body
+              {
+                headers: {
+                  Authorization: `Bearer ${localStorage.getItem("token")}`, 
+                },
+              }
+            );
+      
+            if (response.data.success) {
+              Swal.fire({
+                title: "Request Sent!",
+                text: "Your request has been sent to the pool admin.",
+                icon: "success",
+                confirmButtonColor: "#FF3366",
+              });
+            } else {
+              Swal.fire({
+                title: "Error!",
+                text: "There was an issue sending the request.",
+                icon: "error",
+                confirmButtonColor: "#FF3366",
+              });
+            }
+          } catch (error) {
+            Swal.fire({
+              title: "Error!",
+              text: "An error occurred while sending the request.",
+              icon: "error",
+              confirmButtonColor: "#FF3366",
+            });
+          }
+        } else if (result.isDismissed) {
+          // If the user clicked "Cancel"
+          console.log("User canceled the action.");
+          // You can optionally navigate back or do some other action
+        }
+      });
+      
       return;
     }
 
@@ -99,6 +151,35 @@ function PoolingWish() {
     }
   };
 
+  // const sendRequestToAdmin = async () => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  
+  //     await axios.post(
+  //       `${process.env.REACT_APP_BASE_URL}/request`,
+  //       { wishId, userId: userIdString },
+  //       {
+  //         headers: { Authorization: `Bearer ${token}` },
+  //       }
+  //     );
+  
+  //     Swal.fire({
+  //       title: "Request Sent",
+  //       text: "Your request to join the pool has been sent to the admin.",
+  //       icon: "success",
+  //       confirmButtonColor: "#3085d6",
+  //     });
+  //   } catch (error) {
+  //     console.error("Error sending request:", error);
+  //     Swal.fire({
+  //       title: "Error",
+  //       text: "Could not send request to admin. Please try again later.",
+  //       icon: "error",
+  //       confirmButtonColor: "#FF3366",
+  //     });
+  //   }
+  // };
+  
   if (!pool) return <div className="text-center mt-5">Loading pool data...</div>;
 
   const { totalAmount, collectedAmount, status, contributors, ownerId } = pool;

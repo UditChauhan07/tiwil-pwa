@@ -37,7 +37,7 @@ function WishlistCard() {
     const value = e.target.value;
     try {
       const response = await axios.put(
-        `${process.env.REACT_APP_BASE_URL}/wishlist/${itemId}`,
+        `${process.env.REACT_APP_BASE_URL}/update-status/${itemId}`,
         { status: value },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -49,9 +49,7 @@ function WishlistCard() {
         confirmButtonColor: "#FF3366",
       });
 
-      if (value === "CreatePool") {
-        handleCreatePool();
-      }
+      
     } catch (err) {
       console.error("Error updating wishlist item:", err);
       Swal.fire({
@@ -63,10 +61,7 @@ function WishlistCard() {
   };
 
   const handleCreatePool = async () => {
-    if (wishlistItem?.status === "Pooling" || wishlistItem?.status === "Completed") {
-      navigate("/createpool", { state: { item } });
-      return;
-    }
+   
 
     try {
       setLoading(true);
@@ -75,9 +70,9 @@ function WishlistCard() {
         { wishId: itemId, totalAmount: wishlistItem?.price },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-
+      const wishId=itemId
       if (response.data.success) {
-        navigate("/createpool", { state: { item } });
+        navigate(`/createpool/${wishId}`, { state: { item } });
       }
     } catch (error) {
       console.error("❌ Error creating pool:", error);
