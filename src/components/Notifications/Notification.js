@@ -30,7 +30,7 @@ const handleAccept = async (requestId, requesterId) => {
     const token = localStorage.getItem("token");
 
     await axios.put(
-      `${process.env.REACT_APP_BASE_URL}/request/${requestId}/respond`,
+      `${process.env.REACT_APP_BASE_URL}/request/${requestId}`,
       { status: "accepted", requesterId }, // Sending requesterId._id in the request body
       {
         headers: { Authorization: `Bearer ${token}` },
@@ -55,7 +55,7 @@ const handleDecline = async (requestId, requesterId) => {
     const token = localStorage.getItem("token");
 
     await axios.put(
-      `${process.env.REACT_APP_BASE_URL}/request/${requestId}/respond`,
+      `${process.env.REACT_APP_BASE_URL}/request/${requestId}`,
       { status: "declined", requesterId }, // Sending requesterId._id in the request body
       {
         headers: { Authorization: `Bearer ${token}` },

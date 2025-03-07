@@ -40,5 +40,15 @@
       To begin the development, run `npm start` or `yarn start`.
       To create a production bundle, use `npm run build` or `yarn build`.
     -->
+    <script>
+      const beamsClient = new PusherPushNotifications.Client({
+        instanceId: '6418d11f-092e-4d42-a1eb-c186711139eb',
+      });
+    
+      beamsClient.start()
+        .then(() => beamsClient.addDeviceInterest('hello'))
+        .then(() => console.log('Successfully registered and subscribed!'))
+        .catch(console.error);
+    </script>
   </body>
 </html>

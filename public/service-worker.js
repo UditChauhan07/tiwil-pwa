@@ -1,6 +1,7 @@
 // service-worker.js
 
 // Cache versioning
+importScripts("https://js.pusher.com/beams/service-worker.js");
 const CACHE_NAME = 'v1'; // Current version of cache
 
 // Install event - caching assets for offline use
@@ -44,4 +45,24 @@ self.addEventListener('fetch', (event) => {
       return cachedResponse || fetch(event.request);
     })
   );
+});
+self.addEventListener("push", (event) => {
+  const data = event.data.json(); // Get push notification data
+  const options = {
+    body: data.body, // Set notification body
+    icon: '/icons/icon-192x192.png', // Your app's icon
+    badge: '/icons/icon-192x192.png', // Badge image (optional)
+  };
+
+  event.waitUntil(
+    self.registration.showNotification(data.title, options) // Display the notification
+  );
+});
+
+// Handling notification clicks
+self.addEventListener("notificationclick", (event) => {
+  event.notification.close();
+
+  // Open a new window or tab if the notification is clicked
+  event.waitUntil(clients.openWindow(event.notification.data.url));
 });
