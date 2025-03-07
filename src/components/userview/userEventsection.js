@@ -230,85 +230,105 @@ const EventDetails = () => {
       );
     }
   };
-  const handleClick = async (item) => {
-    const isPurchasedOrMarked =
-      item.status === "Purchased" || item.status === "Mark";
-    const isUnmarked = item.status === "Unmark";
-    const isPooling = item.status === "Pooling";
-    const isOwner = owner === currentUserId;
+//   const handleClick = async (item) => {
+//     const isPurchasedOrMarked =
+//       item.status === "Purchased" || item.status === "Mark";
+//     const isUnmarked = item.status === "Unmark";
+//     const isPooling = item.status === "Pooling";
+//     const isOwner = owner === currentUserId;
     
-    const wishId = item._id;
-console.log(owner)
-console.log(currentUserId)
-console.log(isOwner)
-    if (isPurchasedOrMarked) {
-      if (isOwner) {
-        navigate(`/wishlistdetails/${item._id}`, { state: { item } });
-      } else {
+//     const wishId = item._id;
+// console.log(owner)
+// console.log(currentUserId)
+// console.log(isOwner)
+//     if (isPurchasedOrMarked) {
+//       if (isOwner) {
+//         navigate(`/wishlistdetails/${item._id}`, { state: { item } });
+//       } else {
+//         Swal.fire({
+//           title: "Error",
+//           text: "Someone already wants to purchase it or it has already been purchased.",
+//           icon: "warning",
+//           confirmButtonColor: "#FF3366",
+//         });
+//       }
+//     } 
+    
+const handleClick = async (item) => {
+  const isPurchasedOrMarked =
+    item.status === "Purchased" || item.status === "Mark";
+  const isUnmarked = item.status === "Unmark";
+  const isPooling = item.status === "Pooling";
+  const isOwner = owner === currentUserId;
+  
+  const wishId = item._id;
+
+  if (isPurchasedOrMarked) {
+    if (isOwner) {
+      navigate(`/wishlistdetails/${item._id}`, { state: { item } });
+    } else {
+      Swal.fire({
+        title: "Error",
+        text: "Someone already wants to purchase it or it has already been purchased.",
+        icon: "warning",
+        confirmButtonColor: "#FF3366",
+      });
+    }
+  } else if (isUnmarked) {
+    navigate(`/wishlistdetails/${item._id}`, { state: { item } });
+  } else if (isPooling) {
+    try {
+      const token = localStorage.getItem("token");
+
+      if (!token) {
+        console.error("No token found in localStorage");
         Swal.fire({
-          title: "Error",
-          text: "Someone already wants to purchase it or it has already been purchased.",
-          icon: "warning",
+          title: "Unauthorized",
+          text: "You must be logged in to access this feature.",
+          icon: "error",
           confirmButtonColor: "#FF3366",
         });
+        return;
       }
-    } else if (isUnmarked) {
-      navigate(`/wishlistdetails/${item._id}`, { state: { item } });
-    }else if (isPooling) {
+
+      if (isOwner) {
+        navigate(`/createpool/${item._id}`, { state: { item } });
+        return;
+      }
+
+      // Try to fetch the guest data to check if the user is invited
       try {
-        const token = localStorage.getItem("token");
-    
-        if (!token) {
-          console.error("No token found in localStorage");
-          Swal.fire({
-            title: "Unauthorized",
-            text: "You must be logged in to access this feature.",
-            icon: "error",
-            confirmButtonColor: "#FF3366",
-          });
-          return;
-        }
-    
-        // Owner can directly access
-        if (owner === currentUserId) {
-          navigate(`/createpool/${item._id}`, { state: { item } });
-          return;
-        }
-    
-        // Check if the user is an invited guest
         const { data } = await axios.get(
           `${process.env.REACT_APP_BASE_URL}/guests/userId/${wishId}`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-    
-        if ( data.message === "No invited users found.") {
-          
-          // If no invited users are found
+
+        // If no invited users are found, show the contribution dialog
+        if (data.message === "No invited users found.") {
           const ItemId = item._id;
           Swal.fire({
             title: "Access Denied",
             text: "Invited users can contribute to the pool! Wanna contribute? Click OK.",
             icon: "error",
-            showCancelButton: true,  // Show the Cancel button
+            showCancelButton: true,
             confirmButtonText: "OK",
             cancelButtonText: "Cancel",
             confirmButtonColor: "#FF3366",
           }).then(async (result) => {
             if (result.isConfirmed) {
-              // If the user clicked "OK"
               try {
                 const response = await axios.post(
-                  `${process.env.REACT_APP_BASE_URL}/request`, // Replace with your actual API endpoint
-                  { ItemId }, // Sending ItemId in the body
+                  `${process.env.REACT_APP_BASE_URL}/request`,
+                  { ItemId },
                   {
                     headers: {
-                      Authorization: `Bearer ${localStorage.getItem("token")}`, // Make sure to pass the authorization token if needed
+                      Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
                   }
                 );
-    
+
                 if (response.data.success) {
                   Swal.fire({
                     title: "Request Sent!",
@@ -325,54 +345,48 @@ console.log(isOwner)
                   });
                 }
               } catch (error) {
-                // Swal.fire({
-                //   title: "Error!",
-                //   text: "An error occurred while sending the request.",
-                //   icon: "error",
-                //   confirmButtonColor: "#FF3366",
-                // });
+                Swal.fire({
+                  title: "Error!",
+                  text: "An error occurred while sending the request.",
+                  icon: "error",
+                  confirmButtonColor: "#FF3366",
+                });
               }
-            } else if (result.isDismissed) {
-              // If the user clicked "Cancel"
-              console.log("User canceled the action.");
-              // You can optionally navigate back or perform another action
             }
           });
-          return; // Prevent further execution if no invited users
+          return;
         }
-    
-        // Check if the user is an invited guest
+
+        // If the user is invited, proceed to the pooling page
         const isInvited = data.guestUsers?.some(
           (user) => user.userId.toString() === currentUserId.toString()
         );
-    
+
         if (isInvited) {
           navigate(`/createpool/${item._id}`, { state: { item } });
         } else {
-          // If user is not invited, show the option to request access
           const ItemId = item._id;
           Swal.fire({
             title: "Access Denied",
             text: "You need to be invited to contribute to the pool. Wanna contribute? Click OK.",
             icon: "error",
-            showCancelButton: true,  // Show the Cancel button
+            showCancelButton: true,
             confirmButtonText: "OK",
             cancelButtonText: "Cancel",
             confirmButtonColor: "#FF3366",
           }).then(async (result) => {
             if (result.isConfirmed) {
-              // If the user clicked "OK"
               try {
                 const response = await axios.post(
-                  `${process.env.REACT_APP_BASE_URL}/request`, // Replace with your actual API endpoint
-                  { ItemId }, // Sending ItemId in the body
+                  `${process.env.REACT_APP_BASE_URL}/request`,
+                  { wishId },
                   {
                     headers: {
-                      Authorization: `Bearer ${localStorage.getItem("token")}`, // Make sure to pass the authorization token if needed
+                      Authorization: `Bearer ${localStorage.getItem("token")}`,
                     },
                   }
                 );
-    
+
                 if (response.data.success) {
                   Swal.fire({
                     title: "Request Sent!",
@@ -389,74 +403,90 @@ console.log(isOwner)
                   });
                 }
               } catch (error) {
-                // Swal.fire({
-                //   title: "Error!",
-                //   text: "An error occurred while sending the request.",
-                //   icon: "error",
-                //   confirmButtonColor: "#FF3366",
-                // });
-              }
-            } else if (result.isDismissed) {
-              // If the user clicked "Cancel"
-              console.log("User canceled the action.");
-              // You can optionally navigate back or do some other action
-            }
-          });
-        }
-      } catch (error) {
-        console.error("Error:", error);
-        const ItemId = item._id;
-        Swal.fire({
-          title: "Access Denied",
-          text: "You need to be invited to contribute to the pool. Wanna contribute? Click OK.",
-          icon: "error",
-          showCancelButton: true,  // Show the Cancel button
-          confirmButtonText: "OK",
-          cancelButtonText: "Cancel",
-          confirmButtonColor: "#FF3366",
-        }).then(async (result) => {
-          if (result.isConfirmed) {
-            // If the user clicked "OK"
-            try {
-              const response = await axios.post(
-                `${process.env.REACT_APP_BASE_URL}/request`, // Replace with your actual API endpoint
-                { ItemId }, // Sending ItemId in the body
-                {
-                  headers: {
-                    Authorization: `Bearer ${localStorage.getItem("token")}`, // Make sure to pass the authorization token if needed
-                  },
-                }
-              );
-  
-              if (response.data.success) {
-                Swal.fire({
-                  title: "Request Sent!",
-                  text: "Your request has been sent to the pool admin.",
-                  icon: "success",
-                  confirmButtonColor: "#FF3366",
-                });
-              } else {
                 Swal.fire({
                   title: "Error!",
-                  text: "There was an issue sending the request.",
+                  text: "An error occurred while sending the request.",
                   icon: "error",
                   confirmButtonColor: "#FF3366",
                 });
               }
-              } catch (error) {
-                console.error("Error:", error);
+            }
+          });
+        }
+
+      } catch (error) {
+        // Handle error if the resource isn't found (404) or any other issue
+        if (error.response && error.response.status === 404) {
+          const ItemId = item._id;
+          Swal.fire({
+            title: "Access Denied",
+            text: "Invited users can contribute to the pool! Wanna contribute? Click OK.",
+            icon: "error",
+            showCancelButton: true,
+            confirmButtonText: "OK",
+            cancelButtonText: "Cancel",
+            confirmButtonColor: "#FF3366",
+          }).then(async (result) => {
+            if (result.isConfirmed) {
+              try {
+                const response = await axios.post(
+                  `${process.env.REACT_APP_BASE_URL}/request`,
+                  { wishId },
+                  {
+                    headers: {
+                      Authorization: `Bearer ${localStorage.getItem("token")}`,
+                    },
+                  }
+                );
+
+                if (response.data.success) {
+                  Swal.fire({
+                    title: "Request Sent!",
+                    text: "Your request has been sent to the pool admin.",
+                    icon: "success",
+                    confirmButtonColor: "#FF3366",
+                  });
+                } else {
+                  Swal.fire({
+                    title: "Error!",
+                    text: "There was an issue sending the request.",
+                    icon: "error",
+                    confirmButtonColor: "#FF3366",
+                  });
                 }
-              });
-            
-        // Swal.fire({
-        //   title: "Error!",
-        //   text: "An error occurred while processing your request.",
-        //   icon: "error",
-        //   confirmButtonColor: "#FF3366",
-        // });
+              } catch (error) {
+                Swal.fire({
+                  title: "Error!",
+                  text: "An error occurred while sending the request.",
+                  icon: "error",
+                  confirmButtonColor: "#FF3366",
+                });
+              }
+            }
+          });
+        } else {
+          // Generic error handling if the error isn't 404
+          Swal.fire({
+            title: "Error!",
+            text: "An error occurred while checking guest status.",
+            icon: "error",
+            confirmButtonColor: "#FF3366",
+          });
+        }
       }
+    } catch (error) {
+      console.error("Unexpected error:", error);
+      Swal.fire({
+        title: "Unexpected Error!",
+        text: "An unexpected error occurred. Please try again later.",
+        icon: "error",
+        confirmButtonColor: "#FF3366",
+      });
     }
-  }      
+  }
+};
+
+         
   if (loading)
     return (
       <div
