@@ -21,9 +21,9 @@ body {
   font-family: 'Poppins', sans-serif;
   
 }
-/* #root{
-  background-color: #fbe4e4;
-} */
+#root{
+  background-color: #fff;
+}
 
 
 .container{

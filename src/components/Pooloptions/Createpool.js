@@ -13,11 +13,11 @@ function PoolingWish() {
   const navigate = useNavigate();
   const [pool, setPool] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [contributionAmount, setContributionAmount] = useState(""); // Dynamic input amount
+  const [contributionAmount, setContributionAmount] = useState(""); 
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [poolId, setPoolId] = useState(null);
   const [userStatus, setUserStatus] = useState(null);
-  const [poolCreator,setpoolCreator]=useState(null) // For tracking user status (pending/declined)
+  const [poolCreator,setpoolCreator]=useState(null) 
   const userId = localStorage.getItem("userId");
 
   // Fetching pool data which includes contributors
@@ -39,7 +39,7 @@ function PoolingWish() {
         console.error("Error fetching pool data:", err);
       }
     };
-
+console.log(poolCreator)
     fetchPoolData();
   }, [wishId]);
 
@@ -207,7 +207,7 @@ function PoolingWish() {
   );
 
   return (
-    <div className="container mt-3">
+    <div className="container mt-3" style={{background:'#fff'}}>
       {/* Back Button */}
       <div className="d-flex align-items-center mb-3">
         <span
@@ -222,12 +222,25 @@ function PoolingWish() {
 
       {/* Image Section */}
       <div className="text-center">
-        <img
-          src={`${process.env.PUBLIC_URL}/img/userimage3.jpg`}
-          alt="Berlin Trip"
-          className="img-fluid rounded"
-        />
-      </div>
+      {/* Display the gift image dynamically with fallback to default image */}
+      <img
+        src={
+          pool.wishItem && pool.wishItem.length > 0 && pool.wishItem[0].imageUrl
+            ? `${process.env.REACT_APP_BASE_URL}/${pool.wishItem[0].imageUrl}`
+            : `${process.env.PUBLIC_URL}/img/defaultproduct.jpg`
+        }
+        alt={pool.wishItem && pool.wishItem.length > 0 ? pool.wishItem[0].giftName : "Default Gift"}
+        className="img-fluid rounded"
+        style={{ width: "100%", maxHeight: "300px" }} // Adjust the image size as needed
+        onError={(e) => e.target.src =  `${process.env.PUBLIC_URL}/img/defaultproduct.jpg`}  // Fallback to default image on error
+      />
+      
+      {/* Display the gift name under the image */}
+      {pool.wishItem && pool.wishItem.length > 0 && (
+        <h5 className="mt-2">{pool.wishItem[0].giftName}</h5>
+      )}
+    </div>
+ 
 
       <div className="d-flex align-items-center mt-4" style={{position:'absolute', top:'102px',backgroundColor:'#fff',borderRadius:'20px', opacity:'0.8',gap:'10px',margin:'12px',width:'80%',height:'20%'}}>
         {/* Circular Progress Bar */}
@@ -290,7 +303,7 @@ function PoolingWish() {
                   }
                   setContributionAmount(value);
                 }}
-                disabled={userStatus === "pending" || userStatus === "declined"} // Disable input if status is pending or declined
+                // disabled={userStatus === "pending" || userStatus === "declined"} // Disable input if status is pending or declined
               />
             </Form.Group>
           </div>
@@ -301,7 +314,7 @@ function PoolingWish() {
               variant="danger"
               className="w-100 py-2 d-flex align-items-center justify-content-center"
               onClick={handleSaveContribution}
-              disabled={userStatus === "pending" || userStatus === "declined"} // Disable button if status is pending or declined
+              // disabled={userStatus === "pending" || userStatus === "declined"} // Disable button if status is pending or declined
             >
               {loading ? "Processing..." : "Contribute"} <FaArrowRight className="ms-2" />
             </Button>
