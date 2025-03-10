@@ -236,13 +236,11 @@ console.log(poolCreator)
       />
       
       {/* Display the gift name under the image */}
-      {pool.wishItem && pool.wishItem.length > 0 && (
-        <h5 className="mt-2">{pool.wishItem[0].giftName}</h5>
-      )}
+   
     </div>
  
 
-      <div className="d-flex align-items-center mt-4" style={{position:'absolute', top:'102px',backgroundColor:'#fff',borderRadius:'20px', opacity:'0.8',gap:'10px',margin:'12px',width:'80%',height:'20%'}}>
+      <div className="d-flex align-items-center mt-4" style={{position:'absolute', top:'141px',backgroundColor:'#fff',borderRadius:'20px', opacity:'0.8',gap:'10px',margin:'12px',width:'80%',height:'20%'}}>
         {/* Circular Progress Bar */}
         <div className="d-flex justify-content-center my-4">
           <div style={{ width: "50px", height: "70px" }}>
@@ -256,17 +254,22 @@ console.log(poolCreator)
                 textSize: "16px",
               })}
             />
+               {pool.wishItem && pool.wishItem.length > 0 && (
+        <h5 className="m-2">{pool.wishItem[0].giftName}</h5>
+      )}
           </div>
         </div>
 
         {/* Contribution Details */}
         <div className="text-center">
           <h6>Total Amount: &#8377;{totalAmount}</h6>
-          <h6 className="text-muted">Collected: &#8377;{collectedAmount}</h6>
+          <h6 className="text-muted" >Collected: &#8377;{collectedAmount}</h6>
           <h6 className="text-danger">
             Pending: <strong>&#8377;{totalAmount - collectedAmount}</strong>
           </h6>
+          
         </div>
+        
       </div>
 
       {/* If pool is completed, show message and don't allow further contributions */}
