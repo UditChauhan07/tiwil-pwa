@@ -81,7 +81,7 @@ const ChatRoom = () => {
   }, [page]);
 
   useEffect(() => {
-    socketRef.current = io(process.env.REACT_APP_BASE_URL, {
+    socketRef.current = io(process.env.REACT_APP_WEB_SOCKET, {
       query: { token },
       transports: ["websocket"],
     });
