@@ -23,8 +23,15 @@ function Invitationlst() {
         );
 
         if (response.data) {
-          setInvitations(response.data.data);
-          setFilteredInvitations(response.data.data);
+          // Filter invitations to include only the accepted ones
+          const acceptedInvitations = response.data.data.filter((invitation) =>
+            invitation.invitations.some(
+              (invitationDetail) => invitationDetail.status === "Accepted"
+            )
+          );
+
+          setInvitations(acceptedInvitations);
+          setFilteredInvitations(acceptedInvitations);
         }
       } catch (error) {
         console.error("Error fetching invitations:", error);
@@ -124,9 +131,9 @@ function Invitationlst() {
 
                 {/* Plan and Celebrate Button */}
                 {invitation.invitations.length > 0 && (
-                  <Button
+                  <Button className="planbtn"
                     variant="danger"
-                    style={{ backgroundColor: "#FF3366" }}
+                 
                     onClick={() =>
                       handleInvitation(
                         invitation.event.eventId,

@@ -134,6 +134,7 @@ function App() {
               <Route path="/additionalinfo" element={<AddInformation />} />
               <Route path="/plans" element={<LabTabs />} />
               <Route path="/plandetails/:eventId" element={<EventDetails />} />
+              
               <Route path="/addtowish" element={<WishlistForm />} />
               <Route path="/invitation-detail/:eventId" element={<UserEventSection />} />
               <Route path="/notifications" element={<NotificationList />} />

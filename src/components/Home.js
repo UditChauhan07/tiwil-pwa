@@ -28,11 +28,17 @@ import '../components/Hedaer.css'
 const HomePage = () => {
   const [events, setEvents] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [searchDate, setSearchDate] = useState("");
+  const [results, setResults] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [innvitations,setInvitations]=useState([])
   const userId=localStorage.getItem("user.id")
   const [error, setError] = useState(null);
   const [value, setValue] = React.useState('1');
   const [filteredEvents, setFilteredEvents] = useState([]);
+    const [data, setData] = useState([]);
+    console.log(results,"results of the result current state")
+  const navigate=useNavigate();
   // const [daysLeft, setDaysLeft] = useState(null);
   // const [eventDate, setEventDate] = useState("");
   const fetchEvents = async () => {
@@ -98,10 +104,50 @@ const HomePage = () => {
     // Fetch invitation when component is mounted or `eventId` and `userId` change
   // Add eventId and userId to dependency array if they change
     
+  useEffect(() => {
+    const delayDebounceFn = setTimeout(() => {
+      if (searchQuery.trim() !== "" || searchDate !== "") {
+        console.log(searchDate)
+        fetchSearchResults();
+        console.log("Search query:", searchDate);
+        console.log(results,'dtrwtr')
+      } else {
+        setResults([]); // Clear results if input is empty
+      }
+    }, 500); // 500ms debounce time
 
-const navigate=useNavigate();
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchQuery, searchDate]);
+  const fetchSearchResults = async () => {
+    const token = localStorage.getItem("token");
+    setLoading(true);
+    try {
+      const res = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/search?query=${searchQuery}&date=${searchDate}`,
+        {
+          headers: { Authorization: `Bearer ${token}` } // ✅ Headers inside config object
+        }
+      );
+  console.log(res.data.results,"res.data.results")
+      setResults(res.data.results);
+      console.log("Search results:", res.data.results);
+    } catch (error) {
+      console.error("Search error:", error);
+    }
+    setLoading(false);
+  };
+  
+  const handleResultClick = (item) => {
+    const eventId = item.id;
+    if (item.type === "Event") {
+      window.location.href = `/plandetails/${eventId}`; // Redirect to event details
+    } else if (item.type === "Invitation") {
+      window.location.href = `/invitation-detail/${eventId}`; // Redirect to invitation details
+    }
+  };
+
 const handleAllevent=()=>{
-  navigate("/events")
+  navigate("/plandetails/${eventId}")
 }
 
 const handleAllinvitation=()=>{
@@ -201,29 +247,29 @@ const handleAllinvitation=()=>{
       navigate(`/plandetails/${eventId}`); // Navigate with event ID
     };
   
-  const handleinvitation=()=>{
-    navigate('/invitationdetails/${eventId}')
-  }
+  // const handleinvitation=()=>{
+  //   navigate('/invitationdetails/${eventId}')
+  // }
   const handlefavourite=()=>{
     
   }
 
-  const filterItem = (toSearch) => {
-    if(value == 1){
-      const filtered = events.filter(
-        (event) =>
-          event.name.toLowerCase().includes(toSearch) || event.date.includes(toSearch)
-      );
-      setFilteredEvents(filtered);
-    }
-    if(value == 2){
-      const filtered = innvitations.filter(
-        (event) =>
-          event.name.toLowerCase().includes(toSearch) || event.date.includes(toSearch)
-      );
-      setFilteredEvents(filtered);
-    }
-  }
+  // const filterItem = (toSearch) => {
+  //   if(value == 1){
+  //     const filtered = events.filter(
+  //       (event) =>
+  //         event.name.toLowerCase().includes(toSearch) || event.date.includes(toSearch)
+  //     );
+  //     setFilteredEvents(filtered);
+  //   }
+  //   if(value == 2){
+  //     const filtered = innvitations.filter(
+  //       (event) =>
+  //         event.name.toLowerCase().includes(toSearch) || event.date.includes(toSearch)
+  //     );
+  //     setFilteredEvents(filtered);
+  //   }
+  // }
 
   // const filterItem = (data) => {
   //   const filtered = data.filter(
@@ -248,42 +294,103 @@ const handleAllinvitation=()=>{
       <Navbar />
 
       <div className="mobileMode">
-<div className="d-flex">
-    <div className="SearLast p-1"  style={{width:"100%"}}>
-            <div className=" d-flex searchbarw justify-content-between">
-              <input
-                type="text"
-                value={searchQuery}
-
-                placeholder="Find amazing events"
-                className="text-mute"
-                style={{ width: "100%",height:'30%' }}
-                onChange={handleSearch}
-              />
-              <FaSearch className="me-3 text-muted" style={{ fontSize: "1.5rem", fill: "#FF3366"}} />
-            </div>
-            <img src={`${process.env.PUBLIC_URL}/img/filterIcon.svg`} alt="filterIcon"/>
-            
-            </div>
-</div>
-<div>
-      <Box sx={{ width: '100%', typography: 'body1' }}>
-      <TabContext value={value}>
-        <Box sx={{ borderBottom: 1, borderColor: 'divider',backgroundColor:'' }}>
-          <TabList onChange={handleChange} aria-label=" " style={{backgroundColor:"#FFEFF3",borderRadius:'40px',display:"flex",justifyContent:'space-between',marginBottom:'10px'}}>
-            <Tab className="btn1" label="My events" value="1" />
-            <Tab  className="btn1" label="Invitation" value="2" />
-          </TabList>
-        </Box>
-        <TabPanel value="1"> <Eventlst searchQuery={searchQuery} />
-        </TabPanel>
-        <TabPanel value="2"><Invitationlst searchQuery={searchQuery}/></TabPanel>
-      
-      </TabContext>
-    </Box>
-    
-    </div>
+      <div className="d-flex">
+        <div className="SearLast p-1" style={{ width: "100%" }}>
+          <div className="d-flex searchbarw justify-content-between">
+            <input
+              type="text"
+              value={searchQuery}
+              placeholder="Find events or invitations"
+              className="text-mute inputhome"
+              style={{ width: "100%", height: "30%" }}
+              onChange={(e) => setSearchQuery(e.target.value)}
+            />
+            <input
+              type="date"
+              value={searchDate}
+              className="text-mute inputhome"
+              onChange={(e) => setSearchDate(e.target.value)}
+              style={{ marginLeft: "10px", padding: "5px" }}
+            />
+            {/* <FaSearch className="me-3 text-muted" style={{ fontSize: "1.5rem", fill: "#FF3366" }} /> */}
+          </div>
+        </div>
       </div>
+
+      {/* SEARCH RESULTS */}
+      {searchQuery && (
+        <div
+          className="search-results"
+          style={{
+            position: "absolute", // Position above the tabs
+            top: "121px", // Adjust as per your design
+            width: "90%",
+            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+            margin:'0px 5px -2px 6px',
+            backgroundColor: "#FFEFF3",
+            borderRadius: "30px",
+            maxHeight: "200px", // Set a max height for the search results container
+            overflowY: results.length > 5 ? "auto" : "unset", // Enable scrolling if more than 5 results
+            boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
+            zIndex: 1000, // Ensure it's on top of other elements
+            padding: "10px",
+          }}
+        >
+          {loading ? (
+            <p>Loading...</p>
+          ) : (
+            results.map((item, index) => (
+              <div
+                key={index}
+                className="search-result-item"
+                onClick={() => handleResultClick(item)}
+                style={{
+                  padding: "10px",
+                  borderBottom: "1px solid #ddd",
+                  cursor: "pointer",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                }}
+              >
+                <p>{item.name} <span style={{ fontSize: "0.8rem", color: "#888" }}>({item.type})</span></p>
+                
+              </div>
+            ))
+          )}
+        </div>
+      )}
+
+      {/* TABS */}
+      <div style={{ position: "relative" }}>
+        <Box sx={{ width: "100%", typography: "body1" }}>
+          <TabContext value={value}>
+            <Box sx={{ borderBottom: 1, borderColor: "divider", backgroundColor: "" }}>
+              <TabList
+                onChange={handleChange}
+                aria-label=" "
+                style={{
+                  backgroundColor: "#FFEFF3",
+                  borderRadius: "40px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  marginBottom: "10px",
+                }}
+              >
+                <Tab className="btn1" label="My events" value="1" />
+                <Tab className="btn1" label="Invitation" value="2" />
+              </TabList>
+            </Box>
+            <TabPanel value="1">
+              <Eventlst searchQuery={searchQuery} />
+            </TabPanel>
+            <TabPanel value="2">
+              <Invitationlst searchQuery={searchQuery} />
+            </TabPanel>
+          </TabContext>
+        </Box>
+      </div>
+    </div>
 <div className="position-relative" >
       {/* Event Slider */}
       <div className="  homemain">

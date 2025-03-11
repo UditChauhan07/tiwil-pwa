@@ -134,10 +134,10 @@ const Eventlst = () => {
 
   
   const getUpcomingBirthdayNumber = (eventDate) => {
-    if (!eventDate) return "N/A";  // Handle invalid dates
+    if (!eventDate ) return null;  // Handle invalid dates
   
     const today = new Date();
-    const birthDate = new Date(eventDate);
+    const birthDate = new Date(eventDate);  // The person's birthday date  
   
     // Calculate the initial age (number of birthdays already passed)
     let upcomingBirthday = today.getFullYear() - birthDate.getFullYear();
@@ -202,11 +202,7 @@ const Eventlst = () => {
         : `${process.env.PUBLIC_URL}/img/eventdefault.png`
     }
     alt="Event"
-    style={{
-      width: "100%",
-      height: "100%",
-      objectFit: "cover",  // Ensures the image covers the entire area without distortion
-    }}
+  className='imgEvent'
   />
   <div
     style={{
@@ -221,7 +217,7 @@ const Eventlst = () => {
       padding: "5px", // Padding for text
     }}
   >
-        {calculateAgeAndBirthdayText(event.date)}
+        {calculateAgeAndBirthdayText(event.date||event.eventDate)}
     
   </div>
 
@@ -232,13 +228,25 @@ const Eventlst = () => {
                   </Card>
                 </div>
                 <Card.Body>
-                  <div className='d-flex'>
-                    <Card.Title>{event.name}  {getUpcomingBirthdayNumber(event.date)} {event.eventType}</Card.Title>
-                  </div>
+                <div className='d-flex'>
+         
+         
+  <Card.Title>
+    {event.name}  
+    {/* Only render the birthday number if eventType is not "other" and the event date is available */}
+    {event.eventType !== ("other" || null )  && (
+      <span>{getUpcomingBirthdayNumber(event.date)}</span>
+    )}
+    {event.eventType}
+  </Card.Title>
+</div>
+
+
+
                   <Card.Text className="d-flex justify-content-between" style={{ gap: "10px" }}>
                     <div style={{ display: 'flex', justifyContent: 'space-between' }}>
                       <img className="m-0.5" src={`${process.env.PUBLIC_URL}/img/calender.svg`} height={"17px"} alt="calendar" />
-                      <h6 style={{ marginRight: '50px', marginBottom: '5px', fontWeight:'600',marginLeft:'5px'}}>{formatDateWithCurrentYear(event.date)}</h6></div>
+                      <h6 style={{ marginRight: '50px', marginBottom: '5px', fontWeight:'600',marginLeft:'5px'}}>{formatDateWithCurrentYear(event.date||event.eventDate)}</h6></div>
                       <div>
   {event.relation &&
   event.relation.toLowerCase() !== "parent anniversary" &&
@@ -262,17 +270,8 @@ const Eventlst = () => {
                     
                   </Card.Text>
                   <div style={{ display: "flex", gap: "8px" }}>
-                    <Button
-                      style={{
-                        height: "34px",
-                        backgroundColor: "#FF3366",
-                        width: "100%",
-                        borderBottomRightRadius: '0px',
-                        borderTopLeftRadius: '5px',
-                        borderTopRightRadius: '0px',
-                        borderBottomLeftRadius: "5px",
-                        padding: "0px"
-                      }}
+                    <Button  className='planbtn'
+                      variant="danger"
                       onClick={() => handlePlans(event.eventId)}
                     >
                       Plan And Celebrate

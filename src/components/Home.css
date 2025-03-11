@@ -15,10 +15,20 @@
     margin-bottom: 11px;
 width: 100%;
 }
+/* .inputhome{
+    border-radius: 30px;
+    border: 1px solid #ff3366;
+} */
+input[type="date"]::-webkit-calendar-picker-indicator {
+    color: #ff3366;
+    fill: #ff3366;
+    accent-color: #ff3366;
+    visibility: hidden;
+  }
 
 .css-1usuzwp-MuiButtonBase-root-MuiTab-root.Mui-selected{
 color: white !important;
-background-color: #ff3366;
+background-color: #EE4266 !important;
 border-radius: 26px !important;
 }
 .css-1qltlow-MuiTabs-indicator{
@@ -33,6 +43,26 @@ border-radius: 26px !important;
  .btn1{
     width: 50%;
 }
+
+/* In your CSS file (e.g., Home.css) */
+.planbtn {
+    height: 34px;
+    background-color: #EE4266 !important;
+    width: 100%;
+    border-bottom-right-radius: 0px;
+    border-top-left-radius: 5px;
+    border-top-right-radius: 0px;
+    border-bottom-left-radius: 5px;
+    padding: 6px !important; 
+    font-weight: 400 !important;
+  }
+  
+  .planbtn:hover {
+    background-color: #fff !important;
+    color: #EE4266 !important;
+    border-radius: 26px !important;
+  }
+  
 /*.MuiButtonBase-root-MuiTab-root-MuiTab-textColorPrimary-Mui-selected-css-1usuzwp-MuiButtonBase-root-MuiTab-root{
 
 } */
@@ -41,7 +71,12 @@ border-radius: 26px !important;
 
 
 }
-
+.imgEvent{
+    object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
 
 .css-13xfq8m-MuiTabPanel-root{
 padding: 0px !important;
@@ -78,8 +113,15 @@ padding: 0px !important;
     .mobileMode {
         display: none;
     }
+
 }
 
 
 
-
+@media all and (min-width: 450px) {
+    .imgEvent  {
+        object-fit: contain !important;
+        
+    }
+    
+}

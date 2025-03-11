@@ -126,16 +126,22 @@ const SignInForm = () => {
           <img
             src={`${process.env.PUBLIC_URL}/img/TiwilLOGO1.png`}
             alt="tiwillogo"
-            height={"200px"}
+            height={"150px"}
             width={"200px"}
           />
-          <h2 className="font-weight-bold mt-3">Welcome</h2>
+          <h2 className="font-weight-bold mt-2 mb-0" style={{ fontSize: "48px" }}>Welcome</h2>
           <p className="text-muted">Connect with your friends today!</p>
-          <h1 className="fw-bold" style={{ fontFamily: "Poppins, sans-serif" }}>
-            Sign In
-          </h1>
+    
         </div>
+<div>
+  <div className="d-flex justify-content-center"> 
+  <Link to='/signin'><p style={{fontSize:'1rem',border:'1px solid rgb(216, 210, 210)',padding:'2px 24px 0px 30px'}}>Sign in</p></Link>
+  <Link to='/signup'><p style={{fontSize:'1rem',border:'1px solid rgb(202, 198, 198)',padding:'2px 24px 0px 30px'}}>Sign up</p></Link>
+  </div>
+  <div>
 
+  </div>
+</div>
         <div
           className="w-100 p-4 rounded shadow-sm"
           style={{ maxWidth: "400px", backgroundColor: "#fff" }}
@@ -153,6 +159,7 @@ const SignInForm = () => {
                   onChange={(value) => setFormData({ ...formData, phoneNumber: value })}
                   placeholder="Enter phone number"
                   required
+                  style={{ border: "none" }}
                 />
               </div>
               <button
