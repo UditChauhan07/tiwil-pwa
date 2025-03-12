@@ -8,8 +8,44 @@ import axios from "axios";
 const Navbar = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+   const [notifications, setNotification] = useState([]);
   const navigate = useNavigate();
 
+
+
+  useEffect(() => {
+    // Function to fetch notifications from the API
+    const fetchNotifications = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const { data } = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/notification`, // Your API endpoint
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+        // Update notifications and count
+     
+        setNotification(Array.isArray(data.notifications) ? data.notifications : []); // Update notification count
+      } catch (error) {
+        console.error("Error fetching notifications:", error);
+      }
+    };
+
+    // Fetch notifications on initial load
+    fetchNotifications();
+
+    // Set polling to fetch notifications every 10 seconds
+    const intervalId = setInterval(fetchNotifications, 10000); // Poll every 10 seconds
+
+    // Clean up the interval when component unmounts
+    return () => {
+      clearInterval(intervalId);
+    };
+  }, []);
+
+
+  
   useEffect(() => {
     const user = localStorage.getItem("token");
     if (user) {
@@ -44,6 +80,10 @@ const Navbar = () => {
 const handleUser=()=>{
   navigate('/userdetail')
 }
+const unreadNotificationCount = Array.isArray(notifications) 
+    ? notifications.filter(notif => !notif.read).length 
+    : 0;
+
   return (
     <>
       <div className="mainClass1" style={{ backgroundColor: "#e3e3e3" }}>
@@ -76,12 +116,35 @@ const handleUser=()=>{
     {/* Hamburger Toggle Button */}
     <div className="d-flex">
     <Link to="/notifications">
-  <img 
-    src={`${process.env.PUBLIC_URL}/img/notification.svg`} 
-    alt="notification" 
-    style={{ width: "25px", height: "25px", cursor: "pointer" ,marginTop:'5px'}} // Optional styling
-  />
-</Link>
+                <div className="position-relative">
+                  <img
+                    src={`${process.env.PUBLIC_URL}/img/notification.svg`}
+                    alt="notification"
+                    style={{
+                      width: "25px",
+                      height: "25px",
+                      cursor: "pointer",
+                      marginTop: "5px",
+                    }}
+                  />
+                  {unreadNotificationCount > 0 && (
+                    <span
+                      style={{
+                        position: "absolute",
+                        top: "-5px",
+                        right: "-5px",
+                        backgroundColor: "#ff3366",
+                        color: "white",
+                        borderRadius: "50%",
+                        padding: "2px 8px",
+                        fontSize: "12px",
+                      }}
+                    >
+                      {unreadNotificationCount}
+                    </span>
+                  )}
+                </div>
+              </Link>
           <button className="navbar-toggler" type="button" onClick={toggleMobileMenu}>
           
             

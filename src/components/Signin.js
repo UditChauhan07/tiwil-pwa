@@ -5,6 +5,7 @@ import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css"; // Ensure you include the styles
+import {genToken} from '../firebase/firebase'
 
 const SignInForm = () => {
   const [formData, setFormData] = useState({
@@ -68,10 +69,13 @@ const SignInForm = () => {
   };
 
   // Handle Verify OTP
+  
   const handleVerifyOTP = async () => {
     setIsLoading(true); // Start loading
-
+    console.log("⏳ OTP verification started...");
+  
     try {
+      console.log("📤 Sending OTP verification request...");
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/login/verify-otp`,
         {
@@ -79,25 +83,37 @@ const SignInForm = () => {
           otp: formData.otp,
         }
       );
-
+      
+      console.log("✅ OTP Verified Response:", response.data);
+  
       if (response.data.success) {
-        localStorage.setItem("token", response.data.token);
         localStorage.setItem("userId", response.data.userId);
-        localStorage.setItem(
-          "profileStatus",
-          JSON.stringify(response.data.profileStatus)
+        const userId=localStorage.getItem("userId")
+        console.log("🔄 Generating FCM Token...");
+        const FCM_Token = await genToken();
+        console.log("✅ Generated FCM Token:", FCM_Token);
+  
+        console.log("📤 Saving FCM Token to backend...");
+        const FCM_response = await axios.put(
+          `${process.env.REACT_APP_BASE_URL}/save-fcm-token`, 
+          { userId, FCM_Token }
         );
-        localStorage.setItem(
-          "onboardingStatus",
-          JSON.stringify(response.data.onboardingStatus)
-        );
-
+        console.log("✅ FCM Token Saved Response:", FCM_response.data);
+  
+        console.log("💾 Storing data in localStorage...");
+        localStorage.setItem("token", response.data.token);
+      
+        localStorage.setItem("profileStatus", JSON.stringify(response.data.profileStatus));
+        localStorage.setItem("onboardingStatus", JSON.stringify(response.data.onboardingStatus));
+  
+        console.log("🔀 Redirecting user...");
         if (!response.data.profileStatus) {
           navigate("/profile");
         } else {
           navigate("/home");
         }
       } else {
+        console.warn("❌ OTP verification failed:", response.data.message);
         Swal.fire({
           icon: "error",
           title: "Error",
@@ -107,6 +123,7 @@ const SignInForm = () => {
         });
       }
     } catch (error) {
+      console.error("🚨 Error verifying OTP:", error.response?.data || error);
       Swal.fire({
         icon: "error",
         title: "Error",
@@ -116,6 +133,7 @@ const SignInForm = () => {
       });
     } finally {
       setIsLoading(false); // Stop loading
+      console.log("🔚 OTP verification process completed.");
     }
   };
   

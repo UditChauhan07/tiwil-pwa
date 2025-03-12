@@ -1,6 +1,8 @@
+
+import Swal from 'sweetalert2';
 importScripts('https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.11.0/firebase-messaging-compat.js');
-import Swal from 'sweetalert2';
+
 firebase.initializeApp({
     
         apiKey: "AIzaSyAS6KhuPYihmJFO0pCFt0wXjrx_abiLorY",

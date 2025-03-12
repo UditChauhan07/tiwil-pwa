@@ -15,6 +15,24 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
 
+// Function to request permission and generate token
+export const genToken = async () => {
+  const permission = await Notification.requestPermission();
+  if (permission === 'granted') {
+    const token = await getToken(messaging, { 
+      vapidKey: "BAP_H0y2nu0WtM4N-xgbHU7SlNUzxXWG32mZaCtrV1MW968sbw2I7xqtHlE9x7QO7P0aFeS7pBBSCE1phYMENAw" 
+    });
+    
+//    console.log(token);
+  localStorage.setItem('PushToken',token)
+  return token;
+  } else {
+    console.log('Permission denied');
+  }
+};
+
+
+
 export const requestNotificationPermission = async () => {
   try {
     const token = await getToken(messaging, {
