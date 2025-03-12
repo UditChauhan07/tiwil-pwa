@@ -23,7 +23,7 @@ input[type="date"]::-webkit-calendar-picker-indicator {
     color: #ff3366;
     fill: #ff3366;
     accent-color: #ff3366;
-    visibility: hidden;
+
   }
 
 .css-1usuzwp-MuiButtonBase-root-MuiTab-root.Mui-selected{

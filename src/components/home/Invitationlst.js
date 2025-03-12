@@ -125,7 +125,7 @@ function Invitationlst() {
                 {/* Event Date */}
                 <Card.Text>
                   <small className="text-muted">
-                    Date: {formatDateWithCurrentYear(invitation.event.date)}
+                    Date: {invitation.event.formatteDate}
                   </small>
                 </Card.Text>
 

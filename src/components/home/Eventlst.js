@@ -294,15 +294,13 @@ const Eventlst = () => {
                       />
                       <h6
                         style={{
-                          marginRight: "50px",
+                          marginRight: "10px",
                           marginBottom: "5px",
                           fontWeight: "600",
                           marginLeft: "5px",
                         }}
                       >
-                        {formatDateWithCurrentYear(
-                          event.date || event.eventDate
-                        )}
+                       {event.formattedDate || "Date not available"}
                       </h6>
                     </div>
                     <div>
