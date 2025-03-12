@@ -18,20 +18,13 @@ const Eventlst = () => {
       try {
         const response = await axios.get(
           `${process.env.REACT_APP_BASE_URL}/events`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
+          { headers: { Authorization: `Bearer ${token}` } }
         );
   
         if (response.data.success) {
-          const fetchedEvents = response.data.data;
-  
-          // Sort events by date in ascending order
-          const sortedEvents = fetchedEvents.sort((a, b) => {
-            const dateA = new Date(a.date);
-            const dateB = new Date(b.date);
-            return dateA - dateB;
-          });
+          const sortedEvents = response.data.data.sort((a, b) => 
+            new Date(a.date) - new Date(b.date)
+          );
   
           setEvents(sortedEvents);
           setFilteredEvents(sortedEvents);
@@ -43,12 +36,12 @@ const Eventlst = () => {
       }
     };
   
-    const timeoutId = setTimeout(fetchEvents, 5000);
+    fetchEvents(); // Pehli baar turant call karega
+    const intervalId = setInterval(fetchEvents, 5000); // 5 sec me refresh karega
   
-    return () => clearTimeout(timeoutId); // Cleanup function to avoid memory leaks
-  }, []); // Only run once after component mounts
+    return () => clearInterval(intervalId); // Cleanup jab component unmount ho
+  }, [token]); // Token change hone pe bhi API hit hogi
   
-
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
     setSearchQuery(query);
