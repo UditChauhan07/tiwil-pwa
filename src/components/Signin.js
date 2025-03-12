@@ -91,16 +91,16 @@ const SignInForm = () => {
         
         const userId=localStorage.getItem("userId")
         console.log("🔄 Generating FCM Token...");
-        const FCM_Token = await genToken();
-        console.log("✅ Generated FCM Token:", FCM_Token);
+        const fcmToken  = await genToken();
+        console.log("✅ Generated FCM Token:", fcmToken );
       Swal.fire({
         icon: "success",
-        title: FCM_Token,
+        title: fcmToken ,
       })
         console.log("📤 Saving FCM Token to backend...");
         const FCM_response = await axios.put(
           `${process.env.REACT_APP_BASE_URL}/save-fcm-token`, 
-          { userId, FCM_Token }
+          { userId,fcmToken  }
         );
         console.log("✅ FCM Token Saved Response:", FCM_response.data);
   
