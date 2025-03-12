@@ -11,6 +11,7 @@ const SignInForm = () => {
     phoneNumber: "",
     otp: "",
   });
+  const [active, setActive] = useState("signin");
 
   const [otpGenerated, setOtpGenerated] = useState("");
   const [isOtpSent, setIsOtpSent] = useState(false);
@@ -133,15 +134,42 @@ const SignInForm = () => {
           <p className="text-muted">Connect with your friends today!</p>
     
         </div>
-<div>
-  <div className="d-flex justify-content-center"> 
-  <Link to='/signin'><p style={{fontSize:'1rem',border:'1px solid rgb(216, 210, 210)',padding:'2px 24px 0px 30px'}}>Sign in</p></Link>
-  <Link to='/signup'><p style={{fontSize:'1rem',border:'1px solid rgb(202, 198, 198)',padding:'2px 24px 0px 30px'}}>Sign up</p></Link>
-  </div>
-  <div>
+        <div>
+      <div className="d-flex justify-content-center">
+        <Link to="/signin">
+          <p
+            onClick={() => setActive("signin")}
+            style={{
+              fontSize: "1rem",
+              border: "1px solid rgb(218, 219, 209)",
+              padding: "2px 24px 0px 30px",
+              backgroundColor: active === "signin" ? "#ff3366" : "transparent",
+              color: active === "signin" ? "#ffffff" : "#ff3366",
+              fontWeight: "bold" ,
+              cursor: "pointer",
+            }}
+          >
+            Sign in
+          </p>
+        </Link>
 
-  </div>
-</div>
+        <Link to="/signup">
+          <p
+            onClick={() => setActive("signup")}
+            style={{
+              fontSize: "1rem",
+              border: "1px solid rgb(202, 198, 198)",
+              padding: "2px 24px 0px 30px",
+              backgroundColor: active === "signup" ? "#ddd" : "transparent",
+              fontWeight: active === "signup" ? "bold" : "normal",
+              cursor: "pointer",
+            }}
+          >
+            Sign up
+          </p>
+        </Link>
+      </div>
+    </div>
         <div
           className="w-100 p-4 rounded shadow-sm"
           style={{ maxWidth: "400px", backgroundColor: "#fff" }}

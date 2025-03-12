@@ -69,13 +69,13 @@ const EventDetails = () => {
 
   
   const formatDateWithCurrentYear = (dateString) => {
-    if (!dateString) return "Invalid Date";
+    if (!dateString) return null;
+  
     const eventDate = new Date(dateString);
-    const currentYear = new Date().getFullYear();
-    
-    // Set event year to current year
-    eventDate.setFullYear(currentYear);
-
+    if (isNaN(eventDate.getTime())) return null; // Check if date is valid
+  
+    eventDate.setFullYear(new Date().getFullYear());
+  
     return eventDate.toLocaleDateString("en-GB"); // "DD/MM/YYYY"
   };
 
@@ -258,13 +258,12 @@ const  getEvent = async () => {
                   <div className="tab-content p-3 mt-3 border rounded shadow-sm bg-white">
                     {activeTab === "details" && (
                       <>
-                        <p className="d-flex align-items-center">
-                          <span className="bg-danger text-white p-2 rounded me-2">
-                            📅
-                          </span>
-                          {formatDateWithCurrentYear(event.date) ||
-                            "Date not available"}
-                        </p>
+                      <p className="d-flex align-items-center">
+  <span className="bg-danger text-white p-2 rounded me-2">📅</span>
+  {formatDateWithCurrentYear(events.date) ||
+    formatDateWithCurrentYear(events.eventDate) ||
+    "Date not available"}
+</p>
                         <p className="d-flex align-items-center">
                           <span className="bg-danger text-white p-2 rounded me-2">
                             📍

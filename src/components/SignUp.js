@@ -16,6 +16,7 @@ const SignUpForm = () => {
   const [otpGenerated, setOtpGenerated] = useState(""); // Store generated OTP for display
   const [isOtpSent, setIsOtpSent] = useState(false); // To show OTP field
   const [loading, setLoading] = useState(false); // Loading state for OTP sending and verification
+  const [active, setActive] = useState("signup");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -87,18 +88,49 @@ const SignUpForm = () => {
   return (
     <section className="page-controls">
       <div className="container d-flex flex-column align-items-center justify-content-center ">
-        <div className="text-center mb-4">
-          <img  src={`${process.env.PUBLIC_URL}/img/TiwilLOGO1.png`} alt="logo" height={"200px"} width={"200px"} />
-          <h2 className="font-weight-bold mt-3">Welcome</h2>
+        <div className="text-center ">
+          <img  src={`${process.env.PUBLIC_URL}/img/TiwilLOGO1.png`} alt="logo" height={"150px"}
+            width={"200px"} />
+          <h2 className="font-weight-bold mt-2 mb-0" style={{ fontSize: "48px" }}>Welcome</h2>
           <p className="text-muted">Connect with your friends today!</p>
 
         </div>
-<div>
-  <div className="d-flex justify-content-center"> 
-  <Link to='/signin'><p style={{fontSize:'1rem',border:'1px solid rgb(216, 210, 210)',padding:'2px 24px 0px 30px'}}>Sign in</p></Link>
-  <Link to='/signup'><p style={{fontSize:'1rem',border:'1px solid rgb(202, 198, 198)',padding:'2px 24px 0px 30px'}}>Sign up</p></Link>
-  </div>
-  </div>
+        <div>
+      <div className="d-flex justify-content-center">
+        <Link to="/signin">
+          <p
+            onClick={() => setActive("signin")}
+            style={{
+              fontSize: "1rem",
+              border: "1px solid rgb(216, 210, 210)",
+              padding: "2px 24px 0px 30px",
+              backgroundColor: active === "signin" ? "#ddd" : "transparent",
+              fontWeight: active === "signin" ? "bold" : "normal",
+              cursor: "pointer",
+            }}
+          >
+            Sign in
+          </p>
+        </Link>
+
+        <Link to="/signup">
+          <p
+            onClick={() => setActive("signup")}
+            style={{
+      
+              border: "1px solid rgb(238, 234, 234)",
+              padding: "2px 24px 0px 30px",
+              color: active === "signup" ? "#ffffff" : "#ff3366",
+              backgroundColor: active === "signup" ? "#ff3366" : "transparent",
+              fontWeight: "bold" ,
+              cursor: "pointer",
+            }}
+          >
+            Sign up
+          </p>
+        </Link>
+      </div>
+    </div>
         <div className="w-100 p-4 rounded shadow-sm" style={{ maxWidth: "400px", backgroundColor: "#fff" }}>
           {!isOtpSent ? (
             <form onSubmit={handleSendOTP}>

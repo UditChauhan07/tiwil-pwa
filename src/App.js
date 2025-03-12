@@ -30,41 +30,60 @@ import ChatApp from "./components/Chat";
 import ChatList from "./chatsection/ChatList";
 import ChatRoom from "./chatsection/ChatRoom";
 import GroupDetails from "./chatsection/GroupDetails";
+import  {requestNotificationPermission, onMessageListener}  from "../src/firebase/firebase";
+
 
 function App() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallDialog, setShowInstallDialog] = useState(false);
 
   useEffect(() => {
-    // Pusher Beams client initialization
-    const beamsClient = new Client({
-      instanceId: "6418d11f-092e-4d42-a1eb-c186711139eb", // Replace with your instance ID from Pusher Beams
-    });
+   
 
-    // Start the Pusher Beams client
-    beamsClient
-      .start()
-      .then(() => {
-        console.log("Pusher Beams started successfully");
-
-        // Subscribe the user to a channel (e.g., user-channel)
-        beamsClient.addDeviceInterest("user-channel"); // Subscribe to a specific channel for notifications
-      })
-      .catch((err) => {
-        console.error("Error starting Pusher Beams:", err);
-      });
-
-    // Request permission for notifications
-    if ("Notification" in window && Notification.permission !== "granted") {
-      Notification.requestPermission().then((permission) => {
-        if (permission === "granted") {
-          console.log("Notification permission granted");
-        } else {
-          console.log("Notification permission denied");
-        }
-      });
-    }
-
+    // const beamsClient = new PusherPushNotifications.Client({
+    //   instanceId: "d37a7939-04e2-4507-a613-a3f1ca44f3db", // Replace with your Pusher Beams instance ID
+    // });
+    
+    // const userId = localStorage.getItem('userId'); // Replace with the actual user ID from your auth system
+    // console.log(userId);
+    
+    // beamsClient
+    //   .start()
+    //   .then(() => {
+    //     console.log("✅ Pusher Beams started successfully");
+    
+    //     // Authenticate the user with Beams
+    //     return beamsClient.setUserId(userId, {
+    //       headers: {
+    //         Authorization: `Bearer YOUR_AUTH_TOKEN`, // Fetch from backend
+    //       },
+    //     });
+    //   })
+    //   .then(() => {
+    //     console.log(`✅ User ${userId} registered for notifications`);
+    
+    //     // Subscribe the user to their unique channel
+    //     return beamsClient.addDeviceInterest(`user-${userId}`);
+    //   })
+    //   .then(() => {
+    //     console.log(`✅ Subscribed to user-${userId} for notifications`);
+    //   })
+    //   .catch((err) => {
+    //     console.error("❌ Error setting up Pusher Beams:", err);
+    //   });
+    
+    // // Request permission for notifications
+    // if ("Notification" in window && Notification.permission !== "granted") {
+    //   Notification.requestPermission().then((permission) => {
+    //     if (permission === "granted") {
+    //       console.log("✅ Notification permission granted");
+    //     } else {
+    //       console.log("❌ Notification permission denied");
+    //     }
+    //   });
+    // }
+    
+   
     // Handle PWA installation prompt
     const handler = (event) => {
       event.preventDefault();
@@ -78,6 +97,18 @@ function App() {
       window.removeEventListener("beforeinstallprompt", handler);
     };
   }, []);
+  useEffect(() => {
+    requestNotificationPermission().then((token) => {
+      console.log("Notification Token:", token);
+      // Iss token ko backend pe store karwana hoga notifications bhejne ke liye
+    });
+
+    onMessageListener().then((payload) => {
+      console.log("Foreground Notification Received:", payload);
+      alert(payload.notification.title + ": " + payload.notification.body);
+    });
+  }, []);
+
 
   const handleInstallClick = () => {
     if (deferredPrompt) {

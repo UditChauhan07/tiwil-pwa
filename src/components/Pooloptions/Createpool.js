@@ -39,7 +39,7 @@ function PoolingWish() {
         console.error("Error fetching pool data:", err);
       }
     };
-console.log(poolCreator)
+console.log(poolCreator,'/er/grtd')
     fetchPoolData();
   }, [wishId]);
 
@@ -65,7 +65,7 @@ console.log(poolCreator)
 
     fetchUserStatus();
   }, [wishId]);
-
+console.log('pool',poolCreator)
   const handleSaveContribution = async () => {
     if (!contributionAmount || contributionAmount <= 0) {
       Swal.fire("Error", "Please enter a valid contribution amount.", "error");

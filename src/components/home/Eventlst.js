@@ -232,11 +232,11 @@ const Eventlst = () => {
          
          
   <Card.Title>
-    {event.name}  
+    {event.name}  &nbsp;
     {/* Only render the birthday number if eventType is not "other" and the event date is available */}
     {event.eventType !== ("other" || null )  && (
       <span>{getUpcomingBirthdayNumber(event.date)}</span>
-    )}
+    )}&nbsp;
     {event.eventType}
   </Card.Title>
 </div>
