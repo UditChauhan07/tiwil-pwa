@@ -76,7 +76,7 @@ const SignUpForm = () => {
         // //save Fcm
         // const FCM_response = await axios.put(`${PORT}/setUserFCMinDB`, {FCM_Token:FCM_Token})  //19/12/2024
         // console.log(FCM_response);
-        
+
         localStorage.setItem("fullName", response.data.user.fullName);
         localStorage.setItem("phoneNumber", response.data.user.phoneNumber);
         localStorage.setItem("token", response.data.token);
@@ -116,8 +116,9 @@ const SignUpForm = () => {
               border: "1px solid rgb(216, 210, 210)",
               padding: "2px 24px 0px 30px",
               backgroundColor: active === "signin" ? "#ddd" : "transparent",
-              fontWeight: active === "signin" ? "bold" : "normal",
+              fontWeight: active === "signin" ? "bold" :  "600" ,
               cursor: "pointer",
+              color:"#ff3366"
             }}
           >
             Sign in
@@ -133,8 +134,9 @@ const SignUpForm = () => {
               padding: "2px 24px 0px 30px",
               color: active === "signup" ? "#ffffff" : "#ff3366",
               backgroundColor: active === "signup" ? "#ff3366" : "transparent",
-              fontWeight: "bold" ,
+              fontWeight: "600" ,
               cursor: "pointer",
+              
             }}
           >
             Sign up

@@ -88,11 +88,15 @@ const SignInForm = () => {
   
       if (response.data.success) {
         localStorage.setItem("userId", response.data.userId);
+        
         const userId=localStorage.getItem("userId")
         console.log("🔄 Generating FCM Token...");
         const FCM_Token = await genToken();
         console.log("✅ Generated FCM Token:", FCM_Token);
-  
+      Swal.fire({
+        icon: "success",
+        title: userId,
+      })
         console.log("📤 Saving FCM Token to backend...");
         const FCM_response = await axios.put(
           `${process.env.REACT_APP_BASE_URL}/save-fcm-token`, 
@@ -163,8 +167,9 @@ const SignInForm = () => {
               padding: "2px 24px 0px 30px",
               backgroundColor: active === "signin" ? "#ff3366" : "transparent",
               color: active === "signin" ? "#ffffff" : "#ff3366",
-              fontWeight: "bold" ,
+              fontWeight: "600" ,
               cursor: "pointer",
+              
             }}
           >
             Sign in
@@ -179,8 +184,9 @@ const SignInForm = () => {
               border: "1px solid rgb(202, 198, 198)",
               padding: "2px 24px 0px 30px",
               backgroundColor: active === "signup" ? "#ddd" : "transparent",
-              fontWeight: active === "signup" ? "bold" : "normal",
+              fontWeight: active === "signup" ? "bold" : "600" ,
               cursor: "pointer",
+              color:'#ff3366'
             }}
           >
             Sign up
