@@ -19,12 +19,12 @@ width: 100%;
     border-radius: 30px;
     border: 1px solid #ff3366;
 } */
-input[type="date"]::-webkit-calendar-picker-indicator {
+/* input[type="date"]::-webkit-calendar-picker-indicator {
     color: #ff3366;
     fill: #ff3366;
     accent-color: #ff3366;
 
-  }
+  } */
 
 .css-1usuzwp-MuiButtonBase-root-MuiTab-root.Mui-selected{
 color: white !important;

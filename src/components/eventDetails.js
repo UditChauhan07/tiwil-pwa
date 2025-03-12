@@ -138,7 +138,7 @@ const  getEvent = async () => {
         setEvents([
           {
             ...data,
-            formattedDate: formatDateWithCurrentYear(data.displayDate) // ✅ Convert year dynamically
+            formattedDate: data.formattedDate // ✅ Convert year dynamically
           }
         ]);
     // Store single event in array

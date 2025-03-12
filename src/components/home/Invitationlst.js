@@ -123,11 +123,53 @@ function Invitationlst() {
                 {/* Event Name */}
                 <Card.Title>{invitation.event.name}</Card.Title>
                 {/* Event Date */}
-                <Card.Text>
-                  <small className="text-muted">
-                    Date: {invitation.event.formatteDate}
-                  </small>
-                </Card.Text>
+                 <Card.Text
+                                    className="d-flex justify-content-between"
+                                    style={{ gap: "10px" }}
+                                  >
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        justifyContent: "space-between",
+                                      }}
+                                    >
+                                      <img
+                                        className="m-0.5"
+                                        src={`${process.env.PUBLIC_URL}/img/calender.svg`}
+                                        height={"17px"}
+                                        alt="calendar"
+                                      />
+                                      <h6
+                                        style={{
+                                          marginRight: "10px",
+                                          marginBottom: "5px",
+                                          fontWeight: "600",
+                                          marginLeft: "5px",
+                                        }}
+                                      >
+                                       {invitation.event.formattedDate || "Date not available"}
+                                      </h6>
+                                    </div>
+                                    <div>
+                                      {invitation.event.relation &&
+                                        invitation.event.relation.toLowerCase() !== "parent anniversary" &&
+                                        invitation.event.relation.toLowerCase() !==
+                                        "marriage anniversary" ? (
+                                        <h4
+                                          style={{
+                                            background: "white",
+                                            color: "#ff3366",
+                                            border: "1px solid #ff3366",
+                                            paddingLeft: "10px",
+                                            padding: "3px 27px 0px 26px",
+                                            borderRadius: "10px",
+                                          }}
+                                        >
+                                          {invitation.event.relation}
+                                        </h4>
+                                      ) : null}
+                                    </div>
+                                  </Card.Text>
 
                 {/* Plan and Celebrate Button */}
                 {invitation.invitations.length > 0 && (
