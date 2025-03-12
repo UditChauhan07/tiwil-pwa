@@ -22,17 +22,17 @@ const Eventlst = () => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-
+  
         if (response.data.success) {
           const fetchedEvents = response.data.data;
-
+  
           // Sort events by date in ascending order
           const sortedEvents = fetchedEvents.sort((a, b) => {
             const dateA = new Date(a.date);
             const dateB = new Date(b.date);
-            return dateA - dateB; // Ascending order
+            return dateA - dateB;
           });
-
+  
           setEvents(sortedEvents);
           setFilteredEvents(sortedEvents);
         }
@@ -42,9 +42,12 @@ const Eventlst = () => {
         setLoading(false);
       }
     };
-
-    fetchEvents();
-  }, [token]);
+  
+    const timeoutId = setTimeout(fetchEvents, 5000);
+  
+    return () => clearTimeout(timeoutId); // Cleanup function to avoid memory leaks
+  }, []); // Only run once after component mounts
+  
 
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
