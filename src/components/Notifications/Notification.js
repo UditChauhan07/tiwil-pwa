@@ -6,7 +6,7 @@ import { formatDistanceToNow } from "date-fns";
 
 const PoolRequests = () => {
   const [requests, setRequests] = useState([]);
-  const [notifications, setNotification] = useState([]);
+  const [notifications, setNotifications] = useState([]);
 
   const [notificationCount, setNotificationCount] = useState(0);
 
@@ -147,7 +147,7 @@ const PoolRequests = () => {
       Swal.fire("Success!", `Notification ${action}ed successfully.`, "success");
   
       // Remove the notification from the list
-      setNotification((prev) =>
+      setNotifications((prev) =>
         prev.filter((notif) => notif._id !== notification._id)
       );
     } catch (error) {

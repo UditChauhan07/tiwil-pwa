@@ -1,5 +1,5 @@
 
-import Swal from 'sweetalert2';
+
 importScripts('https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js');
 importScripts('https://www.gstatic.com/firebasejs/10.11.0/firebase-messaging-compat.js');
 
@@ -16,17 +16,14 @@ firebase.initializeApp({
 });
 
 const messaging = firebase.messaging();
-
 messaging.onBackgroundMessage((payload) => {
-  console.log("Background Message Received", payload);
-  Swal.fire({
-    title: payload.notification.title,
-    text: payload.notification.body,
-    icon: 'info',
-  })
-  self.registration.showNotification(payload.notification.title, {
-    body: payload.notification.body,
-    icon: payload.notification.icon || '/logo192.png'
+  console.log('Background Message Received:', payload);
+
+  const { title, body, icon } = payload.notification;
+
+  // Show notification
+  self.registration.showNotification(title, {
+    body: body,
+    icon: icon || '/logo192.png', // Fallback to default icon
   });
-  
 });

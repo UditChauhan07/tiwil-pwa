@@ -129,6 +129,7 @@ const EventDetails = () => {
   
     return eventDate.toLocaleDateString("en-GB"); // "DD/MM/YYYY"
   };
+  
 
   const handleAccept = async () => {
     const token = localStorage.getItem("token");
@@ -562,7 +563,7 @@ const handleClick = async (item) => {
               <div className="tab-content p-3 mt-3 border rounded shadow-sm bg-white">
                 {activeTab === "details" && (
                   <>
-                  <p className="d-flex align-items-center">
+                    <p className="d-flex align-items-center">
   <span className="bg-danger text-white p-2 rounded me-2">📅</span>
   {events.formattedDate || "Date not available"}
 </p>

@@ -116,7 +116,7 @@ const unreadNotificationCount = Array.isArray(notifications)
     {/* Hamburger Toggle Button */}
     <div className="d-flex">
     <Link to="/notifications">
-                <div className="position-relative">
+                <div className="">
                   <img
                     src={`${process.env.PUBLIC_URL}/img/notification.svg`}
                     alt="notification"
@@ -131,12 +131,12 @@ const unreadNotificationCount = Array.isArray(notifications)
                     <span
                       style={{
                         position: "absolute",
-                        top: "-5px",
-                        right: "-5px",
-                        backgroundColor: "#ff3366",
+                        top: "15px",
+                        right: "53px",
+                        backgroundColor: "#EE4266",
                         color: "white",
                         borderRadius: "50%",
-                        padding: "2px 8px",
+                        padding: "1px 7px",
                         fontSize: "12px",
                       }}
                     >

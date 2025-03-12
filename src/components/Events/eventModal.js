@@ -9,10 +9,10 @@ const EditEventModal = ({ show, setShow, event, fetchevent  }) => {
   if (!event) {
     return null; // Return null if the event prop is undefined or not available
   }
-
+console.log(event)
   const [location, setLocation] = useState(event.location || "");
   const [description, setDescription] = useState(event.aboutEvent || "");
-  const [eventname, setEventname] = useState(event.eventname || "");
+  const [name, setname] = useState(event.name || "");
   const [eventDate, setDate] = useState(event.date || "");
   const { eventId } = useParams();
 
@@ -20,7 +20,7 @@ const EditEventModal = ({ show, setShow, event, fetchevent  }) => {
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("token");
-      const updatedEvent = { description, location,eventname,eventDate };
+      const updatedEvent = { description, location,name,eventDate };
       const response = await axios.put(
         `${process.env.REACT_APP_BASE_URL}/events/${eventId}`,
         updatedEvent,
@@ -67,9 +67,9 @@ fetchWishlist();  // Fetch updated event details
             <Form.Label className="fw-bold">Event Name</Form.Label>
             <Form.Control
               type="text"
-              name="eventname"
-              value={eventname}
-              onChange={(e) => setEventname(e.target.value)}
+              name="name"
+              value={name}
+              onChange={(e) => setname(e.target.value)}
               placeholder="Enter event name"
             />
           </Form.Group>
