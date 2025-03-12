@@ -6,6 +6,7 @@ import Footer from "../Footer";
 import Swal from "sweetalert2";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
+import {Link} from 'react-router-dom'
 
 function WishlistCard() {
   const location = useLocation();
@@ -90,9 +91,14 @@ function WishlistCard() {
           <p>Loading data...</p>
         ) : (
           <div className="card mb-3 mx-auto m-2" style={{ maxWidth: "720px" }}>
-            <div>
-              <img src={`${process.env.PUBLIC_URL}/img/image.png`} alt="image" style={{ width: "100%" }} />
-            </div>
+          <div>
+  <img 
+    src={wishlistItem.imageUrl ? `${process.env.REACT_APP_BASE_URL}/${wishlistItem.imageUrl}` : `${process.env.PUBLIC_URL}/img/image.png`} 
+    alt="image" 
+    style={{ width: "100%" }} 
+  />
+</div>
+
             <div className="card-body">
               <div className="d-flex justify-content-between align-items-center mb-3">
                 <h5 className="card-title mb-0">{wishlistItem.giftName || "No Gift Name"}</h5>
@@ -122,9 +128,23 @@ function WishlistCard() {
                 </button>
               )}
               <div>
-                <h6>About Wishlist</h6>
+                <h6 className="fs-2">Desire rate:{wishlistItem.desireRate  || "just description"}</h6>
+                
+              </div>
+              <div  style={{display:'ruby-text'  }}>
+                <h6 className="d-flex align-item-center">Product Link :</h6>
+                <a href={wishlistItem.productLink || "#"} target="_blank" rel="noopener noreferrer">
+  <p className="p-1">
+    {wishlistItem.productLink ? wishlistItem.productLink : "  Link available soon"}
+  </p>
+</a>
+</div>
+
+              <div>
+                <h6 className="fs-1">About</h6>
                 <p className="card-text text-muted">{wishlistItem.description || "No description available"}</p>
               </div>
+              
               <div className="d-flex justify-content-center">
                 <button className="btn w-30 m-2 p-1" style={{ backgroundColor: "#EE4266", width: "180px" }}>
                   SEE ALL WISHES

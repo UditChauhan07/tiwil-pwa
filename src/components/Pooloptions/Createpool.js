@@ -21,27 +21,27 @@ function PoolingWish() {
   const userId = localStorage.getItem("userId");
 
   // Fetching pool data which includes contributors
-  useEffect(() => {
-    const fetchPoolData = async () => {
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/pool/${wishId}`, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        });
+//   useEffect(() => {
+//     const fetchPoolData = async () => {
+//       try {
+//         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/pool/${wishId}`, {
+//           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+//         });
 
-        if (response.data.success) {
-          setPool(response.data.data);
-          setPoolId(response.data.data._id);
-          setpoolCreator(response.data.data.userId)
-        } else {
-          console.error("Error fetching pool data");
-        }
-      } catch (err) {
-        console.error("Error fetching pool data:", err);
-      }
-    };
-console.log(poolCreator,'/er/grtd')
-    fetchPoolData();
-  }, [wishId]);
+//         if (response.data.success) {
+//           setPool(response.data.data);
+//           setPoolId(response.data.data._id);
+//           setpoolCreator(response.data.data.userId)
+//         } else {
+//           console.error("Error fetching pool data");
+//         }
+//       } catch (err) {
+//         console.error("Error fetching pool data:", err);
+//       }
+//     };
+// console.log(poolCreator,'/er/grtd')
+//     fetchPoolData();
+//   }, [wishId]);
 
   // Fetching the user's status
   useEffect(() => {
@@ -179,12 +179,33 @@ console.log('pool',poolCreator)
   //     });
   //   }
   // };
+  useEffect(() => {
+    const fetchPoolData = async () => {
+      try {
+        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/pool/${wishId}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+        if (response.data.success) {
+          setPool(response.data.data);
+          setPoolId(response.data.data._id);
+          setpoolCreator(response.data.data.userId)
+        }
+      } catch (err) {
+        console.error("Error fetching pool data:", err);
+      }
+    };
+
+    fetchPoolData();
+    const interval = setInterval(fetchPoolData, 5000); // Real-time updates every 5 seconds
+    return () => clearInterval(interval);
+  }, [wishId]);
   
   if (!pool) return <div className="text-center mt-5">Loading pool data...</div>;
 
   const { totalAmount, collectedAmount, status, contributors, ownerId } = pool;
   const percentage = (collectedAmount / totalAmount) * 100;
-  const isPoolCompleted = totalAmount === collectedAmount;
+  const isPoolCompleted = collectedAmount >= totalAmount;
+
   const isOwner = String(poolCreator) === String(userId);
  // Check if the current user is the pool owner
 
@@ -205,6 +226,7 @@ console.log('pool',poolCreator)
   const otherContributors = aggregatedContributors.filter(
     (contributor) => contributor.userId !== userId
   );
+  const pendingAmount = Math.max(totalAmount - collectedAmount, 0); // Ensures pending amount never goes negative
 
   return (
     <div className="container mt-3" style={{background:'#fff'}}>
@@ -223,17 +245,17 @@ console.log('pool',poolCreator)
       {/* Image Section */}
       <div className="text-center">
       {/* Display the gift image dynamically with fallback to default image */}
-      <img
-        src={
-          pool.wishItem && pool.wishItem.length > 0 && pool.wishItem[0].imageUrl
-            ? `${process.env.REACT_APP_BASE_URL}/${pool.wishItem[0].imageUrl}`
-            : `${process.env.PUBLIC_URL}/img/defaultproduct.jpg`
-        }
-        alt={pool.wishItem && pool.wishItem.length > 0 ? pool.wishItem[0].giftName : "Default Gift"}
-        className="img-fluid rounded"
-        style={{ width: "100%", maxHeight: "300px" }} // Adjust the image size as needed
-        onError={(e) => e.target.src =  `${process.env.PUBLIC_URL}/img/defaultproduct.jpg`}  // Fallback to default image on error
-      />
+       <img
+    src={
+      pool.wishImage
+        ? `${process.env.REACT_APP_BASE_URL}/${pool.wishImage}`
+        : `${process.env.PUBLIC_URL}/img/defaultproduct.jpg`
+    }
+    alt={pool.wishname || "Default Gift"}
+    className="img-fluid rounded"
+    style={{ width: "100%", maxHeight: "300px" }}
+    onError={(e) => (e.target.src = `${process.env.PUBLIC_URL}/img/defaultproduct.jpg`)} 
+  />
       
       {/* Display the gift name under the image */}
    
@@ -255,7 +277,7 @@ console.log('pool',poolCreator)
               })}
             />
                {pool.wishItem && pool.wishItem.length > 0 && (
-        <h5 className="m-2">{pool.wishItem[0].giftName}</h5>
+        <h5 className="m-2">{pool.wishItem[0].name}</h5>
       )}
           </div>
         </div>
@@ -265,7 +287,7 @@ console.log('pool',poolCreator)
           <h6>Total Amount: &#8377;{totalAmount}</h6>
           <h6 className="text-muted" >Collected: &#8377;{collectedAmount}</h6>
           <h6 className="text-danger">
-            Pending: <strong>&#8377;{totalAmount - collectedAmount}</strong>
+            Pending: <strong>&#8377;{pendingAmount}</strong>
           </h6>
           
         </div>
@@ -322,8 +344,8 @@ console.log('pool',poolCreator)
               {loading ? "Processing..." : "Contribute"} <FaArrowRight className="ms-2" />
             </Button>
           </div>
-        </>
-      )}
+          </>
+        )}
 
       {/* Show My Contribution separately */}
       {myContribution && !isPoolCompleted && (
@@ -357,7 +379,7 @@ console.log('pool',poolCreator)
               ))}
             </ul>
             {/* Buttons for contributors */}
-            {isOwner && (
+            {isOwner && isPoolCompleted && (
               <div className="d-flex gap-2 mt-3">
                 <button
                   style={{ padding: "6px", background: "#ff3366", borderRadius: "20px" }}
@@ -374,7 +396,7 @@ console.log('pool',poolCreator)
             )}
           </>
         ) : (
-          isOwner && (
+          isOwner && isPoolCompleted &&(
             <button
               style={{ padding: "6px", background: "#ff3366", borderRadius: "20px" }}
               onClick={() => setShowInviteModal(true)}
