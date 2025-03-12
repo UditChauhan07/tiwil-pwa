@@ -13,8 +13,9 @@ const Eventlst = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      setLoading(true);
+    const fetchEvents = async (showLoader = false) => {
+      if (showLoader) setLoading(true); // Loader sirf first time dikhayenge
+  
       try {
         const response = await axios.get(
           `${process.env.REACT_APP_BASE_URL}/events`,
@@ -32,15 +33,15 @@ const Eventlst = () => {
       } catch (error) {
         console.error("Error fetching events:", error);
       } finally {
-        setLoading(false);
+        if (showLoader) setLoading(false);
       }
     };
   
-    fetchEvents(); // Pehli baar turant call karega
-    const intervalId = setInterval(fetchEvents, 5000); // 5 sec me refresh karega
+    fetchEvents(true); // Pehli baar loader ke saath call
+    const intervalId = setInterval(() => fetchEvents(false), 5000); // 5 sec baad bina loader ke call
   
     return () => clearInterval(intervalId); // Cleanup jab component unmount ho
-  }, [token]); // Token change hone pe bhi API hit hogi
+  }, [token]); 
   
   const handleSearch = (e) => {
     const query = e.target.value.toLowerCase();
