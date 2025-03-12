@@ -54,6 +54,14 @@ a {
   display: flex;
   gap: 12px;
 }
+.css-1usuzwp-MuiButtonBase-root-MuiTab-root.Mui-selected{
+  color: white !important;
+  background-color: #EE4266 !important;
+  border-radius: 26px !important;
+  }
+  .css-1qltlow-MuiTabs-indicator{
+      display: none;
+  }
 
 .page-controls{
   width: 100%;
