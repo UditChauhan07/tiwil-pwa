@@ -13,14 +13,14 @@ const EditEventModal = ({ show, setShow, event, fetchevent  }) => {
   const [location, setLocation] = useState(event.location || "");
   const [description, setDescription] = useState(event.aboutEvent || "");
   const [eventname, setEventname] = useState(event.eventname || "");
-  const [date, setDate] = useState(event.date || "");
+  const [eventDate, setDate] = useState(event.date || "");
   const { eventId } = useParams();
 
   // Handle form submission
   const handleSave = async () => {
     try {
       const token = localStorage.getItem("token");
-      const updatedEvent = { description, location,eventname,date };
+      const updatedEvent = { description, location,eventname,eventDate };
       const response = await axios.put(
         `${process.env.REACT_APP_BASE_URL}/events/${eventId}`,
         updatedEvent,
@@ -77,8 +77,8 @@ fetchWishlist();  // Fetch updated event details
             <Form.Label className="fw-bold">Event date</Form.Label>
             <Form.Control
               type="date"
-              name="date"
-              value={date}
+              name="eventDate"
+              value={eventDate}
               onChange={(e) => setDate(e.target.value)}
               
             />

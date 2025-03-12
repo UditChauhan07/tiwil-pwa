@@ -183,11 +183,12 @@ const SignInForm = () => {
                 <PhoneInput
                   international
                   defaultCountry="IN" // You can change this default country if needed
+                   className="form-control"
                   value={formData.phoneNumber}
                   onChange={(value) => setFormData({ ...formData, phoneNumber: value })}
                   placeholder="Enter phone number"
                   required
-                  style={{ border: "none" }}
+                  style={{ display:'flex',outline:"none" }}
                 />
               </div>
               <button
