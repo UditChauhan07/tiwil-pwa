@@ -95,7 +95,7 @@ const SignInForm = () => {
         console.log("✅ Generated FCM Token:", FCM_Token);
       Swal.fire({
         icon: "success",
-        title: userId,
+        title: FCM_Token,
       })
         console.log("📤 Saving FCM Token to backend...");
         const FCM_response = await axios.put(
