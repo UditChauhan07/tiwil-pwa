@@ -76,6 +76,7 @@ const SignUpForm = () => {
         // //save Fcm
         // const FCM_response = await axios.put(`${PORT}/setUserFCMinDB`, {FCM_Token:FCM_Token})  //19/12/2024
         // console.log(FCM_response);
+        
         localStorage.setItem("fullName", response.data.user.fullName);
         localStorage.setItem("phoneNumber", response.data.user.phoneNumber);
         localStorage.setItem("token", response.data.token);

@@ -17,10 +17,10 @@ import WishlistEditModal from "./Wishlist/wishlistModal";
 const EventDetails = () => {
   const [activeTab, setActiveTab] = useState("details");
   const [showWishlistModal, setShowWishlistModal] = useState(false);
-  const [guest,setGuest]=useState([])
+  const [guest, setGuest] = useState([])
   console.log("showWishlistModal", showWishlistModal);
   const [showGuestModal, setGuestModal] = useState(false);
-  const [showeditWishlistModal,setshoweditWishlistModal]=useState(false)
+  const [showeditWishlistModal, setshoweditWishlistModal] = useState(false)
   const [wishlist, setWishlist] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [events, setEvents] = useState([]);
@@ -28,7 +28,7 @@ const EventDetails = () => {
   const token = localStorage.getItem("token");
   const { eventId } = useParams(); // Get eventId from URL parameters
   console.log(eventId)
-  const navigate=useNavigate();
+  const navigate = useNavigate();
   // Fetch wishlist data from the server
   // useEffect(() => {
   //   const fetchWishlist = async () => {
@@ -67,19 +67,20 @@ const EventDetails = () => {
     }
   };
 
+
   const formatDateWithCurrentYear = (dateString) => {
     if (!dateString) return "Date not available";
-  
+
     const eventDate = new Date(dateString);
     if (isNaN(eventDate.getTime())) return "Date not available"; // Check if date is valid
-  
+
     // ✅ Set the event's year to the current year
     const currentYear = new Date().getFullYear();
     eventDate.setFullYear(currentYear);
-  
+
     return eventDate.toLocaleDateString("en-GB"); // "DD/MM/YYYY"
   };
-  
+
 
 
   // Fetch event details using eventId
@@ -114,7 +115,7 @@ const EventDetails = () => {
 
         if (response.data && response.data.data) {
           setGuest(response.data.data);
-        
+
           console.log(response.data);
         }
       } catch (error) {
@@ -125,51 +126,51 @@ const EventDetails = () => {
     fetchGuest();
   }, []);
 
-const  getEvent = async () => {
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}/events/${eventId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        const data = response.data.data; // Response contains data object
-        console.log(data);
-        setEvents([
-          {
-            ...data,
-            formattedDate: data.formattedDate // ✅ Convert year dynamically
-          }
-        ]);
-    // Store single event in array
-      } catch (error) {
-        console.log("Error while fetching event:", error);
-      }
-    };
-    useEffect(()=> {
-      getEvent()
-    },[eventId])
-
-
-
-    const handleStartChat = async () => {
-      try {
-        const token = localStorage.getItem("token");
-        const response = await axios.post(
-          `${process.env.REACT_APP_BASE_URL}/chats/group`,
-          { eventId: eventId },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-    
-        if (response.data.success) {
-          // Navigate to the existing or newly created chat
-          navigate(`/chats/${response.data.chat.groupId}`);
+  const getEvent = async () => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/events/${eventId}`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
-      } catch (error) {
-        console.error("❌ Error starting chat:", error.response?.data || error.message);
+      );
+      const data = response.data.data; // Response contains data object
+      console.log(data);
+      setEvents([
+        {
+          ...data,
+          formattedDate: data.formattedDate // ✅ Convert year dynamically
+        }
+      ]);
+      // Store single event in array
+    } catch (error) {
+      console.log("Error while fetching event:", error);
+    }
+  };
+  useEffect(() => {
+    getEvent()
+  }, [eventId])
+
+
+
+  const handleStartChat = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/chats/group`,
+        { eventId: eventId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      if (response.data.success) {
+        // Navigate to the existing or newly created chat
+        navigate(`/chats/${response.data.chat.groupId}`);
       }
-    };
-  
+    } catch (error) {
+      console.error("❌ Error starting chat:", error.response?.data || error.message);
+    }
+  };
+
   //   getEvent();
   const handleShare = () => {
     const shareData = {
@@ -177,7 +178,7 @@ const  getEvent = async () => {
       text: `Check out this event: ${event.title}`,
       url: window.location.href,  // Share the current event page URL
     };
-  
+
     if (navigator.share) {
       navigator.share(shareData)
         .then(() => console.log('Event shared successfully!'))
@@ -188,7 +189,7 @@ const  getEvent = async () => {
       alert("Link copied to clipboard!");
     }
   };
-  
+
   return (
     <>
       <section className="page-controls" style={{ padding: "0" }}>
@@ -200,7 +201,7 @@ const  getEvent = async () => {
             <div className="d-flex justify-content-between align-items-center">
               <h4 className="fw-bold">Event Details</h4>
               <div className="d-flex align-items-center">
-                <FaShareAlt className="me-3 fs-5" onClick={handleShare}/>
+                <FaShareAlt className="me-3 fs-5" onClick={handleShare} />
                 <Dropdown>
                   <Dropdown.Toggle
                     as="button"
@@ -222,26 +223,26 @@ const  getEvent = async () => {
             {events.length > 0 ? (
               events.map((event) => (
                 <div key={event._id}>
-            {/* Event Image */}
-            <div>
-            <img 
-  src={
-    event.image && event.image !== "null" && event.image !== `${process.env.REACT_APP_BASE_URL}/null`
-      ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
-      : `${process.env.PUBLIC_URL}/img/eventdefault.png`
-  }
-  alt="event"
-  className="img-fluid"
-  style={{ width: "100%", height: "300px", objectFit: "cover", borderRadius: "10px" }} 
-/>
+                  {/* Event Image */}
+                  <div>
+                    <img
+                      src={
+                        event.image && event.image !== "null" && event.image !== `${process.env.REACT_APP_BASE_URL}/null`
+                          ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
+                          : `${process.env.PUBLIC_URL}/img/eventdefault.png`
+                      }
+                      alt="event"
+                      className="img-fluid"
+                      style={{ width: "100%", height: "300px", objectFit: "cover", borderRadius: "10px" }}
+                    />
 
-             </div>
-       
+                  </div>
 
-            {/* Map over events to display them dynamically */}
-           
+
+                  {/* Map over events to display them dynamically */}
+
                   <h2 className="mt-3 fw-bold">
-                    {event.name} 
+                    {event.name}
                   </h2>
 
                   {/* Tabs */}
@@ -249,11 +250,10 @@ const  getEvent = async () => {
                     {["details", "wishlist", "guests", "history"].map((tab) => (
                       <li className="nav-item" key={tab}>
                         <button
-                          className={`nav-link ${
-                            activeTab === tab
-                              ? "active text-danger fw-bold"
-                              : ""
-                          }`}
+                          className={`nav-link ${activeTab === tab
+                            ? "active text-danger fw-bold"
+                            : ""
+                            }`}
                           onClick={() => setActiveTab(tab)}
                         >
                           {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -266,10 +266,11 @@ const  getEvent = async () => {
                   <div className="tab-content p-3 mt-3 border rounded shadow-sm bg-white">
                     {activeTab === "details" && (
                       <>
-                      <p className="d-flex align-items-center">
-  <span className="bg-danger text-white p-2 rounded me-2">📅</span>
-  {event.formattedDate || "Date not available"}
-</p>
+                        <p className="d-flex align-items-center">
+                          <span className="bg-danger text-white p-2 rounded me-2">📅</span>
+                          {event.formattedDate || "Date not available"}
+                        </p>
+
 
                         <p className="d-flex align-items-center">
                           <span className="bg-danger text-white p-2 rounded me-2">
@@ -286,102 +287,104 @@ const  getEvent = async () => {
                     )}
 
                     {activeTab === "wishlist" && (
-        <div >
-        <div style={{display:"flex",justifyContent:"space-between"}}>
-          <h5>🎁 Wishlist</h5>
-          <h5>Show All</h5>
-          </div>
-          <div>
-            <div className="wishlist-items">
-              {wishlist.length > 0 ? (
-                wishlist.map((item) => (
-                  <div key={item._id} className="row">
-                    <div className="col-lg-4 col-md-6 col-sm-12" style={{marginBottom:"8px"}}>
-                      <div
-                        className="card"
-                        style={{
-                          backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/${item.imageUrl})`,
-                          position: "relative",
-                          backgroundRepeat: "round",
-                          backgroundSize: "cover",
-                        }}
-                      >
-                        <div className="card-img-top" style={{ height: "226px" }}>
-                          {/* ✅ Dynamically Display Image */}
-                          {/* <img
+                      <div >
+                        <div style={{ display: "flex", justifyContent: "space-between" }}>
+                          <h5>🎁 Wishlist</h5>
+                          <h5>Show All</h5>
+                        </div>
+                        <div>
+                          <div className="wishlist-items">
+                            {wishlist.length > 0 ? (
+                              wishlist.map((item) => (
+                                <div key={item._id} className="row">
+                                  <div className="col-lg-4 col-md-6 col-sm-12" style={{ marginBottom: "8px" }}>
+                                    <div
+                                      className="card"
+                                      style={{
+                                        backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/${item.imageUrl})`,
+                                        position: "relative",
+                                        backgroundRepeat: "round",
+                                        backgroundSize: "cover",
+                                      }}
+                                    >
+                                      <div className="card-img-top" style={{ height: "226px" }}>
+                                        {/* ✅ Dynamically Display Image */}
+                                        {/* <img
                             src={`${process.env.REACT_APP_BASE_URL}/${item.imageUrl}`}
                             alt={item.giftName}
                             className="img-fluid"
                             style={{ height: "100%", width: "100%", objectFit: "cover" }}
                           /> */}
-                          {/* <div className="d-flex justify-content-end m-2">
+                                        {/* <div className="d-flex justify-content-end m-2">
                             <p className="card-text status d-flex justify-content-center" style={{ background: "cornsilk" }}>
                               {item.status}
                             </p>
                           </div> */}
-                       
-                        
-                          <div className="card-body cards11">
-                         
-                            <div className="d-flex justify-content-between" style={{ paddingTop: "11px" }}>
-                              <h6 className="card-title" style={{ color: "black" }}>
-                                {item.giftName}
-                              </h6>
-                              <p className="card-text" style={{ color: "#ff3366", fontWeight: "600" }}>
-                                ${item.price}
-                              </p> <div style={{display:'flex',justifyContent:'end'}}    onClick={() => {
-      setSelectedWishlist(item); // Pass the selected wishlist item
-        setshoweditWishlistModal(true);
-    }}>edit</div>
-                            </div>
-                            <div className="d-flex justify-content-between">
-                              <p className="card-text text-secondary m-1 p-main" 
-             style={{fontSize:'12px'}}
-                              >
-                                {item.description}
-                              </p>
-                              <img  src={`${process.env.PUBLIC_URL}/img/Group 33582.svg`} alt="svg" />
-                            </div>
+
+
+                                        <div className="card-body cards11">
+
+                                          <div className="d-flex justify-content-between" style={{ paddingTop: "11px" }}>
+                                            <h6 className="card-title" style={{ color: "black" }}>
+                                              {item.giftName}
+                                            </h6>
+                                            <p className="card-text" style={{ color: "#ff3366", fontWeight: "600" }}>
+                                              ${item.price}
+                                            </p> <div style={{ display: 'flex', justifyContent: 'end' }} onClick={() => {
+                                              setSelectedWishlist(item); // Pass the selected wishlist item
+                                              setshoweditWishlistModal(true);
+                                            }}>edit</div>
+                                          </div>
+                                          <div className="d-flex justify-content-between">
+                                            <p className="card-text text-secondary m-1 p-main"
+                                              style={{ fontSize: '12px' }}
+                                            >
+                                              {item.description}
+                                            </p>
+                                            <img src={`${process.env.PUBLIC_URL}/img/Group 33582.svg`} alt="svg" />
+                                          </div>
+                                        </div>
+
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              ))
+                            ) : (
+                              <p>No wishlist items found.</p>
+                            )}
                           </div>
-                      
+                        </div>
+                        <div className="text-center mt-4">
+                          <button
+                            className="btn btn-danger w-30 d-flex "
+                            onClick={() => setShowWishlistModal(true)}
+                            style={{
+                              alignItems: 'center', justifyContent: 'center', width: "70%", position: 'fixed', bottom: "20px",
+                              left: "50px"
+                            }}
+                          >
+                            ADD WISHLIST <FaArrowRight className="ms-2" />
+                          </button>
+                        </div>
                       </div>
-                    </div>
-                  </div>
-                  </div>
-                ))
-              ) : (
-                <p>No wishlist items found.</p>
-              )}
-            </div>
-          </div>
-          <div className="text-center mt-4">
-            <button
-              className="btn btn-danger w-30 d-flex "
-              onClick={() => setShowWishlistModal(true)} 
-              style={{alignItems:'center',justifyContent:'center',width:"70%",position:'fixed',bottom: "20px",
-    left: "50px"}}
-            >
-              ADD WISHLIST <FaArrowRight className="ms-2" />
-            </button>
-          </div>
-        </div>
-      )}
+                    )}
 
                     {activeTab === "guests" && (
                       <div>
-  <h5>👥 Guest List</h5>
-  <p>List of guests attending the event.</p>
+                        <h5>👥 Guest List</h5>
+                        <p>List of guests attending the event.</p>
 
-  {guest && guest.length > 0 ? (
-    <>
-      <ul>
-        {guest.map((g) => (
-          <li key={g._id}>
-          <div style={{display:'flex',justifyContent:'space-between'}}>
-           <span style={{}}> {g.name}</span><span>
-            {g.status}</span>
-            </div>
-            {/* <p
+                        {guest && guest.length > 0 ? (
+                          <>
+                            <ul>
+                              {guest.map((g) => (
+                                <li key={g._id}>
+                                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+                                    <span style={{}}> {g.name}</span><span>
+                                      {g.status}</span>
+                                  </div>
+                                  {/* <p
               style={{
                 border: "1px solid #ff3366",
                 maxWidth: "28%",
@@ -391,30 +394,30 @@ const  getEvent = async () => {
             >
               {g.fullName}
             </p> */}
-          </li>
-        ))}
-      </ul>
-      
-      {/* ADD MORE and START CHAT buttons when guests are available */}
-      <div className="text-center mt-4 d-flex">
-        <InviteButton/>
+                                </li>
+                              ))}
+                            </ul>
 
-        <button
-          className="btn btn-success w-25 d-flex align-items-center justify-content-center"
-          style={{ fontSize: "12px" }}
-          onClick={handleStartChat} // Define this function to start chat
-        >
-          START CHAT
-        </button>
-      </div>
-    </>
-  ) : (
-    // Invite button only when there are no guests
-    <div className=" mt-4">
-    <InviteButton/>
-    </div>
-  )}
-</div>
+                            {/* ADD MORE and START CHAT buttons when guests are available */}
+                            <div className="text-center mt-4 d-flex">
+                              <InviteButton />
+
+                              <button
+                                className="btn btn-success w-25 d-flex align-items-center justify-content-center"
+                                style={{ fontSize: "12px" }}
+                                onClick={handleStartChat} // Define this function to start chat
+                              >
+                                START CHAT
+                              </button>
+                            </div>
+                          </>
+                        ) : (
+                          // Invite button only when there are no guests
+                          <div className=" mt-4">
+                            <InviteButton />
+                          </div>
+                        )}
+                      </div>
                     )}
                     {activeTab === "history" && (
                       <div>
@@ -431,13 +434,13 @@ const  getEvent = async () => {
           </div>
 
           {/* Wishlist Modal */}
-         {showWishlistModal && (
-  <WishlistModal 
-    eventId={eventId} 
-    setShow={setShowWishlistModal}  // ✅ Make sure this is correctly passed
-    fetchWishlist={fetchWishlist}
-  />
-)}
+          {showWishlistModal && (
+            <WishlistModal
+              eventId={eventId}
+              setShow={setShowWishlistModal}  // ✅ Make sure this is correctly passed
+              fetchWishlist={fetchWishlist}
+            />
+          )}
 
           <InviteModal
             show={showGuestModal}
@@ -446,10 +449,10 @@ const  getEvent = async () => {
           />
           <EditEventModal
             show={showEditModal}
-        setShow={setShowEditModal}
-        event={events[0]} // Pass the specific event
-        setEvent={setEvents}
-        fetchevent={getEvent} // Pass fetchWishlist as a prop
+            setShow={setShowEditModal}
+            event={events[0]} // Pass the specific event
+            setEvent={setEvents}
+            fetchevent={getEvent} // Pass fetchWishlist as a prop
           />
 
           <WishlistEditModal
@@ -457,10 +460,10 @@ const  getEvent = async () => {
             setShow={setshoweditWishlistModal}
             wishlist={selectedWishlist}
             fetchWishlist={fetchWishlist}
-            />
+          />
         </div>
-        
-       
+
+
       </section>
     </>
   );
