@@ -75,6 +75,42 @@ function Invitationlst() {
   if (loading) {
     return <div>Loading invitations...</div>;
   }
+  const calculateAgeAndBirthdayText = (eventDate) => {
+    if (!eventDate) return "N/A";
+
+    const today = new Date();
+    const targetDate = new Date(eventDate); // The person's birthday date
+    const currentYear = today.getFullYear();
+
+    // Ensure targetDate is set to the current year
+    targetDate.setFullYear(currentYear);
+
+    // Calculate age based on the birthdate year
+    const birthDate = new Date(eventDate);
+    const age = today.getFullYear() - birthDate.getFullYear();
+
+    // Calculate the difference in days between today and the birthday
+    const diffTime = targetDate - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    // If the birthday is today
+    if (diffDays === 0) {
+      return `Today!`;
+    }
+
+    // If the birthday has passed this year, set the target date to next year
+    if (diffDays < 0) {
+      targetDate.setFullYear(currentYear + 1);
+    }
+
+    // Calculate days left for the next birthday (if already passed this year)
+    const nextDiffTime = targetDate - today;
+    const nextDiffDays = Math.ceil(nextDiffTime / (1000 * 60 * 60 * 24));
+
+    // If the birthday is in the future
+    return `${nextDiffDays} Days Left `;
+  };
+
 
   return (
     <div className="containers1 mt-4">
@@ -90,36 +126,65 @@ function Invitationlst() {
 
       {/* Display Invitations */}
       {filteredInvitations.length > 0 ? (
-        filteredInvitations.map((invitation) => (
-          <div key={invitation._id} className="d-flex justify-content-center mb-3">
-            <Card
-              style={{
-                width: "100%",
-                boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
-                border: "2px solid #e0e0e0",
-                borderRadius: "10px",
-              }}
-            >
-              {/* Event Image */}
-              <Card
-                variant="top"
-                style={{
-                  backgroundImage: `url(${
-                    invitation.event.image &&
-                    invitation.event.image !== "null" &&
-                    invitation.event.image !== `${process.env.REACT_APP_BASE_URL}/null`
-                      ? `${process.env.REACT_APP_BASE_URL}/${invitation.event.image}`
-                      : `${process.env.PUBLIC_URL}/img/defaultUser.png`
-                  })`,
-                  position: "relative",
-                  backgroundRepeat: "no-repeat",
-                  backgroundSize: "cover",
-                  height: "162px",
-                  maxWidth: "100%",
-                }}
-              />
-
-              <Card.Body>
+        filteredInvitations.map((invitation,index) => (
+          <div key={     index} className="d-flex justify-content-center mb-3">
+         
+        <Card
+                        style={{
+                          width: "100%",
+                          minWidth: "310px",
+                          border: "0.5px solid rgb(229 229 229)",
+                          borderRadius: "10px",
+                        
+                          marginBottom: index === filteredInvitations.length - 1 ? "80px" : "10px",
+                        }}
+                      >
+                        <div style={{ height: "150px" }}>
+                          <Card
+                            variant="top"
+                            style={{
+                              position: "relative",
+                              width: "100%",
+                              height: "162px",
+                            }}
+                          >
+                            <img
+                              src={
+                                invitation.event.image &&
+                                invitation.event.image !== "null" &&
+                                invitation.event.image !== `${process.env.REACT_APP_BASE_URL}/null`
+                                  ? `${process.env.REACT_APP_BASE_URL}/${invitation.event.image}`
+                                  : `${process.env.PUBLIC_URL}/img/eventdefault.png`
+                              }
+                              alt="Event"
+                              className="imgEvent"
+                            />
+                            <div
+                              style={{
+                                borderRadius: "0px 10px 0px 0px", // Rounded corners on the right side
+                                position: "absolute", // Absolute positioning within the Card container
+                                top: "0px", // Adjust as needed
+                                right: "1px", // Adjust as needed
+                                color: "white", // Text color
+                                fontSize: "15px", // Text size
+                                fontWeight: "bold", // Optional for bold text
+                                backgroundColor: "#ff3366", // Optional background for contrast
+                                padding: "5px", // Padding for text
+                              }}
+                            >
+                              {calculateAgeAndBirthdayText(
+                                invitation.event.date || invitation.event.eventDate
+                              )}
+                            </div>
+        
+                            {/* <small className="" style={{ color: "white", paddingRight: "24px", paddingTop: '5px', textAlign: 'end', color: "#ff3366", fontWeight: '600' }}>
+                        
+                            </small> */}
+                          </Card>
+                        </div>                      {/* <small className="" style={{ color: "white", paddingRight: "24px", paddingTop: '5px', textAlign: 'end', color: "#ff3366", fontWeight: '600' }}>
+                          
+                              </small> */}
+                               <Card.Body>
                 {/* Event Name */}
                 <Card.Title>{invitation.event.name}</Card.Title>
                 {/* Event Date */}

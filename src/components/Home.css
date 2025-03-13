@@ -43,6 +43,16 @@ border-radius: 26px !important;
  .btn1{
     width: 50%;
 }
+.css-13cymwt-control{
+border-color: #ff3366  !important;
+}
+.css-tj5bde-Svg {
+    display: inline-block;
+    fill: currentColor;
+    line-height: 1;
+    stroke: currentColor;
+    stroke-width: 0;
+}
 
 /* In your CSS file (e.g., Home.css) */
 .planbtn {

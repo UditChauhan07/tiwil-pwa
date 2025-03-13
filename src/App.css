@@ -69,3 +69,9 @@ option{
 .mains121 .card:last-child {
   margin-bottom: 3rem !important;
 }
+.containers1  .card1:last-child {
+  margin-bottom: 3rem !important;
+}
+.mobileMode{
+  padding: 5px;
+}

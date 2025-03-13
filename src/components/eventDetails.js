@@ -174,8 +174,8 @@ const EventDetails = () => {
   //   getEvent();
   const handleShare = () => {
     const shareData = {
-      title: event.title,
-      text: `Check out this event: ${event.title}`,
+      
+      text: `Check out this event i am celeberating`,
       url: window.location.href,  // Share the current event page URL
     };
 
@@ -190,6 +190,24 @@ const EventDetails = () => {
     }
   };
 
+
+  const handledeletevent=async()=>{
+    try {
+      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete-event/${eventId}`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.status) {
+       navigate('/home')
+
+        console.log("deleted event ");
+      }
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
+  
   return (
     <>
       <section className="page-controls" style={{ padding: "0" }}>
@@ -213,7 +231,7 @@ const EventDetails = () => {
                     <Dropdown.Item onClick={() => setShowEditModal(true)}>
                       Edit Event
                     </Dropdown.Item>
-                    <Dropdown.Item className="text-danger">
+                    <Dropdown.Item className="text-danger" onClick={handledeletevent}>
                       Cancel Event
                     </Dropdown.Item>
                   </Dropdown.Menu>

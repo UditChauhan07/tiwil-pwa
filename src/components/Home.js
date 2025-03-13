@@ -6,7 +6,7 @@ import Navbar from "./navbar";
 // Static image for events and invitations
 import Header from "./Header";
 import { useNavigate } from "react-router-dom";
-
+import Select from "react-select";
 import { useEffect,useState } from "react";
 import axios from "axios";
 import FooterNavBar from "./TabFooter";
@@ -21,6 +21,7 @@ import TabList from '@mui/lab/TabList';
 import TabPanel from '@mui/lab/TabPanel';
 import { FaSearch} from "react-icons/fa";
 import '../components/Hedaer.css'
+import moment from "moment";
 
 
 
@@ -28,7 +29,7 @@ import '../components/Hedaer.css'
 const HomePage = () => {
   const [events, setEvents] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchDate, setSearchDate] = useState("");
+  const [searchMonth, setSearchMonth] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [innvitations,setInvitations]=useState([])
@@ -39,6 +40,13 @@ const HomePage = () => {
     const [data, setData] = useState([]);
     console.log(results,"results of the result current state")
   const navigate=useNavigate();
+
+
+
+  const monthOptions = moment.months().map((month, index) => ({
+    value: (index + 1).toString().padStart(2, "0"), // "01", "02", ..., "12"
+    label: month
+  }));
   // const [daysLeft, setDaysLeft] = useState(null);
   // const [eventDate, setEventDate] = useState("");
   const fetchEvents = async () => {
@@ -106,10 +114,10 @@ const HomePage = () => {
     
   useEffect(() => {
     const delayDebounceFn = setTimeout(() => {
-      if (searchQuery.trim() !== "" || searchDate !== "") {
-        console.log(searchDate)
+      if (searchQuery.trim() !== "" || searchMonth.value !== "") {
+        console.log(searchMonth.value)
         fetchSearchResults();
-        console.log("Search query:", searchDate);
+        console.log("Search query:", searchMonth.value);
         console.log(results,'dtrwtr')
       } else {
         setResults([]); // Clear results if input is empty
@@ -117,13 +125,13 @@ const HomePage = () => {
     }, 500); // 500ms debounce time
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery, searchDate]);
+  }, [searchQuery, searchMonth]);
   const fetchSearchResults = async () => {
     const token = localStorage.getItem("token");
     setLoading(true);
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/search?query=${searchQuery}&date=${searchDate}`,
+        `${process.env.REACT_APP_BASE_URL}/search?query=${searchQuery}&date=${searchMonth.value}`,
         {
           headers: { Authorization: `Bearer ${token}` } // ✅ Headers inside config object
         }
@@ -286,6 +294,11 @@ const handleAllinvitation=()=>{
       setSearchQuery(query);
       filterItem(searchQuery)
     }
+    console.log(results,'der')
+    const resetMonth = () => {
+      setSelectedMonth("");   // ✅ Reset frontend state
+      setMonthQuery("");      // ✅ Reset backend filter
+  };
    
   return (
     <>
@@ -296,24 +309,29 @@ const handleAllinvitation=()=>{
       <div className="mobileMode">
       <div className="d-flex">
         <div className="SearLast p-1" style={{ width: "100%" }}>
-          <div className="d-flex searchbarw justify-content-between">
-            <input
-              type="text"
-              value={searchQuery}
-              placeholder="Find events or invitations"
-              className="text-mute inputhome"
-              style={{ width: "100%", height: "30%" }}
-              onChange={(e) => setSearchQuery(e.target.value)}
-            />
-            <input
-              type="date"
-              value={searchDate}
-              className="text-mute inputhome"
-              onChange={(e) => setSearchDate(e.target.value)}
-              style={{ marginLeft: "10px", padding: "5px" }}
-            />
-            {/* <FaSearch className="me-3 text-muted" style={{ fontSize: "1.5rem", fill: "#FF3366" }} /> */}
-          </div>
+        <div className="d-flex searchbarw justify-content-between">
+  <input
+    type="text"
+    value={searchQuery}
+    placeholder="Find events or invitations"
+    className="text-mute inputhome"
+    style={{ width: "100%", height: "30%" }}
+    onChange={(e) => setSearchQuery(e.target.value)}
+  />
+  
+</div>
+ {/* <Select
+ 
+        options={[
+            { value: "", label: "ALL" },
+            ...monthOptions
+        ]}
+        value={searchMonth}
+        onChange={setSearchMonth}
+        placeholder="Month"
+        style={{border:'#ff3366'}}
+      /> */}
+
         </div>
       </div>
 
