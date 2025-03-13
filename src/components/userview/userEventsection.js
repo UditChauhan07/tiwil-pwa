@@ -23,6 +23,10 @@ const EventDetails = () => {
   const navigate = useNavigate();
   const currentUserId = localStorage.getItem("userId");
 
+
+  useEffect(() => {
+    console.log("Updated Owner State:", owner);
+}, [owner]); 
   useEffect(() => {
     const token = localStorage.getItem("token");
     const fetchGuest = async () => {
@@ -84,13 +88,18 @@ const EventDetails = () => {
             
             const wishlistData = response.data.data || [];
             setWishlistItems(wishlistData);
-
+console.log("main")
             // Check if there's at least one item in the wishlist
-            if (wishlistData.length > 0 && wishlistData[0].markedBy) {
-                setOwner(wishlistData[0].markedBy.userId);
+            const markedItem = wishlistData.find(item => item.markedBy?.userId);
+
+            if (markedItem) {
+                console.log("Found Marked Owner ID:", markedItem.markedBy.userId);
+                setOwner(markedItem.markedBy.userId);
             } else {
-                setOwner(null); // Set to null if no owner is found
+                console.log("No MarkedBy User Found in Any Item");
+                setOwner(null);
             }
+            
 
         } catch (error) {
             console.error("Error fetching wishlist:", error);
@@ -264,7 +273,9 @@ const handleClick = async (item) => {
   const isUnmarked = item.status === "Unmark";
   const isPooling = item.status === "Pooling";
   const isOwner = owner === currentUserId;
-  
+  console.log(isOwner)
+  console.log(owner)
+  console.log(currentUserId)
   const wishId = item._id;
 
   if (isPurchasedOrMarked) {
@@ -295,13 +306,17 @@ const handleClick = async (item) => {
         return;
       }
 
-      if (isOwner) {
-        navigate(`/createpool/${item._id}`, { state: { item } });
-        return;
-      }
+      
 
       // Try to fetch the guest data to check if the user is invited
       try {
+        if (isOwner) {
+          console.log(isOwner)
+          console.log(owner)
+          navigate(`/createpool/${item._id}`, { state: { item } });
+          return;
+        }
+        
         const { data } = await axios.get(
           `${process.env.REACT_APP_BASE_URL}/guests/userId/${wishId}`,
           {
@@ -364,7 +379,11 @@ const handleClick = async (item) => {
         // If the user is invited, proceed to the pooling page
         const isInvited = data.guestUsers?.some(
           (user) => user.userId.toString() === currentUserId.toString()
-        );
+        ); if (isOwner) {
+          navigate(`/createpool/${item._id}`, { state: { item } });
+          return;
+        }
+  
 
         if (isInvited) {
           navigate(`/createpool/${item._id}`, { state: { item } });

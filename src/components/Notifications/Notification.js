@@ -163,10 +163,43 @@ const PoolRequests = () => {
   return (
     <>
    
+      
+<div className="d-flex heading-notification">
+<img src={`${process.env.PUBLIC_URL}/img/arrow-left.svg`} alt="notification" height={"20px"} width={"20px"} onClick={handleback} />
+  <h4>Notification</h4>
+</div>
+      <div className="notification-container">
+      {notifications.map((notification) => {
+  const isActionable = ["Pool Invitation", "Pool Request", "Event Invitation"].includes(notification.type);
+
+  return (
+    <div key={notification._id} className="notification-item">
+      <div className="notification-text d-flex align-items-center justify-content-between">
+        <img src={`${process.env.PUBLIC_URL}/img/userimage3.jpg`} alt="notification" height={"45px"} width={"45px"} style={{ borderRadius: "20px" }} />
+        <p className="message">{notification.message}</p>
+        <p className="timestamp">{getRelativeTime(notification.timestamp)}</p>
+      </div>
+
+      {isActionable && (
+        <div className="notification-actions">
+          <button className="reject-button" onClick={() => handleAction(notification, "declined")}>
+            Reject
+          </button>
+          <button className="accept-button" onClick={() => handleAction(notification, "accepted")}>
+            Accept
+          </button>
+        </div>
+      )}
+    </div>
+    
+  );
+})}
+
+      </div>
       <div>
-        <h2>Pool Join Requests</h2>
+   
         {requests.length === 0 ? (
-          <p>No requests found.</p>
+         null
         ) : (
           <ul>
             {requests.map((req) => (
@@ -219,37 +252,6 @@ const PoolRequests = () => {
             ))}
           </ul>
         )}
-      </div>
-<div className="d-flex heading-notification">
-<img src={`${process.env.PUBLIC_URL}/img/arrow-left.svg`} alt="notification" height={"20px"} width={"20px"} onClick={handleback} />
-  <h4>Notification</h4>
-</div>
-      <div className="notification-container">
-      {notifications.map((notification) => {
-  const isActionable = ["Pool Invitation", "Pool Request", "Event Invitation"].includes(notification.type);
-
-  return (
-    <div key={notification._id} className="notification-item">
-      <div className="notification-text d-flex align-items-center justify-content-between">
-        <img src={`${process.env.PUBLIC_URL}/img/userimage3.jpg`} alt="notification" height={"45px"} width={"45px"} style={{ borderRadius: "20px" }} />
-        <p className="message">{notification.message}</p>
-        <p className="timestamp">{getRelativeTime(notification.timestamp)}</p>
-      </div>
-
-      {isActionable && (
-        <div className="notification-actions">
-          <button className="reject-button" onClick={() => handleAction(notification, "declined")}>
-            Reject
-          </button>
-          <button className="accept-button" onClick={() => handleAction(notification, "accepted")}>
-            Accept
-          </button>
-        </div>
-      )}
-    </div>
-  );
-})}
-
       </div>
     </>
   );

@@ -17,28 +17,29 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
 
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
+  
     if (file) {
       setUploading(true);
-      setImageFile(file);
-
+      setImageFile(file); // ✅ Hamesha sirf File Save Karni Hai
+  
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPreviewImage(reader.result);
+        setPreviewImage(reader.result); // ✅ Sirf Preview Ke Liye Base64
         setTimeout(() => {
           setUploading(false);
-        }, 2000); // Simulate loading effect
+        }, 2000);
       };
-      reader.readAsDataURL(file);
+      reader.readAsDataURL(file); // ✅ Ye sirf preview ke liye hai, bhejna nahi
     }
   };
-
+  
   const handleSave = async () => {
     const token = localStorage.getItem("token");
     if (!eventId) {
       alert("Event ID is missing.");
       return;
     }
-
+  
     const formData = new FormData();
     formData.append("eventId", eventId);
     formData.append("giftName", giftName);
@@ -46,22 +47,28 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
     formData.append("productLink", productLink);
     formData.append("desireRate", desireRate);
     formData.append("description", description);
-
-    if (imageFile) {
+  
+    if (imageFile instanceof File) {  // ✅ Ensure imageFile is File, not Base64
       formData.append("image", imageFile);
     } else {
-      console.log("⚠️ No image selected.");
+      console.error("❌ Image file is not valid:", imageFile);
     }
-
+  
+    console.log("🔍 FormData Debug:", [...formData.entries()]); // Debugging ke liye
+  
     setLoading(true);
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/wishlist`, formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-          Authorization: `Bearer ${token}`,
-        },
-      });
-
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/wishlist`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
       if (response.data.success) {
         Swal.fire("Success", "Wishlist item added successfully!", "success");
         refreshWishlist();
@@ -74,7 +81,7 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
       setLoading(false);
     }
   };
-
+  
   return (
     <div className={show ? styles.modalOverlay : styles.hidden}>
       <div className={styles.modal}>

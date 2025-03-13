@@ -24,14 +24,14 @@ function Invitationlst() {
 
         if (response.data) {
           // Filter invitations to include only the accepted ones
-          const acceptedInvitations = response.data.data.filter((invitation) =>
-            invitation.invitations.some(
-              (invitationDetail) => invitationDetail.status === "Accepted"
-            )
-          );
+          // const acceptedInvitations = response.data.data.filter((invitation) =>
+          //   invitation.invitations.some(
+          //     (invitationDetail) => invitationDetail.status === "Accepted"
+          //   )
+          // );
 
-          setInvitations(acceptedInvitations);
-          setFilteredInvitations(acceptedInvitations);
+          setInvitations( response.data.data);
+          setFilteredInvitations( response.data.data);
         }
       } catch (error) {
         console.error("Error fetching invitations:", error);
