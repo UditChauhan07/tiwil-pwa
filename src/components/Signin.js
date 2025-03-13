@@ -93,10 +93,7 @@ const SignInForm = () => {
         console.log("🔄 Generating FCM Token...");
         const fcmToken  = await genToken();
         console.log("✅ Generated FCM Token:", fcmToken );
-      Swal.fire({
-        icon: "success",
-        title: fcmToken ,
-      })
+    
         console.log("📤 Saving FCM Token to backend...");
         const FCM_response = await axios.put(
           `${process.env.REACT_APP_BASE_URL}/save-fcm-token`, 

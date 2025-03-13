@@ -297,7 +297,10 @@ const Eventlst = () => {
                           marginLeft: "5px",
                         }}
                       >
-                       {event.formattedDate || "Date not available"}
+                 {event.formattedDate 
+  ? formatDateWithCurrentYear(event.formattedDate) 
+  : "Date not available"}
+
                       </h6>
                     </div>
                     <div>
