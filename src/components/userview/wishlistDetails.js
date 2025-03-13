@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import Header from "../Header";
-import Navbar from "../navbar";
-import Footer from "../Footer";
+import Navbar from "../Navbar/navbar";
 import Swal from "sweetalert2";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
-import {Link} from 'react-router-dom'
+
 
 function WishlistCard() {
   const location = useLocation();
@@ -84,7 +82,7 @@ function WishlistCard() {
 
   return (
     <section className="page-controls">
-      <Header />
+  
       <Navbar />
       <div className="container mt-4">
         {!wishlistItem ? (

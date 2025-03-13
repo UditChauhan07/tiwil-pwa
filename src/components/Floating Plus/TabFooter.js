@@ -1,7 +1,7 @@
 import React from "react";
 import { FaHome, FaComments, FaUsers, FaPlus } from "react-icons/fa";
 import { useState,useEffect } from "react";
-import FloatingActionButton from "./Floating Plus/FloatingTab";
+import FloatingActionButton from "./FloatingTab";
 import { useNavigate } from "react-router-dom";
 
 const FooterNavBar = () => {

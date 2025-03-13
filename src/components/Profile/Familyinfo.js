@@ -47,7 +47,7 @@ const FamilyList = () => {
   return (
     <>
     <section className="page-controls">
-    <Header/>
+  
     <Navbar/>
     <div className="containers">
       <h2 className="text-centera mt-3">View Detail</h2>

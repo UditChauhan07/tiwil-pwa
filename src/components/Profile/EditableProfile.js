@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import styles from "../components/EditableProfile.module.css";
+import styles from "../Profile/EditableProfile.module.css";
 import { IoMdCamera } from "react-icons/io";
 
 const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) => {

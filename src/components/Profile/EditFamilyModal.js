@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import styles from "../components/EditFamilyModel.module.css";
+import styles from "../Profile/EditFamilyModel.module.css";
 import { FaCamera } from "react-icons/fa";
 
 const EditFamilyModal = ({ relation, detail, onClose, onSave }) => {

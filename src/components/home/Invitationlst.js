@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Card, Button, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import "../Home.css";
+import "./Home.css";
 
 function Invitationlst() {
   const [invitations, setInvitations] = useState([]);
@@ -30,8 +30,8 @@ function Invitationlst() {
           //   )
           // );
 
-          setInvitations( response.data.data);
-          setFilteredInvitations( response.data.data);
+          setInvitations(response.data.data);
+          setFilteredInvitations(response.data.data);
         }
       } catch (error) {
         console.error("Error fetching invitations:", error);
@@ -111,7 +111,6 @@ function Invitationlst() {
     return `${nextDiffDays} Days Left `;
   };
 
-
   return (
     <div className="containers1 mt-4">
       {/* Search Bar */}
@@ -126,121 +125,118 @@ function Invitationlst() {
 
       {/* Display Invitations */}
       {filteredInvitations.length > 0 ? (
-        filteredInvitations.map((invitation,index) => (
-          <div key={     index} className="d-flex justify-content-center mb-3">
-         
-        <Card
-                        style={{
-                          width: "100%",
-                          minWidth: "310px",
-                          border: "0.5px solid rgb(229 229 229)",
-                          borderRadius: "10px",
-                        
-                          marginBottom: index === filteredInvitations.length - 1 ? "80px" : "10px",
-                        }}
-                      >
-                        <div style={{ height: "150px" }}>
-                          <Card
-                            variant="top"
-                            style={{
-                              position: "relative",
-                              width: "100%",
-                              height: "162px",
-                            }}
-                          >
-                            <img
-                              src={
-                                invitation.event.image &&
-                                invitation.event.image !== "null" &&
-                                invitation.event.image !== `${process.env.REACT_APP_BASE_URL}/null`
-                                  ? `${process.env.REACT_APP_BASE_URL}/${invitation.event.image}`
-                                  : `${process.env.PUBLIC_URL}/img/eventdefault.png`
-                              }
-                              alt="Event"
-                              className="imgEvent"
-                            />
-                            <div
-                              style={{
-                                borderRadius: "0px 10px 0px 0px", // Rounded corners on the right side
-                                position: "absolute", // Absolute positioning within the Card container
-                                top: "0px", // Adjust as needed
-                                right: "1px", // Adjust as needed
-                                color: "white", // Text color
-                                fontSize: "15px", // Text size
-                                fontWeight: "bold", // Optional for bold text
-                                backgroundColor: "#ff3366", // Optional background for contrast
-                                padding: "5px", // Padding for text
-                              }}
-                            >
-                              {calculateAgeAndBirthdayText(
-                                invitation.event.date || invitation.event.eventDate
-                              )}
-                            </div>
-        
-                            {/* <small className="" style={{ color: "white", paddingRight: "24px", paddingTop: '5px', textAlign: 'end', color: "#ff3366", fontWeight: '600' }}>
-                        
-                            </small> */}
-                          </Card>
-                        </div>                      {/* <small className="" style={{ color: "white", paddingRight: "24px", paddingTop: '5px', textAlign: 'end', color: "#ff3366", fontWeight: '600' }}>
-                          
-                              </small> */}
-                               <Card.Body>
+        filteredInvitations.map((invitation, index) => (
+          <div key={index} className="d-flex justify-content-center mb-3">
+            <Card
+              style={{
+                width: "100%",
+                minWidth: "310px",
+                border: "0.5px solid rgb(229 229 229)",
+                borderRadius: "10px",
+
+                marginBottom:
+                  index === filteredInvitations.length - 1 ? "80px" : "10px",
+              }}
+            >
+              <div style={{ height: "150px" }}>
+                <Card
+                  variant="top"
+                  style={{
+                    position: "relative",
+                    width: "100%",
+                    height: "162px",
+                  }}
+                >
+                  <img
+                    src={
+                      invitation.event.image &&
+                      invitation.event.image !== "null" &&
+                      invitation.event.image !==
+                        `${process.env.REACT_APP_BASE_URL}/null`
+                        ? `${process.env.REACT_APP_BASE_URL}/${invitation.event.image}`
+                        : `${process.env.PUBLIC_URL}/img/eventdefault.png`
+                    }
+                    alt="Event"
+                    className="imgEvent"
+                  />
+                  <div
+                    style={{
+                      borderRadius: "0px 10px 0px 0px", // Rounded corners on the right side
+                      position: "absolute", // Absolute positioning within the Card container
+                      top: "0px", // Adjust as needed
+                      right: "1px", // Adjust as needed
+                      color: "white", // Text color
+                      fontSize: "15px", // Text size
+                      fontWeight: "bold", // Optional for bold text
+                      backgroundColor: "#ff3366", // Optional background for contrast
+                      padding: "5px", // Padding for text
+                    }}
+                  >
+                    {calculateAgeAndBirthdayText(
+                      invitation.event.date || invitation.event.eventDate
+                    )}
+                  </div>
+                </Card>
+              </div>
+
+              <Card.Body>
                 {/* Event Name */}
                 <Card.Title>{invitation.event.name}</Card.Title>
                 {/* Event Date */}
-                 <Card.Text
-                                    className="d-flex justify-content-between"
-                                    style={{ gap: "10px" }}
-                                  >
-                                    <div
-                                      style={{
-                                        display: "flex",
-                                        justifyContent: "space-between",
-                                      }}
-                                    >
-                                      <img
-                                        className="m-0.5"
-                                        src={`${process.env.PUBLIC_URL}/img/calender.svg`}
-                                        height={"17px"}
-                                        alt="calendar"
-                                      />
-                                      <h6
-                                        style={{
-                                          marginRight: "10px",
-                                          marginBottom: "5px",
-                                          fontWeight: "600",
-                                          marginLeft: "5px",
-                                        }}
-                                      >
-                                       {invitation.event.formattedDate || "Date not available"}
-                                      </h6>
-                                    </div>
-                                    <div>
-                                      {invitation.event.relation &&
-                                        invitation.event.relation.toLowerCase() !== "parent anniversary" &&
-                                        invitation.event.relation.toLowerCase() !==
-                                        "marriage anniversary" ? (
-                                        <h4
-                                          style={{
-                                            background: "white",
-                                            color: "#ff3366",
-                                            border: "1px solid #ff3366",
-                                            paddingLeft: "10px",
-                                            padding: "3px 27px 0px 26px",
-                                            borderRadius: "10px",
-                                          }}
-                                        >
-                                          {invitation.event.relation}
-                                        </h4>
-                                      ) : null}
-                                    </div>
-                                  </Card.Text>
+                <Card.Text
+                  className="d-flex justify-content-between"
+                  style={{ gap: "10px" }}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <img
+                      className="m-0.5"
+                      src={`${process.env.PUBLIC_URL}/img/calender.svg`}
+                      height={"17px"}
+                      alt="calendar"
+                    />
+                    <h6
+                      style={{
+                        marginRight: "10px",
+                        marginBottom: "5px",
+                        fontWeight: "600",
+                        marginLeft: "5px",
+                      }}
+                    >
+                      {invitation.event.formattedDate || "Date not available"}
+                    </h6>
+                  </div>
+                  <div>
+                    {invitation.event.relation &&
+                    invitation.event.relation.toLowerCase() !==
+                      "parent anniversary" &&
+                    invitation.event.relation.toLowerCase() !==
+                      "marriage anniversary" ? (
+                      <h4
+                        style={{
+                          background: "white",
+                          color: "#ff3366",
+                          border: "1px solid #ff3366",
+                          paddingLeft: "10px",
+                          padding: "3px 27px 0px 26px",
+                          borderRadius: "10px",
+                        }}
+                      >
+                        {invitation.event.relation}
+                      </h4>
+                    ) : null}
+                  </div>
+                </Card.Text>
 
                 {/* Plan and Celebrate Button */}
                 {invitation.invitations.length > 0 && (
-                  <Button className="planbtn"
+                  <Button
+                    className="planbtn"
                     variant="danger"
-                 
                     onClick={() =>
                       handleInvitation(
                         invitation.event.eventId,

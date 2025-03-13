@@ -20,6 +20,7 @@ function PoolingWish() {
   const [poolCreator,setpoolCreator]=useState(null) 
   const userId = localStorage.getItem("userId");
   const [imageSrc, setImageSrc] = useState(`${process.env.PUBLIC_URL}/img/defaultproduct.jpg`);
+  const[myContribution,setmycontribution]=useState()
 
 useEffect(() => {
   if (pool?.wishImage) {
@@ -74,6 +75,11 @@ useEffect(() => {
     fetchUserStatus();
   }, [wishId]);
 console.log('pool',poolCreator)
+
+useEffect(()=>  {
+handleSaveContribution()
+},[contributionAmount])
+
   const handleSaveContribution = async () => {
     if (!contributionAmount || contributionAmount <= 0) {
       Swal.fire("Error", "Please enter a valid contribution amount.", "error");
@@ -99,7 +105,8 @@ console.log('pool',poolCreator)
             const itemId = wishId;
             const response = await axios.post(
               `${process.env.REACT_APP_BASE_URL}/request`, // Replace with your actual API endpoint
-              { itemId}, // Sending userId in the body
+              { itemId},
+               // Sending userId in the body
               {
                 headers: {
                   Authorization: `Bearer ${localStorage.getItem("token")}`, 
@@ -151,6 +158,8 @@ console.log('pool',poolCreator)
       if (response.data.success) {
         Swal.fire("Success!", "Your contribution has been saved.", "success");
         navigate(`/createpool/${wishId}`);
+        setContributionAmount(""); 
+        fetchPoolData();
       }
     } catch (error) {
       console.error("Error saving contribution:", error);
@@ -204,9 +213,8 @@ console.log('pool',poolCreator)
     };
 
     fetchPoolData();
-    const interval = setInterval(fetchPoolData, 5000); // Real-time updates every 5 seconds
-    return () => clearInterval(interval);
-  }, [wishId]);
+
+  }, [wishId,contributionAmount]);
   
   if (!pool) return <div className="text-center mt-5">Loading pool data...</div>;
 
@@ -227,10 +235,22 @@ console.log('pool',poolCreator)
     }
     return acc;
   }, []);
+  useEffect(() => {
+  if (aggregatedContributors.length > 0) {
+    const myContributionData = aggregatedContributors.find(
+      (contributor) => contributor.userId === userId
+    );
+    if (myContributionData) {
+      setmycontribution(myContributionData.amount);
+    }
+  }
+}, [aggregatedContributors]); // Jab bhi contributors ka data update ho, ye effect chalega
 
-  const myContribution = aggregatedContributors.find(
-    (contributor) => contributor.userId === userId
-  );
+
+  // const myContribution = aggregatedContributors.find(
+  //   (contributor) => contributor.userId === userId
+  // );
+  // setmycontribution(myContribution)
   const otherContributors = aggregatedContributors.filter(
     (contributor) => contributor.userId !== userId
   );

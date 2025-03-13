@@ -2,17 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { FaEllipsisV, FaShareAlt, FaArrowRight } from "react-icons/fa";
 import "./Eventdetails.css";
-import Footer from "./Footer";
-import Header from "./Header";
-import Navbar from "./navbar";
-import WishlistModal from "./Wishlist/addWishlist";
-import InviteModal from "./GuestInvite/GuestModal";
-import EditEventModal from "./Events/eventModal";
+import Navbar from "../Navbar/navbar";
+import WishlistModal from "../Wishlist/addWishlist";
+import InviteModal from "../GuestInvite/GuestModal";
+import EditEventModal from "./eventModal";
 import axios from "axios";
 import { useParams } from "react-router-dom";
-import InviteButton from "./userview/Invitetest";
+import InviteButton from "../userview/Invitetest";
 import { useNavigate } from "react-router-dom";
-import WishlistEditModal from "./Wishlist/wishlistModal";
+import WishlistEditModal from "../Wishlist/wishlistModal";
 
 const EventDetails = () => {
   const [activeTab, setActiveTab] = useState("details");
@@ -227,7 +225,7 @@ const EventDetails = () => {
   return (
     <>
       <section className="page-controls" style={{ padding: "0" }}>
-        <Header />
+       
         <Navbar />
         <div>
           <div className="container mt-4">

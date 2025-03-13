@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Button, Spinner, Form } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import "../Home.css";
+import "../home/Home.css";
 
 const Eventlst = () => {
   const [events, setEvents] = useState([]);

@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import PhoneInput from "react-phone-number-input";
 import "react-phone-number-input/style.css"; // Ensure you include the styles
-import {genToken} from '../firebase/firebase'
+import {genToken} from '../../firebase/firebase'
 
 const SignInForm = () => {
   const [formData, setFormData] = useState({

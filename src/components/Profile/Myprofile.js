@@ -80,7 +80,7 @@ const handleeditprofile=()=>{
   return (
     <>
     <section className="page-controls">
-    <Header/>
+
     <Navbar/>
     <div className="container mt-4 mainsection">
       {/* Profile Header */}

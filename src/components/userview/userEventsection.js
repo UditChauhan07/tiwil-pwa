@@ -1,13 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Dropdown } from "react-bootstrap";
-import "../Eventdetails.css";
-import Footer from "../Footer";
-import { FaEllipsisV, FaShareAlt, FaArrowRight } from "react-icons/fa";
-import Header from "../Header";
-import Navbar from "../navbar";
+import "../Events/Eventdetails.css";
+import {  FaShareAlt } from "react-icons/fa";
+import Navbar from "../Navbar/navbar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import { Link, useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 
 
@@ -522,7 +519,7 @@ const handleClick = async (item) => {
   return (
     <>
       <section className="page-controls">
-        <Header />
+   
         <Navbar />
         <div className="container mt-4">
           <div className="d-flex justify-content-between align-items-center">

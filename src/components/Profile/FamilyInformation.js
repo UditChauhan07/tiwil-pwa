@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import styles from "../components/FamilyInformation.module.css";
-import EditFamilyModal from "../components/EditFamilyModal";
-import Navbar from "../components/navbar";
+import styles from "../Profile/FamilyInformation.module.css";
+import EditFamilyModal from "../Profile/EditFamilyModal";
+import Navbar from "../Navbar/navbar";
 
 const FamilyInformation = () => {
   const [familyMembers, setFamilyMembers] = useState([]);

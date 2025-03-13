@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import styles from "../components/AddInfomation.module.css";
+import styles from "../Profile/AddInfomation.module.css";
 import Swal from "sweetalert2"; // Import SweetAlert2
 import axios from "axios";
-import '../components/additionalinfo.css'
-import Loader from '../components/Loader/Loader'
+import '../Profile/additionalinfo.css'
+import Loader from '../Loader/Loader'
 
 function AddInformation() {
   const navigate = useNavigate();
