@@ -68,18 +68,34 @@ const EventDetails = () => {
   };
 
 
-  const formatDateWithCurrentYear = (dateString) => {
-    if (!dateString) return "Date not available";
+  const formatDateWithCurrentYear = (formattedDate, originalDate, alternateDate) => {
+    // Prioritize originalDate, fallback to alternateDate
+    const eventDate = new Date(originalDate || alternateDate);
+    if (isNaN(eventDate)) return "Invalid Date";
 
-    const eventDate = new Date(dateString);
-    if (isNaN(eventDate.getTime())) return "Date not available"; // Check if date is valid
+    const today = new Date();
 
-    // ✅ Set the event's year to the current year
-    const currentYear = new Date().getFullYear();
+    // Reset time to 00:00:00 for accurate comparison
+    today.setHours(0, 0, 0, 0);
+    eventDate.setHours(0, 0, 0, 0);
+
+    const currentYear = today.getFullYear();
+
+    // Set event year to current year
     eventDate.setFullYear(currentYear);
 
-    return eventDate.toLocaleDateString("en-GB"); // "DD/MM/YYYY"
-  };
+    // If the event has already passed this year, move it to next year
+    if (eventDate < today) {
+        eventDate.setFullYear(currentYear + 1);
+    }
+
+    // Return formatted date in "Month day, Year" format
+    return eventDate.toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
+};
 
 
 
@@ -286,7 +302,9 @@ const EventDetails = () => {
                       <>
                         <p className="d-flex align-items-center">
                           <span className="bg-danger text-white p-2 rounded me-2">📅</span>
-                          {event.formattedDate || "Date not available"}
+                          {event.formattedDate 
+  ? formatDateWithCurrentYear(event.formattedDate, event.date, event.eventDate) 
+  : "Date not available"}
                         </p>
 
 

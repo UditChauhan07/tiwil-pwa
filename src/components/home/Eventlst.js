@@ -62,23 +62,37 @@ const Eventlst = () => {
     navigate(`/plandetails/${eventId}`);
   };
 
-  const formatDateWithCurrentYear = (dateString) => {
-    if (!dateString) return "Invalid Date";
-    
-    const eventDate = new Date(dateString);
-    const currentYear = new Date().getFullYear();
-  
+
+  const formatDateWithCurrentYear = (formattedDate, originalDate, alternateDate) => {
+    // Prioritize originalDate, fallback to alternateDate
+    const eventDate = new Date(originalDate || alternateDate);
+    if (isNaN(eventDate)) return "Invalid Date";
+
+    const today = new Date();
+
+    // Reset time to 00:00:00 for accurate comparison
+    today.setHours(0, 0, 0, 0);
+    eventDate.setHours(0, 0, 0, 0);
+
+    const currentYear = today.getFullYear();
+
     // Set event year to current year
     eventDate.setFullYear(currentYear);
-  
-    // If the event (birthday) has already passed this year, use the next year
-    const today = new Date();
+
+    // If the event has already passed this year, move it to next year
     if (eventDate < today) {
-      eventDate.setFullYear(currentYear + 1); // Set the event to next year if already passed
+        eventDate.setFullYear(currentYear + 1);
     }
-  
-    return eventDate.toLocaleDateString("en-GB"); // "DD/MM/YYYY"
-  };
+
+    // Return formatted date in "Month day, Year" format
+    return eventDate.toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
+};
+
+
   
   const calculateDaysLeft = (eventDate) => {
     if (!eventDate) return "N/A";
@@ -297,8 +311,8 @@ const Eventlst = () => {
                           marginLeft: "5px",
                         }}
                       >
-                 {event.formattedDate 
-  ? formatDateWithCurrentYear(event.formattedDate) 
+           {event.formattedDate 
+  ? formatDateWithCurrentYear(event.formattedDate, event.date, event.eventDate) 
   : "Date not available"}
 
                       </h6>
