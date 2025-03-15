@@ -160,7 +160,7 @@ const handleeditprofile=()=>{
         </button>
       </div>
     </div>
-    <Footer/>
+    
     </section>
     </>
   );

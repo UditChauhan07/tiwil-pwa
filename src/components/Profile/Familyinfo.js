@@ -67,7 +67,7 @@ const FamilyList = () => {
       <Link to='/home'><button className="go-btn">Let's Go</button></Link>
 
     </div>
-    <Footer/>
+    
     </section>
     </>
   );

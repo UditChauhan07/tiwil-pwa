@@ -383,7 +383,7 @@ console.log('pool',poolCreator)
               ))}
             </ul>
             {/* Buttons for contributors */}
-            {isOwner && isPoolCompleted && (
+            {isOwner  && (
               <div className="d-flex gap-2 mt-3">
                 <button
                   style={{ padding: "6px", background: "#ff3366", borderRadius: "20px" }}
@@ -400,7 +400,7 @@ console.log('pool',poolCreator)
             )}
           </>
         ) : (
-          isOwner && isPoolCompleted &&(
+          isOwner &&(
             <button
               style={{ padding: "6px", background: "#ff3366", borderRadius: "20px" }}
               onClick={() => setShowInviteModal(true)}

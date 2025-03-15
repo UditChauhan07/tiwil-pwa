@@ -122,7 +122,7 @@ const PoolRequests = () => {
         requestBody = { status: action }; // Body me accept/reject bhej rahe hain
         break;
   
-      case "Pool Request":
+      case "Pool Join Request":
         apiUrl = `${process.env.REACT_APP_BASE_URL}/request/${notification._id}`;
         requestBody = { status: action };
         break;
@@ -170,7 +170,7 @@ const PoolRequests = () => {
 </div>
       <div className="notification-container">
       {notifications.map((notification) => {
-  const isActionable = ["Pool Invitation", "Pool Request", "Event Invitation"].includes(notification.type);
+  const isActionable = ["Pool Invitation", "Pool Join Request", "Event Invitation"].includes(notification.type);
 
   return (
     <div key={notification._id} className="notification-item">
