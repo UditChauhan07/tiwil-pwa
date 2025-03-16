@@ -23,7 +23,8 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
     try {
       const options = {
         maxSizeMB: 0.5, // Max file size in MB
-        maxWidthOrHeight: 800, // Max width/height
+        
+        maxWidthOrHeight: 600, // Max width/height
         useWebWorker: true, // Enable WebWorker for better performance
         fileType: "image/webp", // Convert to WebP
       };
