@@ -3,6 +3,7 @@ import axios from "axios";
 import styles from "../wishlist/WishlistModal.module.css";
 import Swal from "sweetalert2";
 import Loader from '../../Loader/Loader';
+import imageCompression from "browser-image-compression";
 
 const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) => {
   const [giftName, setGiftName] = useState("");
@@ -15,31 +16,41 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
 
-  const handleImageUpload = (event) => {
+  const handleImageUpload = async (event) => {
     const file = event.target.files[0];
-  
-    if (file) {
-      setUploading(true);
-      setImageFile(file); // ✅ Hamesha sirf File Save Karni Hai
-  
+    if (!file) return;
+
+    try {
+      const options = {
+        maxSizeMB: 0.5, // Max file size in MB
+        maxWidthOrHeight: 800, // Max width/height
+        useWebWorker: true, // Enable WebWorker for better performance
+        fileType: "image/webp", // Convert to WebP
+      };
+
+      // Compress and convert image
+      const compressedFile = await imageCompression(file, options);
+
+      // Convert compressed file to base64 for preview
       const reader = new FileReader();
       reader.onloadend = () => {
-        setPreviewImage(reader.result); // ✅ Sirf Preview Ke Liye Base64
-        setTimeout(() => {
-          setUploading(false);
-        }, 2000);
+        setImageFile(reader.result);
       };
-      reader.readAsDataURL(file); // ✅ Ye sirf preview ke liye hai, bhejna nahi
+      reader.readAsDataURL(compressedFile);
+    } catch (error) {
+      console.error("❌ Error compressing image:", error);
     }
   };
+
   
   const handleSave = async () => {
     const token = localStorage.getItem("token");
+
     if (!eventId) {
       alert("Event ID is missing.");
       return;
     }
-  
+
     const formData = new FormData();
     formData.append("eventId", eventId);
     formData.append("giftName", giftName);
@@ -47,32 +58,27 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
     formData.append("productLink", productLink);
     formData.append("desireRate", desireRate);
     formData.append("description", description);
-  
-    if (imageFile instanceof File) {  // ✅ Ensure imageFile is File, not Base64
+
+    if (imageFile) {
       formData.append("image", imageFile);
     } else {
-      console.error("❌ Image file is not valid:", imageFile);
+      console.log("⚠️ No image selected.");
     }
-  
-    console.log("🔍 FormData Debug:", [...formData.entries()]); // Debugging ke liye
-  
+
     setLoading(true);
+
     try {
-      const response = await axios.post(
-        `${process.env.REACT_APP_BASE_URL}/wishlist`,
-        formData,
-        {
-          headers: {
-            "Content-Type": "multipart/form-data",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-  
+      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/wishlist`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
       if (response.data.success) {
         Swal.fire("Success", "Wishlist item added successfully!", "success");
-        refreshWishlist();
         setShow(false);
+        fetchWishlist();
       }
     } catch (error) {
       console.error("❌ Error saving wishlist item:", error);

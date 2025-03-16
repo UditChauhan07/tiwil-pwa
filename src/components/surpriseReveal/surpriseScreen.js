@@ -1,85 +1,92 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
+import axios from "axios";
 
-const SurpriseReveal = ({ data }) => {
+const SurpriseReveal = () => {
   const [selectedContributors, setSelectedContributors] = useState([]);
   const [showModal, setShowModal] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(""); // Store error messages
+  const [surpriseData, setSurpriseData] = useState([]); // Store API response as an array
 
   const openModal = (contributors) => {
     setSelectedContributors(contributors);
     setShowModal(true);
   };
- // Token from the user (usually from login or session)
 
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("token"); // Fetch token from localStorage
+      const interval = 1; // Example: 1 hour
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      };
 
-const fetchData = async (token, interval) => {
-  try {
-    // Set up Axios configuration with the Authorization header
-    const config = {
-      headers: {
-        'Authorization': `Bearer ${token}`, // Pass the token for verification
-        'Content-Type': 'application/json',  // Ensure content type is JSON
-      },
-    };
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/test-surprise-reveal`,
+        { params: { interval }, ...config }
+      );
 
-    // Make the API call to trigger the backend task
-    const response = await axios.get(
-      `${process.env.REACT_APP_BASE_URL}/test-surprise-reveal`, 
-      {
-        params: { interval },  // Send the interval as a query parameter
-        ...config,  // Add the headers to the request
+      if (response.data.success && response.data.events.length > 0) {
+        setSurpriseData(response.data.events); // Ensure response contains an array
+        setErrorMessage(""); // Reset error message
+      } else {
+        setSurpriseData([]); // Empty array when no events found
+        setErrorMessage(response.data.message || "No surprise reveal for tomorrow.");
       }
-    );
-
-    if (response.status === 200) {
-      console.log('Task scheduled successfully');
-      console.log(response.data); // Handle the data received from the backend (message or success)
-    } else {
-      console.error('Failed to schedule task', response.data.message);
+    } catch (error) {
+      setSurpriseData([]);
+      setErrorMessage("Error fetching data. Please try again later.");
     }
-  } catch (error) {
-    console.error('Error fetching data:', error);
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const handleback=()=>{
+    window.history.back();
   }
-};
-
-// Example usage:
-const token = localStorage.getItem('token');  // Token from the user (usually from login or session)
-const interval = 1;  // Time interval in hours (example: 1 hour)
-fetchData(token, interval);
-
-  
-
   return (
     <div className="container mt-4">
+      <img src={`${process.env.PUBLIC_URL}/img/arrow-left.svg`} alt="notification" height={"20px"} width={"20px"} onClick={handleback} />
       <h2 className="text-center text-danger">🎉 Surprise Reveal 🎉</h2>
-      <div className="row">
-        {data.map((item, index) => (
-          <div key={index} className="col-12 mb-3">
-            <div className="card shadow-sm p-3">
-              <div className="d-flex align-items-center">
-                <img
-                  src={item.wishlistItem.imageUrl}
-                  alt={item.wishlistItem.giftName}
-                  className="rounded-circle me-3"
-                  style={{ width: "60px", height: "60px", objectFit: "cover" }}
-                />
-                <div>
-                  <h5 className="mb-1">{item.wishlistItem.giftName}</h5>
-                  <p className="mb-1">Purchased by: {item.wishlistItem.markedBy.name}</p>
+
+      
+        <div className="row">
+          {surpriseData.length > 0 ? (
+            surpriseData.map((item, index) => (
+              <div key={index} className="col-12 mb-3">
+                <div className="card shadow-sm p-3">
+                  <div className="d-flex align-items-center">
+                    <img
+                      src={item.wishlistItem.imageUrl}
+                      alt={item.wishlistItem.giftName}
+                      className="rounded-circle me-3"
+                      style={{ width: "60px", height: "60px", objectFit: "cover" }}
+                    />
+                    <div>
+                      <h5 className="mb-1">{item.wishlistItem.giftName}</h5>
+                      <p className="mb-1">Purchased by: {item.wishlistItem.markedBy.name}</p>
+                    </div>
+                  </div>
+                  {item.wishlistItem.status === "Pooling" && (
+                    <button
+                      className="btn btn-outline-primary mt-2"
+                      onClick={() => openModal(item.wishlistItem.contributors || [])}
+                    >
+                      View Contributors
+                    </button>
+                  )}
                 </div>
               </div>
-              {item.wishlistItem.status === "Pooling" && (
-                <button
-                  className="btn btn-outline-primary mt-2"
-                  onClick={() => openModal(item.wishlistItem.contributors || [])}
-                >
-                  View Contributors
-                </button>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
+            ))
+          ) : (
+            <p className="text-center text-muted">No surprise reveal available.</p>
+          )}
+        </div>
+   
 
       {/* Modal for Contributors */}
       {showModal && (

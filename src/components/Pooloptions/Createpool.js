@@ -22,8 +22,8 @@ function PoolingWish() {
   const [imageSrc, setImageSrc] = useState(`${process.env.PUBLIC_URL}/img/defaultproduct.jpg`);
 
 useEffect(() => {
-  if (pool?.wishImage) {
-    setImageSrc(`${process.env.REACT_APP_BASE_URL}/${pool.wishImage}`);
+  if (pool?.Image) {
+    setImageSrc(`${process.env.REACT_APP_BASE_URL}/${pool.Image}`);
   }
 }, [pool?.wishImage]);
 
@@ -91,7 +91,8 @@ console.log('pool',poolCreator)
         showCancelButton: true,  // Show the Cancel button
         confirmButtonText: "OK",
         cancelButtonText: "Cancel",
-        confirmButtonColor: "#FF3366",
+        confirmButtonColor: "#ff3366",
+        iconColor:'#ff3366',
       }).then(async (result) => {
         if (result.isConfirmed) {
           // If the user clicked "OK"
@@ -112,14 +113,18 @@ console.log('pool',poolCreator)
                 title: "Request Sent!",
                 text: "Your request has been sent to the pool admin.",
                 icon: "success",
-                confirmButtonColor: "#FF3366",
+                confirmButtonColor: "#ff3366",
+                
+                iconColor:'#ff3366',
               });
             } else {
               Swal.fire({
                 title: "Error!",
                 text: "There was an issue sending the request.",
                 icon: "error",
-                confirmButtonColor: "#FF3366",
+                
+                confirmButtonColor: "#ff3366",
+                iconColor:'#ff3366',
               });
             }
           } catch (error) {
@@ -269,6 +274,7 @@ console.log('pool',poolCreator)
       <div className="d-flex align-items-center mt-4" style={{position:'absolute', top:'141px',backgroundColor:'#fff',borderRadius:'20px', opacity:'0.8',gap:'10px',margin:'12px',width:'80%',height:'20%'}}>
         {/* Circular Progress Bar */}
         <div className="d-flex justify-content-center my-4">
+          
           <div style={{ width: "50px", height: "70px" }}>
             <CircularProgressbar
               value={percentage}
@@ -281,13 +287,14 @@ console.log('pool',poolCreator)
               })}
             />
                {pool.wishItem && pool.wishItem.length > 0 && (
-        <h5 className="m-2">{pool.wishItem[0].name}</h5>
+        <h5 className="m-2">{pool.giftName}</h5>
       )}
           </div>
         </div>
 
         {/* Contribution Details */}
         <div className="text-center">
+          <p>{pool.giftName}</p>
           <h6>Total Amount: &#8377;{totalAmount}</h6>
           <h6 className="text-muted" >Collected: &#8377;{collectedAmount}</h6>
           <h6 className="text-danger">
@@ -383,7 +390,7 @@ console.log('pool',poolCreator)
               ))}
             </ul>
             {/* Buttons for contributors */}
-            {isOwner  && (
+            {isOwner && (
               <div className="d-flex gap-2 mt-3">
                 <button
                   style={{ padding: "6px", background: "#ff3366", borderRadius: "20px" }}
@@ -400,7 +407,7 @@ console.log('pool',poolCreator)
             )}
           </>
         ) : (
-          isOwner &&(
+          isOwner  &&(
             <button
               style={{ padding: "6px", background: "#ff3366", borderRadius: "20px" }}
               onClick={() => setShowInviteModal(true)}
