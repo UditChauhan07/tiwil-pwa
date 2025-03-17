@@ -5,9 +5,11 @@
   .nav-tabs .nav-link.active {
     border-bottom: 2px solid red !important;
   }
-  
+  .planbtn {
+    padding: 5px 0px !important ;
+  }
   .btn-danger {
-    border-radius: 30px;.event-details {
+ .event-details {
         max-width: 900px;
         margin: auto;
       }

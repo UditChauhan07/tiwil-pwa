@@ -128,14 +128,15 @@ const HomePage = () => {
           <div className="d-flex">
             <div className="SearLast p-1" style={{ width: "100%" }}>
               <div className="d-flex searchbarw justify-content-between">
+              
                 <input
                   type="text"
                   value={searchQuery}
-                  placeholder="Find events or invitations"
+                  placeholder= "  Find amazing events  "
                   className="text-mute inputhome"
-                  style={{ width: "100%", height: "30%" }}
+                  style={{ width: "100%", height: "30%",padding:'2px',borderRadius:'25px' }}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                />
+                /> 
               </div>
               {/* <Select
  
@@ -157,7 +158,7 @@ const HomePage = () => {
               className="search-results"
               style={{
                 position: "absolute", // Position above the tabs
-                top: "121px", // Adjust as per your design
+                top: "110px", // Adjust as per your design
                 width: "90%",
                 boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
                 margin: "0px 5px -2px 6px",
