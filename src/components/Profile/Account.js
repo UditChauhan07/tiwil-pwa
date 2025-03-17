@@ -178,7 +178,7 @@ const Account = () => {
             </div>
             
         <div className={styles.menuItem} onClick={handleSurprise}>
-              <img src={`${process.env.PUBLIC_URL}/img/surprise-box.png`} alt="surprise" className={styles.menuIcon} height={'20px'} width={"20px"} />
+              <img src={`${process.env.PUBLIC_URL}/img/surprise-box.avif`}  alt="surprise" className={styles.menuIcon} height={'20px'} width={"20px"} />
               <span className={styles.menuText}>Surprise Reveal</span>
             </div>
             <div className={styles.menuItem} onClick={handleLogout}>
