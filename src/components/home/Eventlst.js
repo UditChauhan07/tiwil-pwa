@@ -38,9 +38,9 @@ const Eventlst = () => {
     };
   
     fetchEvents(true); // Pehli baar loader ke saath call
-    const intervalId = setInterval(() => fetchEvents(false), 5000); // 5 sec baad bina loader ke call
+    // const intervalId = setInterval(() => fetchEvents(false), 5000); // 5 sec baad bina loader ke call
   
-    return () => clearInterval(intervalId); // Cleanup jab component unmount ho
+    // return () => clearInterval(intervalId); // Cleanup jab component unmount ho
   }, [token]); 
   
   const handleSearch = (e) => {
@@ -185,6 +185,10 @@ const Eventlst = () => {
     }
     return number + "th";
   };
+
+  const handlefavourite=()=>{
+    
+  }
 
   return (
     <>
@@ -358,7 +362,7 @@ const Eventlst = () => {
                         borderBottomRightRadius: "5px",
                         borderTopLeftRadius: "0px",
                         borderTopRightRadius: "5px",
-                      }}
+                      }} onClick={handlefavourite}
                     >
                       <img
                         src={`${process.env.PUBLIC_URL}/img/Hearticon.svg`}

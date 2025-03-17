@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import styles from "../wihslistowner/wishlist/WishlistModal.module.css";
 import Swal from "sweetalert2";
-import { Spinner } from "react-bootstrap"; // Importing Spinner from React-Bootstrap
+import { Spinner, ProgressBar } from "react-bootstrap"; // Importing ProgressBar
 
 const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
   const [giftName, setGiftName] = useState("");
@@ -11,23 +11,23 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
   const [desireRate, setDesireRate] = useState(40);
   const [description, setDescription] = useState("");
   const [imageFile, setImageFile] = useState(null);
-  const [loading, setLoading] = useState(false); // Add loading state
+  const [preview, setPreview] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0); // ✅ Upload Progress State
 
+  // ✅ Handle File Selection
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (file) {
       setImageFile(file);
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setImageFile(reader.result);
-      };
-      reader.readAsDataURL(file);
+      setPreview(URL.createObjectURL(file)); // Show preview image
     }
   };
 
+  // ✅ Handle Save (Upload with Progress)
   const handleSave = async () => {
     const token = localStorage.getItem("token");
-
+  
     if (!eventId) {
       alert("Event ID is missing.");
       return;
@@ -40,15 +40,13 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
     formData.append("productLink", productLink);
     formData.append("desireRate", desireRate);
     formData.append("description", description);
-
+    
     if (imageFile) {
       formData.append("image", imageFile);
-    } else {
-      console.log("⚠️ No image selected.");
     }
 
-    // Set loading to true when the request starts
     setLoading(true);
+    setUploadProgress(0); // Reset progress bar
 
     try {
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/wishlist`, formData, {
@@ -56,22 +54,28 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
           "Content-Type": "multipart/form-data",
           Authorization: `Bearer ${token}`,
         },
+        onUploadProgress: (progressEvent) => {
+          // ✅ Calculate upload progress percentage
+          const percentCompleted = Math.round((progressEvent.loaded * 100) / progressEvent.total);
+          setUploadProgress(percentCompleted);
+        },
       });
 
       if (response.data.success) {
         Swal.fire("Success", "Wishlist item added successfully!", "success");
         setShow(false);
-        fetchWishlist(); // Call refreshWishlist to refresh the wishlist after saving
+        fetchWishlist(); 
       }
     } catch (error) {
       console.error("❌ Error saving wishlist item:", error);
       Swal.fire("Error", "Failed to add wishlist item.", "error");
     } finally {
-      // Set loading to false once the request is completed
       setLoading(false);
+      setUploadProgress(0); // Reset after completion
     }
   };
 
+  // ✅ Handle Close
   const handleClose = () => {
     setShow(false);
   };
@@ -86,21 +90,18 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
 
         {/* Loader */}
         {loading ? (
-          <div style={{ display: "flex", justifyContent: "center", alignItems: "center" }}>
+          <div style={{ textAlign: "center" }}>
             <Spinner animation="border" style={{ width: "3rem", height: "3rem" }} />
+            <p>Uploading...</p>
           </div>
         ) : (
           <>
             <div className={styles.imageContainer}>
-              {imageFile ? (
-                <img src={imageFile} alt="Wishlist Item" className={styles.wishlistImage} />
-              ) : (
-                <img
-                  src={`${process.env.PUBLIC_URL}/assets/ps5.png`}
-                  alt="Wishlist Item"
-                  className={styles.wishlistImage}
-                />
-              )}
+              <img
+                src={preview || `${process.env.PUBLIC_URL}/assets/ps5.png`}
+                alt="Wishlist Item"
+                className={styles.wishlistImage}
+              />
               <input
                 type="file"
                 accept="image/*"
@@ -112,6 +113,17 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
                 📷
               </label>
             </div>
+
+            {/* ✅ Progress Bar (Visible only when uploading) */}
+            {uploadProgress > 0 && (
+              <ProgressBar
+                now={uploadProgress}
+                label={`${uploadProgress}%`}
+                animated
+                striped
+                className={styles.progressBar}
+              />
+            )}
 
             <div className={styles.form}>
               <input
@@ -153,8 +165,8 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
                 onChange={(e) => setDescription(e.target.value)}
               ></textarea>
 
-              <button className={styles.saveButton} onClick={handleSave}>
-                Save +
+              <button className={styles.saveButton} onClick={handleSave} disabled={loading}>
+                {loading ? "Saving..." : "Save +"}
               </button>
             </div>
           </>

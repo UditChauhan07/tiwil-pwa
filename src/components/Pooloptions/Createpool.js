@@ -20,11 +20,10 @@ function PoolingWish() {
   const [poolCreator,setpoolCreator]=useState(null) 
   const userId = localStorage.getItem("userId");
   const [imageSrc, setImageSrc] = useState(`${process.env.PUBLIC_URL}/img/defaultproduct.jpg`);
-  const[myContribution,setmycontribution]=useState()
 
 useEffect(() => {
-  if (pool?.wishImage) {
-    setImageSrc(`${process.env.REACT_APP_BASE_URL}/${pool.wishImage}`);
+  if (pool?.Image) {
+    setImageSrc(`${process.env.REACT_APP_BASE_URL}/${pool.Image}`);
   }
 }, [pool?.wishImage]);
 
@@ -75,11 +74,6 @@ useEffect(() => {
     fetchUserStatus();
   }, [wishId]);
 console.log('pool',poolCreator)
-
-useEffect(()=>  {
-handleSaveContribution()
-},[contributionAmount])
-
   const handleSaveContribution = async () => {
     if (!contributionAmount || contributionAmount <= 0) {
       Swal.fire("Error", "Please enter a valid contribution amount.", "error");
@@ -97,7 +91,8 @@ handleSaveContribution()
         showCancelButton: true,  // Show the Cancel button
         confirmButtonText: "OK",
         cancelButtonText: "Cancel",
-        confirmButtonColor: "#FF3366",
+        confirmButtonColor: "#ff3366",
+        iconColor:'#ff3366',
       }).then(async (result) => {
         if (result.isConfirmed) {
           // If the user clicked "OK"
@@ -105,8 +100,7 @@ handleSaveContribution()
             const itemId = wishId;
             const response = await axios.post(
               `${process.env.REACT_APP_BASE_URL}/request`, // Replace with your actual API endpoint
-              { itemId},
-               // Sending userId in the body
+              { itemId}, // Sending userId in the body
               {
                 headers: {
                   Authorization: `Bearer ${localStorage.getItem("token")}`, 
@@ -119,14 +113,18 @@ handleSaveContribution()
                 title: "Request Sent!",
                 text: "Your request has been sent to the pool admin.",
                 icon: "success",
-                confirmButtonColor: "#FF3366",
+                confirmButtonColor: "#ff3366",
+                
+                iconColor:'#ff3366',
               });
             } else {
               Swal.fire({
                 title: "Error!",
                 text: "There was an issue sending the request.",
                 icon: "error",
-                confirmButtonColor: "#FF3366",
+                
+                confirmButtonColor: "#ff3366",
+                iconColor:'#ff3366',
               });
             }
           } catch (error) {
@@ -158,8 +156,6 @@ handleSaveContribution()
       if (response.data.success) {
         Swal.fire("Success!", "Your contribution has been saved.", "success");
         navigate(`/createpool/${wishId}`);
-        setContributionAmount(""); 
-        fetchPoolData();
       }
     } catch (error) {
       console.error("Error saving contribution:", error);
@@ -213,8 +209,9 @@ handleSaveContribution()
     };
 
     fetchPoolData();
-
-  }, [wishId,contributionAmount]);
+    const interval = setInterval(fetchPoolData, 5000); // Real-time updates every 5 seconds
+    return () => clearInterval(interval);
+  }, [wishId]);
   
   if (!pool) return <div className="text-center mt-5">Loading pool data...</div>;
 
@@ -235,22 +232,10 @@ handleSaveContribution()
     }
     return acc;
   }, []);
-  useEffect(() => {
-  if (aggregatedContributors.length > 0) {
-    const myContributionData = aggregatedContributors.find(
-      (contributor) => contributor.userId === userId
-    );
-    if (myContributionData) {
-      setmycontribution(myContributionData.amount);
-    }
-  }
-}, [aggregatedContributors]); // Jab bhi contributors ka data update ho, ye effect chalega
 
-
-  // const myContribution = aggregatedContributors.find(
-  //   (contributor) => contributor.userId === userId
-  // );
-  // setmycontribution(myContribution)
+  const myContribution = aggregatedContributors.find(
+    (contributor) => contributor.userId === userId
+  );
   const otherContributors = aggregatedContributors.filter(
     (contributor) => contributor.userId !== userId
   );
@@ -289,6 +274,7 @@ handleSaveContribution()
       <div className="d-flex align-items-center mt-4" style={{position:'absolute', top:'141px',backgroundColor:'#fff',borderRadius:'20px', opacity:'0.8',gap:'10px',margin:'12px',width:'80%',height:'20%'}}>
         {/* Circular Progress Bar */}
         <div className="d-flex justify-content-center my-4">
+          
           <div style={{ width: "50px", height: "70px" }}>
             <CircularProgressbar
               value={percentage}
@@ -301,13 +287,14 @@ handleSaveContribution()
               })}
             />
                {pool.wishItem && pool.wishItem.length > 0 && (
-        <h5 className="m-2">{pool.wishItem[0].name}</h5>
+        <h5 className="m-2">{pool.giftName}</h5>
       )}
           </div>
         </div>
 
         {/* Contribution Details */}
         <div className="text-center">
+          <p>{pool.giftName}</p>
           <h6>Total Amount: &#8377;{totalAmount}</h6>
           <h6 className="text-muted" >Collected: &#8377;{collectedAmount}</h6>
           <h6 className="text-danger">
@@ -403,7 +390,7 @@ handleSaveContribution()
               ))}
             </ul>
             {/* Buttons for contributors */}
-            {isOwner && isPoolCompleted && (
+            {isOwner && (
               <div className="d-flex gap-2 mt-3">
                 <button
                   style={{ padding: "6px", background: "#ff3366", borderRadius: "20px" }}
@@ -420,7 +407,7 @@ handleSaveContribution()
             )}
           </>
         ) : (
-          isOwner && isPoolCompleted &&(
+          isOwner  &&(
             <button
               style={{ padding: "6px", background: "#ff3366", borderRadius: "20px" }}
               onClick={() => setShowInviteModal(true)}

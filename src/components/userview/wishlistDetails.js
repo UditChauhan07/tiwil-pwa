@@ -152,7 +152,7 @@ function WishlistCard() {
           </div>
         )}
       </div>
-      <Footer />
+    
     </section>
   );
 }

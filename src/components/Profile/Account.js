@@ -112,6 +112,9 @@ const Account = () => {
     navigate("/familyInfo")
   }
 
+  const handleSurprise = () => {
+    navigate("/surprise");
+  };
   return (
     <div>
       <Navbar />
@@ -172,6 +175,11 @@ const Account = () => {
                 <input type="checkbox" className={styles.switchInput} />
                 <span className={styles.switchSlider}></span>
               </label>
+            </div>
+            
+        <div className={styles.menuItem} onClick={handleSurprise}>
+              <img src={`${process.env.PUBLIC_URL}/img/surprise-box.png`} alt="surprise" className={styles.menuIcon} height={'20px'} width={"20px"} />
+              <span className={styles.menuText}>Surprise Reveal</span>
             </div>
             <div className={styles.menuItem} onClick={handleLogout}>
               <FiLogOut className={styles.menuIcon} />

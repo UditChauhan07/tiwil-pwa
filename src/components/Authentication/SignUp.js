@@ -209,11 +209,12 @@ const SignUpForm = () => {
               </button>
             </form>
           )}
-        </div>
-
-        <p className="text-muted mt-3">
+           <p className="text-muted mt-3" style={{marginLeft:'45px'}}>
           Already registered? <Link to="/signin" className="text-primary fw-semibold text-decoration-none">Sign In</Link>
         </p>
+        </div>
+
+       
       </div>
     </section>
   );

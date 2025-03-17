@@ -71,7 +71,7 @@ useEffect(()=>{
 
     }
   }
-})
+},[])
 
 const handleeditprofile=()=>{
   navigate(`/userprofile?email=${encodeURIComponent(emailOrphone)}`);
@@ -160,7 +160,7 @@ const handleeditprofile=()=>{
         </button>
       </div>
     </div>
-    <Footer/>
+    
     </section>
     </>
   );
