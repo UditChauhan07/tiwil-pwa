@@ -192,7 +192,7 @@ const Eventlst = () => {
 
   return (
     <>
-      <div className="mt-4 mains121">
+      <div className="mt-4 mainns121">
         {/* Search bar */}
         <Form.Control
           type="text"

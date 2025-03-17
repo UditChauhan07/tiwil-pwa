@@ -110,7 +110,7 @@ const unreadNotificationCount = Array.isArray(notifications)
         <div className="container-fluid">
           {/* Logo */}
           <Link to="/home" className="navbar-brand">
-            <img     src={`${process.env.PUBLIC_URL}/img/TiwilLOGO1.png`} alt="Logo" style={{ width: "50px" }} />
+            <img     src={`${process.env.PUBLIC_URL}/img/TiwilLOGO1.png`} alt="Logo" style={{ width: "50px", height:'43px'}} />
           </Link>
 <div >     
     {/* Hamburger Toggle Button */}

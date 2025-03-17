@@ -558,8 +558,8 @@ const handleClick = async (item) => {
               <ul className="nav nav-tabs mt-3">
                 {[
                   "details",
-                  invitationStatus === "Accepted" ? "wishlist" : null,
-                  invitationStatus === "Accepted" ? "guests" : null,
+                  invitationStatus === "Accepted"||"accepted" ? "wishlist" : null,
+                  invitationStatus === "Accepted"||"accepted"  ? "guests" : null,
                 ]
                   .filter((tab) => tab !== null)
                   .map((tab) => (
