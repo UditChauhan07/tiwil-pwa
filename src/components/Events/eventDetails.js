@@ -23,6 +23,7 @@ const EventDetails = () => {
   const [showEditModal, setShowEditModal] = useState(false);
   const [events, setEvents] = useState([]);
   const [selectedWishlist, setSelectedWishlist] = useState(null);
+  const [pastevents,setPastEvents]=useState([])
   const token = localStorage.getItem("token");
   const { eventId } = useParams(); // Get eventId from URL parameters
   console.log(eventId)
@@ -47,6 +48,22 @@ const EventDetails = () => {
 
   //   fetchWishlist();
   // }, [eventId]);
+
+  const fetchHistory=async()=>{
+    try{
+      const response=await axios.get(`${process.env.REACT_APP_BASE_URL}/history`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
+          }
+          );
+          setPastEvents(response.data.data);
+          console.log(response.data.data);
+          }
+          catch(error){
+            console.error("❌ Error while fetching history:", error);
+            }
+            }
+    
 
   useEffect(() => {
     fetchWishlist();
@@ -465,6 +482,9 @@ const EventDetails = () => {
             ) : (
               <p>Loading event details...</p>
             )}
+
+
+            
           </div>
 
           {/* Wishlist Modal */}

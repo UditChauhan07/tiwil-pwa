@@ -80,7 +80,7 @@
 
 /* Sent Message Bubble */
 .sentMessage .messageBubble {
-  background-color: #ff4b77;
+  background-color: #ff3366;
   color: #fff;
   border-bottom-right-radius: 4px;
 }
@@ -132,7 +132,7 @@
 /* Send Button */
 .sendButton {
   padding: 12px 20px;
-  background-color: #ff4b77;
+  background-color: #ff3366;
   color: white;
   border: none;
   border-radius: 25px;
@@ -142,7 +142,7 @@
 }
 
 .sendButton:hover {
-  background-color: #d6365f;
+  background-color: #ff3366;
 }
 
 /* Loading Text */
@@ -349,7 +349,7 @@
 }
 
 .previewActions button:last-child {
-  background-color: #ff4d4f;
+  background-color: #ff3366;
   color: white;
 }
 

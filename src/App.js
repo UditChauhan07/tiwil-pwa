@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
 import SignIn from "./components/Authentication/Signin";
 import SignUp from "./components/Authentication/SignUp";
 import PrivateRoute from "./components/Authentication/Privateroute";
@@ -13,26 +13,19 @@ import UserEventSection from "./components/userview/userEventsection";
 import NotificationList from "./components/Notifications/Notification";
 import WishlistDetails from "./components/userview/wishlistDetails";
 import PoolingWish from "./components/Pooloptions/Createpool";
-// import MyProfile from "./components/Profile/Myprofile";
-// import FamilyList from "./components/Profile/Familyinfo";
-// import LoginPage from "./components/Login";
-// import InvitePag from "../src/components/InvitPage";
 import Account from "./components/Profile/Account";
 import FamilyInformation from "./components/Profile/FamilyInformation";
 import ChatList from "./chatsection/ChatList";
 import ChatRoom from "./chatsection/ChatRoom";
 import GroupDetails from "./chatsection/GroupDetails";
-import  {requestNotificationPermission, onMessageListener}  from "../src/firebase/firebase";
+import { requestNotificationPermission, onMessageListener } from "../src/firebase/firebase";
 import HomePage from "./components/home/Home";
-
 
 function App() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallDialog, setShowInstallDialog] = useState(false);
 
   useEffect(() => {
-   
-    // Handle PWA installation prompt
     const handler = (event) => {
       event.preventDefault();
       setDeferredPrompt(event);
@@ -45,10 +38,10 @@ function App() {
       window.removeEventListener("beforeinstallprompt", handler);
     };
   }, []);
+
   useEffect(() => {
     requestNotificationPermission().then((token) => {
       console.log("Notification Token:", token);
-      // Iss token ko backend pe store karwana hoga notifications bhejne ke liye
     });
 
     onMessageListener().then((payload) => {
@@ -56,7 +49,6 @@ function App() {
       alert(payload.notification.title + ": " + payload.notification.body);
     });
   }, []);
-
 
   const handleInstallClick = () => {
     if (deferredPrompt) {
@@ -99,19 +91,19 @@ function App() {
 
         <Router>
           <Routes>
+            {/* Public Routes */}
             <Route path="/" element={<Starting />} />
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
-            <Route path="/home" element={<HomePage />} />
+            
 
             {/* Private Routes (Protected) */}
             <Route element={<PrivateRoute />}>
+            <Route path="/home" element={<HomePage />} />
               <Route path="/profile" element={<Profile />} />
-
               <Route path="/event/:id" element={<EventDetails />} />
               <Route path="/additionalinfo" element={<AddInformation />} />
               <Route path="/plandetails/:eventId" element={<EventDetails />} />
-              
               <Route path="/addtowish" element={<WishlistForm />} />
               <Route path="/invitation-detail/:eventId" element={<UserEventSection />} />
               <Route path="/notifications" element={<NotificationList />} />
@@ -119,14 +111,13 @@ function App() {
               <Route path="/createpool/:wishId" element={<PoolingWish />} />
               <Route path="/userdetail" element={<Account />} />
               <Route path="/familyinfo" element={<FamilyInformation />} />
-      
               <Route path="/chats" element={<ChatList />} />
               <Route path="/chats/:groupId" element={<ChatRoom />} />
               <Route path="/group/:groupId/details" element={<GroupDetails />} />
             </Route>
 
-            {/* Default Route */}
-            <Route path="/" element={<Home />} />
+            {/* Redirect to Home if Route Not Found */}
+            <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Router>
       </div>
