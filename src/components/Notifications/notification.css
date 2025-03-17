@@ -15,7 +15,10 @@
 p{
     align-items: center !important;
 }
-
+.mainnotify{
+    padding-left: 6px !important;
+    padding-right: 6px !important;
+}
 
 .notiControlb{
     border: 1px solid #cbcbcb;
