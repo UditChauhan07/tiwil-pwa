@@ -89,9 +89,12 @@ const ChatRoom = () => {
     socketRef.current.emit("joinRoom", groupId);
 
     const handleNewMessage = (message) => {
-      setMessages((prev) => [...prev, message]);
-      scrollToBottom();
+      if (message.senderId._id !== currentUserId) {
+        // ✅ Only add messages if they are NOT sent by the current user
+        setMessages((prevMessages) => [...prevMessages, message]);
+      }
     };
+  
 
     socketRef.current.on("newMessage", handleNewMessage);
 
@@ -116,17 +119,13 @@ const ChatRoom = () => {
     }
   };
 
-  const handleNewMessage = (message) => {
-    // ✅ Skip adding the message if the sender is the current user
-    if (message.senderId._id !== currentUserId) {
-      setMessages((prev) => [...prev, message]);
-    }
-  };
+ 
+  
 
   // ✅ Send Message
   const handleSendMessage = async () => {
     if (!newMessage.trim() && !mediaFile) return;
-
+  
     const formData = new FormData();
     formData.append("content", newMessage);
     formData.append(
@@ -136,7 +135,7 @@ const ChatRoom = () => {
     if (mediaFile) {
       formData.append("media", mediaFile);
     }
-
+  
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/chats/${groupId}/messages`,
@@ -148,18 +147,24 @@ const ChatRoom = () => {
           },
         }
       );
-
+  
       if (response.data.success) {
-        // ✅ Remove direct state update here
-        // Instead, the message will be automatically handled by the socket listener
+        const sentMessage = response.data.data; // Assuming response contains sent message data
+  
+        // ✅ Add sent message to the local state
+        setMessages((prevMessages) => [...prevMessages, sentMessage]);
+  
+        // ✅ Clear input fields
         setNewMessage("");
         setMediaFile(null);
+  
         scrollToBottom();
       }
     } catch (error) {
       console.error("❌ Error sending message:", error);
     }
   };
+  
 
   return (
     <div className={styles.chatRoomContainer}>
@@ -203,12 +208,13 @@ const ChatRoom = () => {
           <p>No messages yet. Start the conversation!</p>
         )}
         {messages.map((msg,index) => {
+          console.log(msg.content)
           
           const isCurrentUser = msg.senderId._id === currentUserId;
           return (
             <div
              key={msg._id || `fallback-key-${index}`}
-             
+
 
               className={
                 isCurrentUser ? styles.sentMessage : styles.receivedMessage
