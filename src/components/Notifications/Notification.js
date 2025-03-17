@@ -163,7 +163,7 @@ const PoolRequests = () => {
   return (
     <>
    
-      
+      <div className="mainnotify">
 <div className="d-flex heading-notification">
 <img src={`${process.env.PUBLIC_URL}/img/arrow-left.svg`} alt="notification" height={"20px"} width={"20px"} onClick={handleback} />
   <h4>Notification</h4>
@@ -252,6 +252,7 @@ const PoolRequests = () => {
             ))}
           </ul>
         )}
+      </div>
       </div>
     </>
   );
