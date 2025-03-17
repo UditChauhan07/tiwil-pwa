@@ -139,8 +139,8 @@ const ChatRoom = () => {
 
       <div ref={chatContainerRef} onScroll={handleScroll} className={styles.messagesContainer}>
         {loading && <p>Loading messages...</p>}
-        {messages.map((msg) => (
-          <div key={msg._id} className={msg.senderId._id === currentUserId ? styles.sentMessage : styles.receivedMessage}>
+        {messages.map((msg,index) => (
+          <div key={msg._id || `fallback-key-${index}`} className={msg.senderId._id === currentUserId ? styles.sentMessage : styles.receivedMessage}>
             <div className={styles.messageHeader}>
               <img src={msg.senderProfileImage ? `${process.env.REACT_APP_BASE_URL}${msg.senderProfileImage}` : "/assets/ProfilDefaulticon.png"} alt="Profile" className={styles.profileImage} />
               <span>{msg.senderId?.fullName || "Unknown"}</span>
