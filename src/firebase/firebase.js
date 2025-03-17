@@ -44,41 +44,16 @@ export const requestNotificationPermission = async () => {
     console.error("Permission Denied", error);
   }
 };
-self.addEventListener("notificationclick", function (event) {
-  let url = event.notification.data?.FCM_MSG?.data?.url || event.notification.click_action;
-  event.notification.close(); // Close notification
 
-  if (url) {
-      clients.openWindow(url); // Redirect to URL on click
-  } else {
-      clients.openWindow("/"); // Default to home if no URL is provided
-  }
-});
 export const onMessageListener = () =>
   new Promise((resolve) => {
     onMessage(messaging, (payload) => {
-      console.log("Foreground Notification:", payload);
-
-      if (payload.notification) {
-        const { title, body } = payload.notification;
-        const url = payload.data?.url; // Get URL from data
-
-        // ✅ Show native browser notification
-        const notification = new Notification(title, {
-          body,
-          icon: "/logo.png",
-          data: { url },
-        });
-
-        // ✅ Open URL when user clicks the notification
-        notification.onclick = (event) => {
-          event.preventDefault(); // Prevent default behavior
-          if (url) {
-            window.open(url, "_blank");
-          }
-        };
-
-        resolve(payload);
-      }
+      console.log("Foreground Message:", payload);
+      Swal.fire({
+     title: payload.notification.title,
+     text: payload.notification.body,
+        icon: 'info',
+      })
+      resolve(payload);
     });
   });

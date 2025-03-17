@@ -27,13 +27,3 @@ messaging.onBackgroundMessage((payload) => {
     icon: icon || '/logo192.png', // Fallback to default icon
   });
 });
-self.addEventListener("notificationclick", function (event) {
-  let url = event.notification.data?.FCM_MSG?.data?.url || event.notification.click_action;
-  event.notification.close(); // Close notification
-
-  if (url) {
-      clients.openWindow(url); // Redirect to URL on click
-  } else {
-      clients.openWindow("/"); // Default to home if no URL is provided
-  }
-});
