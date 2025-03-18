@@ -579,11 +579,10 @@ console.log(events)
               <div className="tab-content p-3 mt-3 border rounded shadow-sm bg-white">
                 {activeTab === "details" && (
                   <>
-                  <p className="d-flex align-items-center">
+                    <p className="d-flex align-items-center">
   <span className="bg-danger text-white p-2 rounded me-2">📅</span>
-  {formatDateWithCurrentYear(events.formattedDate || "Date not available")}
+  {events.formattedDate || "Date not available"}
 </p>
-
                     <p className="d-flex align-items-center">
                       <span className="bg-danger text-white p-2 rounded me-2">
                         📍
