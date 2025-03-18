@@ -380,9 +380,7 @@ const EventDetails = () => {
                           {event.location || "Location not available"}
                         </p>
                         <div className="text-center mt-4">
-                          <button className="btn btn-danger w-25 d-flex align-items-center justify-content-center">
-                            SAVE <FaArrowRight className="ms-2" />
-                          </button>
+                        <p style={{color:"#ff3366"}}>{event.description ||"Add description in edit button"}</p>
                         </div>
                       </>
                     )}

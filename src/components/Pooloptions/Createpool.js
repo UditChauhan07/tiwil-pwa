@@ -19,13 +19,9 @@ function PoolingWish() {
   const [userStatus, setUserStatus] = useState(null);
   const [poolCreator,setpoolCreator]=useState(null) 
   const userId = localStorage.getItem("userId");
-  const [imageSrc, setImageSrc] = useState(`${process.env.PUBLIC_URL}/img/defaultproduct.jpg`);
 
-useEffect(() => {
-  if (pool?.Image) {
-    setImageSrc(`${process.env.REACT_APP_BASE_URL}/${pool.Image}`);
-  }
-}, [pool?.wishImage]);
+
+
 
 
   // Fetching pool data which includes contributors
@@ -259,12 +255,20 @@ console.log('pool',poolCreator)
       <div className="text-center">
       {/* Display the gift image dynamically with fallback to default image */}
       <img
-  src={imageSrc}
+  src={
+    pool?.imageUrl
+      ? `${process.env.REACT_APP_BASE_URL}${pool.imageUrl}`
+      : `${process.env.PUBLIC_URL}/img/defaultproduct.jpg`
+  }
   alt={pool?.wishname || "Default Gift"}
   className="img-fluid rounded"
   style={{ width: "100%", maxHeight: "300px" }}
-  onError={() => setImageSrc(`${process.env.PUBLIC_URL}/img/defaultproduct.jpg`)}
+  onError={(e) => {
+    e.target.onerror = null; // Prevent infinite loop
+    e.target.src = `${process.env.PUBLIC_URL}/img/defaultproduct.jpg`;
+  }}
 />
+
       
       {/* Display the gift name under the image */}
    
