@@ -33,6 +33,7 @@ const PoolRequests = () => {
 
     // Fetch notifications on initial load
     fetchNotifications();
+    markNotificationsAsRead();
 
     // Poll every 10 seconds
     const intervalId = setInterval(fetchNotifications, 10000);
