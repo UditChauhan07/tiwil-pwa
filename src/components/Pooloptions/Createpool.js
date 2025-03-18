@@ -188,6 +188,25 @@ console.log('pool',poolCreator)
   //     });
   //   }
   // };
+  
+    const handleStartChat = async () => {
+      const token = localStorage.getItem("token");
+      try {
+        const response = await axios.post(
+          `${process.env.REACT_APP_BASE_URL}/chats/group`,
+          { eventId },
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+        if (response.data.success) {
+          navigate(`/chats/${response.data.chat.groupId}`);
+        }
+      } catch (error) {
+        console.error(
+          "❌ Error starting chat:",
+          error.response?.data || error.message
+        );
+      }
+    };
   useEffect(() => {
     const fetchPoolData = async () => {
       try {
@@ -404,7 +423,7 @@ console.log('pool',poolCreator)
                 </button>
                 <button
                   style={{ padding: "6px", background: "#007bff", borderRadius: "20px", color: "#fff" }}
-                >
+             onClick={handleStartChat}   >
                   Start Chat
                 </button>
               </div>

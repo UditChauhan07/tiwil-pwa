@@ -27,3 +27,4 @@ messaging.onBackgroundMessage((payload) => {
     icon: icon || '/logo192.png', // Fallback to default icon
   });
 });
+//
