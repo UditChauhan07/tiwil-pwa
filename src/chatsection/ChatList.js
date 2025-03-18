@@ -97,9 +97,9 @@ const Chatlist = () => {
                 src={
                   group.eventImage
                     ? `${process.env.REACT_APP_BASE_URL}/${group.eventImage}`
-                    : "/assets/default-event.jpg"
+                    :`${PUBLIC_URL}/defaultUser.png`
                 }
-                alt={group.eventName}
+         
                 className={styles.profileImage}
               />
               <div className={styles.groupInfo}>
