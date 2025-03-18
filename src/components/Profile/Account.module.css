@@ -19,14 +19,20 @@
     padding: 20px;
     text-align: center;
     margin-bottom: 20px;
+    
   }
   
   .profileImage {
-    width: 100px;
-    height: 100px;
+    
+  
+    height: 44px;
+    margin-bottom: 15px;
+    object-fit: cover;
+    width: 44px;
+    border-radius: 24px;
 
     object-fit: cover;
-    margin-bottom: 15px;
+    margin-bottom: 20px;
  
   }
   

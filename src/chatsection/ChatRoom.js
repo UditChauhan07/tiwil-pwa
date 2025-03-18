@@ -83,7 +83,7 @@ const ChatRoom = () => {
   useEffect(() => {
     socketRef.current = io(process.env.REACT_APP_WEB_SOCKET, {
       query: { token },
-      transports: ["websocket"],
+      transports: ["pooling"],
     });
   
     socketRef.current.emit("joinRoom", groupId);
