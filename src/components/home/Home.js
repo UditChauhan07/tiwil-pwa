@@ -134,7 +134,7 @@ const HomePage = () => {
                   value={searchQuery}
                   placeholder= "  Find amazing events  "
                   className="text-mute inputhome"
-                  style={{ width: "100%", height: "30%",padding:'2px',borderRadius:'25px' }}
+                  style={{ width: "100%", height: "30%",padding:'2px',borderRadius:'5px' ,border:'2px solid #ff3366' }}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 /> 
               </div>
@@ -158,7 +158,7 @@ const HomePage = () => {
               className="search-results"
               style={{
                 position: "absolute", // Position above the tabs
-                top: "110px", // Adjust as per your design
+                top: "113px", // Adjust as per your design
                 width: "90%",
                 boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
                 margin: "0px 5px -2px 6px",
@@ -171,23 +171,29 @@ const HomePage = () => {
                 padding: "10px",
               }}
             >
-              {loading ? (
-                <p>Loading...</p>
-              ) : (
-                results.map((item, index) => (
-                  <div
-                    key={index}
-                    className="search-result-item"
-                    onClick={() => handleResultClick(item)}
-                    style={{
-                      padding: "10px",
-                      borderBottom: "1px solid #ddd",
-                      cursor: "pointer",
-                      display: "flex",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
+             {loading ? (
+  <p>Loading...</p>
+) : results.length === 0 ? (
+  <p>No results found</p>
+) : (
+  results.map((item, index) => (
+    <div
+      key={index}
+      className="search-result-item"
+      onClick={() => handleResultClick(item)}
+      style={{
+        padding: "10px",
+        borderBottom: "1px solid #ddd",
+        cursor: "pointer",
+        display: "flex",
+        justifyContent: "space-between",
+        alignItems: "center",
+      }}
+    >
+      {/* Render the result item here */}
+  
+
+  
                     <p>
                       {item.name}{" "}
                       <span style={{ fontSize: "0.8rem", color: "#888" }}>

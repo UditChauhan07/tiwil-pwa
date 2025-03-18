@@ -143,6 +143,7 @@ const Account = () => {
         <div className={styles.container}>
           {/* Profile Section */}
           <div className={styles.profileSection}>
+          <div style={{height:'50px',width:'50px' ,border:"3px solid #ff3366" ,borderRadius:'100px',margin:'auto'}}>
             <img
               src={
                 profileData.profileImage
@@ -152,6 +153,7 @@ const Account = () => {
               alt="Profile"
               className={styles.profileImage}
             />
+            </div>
             <h2 className={styles.profileName}>{profileData.fullName}</h2>
             <button className={styles.editButton} onClick={handleEditProfile}>
               Edit Profile
