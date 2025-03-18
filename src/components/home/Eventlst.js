@@ -38,9 +38,9 @@ const Eventlst = () => {
     };
   
     fetchEvents(true); // Pehli baar loader ke saath call
-    // const intervalId = setInterval(() => fetchEvents(false), 5000); // 5 sec baad bina loader ke call
+    const intervalId = setInterval(() => fetchEvents(false), 5000); // 5 sec baad bina loader ke call
   
-    // return () => clearInterval(intervalId); // Cleanup jab component unmount ho
+    return () => clearInterval(intervalId); // Cleanup jab component unmount ho
   }, [token]); 
   
   const handleSearch = (e) => {
@@ -316,7 +316,7 @@ const Eventlst = () => {
                         }}
                       >
            {event.formattedDate 
-  ? formatDateWithCurrentYear(event.formattedDate, event.date, event.eventDate) 
+  ? event.formattedDate  
   : "Date not available"}
 
                       </h6>

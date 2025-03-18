@@ -368,7 +368,7 @@ const EventDetails = () => {
                         <p className="d-flex align-items-center">
                           <span className="bg-danger text-white p-2 rounded me-2">📅</span>
                           {event.formattedDate 
-  ? formatDateWithCurrentYear(event.formattedDate, event.date, event.eventDate) 
+  ?event.formattedDate 
   : "Date not available"}
                         </p>
 
