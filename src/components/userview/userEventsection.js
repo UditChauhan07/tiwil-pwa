@@ -515,7 +515,7 @@ const handleClick = async (item) => {
         Loading...
       </div>
     );
-
+console.log(events)
   return (
     <>
       <section className="page-controls">

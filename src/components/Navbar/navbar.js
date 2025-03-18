@@ -81,7 +81,7 @@ const handleUser=()=>{
   navigate('/userdetail')
 }
 const unreadNotificationCount = Array.isArray(notifications) 
-    ? notifications.filter(notif => !notif.read).length 
+    ? notifications.filter(notif => notif.status !== "read").length 
     : 0;
 
   return (
