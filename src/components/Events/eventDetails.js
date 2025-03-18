@@ -379,9 +379,7 @@ const EventDetails = () => {
                           </span>
                           {event.location || "Location not available"}
                         </p>
-                        <div className="text-center mt-4">
-                        <p style={{color:"#ff3366"}}>{event.description ||"Add description in edit button"}</p>
-                        </div>
+                    
                       </>
                     )}
 
