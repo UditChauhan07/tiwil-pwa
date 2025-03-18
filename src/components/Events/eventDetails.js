@@ -517,8 +517,11 @@ const EventDetails = () => {
                       </div>
                     )}
                     {activeTab === "history" && (
-                       <div className="container mt-3">
-      {surpriseData.map((event, index) => (
+  <div className="container mt-3">
+    {surpriseData.length === 0 ? (
+      <p>No history available</p>
+    ) : (
+      surpriseData.map((event, index) => (
         <div key={index} className="card mb-3 history-card">
           <div className="row g-0">
             {/* Event Image */}
@@ -536,29 +539,30 @@ const EventDetails = () => {
                 <p className="event-date">📅 {new Date(event.eventDate).toLocaleDateString()}</p>
                 {/* Wishlist Preview */}
                 <div className="wishlist-preview">
-  {(event.wishlist || []).slice(0, 3).map((item, i) => (
-    <img key={i} src={item.image} alt="wishlist" />
-  ))}
-  {(event.wishlist || []).length > 3 && (
-    <button className="btn btn-outline-danger btn-sm">
-      View Full Wishlist
-    </button>
-  )}
-</div>
+                  {(event.wishlist || []).slice(0, 3).map((item, i) => (
+                    <img key={i} src={item.image} alt="wishlist" />
+                  ))}
+                  {(event.wishlist || []).length > 3 && (
+                    <button className="btn btn-outline-danger btn-sm">
+                      View Full Wishlist
+                    </button>
+                  )}
+                </div>
 
-<div className="guest-section">
-  {(event.guests || []).slice(0, 3).map((guest, i) => (
-    <img key={i} src={guest.profileImage} className="guest-img" alt="guest" />
-  ))}
-  <span className="guest-count">{(event.guests || []).length} guests</span>
-</div>
+                <div className="guest-section">
+                  {(event.guests || []).slice(0, 3).map((guest, i) => (
+                    <img key={i} src={guest.profileImage} className="guest-img" alt="guest" />
+                  ))}
+                  <span className="guest-count">{(event.guests || []).length} guests</span>
+                </div>
 
               </div>
             </div>
           </div>
         </div>
-      ))}
-      </div>
+      ))
+    )}
+  </div>
 )}
 
                   </div>
