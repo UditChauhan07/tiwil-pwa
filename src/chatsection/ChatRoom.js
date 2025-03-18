@@ -81,7 +81,7 @@ const ChatRoom = () => {
   }, [page]);
 
   useEffect(() => {
-    socketRef.current = io(process.env.REACT_APP_WEB_SOCKET, {
+    socketRef.current = io("http://45.77.110.58:6543", {
       query: { token },
       transports: ["websocket","pooling"],
     });
@@ -217,7 +217,7 @@ const ChatRoom = () => {
             src={
               eventDetails.eventImage
                 ? `${process.env.REACT_APP_BASE_URL}/${eventDetails.eventImage}`
-                :`${PUBLIC_URL}/DefaultUser.png`
+                :`${PUBLIC_URL}/defaultUser.png`
             }
             alt="Event"
             className={styles.eventImage}
@@ -263,7 +263,7 @@ const ChatRoom = () => {
                       ? `${process.env.REACT_APP_BASE_URL}/${msg.senderProfileImage}`
                       :`${PUBLIC_URL}/defaultUser.png`
                   }
-                  alt="Profile"
+              
                   className={styles.profileImage}
                 />
                 <span className={styles.senderName}>
@@ -280,7 +280,7 @@ const ChatRoom = () => {
                 {msg.messageType === "image" && (
                   <img
                     src={`${process.env.REACT_APP_BASE_URL}${msg.mediaUrl}`}
-                    alt="Sent Image"
+               
                     className={styles.chatMediaImage}
                   />
                 )}
@@ -335,7 +335,7 @@ const ChatRoom = () => {
             {mediaFile.type.startsWith("image") && (
               <img
                 src={URL.createObjectURL(mediaFile)}
-                alt="Preview"
+            
                 className={styles.previewImage}
               />
             )}
