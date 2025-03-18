@@ -2,36 +2,62 @@ import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "./GroupDetails.module.css";
-import { FiArrowLeft, FiSearch } from "react-icons/fi";
+import { FiArrowLeft } from "react-icons/fi";
 
 const GroupDetails = () => {
   const { groupId } = useParams();
   const eventId = groupId.replace("group_", "");
   const token = localStorage.getItem("token");
+  const loggedInUserId = localStorage.getItem("userId");
   const navigate = useNavigate();
-  console.log(groupId,'44444444444444444444444444')
 
   const [groupDetails, setGroupDetails] = useState(null);
+  const [eventDetails, setEventDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchGroupDetails = async () => {
+    const fetchGroupAndEventDetails = async () => {
       try {
-        const response = await axios.get(
+        // Fetch Group Details
+        const groupResponse = await axios.get(
           `${process.env.REACT_APP_BASE_URL}/chats/${groupId}/details`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
+          { headers: { Authorization: `Bearer ${token}` } }
         );
-        if (response.data.success) {
-          setGroupDetails(response.data.data);
+
+        if (groupResponse.data.success) {
+          setGroupDetails(groupResponse.data.data);
+        }
+
+        // Fetch Event Details
+        const eventResponse = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/events/${eventId}`,
+          { headers: { Authorization: `Bearer ${token}` } }
+        );
+
+        if (eventResponse.data.success) {
+          setEventDetails(eventResponse.data.data);
         }
       } catch (error) {
-        console.error("❌ Error fetching group details:", error);
+        console.error("❌ Error fetching details:", error);
+      } finally {
+        setLoading(false);
       }
     };
 
-    fetchGroupDetails();
-  }, [groupId, token]);
+    fetchGroupAndEventDetails();
+  }, [groupId, eventId, token]);
+
+  const handleWishlistNavigation = () => {
+    if (!eventDetails) return;
+
+    if (eventDetails.userId === loggedInUserId) {
+      navigate(`/plandetails/${eventId}`);
+    } else {
+      navigate(`/invitation-detail/${eventId}`);
+    }
+  };
+
+  if (loading) return <p>Loading group details...</p>;
 
   return (
     <div className={styles.container}>
@@ -43,18 +69,20 @@ const GroupDetails = () => {
               src={
                 groupDetails.eventImage
                   ? `${process.env.REACT_APP_BASE_URL}/${groupDetails.eventImage}`
-                  : "/assets/ProfilDefaulticon.png"
+                  : `${PUBLIC_URL}/DefaultUser.png`
               }
               alt="Event"
               className={styles.eventImage}
             />
             <h2>{groupDetails.eventName}</h2>
-            <button className={styles.wishlistButton} onClick={() => navigate(`/event/${eventId}`)}>
+            <button className={styles.wishlistButton} onClick={handleWishlistNavigation}>
               See Wishlist
             </button>
           </div>
 
-          <p className={styles.creationDate}>Group created on: {new Date(groupDetails.createdAt).toLocaleDateString()}</p>
+          <p className={styles.creationDate}>
+            Group created on: {new Date(groupDetails.createdAt).toLocaleDateString()}
+          </p>
 
           {/* ✅ Media Files Section */}
           <h3>Media, Links & Docs</h3>
@@ -81,18 +109,18 @@ const GroupDetails = () => {
                   src={
                     member.profileImage
                       ? `${process.env.REACT_APP_BASE_URL}${member.profileImage}`
-                      : "/assets/ProfilDefaulticon.png"
+                      : `${PUBLIC_URL}/DefaultUser.png`
                   }
                   alt="Profile"
                   className={styles.profileImage}
                 />
-                <p>{member.fullName}</p>
+                <p>{member._id === loggedInUserId ? "Me" : member.fullName}</p>
               </div>
             ))}
           </div>
         </>
       ) : (
-        <p>Loading group details...</p>
+        <p>Group details not available.</p>
       )}
     </div>
   );

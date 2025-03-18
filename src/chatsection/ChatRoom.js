@@ -85,25 +85,18 @@ const ChatRoom = () => {
       query: { token },
       transports: ["websocket"],
     });
-
-    socketRef.current.emit("joinRoom", groupId);
-
-    const handleNewMessage = (message) => {
-      if (message.senderId._id !== currentUserId) {
-        // ✅ Only add messages if they are NOT sent by the current user
-        setMessages((prevMessages) => [...prevMessages, message]);
-      }
-    };
   
-
+    socketRef.current.emit("joinRoom", groupId);
+  
     socketRef.current.on("newMessage", handleNewMessage);
-
+  
     return () => {
       socketRef.current.emit("leaveRoom", groupId);
       socketRef.current.off("newMessage", handleNewMessage);
       socketRef.current.disconnect();
     };
   }, [groupId]);
+  
 
   const handleScroll = () => {
     if (chatContainerRef.current.scrollTop === 0 && hasMore && !loading) {
@@ -119,10 +112,51 @@ const ChatRoom = () => {
     }
   };
 
- 
-  
+  const handleNewMessage = (message) => {
+    // ✅ Skip adding the message if the sender is the current user
+    if (message.senderId._id !== currentUserId) {
+      setMessages((prev) => [...prev, message]);
+    }
+  };
 
-  // ✅ Send Message
+  // ✅ Send Message16 march
+  // const handleSendMessage = async () => {
+  //   if (!newMessage.trim() && !mediaFile) return;
+
+  //   const formData = new FormData();
+  //   formData.append("content", newMessage);
+  //   formData.append(
+  //     "messageType",
+  //     mediaFile ? mediaFile.type.split("/")[0] : "text"
+  //   );
+  //   if (mediaFile) {
+  //     formData.append("media", mediaFile);
+  //   }
+
+  //   try {
+  //     const response = await axios.post(
+  //       `${process.env.REACT_APP_BASE_URL}/chats/${groupId}/messages`,
+  //       formData,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`,
+  //           "Content-Type": "multipart/form-data",
+  //         },
+  //       }
+  //     );
+
+  //     if (response.data.success) {
+  //       // ✅ Remove direct state update here
+  //       // Instead, the message will be automatically handled by the socket listener
+  //       setNewMessage("");
+  //       setMediaFile(null);
+  //       scrollToBottom();
+  //     }
+  //   } catch (error) {
+  //     console.error("❌ Error sending message:", error);
+  //   }
+  // };
+
   const handleSendMessage = async () => {
     if (!newMessage.trim() && !mediaFile) return;
   
@@ -149,21 +183,26 @@ const ChatRoom = () => {
       );
   
       if (response.data.success) {
-        const sentMessage = response.data.data; // Assuming response contains sent message data
+        const message = response.data.data;
   
-        // ✅ Add sent message to the local state
-        setMessages((prevMessages) => [...prevMessages, sentMessage]);
+        // ✅ Update messages state immediately for the sender
+        setMessages((prev) => [...prev, message]);
   
-        // ✅ Clear input fields
+        // Clear inputs after sending
         setNewMessage("");
         setMediaFile(null);
   
+        // Auto-scroll to the latest message
         scrollToBottom();
+  
+        // Emit via socket to notify other clients
+        socketRef.current.emit("sendMessage", message);
       }
     } catch (error) {
       console.error("❌ Error sending message:", error);
     }
   };
+  
   
 
   return (
@@ -178,7 +217,7 @@ const ChatRoom = () => {
             src={
               eventDetails.eventImage
                 ? `${process.env.REACT_APP_BASE_URL}/${eventDetails.eventImage}`
-                : "/assets/ProfilDefaulticon.png"
+                :`${PUBLIC_URL}/DefaultUser.png`
             }
             alt="Event"
             className={styles.eventImage}
@@ -207,15 +246,11 @@ const ChatRoom = () => {
         {messages.length === 0 && !loading && (
           <p>No messages yet. Start the conversation!</p>
         )}
-        {messages.map((msg,index) => {
-          console.log(msg.content)
-          
+        {messages.map((msg) => {
           const isCurrentUser = msg.senderId._id === currentUserId;
           return (
             <div
-             key={msg._id || `fallback-key-${index}`}
-
-
+              key={msg._id}
               className={
                 isCurrentUser ? styles.sentMessage : styles.receivedMessage
               }
@@ -225,8 +260,8 @@ const ChatRoom = () => {
                 <img
                   src={
                     msg.senderProfileImage
-                      ? `${process.env.REACT_APP_BASE_URL}${msg.senderProfileImage}`
-                      : "/assets/ProfilDefaulticon.png"
+                      ? `${process.env.REACT_APP_BASE_URL}/${msg.senderProfileImage}`
+                      :`${PUBLIC_URL}/defaultUser.png`
                   }
                   alt="Profile"
                   className={styles.profileImage}
