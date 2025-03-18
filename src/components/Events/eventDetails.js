@@ -28,6 +28,54 @@ const EventDetails = () => {
   const { eventId } = useParams(); // Get eventId from URL parameters
   console.log(eventId)
   const navigate = useNavigate();
+  const [surpriseData, setSurpriseData] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedContributors, setSelectedContributors] = useState([]);
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const token = localStorage.getItem("token");
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
+        };
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/getsurprisedata`,
+          config
+        );
+
+        if (response.data.success && response.data.data.length > 0) {
+          // Group data by unique eventId to avoid duplicates
+          const uniqueEvents = Object.values(
+            response.data.data.reduce((acc, item) => {
+              acc[item.eventId] = acc[item.eventId] || { ...item, wishlistItems: [] };
+              acc[item.eventId].wishlistItems.push(item.wishlistItem);
+              return acc;
+            }, {})
+          );
+          setSurpriseData(uniqueEvents);
+          setErrorMessage("");
+        } else {
+          setSurpriseData([]);
+          setErrorMessage(response.data.message || "No surprise reveal for tomorrow.");
+        }
+      } catch (error) {
+        setSurpriseData([]);
+        setErrorMessage("Error fetching data. Please try again later.");
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  const openModal = (contributors) => {
+    setSelectedContributors(contributors);
+    setShowModal(true);
+  };
   // Fetch wishlist data from the server
   // useEffect(() => {
   //   const fetchWishlist = async () => {
@@ -49,7 +97,8 @@ const EventDetails = () => {
   //   fetchWishlist();
   // }, [eventId]);
 
-  const fetchHistory=async()=>{
+  useEffect(()=>{
+    const fetchHistory=async()=>{
     try{
       const response=await axios.get(`${process.env.REACT_APP_BASE_URL}/history`,
         {
@@ -63,7 +112,8 @@ const EventDetails = () => {
             console.error("❌ Error while fetching history:", error);
             }
             }
-    
+            fetchHistory();
+          },[eventId])
 
   useEffect(() => {
     fetchWishlist();
@@ -471,11 +521,50 @@ const EventDetails = () => {
                       </div>
                     )}
                     {activeTab === "history" && (
-                      <div>
-                        <h5>📜 Event History</h5>
-                        <p>Past updates and modifications of this event.</p>
-                      </div>
-                    )}
+                       <div className="container mt-3">
+      {surpriseData.map((event, index) => (
+        <div key={index} className="card mb-3 history-card">
+          <div className="row g-0">
+            {/* Event Image */}
+            <div className="col-md-3">
+              <img
+                src={event.imageUrl || "/img/placeholder.jpg"}
+                className="img-fluid event-image"
+                alt={event.name}
+              />
+            </div>
+            {/* Event Details */}
+            <div className="col-md-9">
+              <div className="card-body">
+                <h5 className="card-title">{event.name}</h5>
+                <p className="event-date">📅 {new Date(event.eventDate).toLocaleDateString()}</p>
+                {/* Wishlist Preview */}
+                <div className="wishlist-preview">
+  {(event.wishlist || []).slice(0, 3).map((item, i) => (
+    <img key={i} src={item.image} alt="wishlist" />
+  ))}
+  {(event.wishlist || []).length > 3 && (
+    <button className="btn btn-outline-danger btn-sm">
+      View Full Wishlist
+    </button>
+  )}
+</div>
+
+<div className="guest-section">
+  {(event.guests || []).slice(0, 3).map((guest, i) => (
+    <img key={i} src={guest.profileImage} className="guest-img" alt="guest" />
+  ))}
+  <span className="guest-count">{(event.guests || []).length} guests</span>
+</div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+      </div>
+)}
+
                   </div>
                 </div>
               ))

@@ -75,6 +75,7 @@ function Invitationlst() {
   if (loading) {
     return <div>Loading invitations...</div>;
   }
+  
   const calculateAgeAndBirthdayText = (eventDate) => {
     if (!eventDate) return "N/A";
 

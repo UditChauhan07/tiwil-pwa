@@ -105,3 +105,46 @@
     
   
   }
+
+  .history-card {
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  
+  .event-image {
+    width: 100%;
+    height: auto;
+    border-radius: 10px 0 0 10px;
+  }
+  
+  .event-date {
+    font-size: 14px;
+    color: #777;
+  }
+  
+  .wishlist-preview img {
+    width: 50px;
+    height: 50px;
+    border-radius: 5px;
+    margin-right: 5px;
+  }
+  
+  .guest-section {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .guest-img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 5px;
+  }
+  
+  .guest-count {
+    font-size: 14px;
+    font-weight: bold;
+  }
+  

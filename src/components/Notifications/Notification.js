@@ -7,23 +7,25 @@ import { formatDistanceToNow } from "date-fns";
 const PoolRequests = () => {
   const [requests, setRequests] = useState([]);
   const [notifications, setNotifications] = useState([]);
-
   const [notificationCount, setNotificationCount] = useState(0);
 
   useEffect(() => {
-    // Function to fetch notifications from the API
     const fetchNotifications = async () => {
       try {
         const token = localStorage.getItem("token");
-        const { data } = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}/notification`, // Your API endpoint
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-        // Update notifications and count
+        const { data } = await axios.get(`${process.env.REACT_APP_BASE_URL}/notification`, {
+          headers: { Authorization: `Bearer ${token}` },
+        });
+
+        console.log("Fetched notifications:", data.notifications);
+
+        // Store all notifications
         setNotifications(data.notifications || []);
-        setNotificationCount(data.notifications.length); // Update notification count
+
+        // Count unread notifications
+        const unreadCount = data.notifications.filter(notif => !notif.read).length;
+        setNotificationCount(unreadCount);
+
       } catch (error) {
         console.error("Error fetching notifications:", error);
       }
@@ -32,15 +34,11 @@ const PoolRequests = () => {
     // Fetch notifications on initial load
     fetchNotifications();
 
-    // Set polling to fetch notifications every 10 seconds
-    const intervalId = setInterval(fetchNotifications, 10000); // Poll every 10 seconds
+    // Poll every 10 seconds
+    const intervalId = setInterval(fetchNotifications, 10000);
 
-    // Clean up the interval when component unmounts
-    return () => {
-      clearInterval(intervalId);
-    };
+    return () => clearInterval(intervalId);
   }, []);
-
   useEffect(() => {
     const fetchRequests = async () => {
       try {
@@ -160,6 +158,31 @@ const PoolRequests = () => {
   const handleback=()=>{
     window.history.back();
   }
+
+
+
+
+
+
+  const markNotificationsAsRead = async () => {
+    try {
+      const token = localStorage.getItem("token");
+  
+      await axios.put(
+        `${process.env.REACT_APP_BASE_URL}/markasread`, 
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+  
+      // Update UI: Mark all notifications as read locally
+      setNotifications((prev) => prev.map((notif) => ({ ...notif, status: "read" })));
+      setNotificationCount(0); // Reset the count since all are read
+  
+    } catch (error) {
+      console.error("Error marking notifications as read:", error);
+    }
+  };
+  
   return (
     <>
    
