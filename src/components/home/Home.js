@@ -134,7 +134,7 @@ const HomePage = () => {
                   value={searchQuery}
                   placeholder= "  Find amazing events  "
                   className="text-mute inputhome"
-                  style={{ width: "100%", height: "30%",padding:'2px',borderRadius:'5px' ,border:'2px solid #ff3366' }}
+                  style={{ width: "100%", height: "42%",padding:'2px',borderRadius:'31px' ,border:'2px solid #ff3366' }}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 /> 
               </div>

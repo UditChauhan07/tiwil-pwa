@@ -115,14 +115,7 @@ function Invitationlst() {
   return (
     <div className="containers1 mt-4">
       {/* Search Bar */}
-      <Form.Control
-        type="text"
-        placeholder="Search invitations by event name or type"
-        value={searchQuery}
-        onChange={handleSearch}
-        className="mb-3"
-        style={{ width: "99%", margin: "0 auto" }}
-      />
+  
 
       {/* Display Invitations */}
       {filteredInvitations.length > 0 ? (
