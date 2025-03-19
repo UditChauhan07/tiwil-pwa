@@ -194,13 +194,7 @@ const Eventlst = () => {
     <>
       <div className="mt-4 mainns121">
         {/* Search bar */}
-        <Form.Control
-          type="text"
-          placeholder="Search for events..."
-          value={searchQuery}
-          onChange={handleSearch}
-          style={{ marginBottom: "18px", width: "98%" }}
-        />
+       
 
         {/* Show loader if loading is true */}
         {loading ? (
