@@ -35,6 +35,10 @@
   width: 120px;
   height: 120px;
   margin: 0 auto;
+  height: 120px;
+   
+    border: 1px solid #ff3366;
+    border-radius: 69px;
 }
 
 .profileImage {

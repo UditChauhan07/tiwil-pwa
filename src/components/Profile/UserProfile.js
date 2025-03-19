@@ -168,13 +168,13 @@ function Profile() {
                 ? URL.createObjectURL(selectedProfileImage)
                 : userData.profileImage
                 ? `${process.env.REACT_APP_BASE_URL}${userData.profileImage}`
-                : `${process.env.PUBLIC_URL}/assets/ProfilDefaulticon.png`
+                : `${process.env.PUBLIC_URL}/img/Default_pfp.svg`
             }
-            alt="Profile"
+  
             className={styles.profileImage}
           />
           <label className={styles.cameraIcon}>
-            <IoMdCamera size={20} />
+            <img src={`${process.env.PUBLIC_URL}/img/uplodbutton.svg`} height={"20px"} width={"20px"} />
             <input type="file" style={{ display: "none" }} onChange={handleProfileImageChange} />
           </label>
         </div>

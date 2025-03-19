@@ -24,7 +24,7 @@ const Eventlst = () => {
   
         if (response.data.success) {
           const sortedEvents = response.data.data.sort((a, b) => 
-            new Date(a.date) - new Date(b.date)
+            new Date(a.formattedDate) - new Date(b.formattedDate)
           );
   
           setEvents(sortedEvents);

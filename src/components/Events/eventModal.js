@@ -4,6 +4,7 @@ import axios from "axios";
 import './eventModal.css'
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
+import { FaCloudUploadAlt } from "react-icons/fa";
 
 const EditEventModal = ({ show, setShow, event, fetchevent  }) => {
   if (!event) {
@@ -12,6 +13,7 @@ const EditEventModal = ({ show, setShow, event, fetchevent  }) => {
 console.log(event)
   const [location, setLocation] = useState(event.location || "");
   const [description, setDescription] = useState(event.aboutEvent || "");
+  const [image,setImage]=useState(event.image||"")
   const [name, setname] = useState(event.name || "");
   const [eventDate, setDate] = useState(event.date || "");
   const { eventId } = useParams();
@@ -51,6 +53,14 @@ fetchWishlist();  // Fetch updated event details
     } catch (error) {
       console.error("Error updating event:", error);
       
+    }
+  };
+  
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setImage(imageUrl);
     }
   };
 
@@ -104,6 +114,17 @@ fetchWishlist();  // Fetch updated event details
               placeholder="Enter event description"
             />
           </Form.Group>
+          <div className="upload-container" onClick={() => document.getElementById("fileInput").click()}>
+      {image ? (
+        <img src={image} alt="Preview" className="uploaded-image" />
+      ) : (
+        <div className="upload-icon">
+          <FaCloudUploadAlt size={50} color="#E11531" />
+          <p>Upload Image</p>
+        </div>
+      )}
+      <input type="file" id="fileInput" accept="image/*" onChange={handleImageChange} hidden />
+    </div>
         </Form>
       </Modal.Body>
 

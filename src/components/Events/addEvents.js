@@ -4,6 +4,7 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../Wishlist/addtowish.css";
 import { useState, useEffect } from "react";
+import { FaCloudUploadAlt } from "react-icons/fa";
 
 const AddEvents = ({ show, setShow, setActiveTab }) => {
   const token = localStorage.getItem("token");
@@ -16,9 +17,10 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
     location: "",
     eventDate: "",
     description: "",
+  image:'',
   });
   const [today, setToday] = useState("");
-
+  const [image, setImage] = useState(null);
   useEffect(() => {
     // Get today's date in YYYY-MM-DD format
     const todayDate = new Date().toISOString().split("T")[0];
@@ -34,6 +36,13 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
       ...prevData,
       [name]: value, // Dynamically update the specific field
     }));
+  };
+  const handleImageChange = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const imageUrl = URL.createObjectURL(file);
+      setImage(imageUrl);
+    }
   };
 
   const handleSave = async () => {
@@ -121,6 +130,19 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
               />
             </div>
           </Form.Group>
+          <Form.Group>
+          <div className="upload-container" onClick={() => document.getElementById("fileInput").click()}>
+      {image ? (
+        <img src={image} alt="Preview" className="uploaded-image" />
+      ) : (
+        <div className="upload-icon">
+          <FaCloudUploadAlt size={50} color="#E11531" />
+          <p>Upload Image</p>
+        </div>
+      )}
+      <input type="file" id="fileInput" accept="image/*" onChange={handleImageChange} hidden />
+    </div>
+    </Form.Group>
         </Form>
       </Modal.Body>
 

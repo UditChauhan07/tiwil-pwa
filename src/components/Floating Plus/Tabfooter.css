@@ -62,4 +62,39 @@
   .dropdown-option:hover {
     background: #cc0044;
   }
+  .bottom-nav {
+    width: 230px;
+    height: 50px;
+    position: fixed;
+    bottom: 14px;
+    left: 39%;
+    transform: translateX(-50%);
+    background-color: #FFEFF3;
+    border-radius: 23px;
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .nav-item {
+    position: relative;
+    padding: 10px;
+    font-size: 24px;
+    cursor: pointer;
+  }
+  
+  .nav-item.active::after {
+    content: "";
+    width: 4px;
+    height: 4px;
+    fill: #ff3366;
+    accent-color: #ff3366;
+    background-color: red;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+  }
   

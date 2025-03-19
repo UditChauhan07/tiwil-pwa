@@ -7,7 +7,8 @@ import styles from "../Profile/Account.module.css";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import EditableProfile from "../Profile/EditableProfile";
-
+import { FontAwesomeIcon ,icon} from "@fortawesome/react-fontawesome";
+import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 
 const Account = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -156,7 +157,10 @@ const Account = () => {
             </div>
             <h2 className={styles.profileName}>{profileData.fullName}</h2>
             <button className={styles.editButton} onClick={handleEditProfile}>
-              Edit Profile
+          
+
+            <FontAwesomeIcon icon={faPencilAlt} />
+
             </button>
           </div>
 

@@ -81,9 +81,9 @@ const ChatRoom = () => {
   }, [page]);
 
   useEffect(() => {
-    socketRef.current = io("http://45.77.110.58:6543", {
+    socketRef.current = io("https://tiwil.truet.net", {
       query: { token },
-      transports: ["websocket","pooling"],
+      transports: ["websocket","polling"],
     });
   
     socketRef.current.emit("joinRoom", groupId);
@@ -217,7 +217,7 @@ const ChatRoom = () => {
             src={
               eventDetails.eventImage
                 ? `${process.env.REACT_APP_BASE_URL}/${eventDetails.eventImage}`
-                :`${PUBLIC_URL}/defaultUser.png`
+                :`${process.env.PUBLIC_URL}/defaultUser.png`
             }
             alt="Event"
             className={styles.eventImage}
@@ -261,7 +261,7 @@ const ChatRoom = () => {
                   src={
                     msg.senderProfileImage
                       ? `${process.env.REACT_APP_BASE_URL}/${msg.senderProfileImage}`
-                      :`${PUBLIC_URL}/defaultUser.png`
+                      :`${process.env.PUBLIC_URL}/defaultUser.png`
                   }
               
                   className={styles.profileImage}
