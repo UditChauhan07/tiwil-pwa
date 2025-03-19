@@ -23,8 +23,19 @@ const [showmemberModal, setShowmemberModal] = useState(false);
       )}
 
       {/* Floating Action Button */}
-      <button style={styles.fab} onClick={() => setIsOpen(!isOpen)}>
-        <FaPlus style={styles.fabIcon} />
+      <button  onClick={() => setIsOpen(!isOpen)} className="d-flex justift-content-center " style={{border:"none", alignItems:'center'}}>
+      <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+<rect width="60" height="60" rx="30" fill="#EE4266"/>
+<rect x="8" y="8" width="44.1176" height="44.1176" rx="22.0588" fill="white" />
+</svg>
+<div ><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{position:'relative',right:'38px'}}>
+<path d="M8.17308 19.8333V11.3333H0V8.5H8.17308V0H10.8974V8.5H19.0705V11.3333H10.8974V19.8333H8.17308Z" fill="#EE4266"  />
+</svg>
+</div>
+
+
+
+
       </button>
     </div>
     <div>
@@ -39,7 +50,7 @@ const [showmemberModal, setShowmemberModal] = useState(false);
 const styles = {
   container: {
     position: "fixed",
-    bottom: "20px",
+    bottom: "9px",
     right: "20px",
     zIndex: 1000,
   },
@@ -60,6 +71,7 @@ const styles = {
   },
   fabIcon: {
     fontSize: "26px",
+    position:'absolute'
   },
   optionsContainer: {
     position: "absolute",
@@ -86,6 +98,10 @@ const styles = {
   icon: {
     fontSize: "18px",
   },
+  fabplus:{
+
+    marginLeft: "-38px",
+  }
 };
 
 export default FloatingActionButton;

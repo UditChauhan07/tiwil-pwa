@@ -298,6 +298,8 @@ const EventDetails = () => {
           <div className="container mt-4">
             {/* Header Section */}
             <div className="d-flex justify-content-between align-items-center">
+      
+
               <h4 className="fw-bold">Event Details</h4>
               <div className="d-flex align-items-center">
                 <FaShareAlt className="me-3 fs-5" onClick={handleShare} />
