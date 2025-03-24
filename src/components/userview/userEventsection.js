@@ -6,6 +6,8 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {  useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 
 const EventDetails = () => {
@@ -520,9 +522,10 @@ console.log(events)
     <>
       <section className="page-controls">
    
-        <Navbar />
+   
         <div className="container mt-4">
           <div className="d-flex justify-content-between align-items-center">
+                 <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)}/>
             <h4 className="fw-bold">Event Details</h4>
             <div className="d-flex align-items-center">
               <FaShareAlt className="me-3 fs-5" />

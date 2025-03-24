@@ -21,6 +21,7 @@ const SignUpForm = () => {
   const [loading, setLoading] = useState(false); // Loading state for OTP sending and verification
   const [active, setActive] = useState("signup");
   const navigate = useNavigate();
+  const logo = `${process.env.PUBLIC_URL}/img/letsgo2.svg`;
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -67,7 +68,15 @@ const SignUpForm = () => {
       });
 
       if (response.data.success) {
-        Swal.fire("Success", "Signup Successful!", "success");
+        Swal.fire({
+          title: `<div style="font-size: 2rem; color: #FF3366; font-weight: bold;">Dear ${formData.fullName}</div>`,
+          text: 'Account Created Successfully',
+          confirmButtonText: "Let's Go",
+          confirmButtonColor: "#FF3366",
+          imageUrl: logo,
+          imageWidth: 80,
+          imageHeight: 80,
+        });
 
         // const FCM_Token= await genToken();
         // // localStorage.setItem('FCM',FCM_Token)
@@ -100,7 +109,7 @@ const SignUpForm = () => {
     <section className="page-controls">
       <div className="container d-flex flex-column align-items-center justify-content-center ">
         <div className="text-center ">
-          <img  src={`${process.env.PUBLIC_URL}/img/TiwilLOGO1.png`} alt="logo" height={"150px"}
+          <img  src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" height={"150px"}
             width={"200px"} />
           <h2 className="font-weight-bold mt-2 mb-0" style={{ fontSize: "48px" }}>Welcome</h2>
           <p className="text-muted">Connect with your friends today!</p>

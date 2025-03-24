@@ -246,7 +246,7 @@ const Eventlst = () => {
                           ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
                           : `${process.env.PUBLIC_URL}/img/eventdefault.png`
                       }
-                      alt="Event"
+                  
                       className="imgEvent"
                     />
                     <div
@@ -360,7 +360,7 @@ const Eventlst = () => {
                     >
                       <img
                         src={`${process.env.PUBLIC_URL}/img/Hearticon.svg`}
-                        alt="wishlist"
+                   
                         style={{ width: "26px", height: "20px" }}
                       />
                     </div>

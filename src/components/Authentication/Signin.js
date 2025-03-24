@@ -144,7 +144,7 @@ const SignInForm = () => {
       <div className="container d-flex flex-column align-items-center justify-content-center mt-3">
         <div className="text-center mb-1">
           <img
-            src={`${process.env.PUBLIC_URL}/img/TiwilLOGO1.png`}
+            src={`${process.env.PUBLIC_URL}/img/logomain.svg`}
             alt="tiwillogo"
             height={"150px"}
             width={"200px"}

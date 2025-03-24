@@ -73,7 +73,7 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
                 ? `${process.env.REACT_APP_BASE_URL}/${profileData.profileImage}`
                 : `${process.env.PUBLIC_URL}/assets/profile-placeholder.png`
             }
-            alt="Profile"
+           
             className={styles.profileImage}
           />
           <label className={styles.cameraIcon}>

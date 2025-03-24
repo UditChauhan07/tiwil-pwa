@@ -46,7 +46,7 @@ const FamilyInformation = () => {
 
   return (
     <div className={styles.container}>
-      <Navbar />
+      
       <h1 className={styles.header}>View Detail</h1>
 
       {familyMembers.map((member, index) => (
@@ -89,7 +89,7 @@ const FamilyCard = ({ relation, detail, onEdit }) => {
       ? `${process.env.REACT_APP_BASE_URL}/${detail.image}` // ✅ Corrected relative path
       : `${process.env.PUBLIC_URL}/assets/ProfilDefaulticon.png`
   }
-  alt={relation}
+
   className={styles.image}
 />
 

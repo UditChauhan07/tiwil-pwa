@@ -198,6 +198,9 @@ border-radius: 10px;
   .noButton:hover {
     background-color: #b3b3b3;
   }
+  .icons{
+    margin-right: 211px ;
+  }
   
   /* Responsive Design */
   @media (max-width: 768px) {

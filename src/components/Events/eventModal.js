@@ -116,7 +116,7 @@ fetchWishlist();  // Fetch updated event details
           </Form.Group>
           <div className="upload-container" onClick={() => document.getElementById("fileInput").click()}>
       {image ? (
-        <img src={image} alt="Preview" className="uploaded-image" />
+        <img  src={`${process.env.REACT_APP_BASE_URL}/${image}`}  className="uploaded-image" />
       ) : (
         <div className="upload-icon">
           <FaCloudUploadAlt size={50} color="#E11531" />

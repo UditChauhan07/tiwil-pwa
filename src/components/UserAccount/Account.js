@@ -114,7 +114,7 @@ const Account = () => {
 
   return (
     <div>
-      <Navbar />
+    
       {isEditing ? (
         <EditableProfile
           profileData={profileData}
@@ -146,7 +146,7 @@ const Account = () => {
                   ? `${process.env.REACT_APP_BASE_URL}/${profileData.profileImage}`
                   : `${process.env.PUBLIC_URL}/assets/ProfilDefaulticon.png`
               }
-              alt="Profile"
+            
               className={styles.profileImage}
             />
             <h2 className={styles.profileName}>{profileData.fullName}</h2>

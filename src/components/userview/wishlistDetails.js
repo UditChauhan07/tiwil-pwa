@@ -83,7 +83,7 @@ function WishlistCard() {
   return (
     <section className="page-controls">
   
-      <Navbar />
+      
       <div className="container mt-4">
         {!wishlistItem ? (
           <p>Loading data...</p>

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { FaEllipsisV, FaShareAlt, FaArrowRight } from "react-icons/fa";
 import "./Eventdetails.css";
-import Navbar from "../Navbar/navbar";
+
 import WishlistModal from "../Wishlist/addWishlist";
 import InviteModal from "../GuestInvite/GuestModal";
 import EditEventModal from "./eventModal";
@@ -11,6 +11,11 @@ import { useParams } from "react-router-dom";
 import InviteButton from "../userview/Invitetest";
 import { useNavigate } from "react-router-dom";
 import WishlistEditModal from "../Wishlist/wishlistModal";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+
 
 const EventDetails = () => {
   const [activeTab, setActiveTab] = useState("details");
@@ -293,12 +298,13 @@ const EventDetails = () => {
     <>
       <section className="page-controls" style={{ padding: "0" }}>
        
-        <Navbar />
+     
         <div>
           <div className="container mt-4">
             {/* Header Section */}
             <div className="d-flex justify-content-between align-items-center">
       
+            <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)}/>
 
               <h4 className="fw-bold">Event Details</h4>
               <div className="d-flex align-items-center">
@@ -332,7 +338,7 @@ const EventDetails = () => {
                           ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
                           : `${process.env.PUBLIC_URL}/img/eventdefault.png`
                       }
-                      alt="event"
+                 
                       className="img-fluid"
                       style={{ width: "100%", height: "300px", objectFit: "cover", borderRadius: "10px" }}
                     />
@@ -367,8 +373,10 @@ const EventDetails = () => {
                   <div className="tab-content p-3 mt-3 border rounded shadow-sm bg-white">
                     {activeTab === "details" && (
                       <>
-                        <p className="d-flex align-items-center">
-                          <span className="bg-danger text-white p-2 rounded me-2">📅</span>
+                        <p className="d-flex align-items-center ">
+                        <div className='calender-icon'>
+                        <FontAwesomeIcon icon={faCalendarAlt} style={{ color: "#ff3366", fontSize: "20px" }} />
+</div>
                           {event.formattedDate 
   ?event.formattedDate 
   : "Date not available"}
@@ -376,8 +384,9 @@ const EventDetails = () => {
 
 
                         <p className="d-flex align-items-center">
-                          <span className="bg-danger text-white p-2 rounded me-2">
-                            📍
+                          <span className=" text-white p-2 rounded me-2 location-icon">
+                          <FontAwesomeIcon icon={faLocationDot} style={{ color: "#ff3366" }} />
+
                           </span>
                           {event.location || "Location not available"}
                         </p>

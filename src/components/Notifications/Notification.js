@@ -3,11 +3,15 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import './notification.css'
 import { formatDistanceToNow } from "date-fns";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import {useNavigate} from 'react-router-dom'
 
 const PoolRequests = () => {
   const [requests, setRequests] = useState([]);
   const [notifications, setNotifications] = useState([]);
   const [notificationCount, setNotificationCount] = useState(0);
+  const navigate=useNavigate();
 
   useEffect(() => {
     const fetchNotifications = async () => {
@@ -156,11 +160,6 @@ const PoolRequests = () => {
   };
   
 
-  const handleback=()=>{
-    window.history.back();
-  }
-
-
 
 
 
@@ -189,7 +188,7 @@ const PoolRequests = () => {
    
       <div className="mainnotify">
 <div className="d-flex heading-notification">
-<img src={`${process.env.PUBLIC_URL}/img/arrow-left.svg`} alt="notification" height={"20px"} width={"20px"} onClick={handleback} />
+    <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)}/>
   <h4>Notification</h4>
 </div>
       <div className="notification-container">
@@ -213,13 +212,13 @@ const PoolRequests = () => {
         <p className="message">{notification.message}</p>
         <p className="timestamp">{getRelativeTime(notification.timestamp)}</p>
       </div>
-
+ 
       {isActionable && (
         <div className="notification-actions">
-          <button className="reject-button" onClick={() => handleAction(notification, "declined")}>
+          <button className="reject-button" onClick={() => handleAction(notification, "Declined")}>
             Reject
           </button>
-          <button className="accept-button" onClick={() => handleAction(notification, "accepted")}>
+          <button className="accept-button" onClick={() => handleAction(notification, "Accepted")}>
             Accept
           </button>
         </div>

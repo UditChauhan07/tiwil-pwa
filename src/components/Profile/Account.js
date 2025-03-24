@@ -5,10 +5,12 @@ import { MdAccountCircle } from "react-icons/md";
 import { IoMdLock, IoMdCloseCircleOutline } from "react-icons/io";
 import styles from "../Profile/Account.module.css";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 import EditableProfile from "../Profile/EditableProfile";
 import { FontAwesomeIcon ,icon} from "@fortawesome/react-fontawesome";
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
+import { faArrowLeft,faGift } from '@fortawesome/free-solid-svg-icons';
+
+import {useNavigate} from 'react-router-dom'
 
 const Account = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -118,7 +120,7 @@ const Account = () => {
   };
   return (
     <div>
-      <Navbar />
+    
       {isEditing ? (
         <EditableProfile
           profileData={profileData}
@@ -143,15 +145,18 @@ const Account = () => {
       ) : (
         <div className={styles.container}>
           {/* Profile Section */}
+
           <div className={styles.profileSection}>
+<div className={styles.icons}>
+          <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)}/></div>
           <div style={{height:'50px',width:'50px' ,border:"3px solid #ff3366" ,borderRadius:'100px',margin:'auto'}}>
             <img
               src={
                 profileData.profileImage
                   ? `${process.env.REACT_APP_BASE_URL}/${profileData.profileImage}`
-                  : `${process.env.PUBLIC_URL}/assets/ProfilDefaulticon.png`
+                  : `${process.env.PUBLIC_URL}/img/Default_pfp.svg`
               }
-              alt="Profile"
+            
               className={styles.profileImage}
             />
             </div>
@@ -184,7 +189,9 @@ const Account = () => {
             </div>
             
         <div className={styles.menuItem} onClick={handleSurprise}>
-              <img src={`${process.env.PUBLIC_URL}/img/surprise-box.avif`}  alt="surprise" className={styles.menuIcon} height={'20px'} width={"20px"} />
+              {/* <img src={`${process.env.PUBLIC_URL}/img/surprise-box.avif`}  alt="surprise" className={styles.menuIcon} height={'20px'} width={"20px"} /> */}
+              <FontAwesomeIcon icon={faGift} style={{ color: "#ff3366", fontSize: "24px" ,marginRight:'5px' }} />
+
               <span className={styles.menuText}>Surprise Reveal</span>
             </div>
             <div className={styles.menuItem} onClick={handleLogout}>

@@ -89,7 +89,7 @@ const Memberform = ({ show, setShow }) => {
           <img
             src={formData.image ? URL.createObjectURL(formData.image) : ""}
             className="img-fluid rounded wishlist-image"
-            alt="Wishlist"
+         
           />
           <div className="camera-icon position-absolute">
             <FaCamera size={20} />

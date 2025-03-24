@@ -8,10 +8,10 @@ const SplashScreen4 = () => (
     {/* Splash Screen Container */}
     <div className="d-flex flex-column justify-content-center align-items-center vw-20 text-center">
       {/* Logo */}
-      <img      src={`${process.env.PUBLIC_URL}/img/TiwilLOGO1.png`}alt="logo" className="pb-1" style={{maxHeight:"100px"}} />
+      <img      src={`${process.env.PUBLIC_URL}/img/logomain.svg`}alt="logo" className="pb-1" style={{maxHeight:"100px"}} />
       {/* Image */}
       <img
-             src={`${process.env.PUBLIC_URL}/img/SplashScreen4.png`}
+             src={`${process.env.PUBLIC_URL}/img/SplashScreen4.webp`}
         alt="Plan"
         className="img-fluid my-3"
         style={{ maxHeight:"180px" }}

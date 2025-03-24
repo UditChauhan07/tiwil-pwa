@@ -67,7 +67,7 @@ const SurpriseReveal = () => {
         onClick={handleBack}
         style={{ cursor: "pointer" }}
       />
-      <h2 className="text-center text-danger">🎉 Surprise Reveal 🎉</h2>
+      <h2 className="text-center text-danger"> Surprise Reveal </h2>
       </div>
       <Accordion>
         {surpriseData.length > 0 ? (
@@ -107,7 +107,7 @@ const SurpriseReveal = () => {
             </Accordion.Item>
           ))
         ) : (
-          <p className="text-center text-muted">{errorMessage}</p>
+          <p className="text-center  d-flex align-items-center justify-content-center text-muted">No Surprise reveal</p>
         )}
       </Accordion>
 

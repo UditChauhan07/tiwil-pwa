@@ -81,7 +81,7 @@ const handleeditprofile=()=>{
     <>
     <section className="page-controls">
 
-    <Navbar/>
+    
     <div className="container mt-4 mainsection">
       {/* Profile Header */}
       <div className="card border-0 shadow-sm mb-3">
@@ -107,7 +107,7 @@ const handleeditprofile=()=>{
           >
             <img
                src={`${process.env.PUBLIC_URL}/img/userimage3.jpg`} // Replace with actual profile picture
-              alt="Profile"
+       
               style={{ width: "100%", height: "100%" }}
             />
           </div>

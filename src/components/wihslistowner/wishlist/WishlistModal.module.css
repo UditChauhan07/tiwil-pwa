@@ -103,11 +103,13 @@
   display: block;
   margin-top: 10px;
   font-weight: bold;
+  padding: 0px !important;
 }
 
 .slider {
   width: 100%;
   margin: 10px 0;
+  padding: 0px !important;
 }
 
 /* Save Button */

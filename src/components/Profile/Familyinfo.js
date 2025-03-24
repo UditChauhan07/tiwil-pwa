@@ -48,7 +48,7 @@ const FamilyList = () => {
     <>
     <section className="page-controls">
   
-    <Navbar/>
+
     <div className="containers">
       <h2 className="text-centera mt-3">View Detail</h2>
       {familyMembers.map((member, index) => (

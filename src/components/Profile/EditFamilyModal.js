@@ -66,7 +66,7 @@ const EditFamilyModal = ({ relation, detail, onClose, onSave }) => {
           <label className={styles.imageLabel}>
             <img
               src={selectedImage ? URL.createObjectURL(selectedImage) : `${process.env.REACT_APP_BASE_URL}/${updatedDetail.image}`}
-              alt="profile"
+          
               className={styles.profileImage}
             />
             <input type="file" className={styles.fileInput} onChange={handleImageChange} />

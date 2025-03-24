@@ -1,7 +1,10 @@
 .nav-tabs .nav-link {
     color: black;
   }
-  
+  .nav-link{
+    font-size: 13px !important;
+    padding: 3px !important;
+  }
   .nav-tabs .nav-link.active {
     border-bottom: 2px solid red !important;
   }
@@ -40,6 +43,7 @@
         padding: 12px 20px;
         font-size: 18px;
       }
+    
       
       @media (max-width: 768px) {
         .nav-pills {
@@ -147,4 +151,17 @@
     font-size: 14px;
     font-weight: bold;
   }
-  
+.nav-item{
+  padding: 5px !important;
+  font-weight: 800 !important;
+}
+.calender-icon{
+  padding: 9px !important;
+  border-radius: 7px !important;
+  background: #FFEFF3 !important;
+}
+.location-icon{
+  padding: 11px !important;
+  border-radius: 7px !important;
+  background: #FFEFF3 !important;
+}

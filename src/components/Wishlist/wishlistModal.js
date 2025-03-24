@@ -131,7 +131,7 @@ const WishlistEditModal = ({ show, setShow, wishlist, fetchWishlist }) => {
               <div className="mt-2">
                 <img
                   src={previewImage}
-                  alt="Wishlist Preview"
+          
                   style={{ width: "100%", height: "auto", borderRadius: "5px" }}
                 />
               </div>
