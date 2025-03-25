@@ -20,7 +20,9 @@
   border-radius: 23px !important;
   color: white !important;
 }
-
+.css-jkmkwa {
+  background-color: none !important;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;

@@ -340,7 +340,7 @@ const EventDetails = () => {
                           : `${process.env.PUBLIC_URL}/img/eventdefault.png`
                       }
                  
-                      className="img-fluid"
+                      className="img-fluid event-img1"
                       style={{ width: "550px", height: "174px",  borderRadius: "10px" }}
                     />
 
@@ -487,8 +487,8 @@ const EventDetails = () => {
                             className="btn  w-30 d-flex "
                             onClick={() => setShowWishlistModal(true)}
                             style={{ background:'#EE4266',
-                              alignItems: 'center', justifyContent: 'center', maxWidth: "251px", 
-                              marginLeft: "30px",borderRadius:'15px'
+                              alignItems: 'center', justifyContent: 'center', 
+                              margin: "auto",borderRadius:'15px',width:'75%'
                             }}
                           >
                             ADD WISHLIST <FaArrowRight className="ms-2" />
