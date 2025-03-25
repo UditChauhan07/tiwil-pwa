@@ -23,7 +23,7 @@ const [showmemberModal, setShowmemberModal] = useState(false);
       )}
 
       {/* Floating Action Button */}
-      <button  onClick={() => setIsOpen(!isOpen)} className="d-flex justift-content-center " style={{border:"none", alignItems:'center'}}>
+      <button  onClick={() => setIsOpen(!isOpen)} className="d-flex justift-content-center " style={{border:"none", alignItems:'center',background:'none'}}>
       <svg width="60" height="60" viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
 <rect width="60" height="60" rx="30" fill="#EE4266"/>
 <rect x="8" y="8" width="44.1176" height="44.1176" rx="22.0588" fill="white" />
