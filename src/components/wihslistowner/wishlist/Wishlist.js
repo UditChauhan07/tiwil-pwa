@@ -51,7 +51,7 @@ console.log(wishlistItems)
               <div className={styles.wishlistContent}>
                 <div className={styles.wishlistHeader}>
                   <div className={styles.userInfo}>
-                    <img src={imgUrl} alt="User" className={styles.userImage} />
+                    <img src={imgUrl}  className={styles.userImage} />
                     <span className={styles.userName}>{item.userName}</span>
                   </div>
                   <span className={styles.price}>${item.price}</span>

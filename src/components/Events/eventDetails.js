@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { FaEllipsisV, FaShareAlt, FaArrowRight } from "react-icons/fa";
 import "./Eventdetails.css";
-import Navbar from "../Navbar/navbar";
+
 import WishlistModal from "../Wishlist/addWishlist";
 import InviteModal from "../GuestInvite/GuestModal";
 import EditEventModal from "./eventModal";
@@ -11,6 +11,11 @@ import { useParams } from "react-router-dom";
 import InviteButton from "../userview/Invitetest";
 import { useNavigate } from "react-router-dom";
 import WishlistEditModal from "../Wishlist/wishlistModal";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+
 
 const EventDetails = () => {
   const [activeTab, setActiveTab] = useState("details");
@@ -293,14 +298,16 @@ const EventDetails = () => {
     <>
       <section className="page-controls" style={{ padding: "0" }}>
        
-        <Navbar />
+     
         <div>
           <div className="container mt-4">
             {/* Header Section */}
-            <div className="d-flex justify-content-between align-items-center">
-      
+            <div className="d-flex justify-content-between align-items-baseline">
+      <div className="d-flex gap-2 align-items-baseline" >
+            <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)}/>
 
               <h4 className="fw-bold">Event Details</h4>
+</div>
               <div className="d-flex align-items-center">
                 <FaShareAlt className="me-3 fs-5" onClick={handleShare} />
                 <Dropdown>
@@ -323,18 +330,18 @@ const EventDetails = () => {
             </div>
             {events.length > 0 ? (
               events.map((event) => (
-                <div key={event._id}>
+                <div key={event._id} style={{marginTop:'17px'}}>
                   {/* Event Image */}
-                  <div>
+                  <div >
                     <img
                       src={
                         event.image && event.image !== "null" && event.image !== `${process.env.REACT_APP_BASE_URL}/null`
                           ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
                           : `${process.env.PUBLIC_URL}/img/eventdefault.png`
                       }
-                      alt="event"
+                 
                       className="img-fluid"
-                      style={{ width: "100%", height: "300px", objectFit: "cover", borderRadius: "10px" }}
+                      style={{ width: "550px", height: "174px",  borderRadius: "10px" }}
                     />
 
                   </div>
@@ -367,17 +374,20 @@ const EventDetails = () => {
                   <div className="tab-content p-3 mt-3 border rounded shadow-sm bg-white">
                     {activeTab === "details" && (
                       <>
-                        <p className="d-flex align-items-center">
-                          <span className="bg-danger text-white p-2 rounded me-2">📅</span>
-                          {event.formattedDate 
-  ?event.formattedDate 
+                        <p className="d-flex align-items-center ">
+                        <div className='calender-icon'>
+                        <FontAwesomeIcon icon={faCalendarAlt} style={{ color: "#ff3366", fontSize: "20px" }} />
+</div>
+                      {event.formattedDate
+  ? formatDateWithCurrentYear(event.formattedDate, event.date)
   : "Date not available"}
                         </p>
 
 
                         <p className="d-flex align-items-center">
-                          <span className="bg-danger text-white p-2 rounded me-2">
-                            📍
+                          <span className=" text-white p-2 rounded me-2 location-icon">
+                          <FontAwesomeIcon icon={faLocationDot} style={{ color: "#ff3366" }} />
+
                           </span>
                           {event.location || "Location not available"}
                         </p>
@@ -388,14 +398,17 @@ const EventDetails = () => {
                     {activeTab === "wishlist" && (
                       <div >
                         <div style={{ display: "flex", justifyContent: "space-between" }}>
-                          <h5>🎁 Wishlist</h5>
-                          <h5>Show All</h5>
+               
+                       
                         </div>
                         <div>
                           <div className="wishlist-items">
+                          
                             {wishlist.length > 0 ? (
                               wishlist.map((item) => (
+                                
                                 <div key={item._id} className="row">
+                                <h5> Wishlist</h5>
                                   <div className="col-lg-4 col-md-6 col-sm-12" style={{ marginBottom: "8px" }}>
                                     <div
                                       className="card"
@@ -450,17 +463,32 @@ const EventDetails = () => {
                                 </div>
                               ))
                             ) : (
-                              <p>No wishlist items found.</p>
+                              
+                              <div className="no-wishlist">
+                              <br/>
+                              <br/>
+                              <br/>
+                              <br/>
+                              <br/>
+                              <br/>
+                              <p>No wishlist found.</p>
+                              <br/>
+                              <br/>
+                              <br/>
+                              <br/>
+                              <br/>
+                              <br/>
+                           </div>
                             )}
                           </div>
                         </div>
                         <div className="text-center mt-4">
                           <button
-                            className="btn btn-danger w-30 d-flex "
+                            className="btn  w-30 d-flex "
                             onClick={() => setShowWishlistModal(true)}
-                            style={{
-                              alignItems: 'center', justifyContent: 'center', width: "70%", position: 'fixed', bottom: "20px",
-                              left: "50px"
+                            style={{ background:'#EE4266',
+                              alignItems: 'center', justifyContent: 'center', maxWidth: "251px", 
+                              marginLeft: "30px",borderRadius:'15px'
                             }}
                           >
                             ADD WISHLIST <FaArrowRight className="ms-2" />
@@ -476,7 +504,7 @@ const EventDetails = () => {
 
                         {guest && guest.length > 0 ? (
                           <>
-                            <ul>
+                            <ul className="guestlist">
                               {guest.map((g) => (
                                 <li key={g._id}>
                                   <div style={{ display: 'flex', justifyContent: 'space-between' }}>
@@ -498,12 +526,24 @@ const EventDetails = () => {
                             </ul>
 
                             {/* ADD MORE and START CHAT buttons when guests are available */}
-                            <div className="text-center mt-4 d-flex">
-                              <InviteButton />
+                            <div className="text-center mt-4 d-flex " style={{justifyContent:'space-evenly'}}>
+                            <InviteButton 
+  style={{ 
+    borderRadius: '5px', 
+    width: '50%', 
+    color:'white',
+    fontSize:'12px',
+    padding: "12px 0px" // Custom background color
+  }}
+>
+  ADD MORE
+</InviteButton>
+
+
 
                               <button
-                                className="btn btn-success w-25 d-flex align-items-center justify-content-center"
-                                style={{ fontSize: "12px" }}
+                                className="btn   d-flex align-items-center justify-content-center"
+                                style={{ fontSize: "12px" ,background:'#EE4266',width:'35%',color:'white'}}
                                 onClick={handleStartChat} // Define this function to start chat
                               >
                                 START CHAT
@@ -511,9 +551,23 @@ const EventDetails = () => {
                             </div>
                           </>
                         ) : (
+                          
                           // Invite button only when there are no guests
                           <div className=" mt-4">
-                            <InviteButton />
+                          <br/>
+                          <br/>
+                          <br/>
+                          <div className="notinvited">
+                            No Guest Invited
+                          </div>
+                          <br/>
+                          <br/>
+                         
+                          
+                          <div className="invtebtn">
+                            <InviteButton> Invite  
+                            </InviteButton>
+</div>
                           </div>
                         )}
                       </div>

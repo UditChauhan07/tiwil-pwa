@@ -71,7 +71,7 @@ const GroupDetails = () => {
                   ? `${process.env.REACT_APP_BASE_URL}/${groupDetails.eventImage}`
                   : `${PUBLIC_URL}/DefaultUser.png`
               }
-              alt="Event"
+            
               className={styles.eventImage}
             />
             <h2>{groupDetails.eventName}</h2>
@@ -111,7 +111,7 @@ const GroupDetails = () => {
                       ? `${process.env.REACT_APP_BASE_URL}${member.profileImage}`
                       : `${PUBLIC_URL}/DefaultUser.png`
                   }
-                  alt="Profile"
+              
                   className={styles.profileImage}
                 />
                 <p>{member._id === loggedInUserId ? "Me" : member.fullName}</p>

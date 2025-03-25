@@ -234,32 +234,55 @@ function AddInformation() {
     }
   };
 
-  
-  const handleSkip=async()=>{
-    try{
-    const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/family-info`,  {
-      headers: { Authorization: `Bearer ${token}`, "Content-Type": "multipart/form-data" },
-    });
+const handleSkips=()=>{
+  navigate('/home')
+}
 
-    if (response.data.success) {
-      console.log("Family information saved successfully!");
-      localStorage.setItem("onboardingStatus", true);
-      navigate("/home");
-    } else {
-      console.error("Error saving family information:", response.data.message);
+  const handleSkip = async () => {
+    try {
+      const token = localStorage.getItem('token');
+      const formData = new FormData(); // Create an empty FormData object
+  
+      // Send the empty FormData (no actual data) with a POST request
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/family-info`,
+        formData, // Send the empty FormData
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data", // Let Axios handle the content-type
+          },
+        }
+      );
+  
+      if (response.data.success) {
+        console.log("Family information saved successfully!");
+        localStorage.setItem("onboardingStatus", true); // Update onboarding status
+        navigate("/home"); // Navigate to home page
+      } else {
+        console.error("Error saving family information:", response.data.message);
+      }
+    } catch (error) {
+      console.error("Error saving family information:", error.message);
     }
-  } catch (error) {
-    console.error("Error saving family information:", error.message);
-  }
-  }
+  };
+  
   // console.log(parentAnniversary,"44444444444444444444444444")
 // console.log(document.getElementById)
 
   return (
-    <div className={styles.container}
-    >
-      <h2>Family Information</h2>
-
+    <>
+    <div className={styles.container}>
+    <div className={styles.skipps}>
+    <button onClick={handleSkips} className={styles.skipButton}>
+          Skip
+        </button>
+    </div>
+    
+     <div className="d-flex"> 
+     <h2>Family Information</h2>
+      
+        </div>
       {loading ? (
         <Loader />
       ) : (
@@ -509,13 +532,12 @@ function AddInformation() {
         <button onClick={handleSave} className={styles.saveButton}>
           Save
         </button>
-        <button onClick={handleSkip} className={styles.skipButton}>
-          Skip
-        </button>
+    
       </div>
       </>
     )}
     </div>
+    </>
   );
 }
 

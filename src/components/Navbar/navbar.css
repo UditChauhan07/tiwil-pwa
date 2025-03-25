@@ -87,6 +87,9 @@
 .navbar-toggler-icon {
   background-color: #FF3366;
 }
+.nav-link{
+  font-size: 14px;
+}
 
 /* Media Queries for smaller screen sizes */
 @media (max-width: 768px) {

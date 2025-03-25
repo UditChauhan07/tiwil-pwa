@@ -50,8 +50,8 @@ const [showmemberModal, setShowmemberModal] = useState(false);
 const styles = {
   container: {
     position: "fixed",
-    bottom: "9px",
-    right: "20px",
+    bottom: "10px",
+    right: "-5px",
     zIndex: 1000,
   },
   fab: {

@@ -1,7 +1,10 @@
 .nav-tabs .nav-link {
     color: black;
   }
-  
+  .nav-link{
+    font-size: 13px !important;
+    padding: 3px !important;
+  }
   .nav-tabs .nav-link.active {
     border-bottom: 2px solid red !important;
   }
@@ -40,6 +43,7 @@
         padding: 12px 20px;
         font-size: 18px;
       }
+    
       
       @media (max-width: 768px) {
         .nav-pills {
@@ -84,7 +88,9 @@
     color: #ff3366;
   }
 
-
+  .btnafter{
+    margin-left: 10px;
+  }
   .cards11{
   
       position: absolute;
@@ -113,9 +119,12 @@
   }
   
   .event-image {
-    width: 100%;
-    height: auto;
-    border-radius: 10px 0 0 10px;
+    width: 335;
+    height: 174;
+    top: 97px;
+    left: 21px;
+    border-radius: 10px;
+    
   }
   
   .event-date {
@@ -147,4 +156,42 @@
     font-size: 14px;
     font-weight: bold;
   }
+.nav-item{
+  padding: 5px !important;
+  font-weight: 800 !important;
+}
+.calender-icon{
+  padding: 9px !important;
+  border-radius: 7px !important;
+  background: #FFEFF3 !important;
+}
+.location-icon{
+  padding: 11px !important;
+  border-radius: 7px !important;
+  background: #FFEFF3 !important;
+}
+.notinvited{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #EE42663D;
+  font-weight: 600;
+  font-size: larger;
+}
+.invtebtn{
   
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.no-wishlist{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color:  #EE42663D;
+  font-weight: 600;
+  font-size: larger;
+}
+.guestlist{
+  border-radius: 0px !important;
+}

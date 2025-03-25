@@ -21,7 +21,7 @@ import GroupDetails from "./chatsection/GroupDetails";
 import { requestNotificationPermission, onMessageListener } from "../src/firebase/firebase";
 import HomePage from "./components/home/Home";
 import SurpriseReveal from "./components/surpriseReveal/surpriseScreen";
-
+import EventsFilter from "./components/home/filterModal";
 function App() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallDialog, setShowInstallDialog] = useState(false);
@@ -116,6 +116,7 @@ function App() {
               <Route path="/chats/:groupId" element={<ChatRoom />} />
               <Route path="/group/:groupId/details" element={<GroupDetails />} />
               <Route path="/surprise" element={<SurpriseReveal/>}/>
+            <Route path="/filter" element={<EventsFilter/>}/>
             </Route>
 
             {/* Redirect to Home if Route Not Found */}

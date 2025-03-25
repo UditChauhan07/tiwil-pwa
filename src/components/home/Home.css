@@ -14,6 +14,7 @@
     margin-top: 11px;
     margin-bottom: 11px;
 width: 100%;
+align-items: center;
 }
 /* .inputhome{
     border-radius: 30px;
@@ -104,6 +105,30 @@ padding: 4px;
 .css-13xfq8m-MuiTabPanel-root{
 padding: 0px !important;
 }
+.filter-button {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background-color: #fff;
+    /* border: 2px solid rgb(255, 51, 102);
+    border-radius: 15px; */
+    border: none !important;
+    padding: 6px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    color:#ff3366 !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .filters-panel {
+    padding: 16px 20px;
+  }
+
+  .filter-contain{
+    margin-top: 4px;
+  }
 @media(max-width:767px){
 .slick-track{
     display: block !important;

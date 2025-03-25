@@ -8,27 +8,22 @@ import { FaCloudUploadAlt } from "react-icons/fa";
 
 const AddEvents = ({ show, setShow, setActiveTab }) => {
   const token = localStorage.getItem("token");
-  // Retrieve userId from localStorage
-
   // Initialize formData with userId and eventId
   const [formData, setFormData] = useState({
-    // Ensure it's not null
     fullName: "",
     location: "",
     eventDate: "",
     description: "",
-  image:'',
+    image: "",
   });
   const [today, setToday] = useState("");
   const [image, setImage] = useState(null);
-  useEffect(() => {
-    // Get today's date in YYYY-MM-DD format
-    const todayDate = new Date().toISOString().split("T")[0];
+  const [errors, setErrors] = useState({});
 
-    // Set the state with today's date
+  useEffect(() => {
+    const todayDate = new Date().toISOString().split("T")[0];
     setToday(todayDate);
   }, []);
-  console.log(formData);
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -37,41 +32,98 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
       [name]: value, // Dynamically update the specific field
     }));
   };
+
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
       const imageUrl = URL.createObjectURL(file);
       setImage(imageUrl);
+      setFormData((prevData) => ({
+        ...prevData,
+        image: file,
+      }));
     }
   };
 
+  // Validation for the form fields
+  const validateForm = () => {
+    let newErrors = {};
+
+    // Event Name Validation: Only letters & spaces (max 50 characters)
+    if (!formData.fullName || formData.fullName.trim() === "") {
+      newErrors.fullName = "Event Name is required.";
+    } else if (!/^[a-zA-Z\s]{1,50}$/.test(formData.fullName)) {
+      newErrors.fullName = "Event Name should only contain letters and spaces (max 50 characters).";
+    }
+
+    // Event Date Validation: Ensure a valid date
+    if (!formData.eventDate) {
+      newErrors.eventDate = "Event Date is required.";
+    }
+
+    // Location Validation: Max 100 characters
+    if (!formData.location || formData.location.trim() === "") {
+      newErrors.location = "Location is required.";
+    } else if (formData.location.length > 100) {
+      newErrors.location = "Location must be less than 100 characters.";
+    }
+
+    // Description Validation: Max 200 characters
+    if (formData.description.length > 200) {
+      newErrors.description = "Description must be less than 200 characters.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Return true if no errors
+  };
+
   const handleSave = async () => {
-    console.log(formData);
+    if (!validateForm()) return; // Stop if validation fails
+
+    const token = localStorage.getItem("token");
+    if (!eventId) {
+      alert("Event ID is missing.");
+      return;
+    }
+
+    const formDataToSend = new FormData();
+    formDataToSend.append("fullName", formData.fullName);
+    formDataToSend.append("location", formData.location);
+    formDataToSend.append("eventDate", formData.eventDate);
+    formDataToSend.append("description", formData.description);
+
+    if (image) {
+      formDataToSend.append("image", image); // Append image if provided
+    }
+
+    setLoading(true);
     try {
-      console.log("hyy all");
-      // Post the formData to the backend
-      await axios.post(
+      const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/custom-event`,
-        formData,
+        formDataToSend,
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setShow(false); // Close modal
+      Swal.fire("Success", "Event added successfully!", "success");
     } catch (error) {
-      console.error("Error saving event :", error);
+      console.error("Error saving event:", error);
+      Swal.fire("Error", "Failed to add event.", "error");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
     <Modal show={show} onHide={() => setShow(false)} centered size="md">
       <Modal.Header closeButton>
-        <Modal.Title>Add events Form</Modal.Title>
+        <Modal.Title>Add Event Form</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
         {/* Image Section */}
         <div className="position-relative text-center">
           <img
-            src=""
+            src={image || ""}
             className="img-fluid rounded wishlist-image"
             alt="Wishlist"
           />
@@ -89,8 +141,9 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
               name="fullName"
               value={formData.fullName}
               onChange={handleInputChange}
-              placeholder="The name of event "
+              placeholder="Enter event name"
             />
+            {errors.fullName && <span className="text-danger">{errors.fullName}</span>}
           </Form.Group>
 
           <Form.Group className="mb-3">
@@ -100,8 +153,9 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
               name="eventDate"
               value={formData.eventDate}
               onChange={handleInputChange}
-              placeholder="Enter Date of event"
+              min={today}
             />
+            {errors.eventDate && <span className="text-danger">{errors.eventDate}</span>}
           </Form.Group>
 
           <Form.Group className="mb-3">
@@ -112,44 +166,43 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
                 name="location"
                 value={formData.location}
                 onChange={handleInputChange}
-                placeholder="Enter location of event"
+                placeholder="Enter location"
               />
             </InputGroup>
+            {errors.location && <span className="text-danger">{errors.location}</span>}
           </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label className="fw-bold">Description</Form.Label>
-            <div className="d-flex align-items-center">
-              <input
-                type="textarea"
-                className=" w-100"
-                name="description"
-                value={formData.description}
-                onChange={handleInputChange}
-                placeholder="Wana add description of event"
-              />
+            <Form.Control
+              as="textarea"
+              rows={3}
+              name="description"
+              value={formData.description}
+              onChange={handleInputChange}
+              placeholder="Enter event description"
+            />
+            {errors.description && <span className="text-danger">{errors.description}</span>}
+          </Form.Group>
+
+          <Form.Group>
+            <div className="upload-container" onClick={() => document.getElementById("fileInput").click()}>
+              {image ? (
+                <img src={image} alt="Preview" className="uploaded-image" />
+              ) : (
+                <div className="upload-icon">
+                  <FaCloudUploadAlt size={50} color="#E11531" />
+                  <p>Upload Image</p>
+                </div>
+              )}
+              <input type="file" id="fileInput" accept="image/*" onChange={handleImageChange} hidden />
             </div>
           </Form.Group>
-          <Form.Group>
-          <div className="upload-container" onClick={() => document.getElementById("fileInput").click()}>
-      {image ? (
-        <img src={image} alt="Preview" className="uploaded-image" />
-      ) : (
-        <div className="upload-icon">
-          <FaCloudUploadAlt size={50} color="#E11531" />
-          <p>Upload Image</p>
-        </div>
-      )}
-      <input type="file" id="fileInput" accept="image/*" onChange={handleImageChange} hidden />
-    </div>
-    </Form.Group>
         </Form>
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShow(false)}>
-          Close
-        </Button>
+     
         <Button variant="danger" onClick={handleSave}>
           Save
         </Button>

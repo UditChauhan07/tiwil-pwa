@@ -10,7 +10,7 @@ function OnboardingScreen() {
       
         <Row className="text-center">
           <Col>
-            <img   src={`${process.env.PUBLIC_URL}/img/TiwilLOGO1.png`} alt="logo" className="splash-logo" height={"200px"} width={"200px"} />
+            <img   src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" className="splash-logo" height={"200px"} width={"200px"} />
           </Col>
         </Row>
       </Container>

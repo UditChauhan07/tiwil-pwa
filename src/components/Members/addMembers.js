@@ -4,9 +4,11 @@ import axios from "axios";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "../Wishlist/addtowish.css";
 import { useState, useEffect } from "react";
+import { FaChevronDown } from "react-icons/fa"; // Chevron icon for dropdown
 
 const Memberform = ({ show, setShow }) => {
-  // Use a single state for form data
+  const token = localStorage.getItem("token");
+  
   const [formData, setFormData] = useState({
     fullName: "",
     relation: "",
@@ -14,15 +16,15 @@ const Memberform = ({ show, setShow }) => {
     gender: "",
     image: null,
   });
+
   const [today, setToday] = useState('');
+  const [errors, setErrors] = useState({}); // State to store errors
 
   useEffect(() => {
-    // Get today's date in YYYY-MM-DD format
     const todayDate = new Date().toISOString().split('T')[0];
-
-    // Set the state with today's date
     setToday(todayDate);
   }, []);
+
   // Handle form input changes
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -40,8 +42,40 @@ const Memberform = ({ show, setShow }) => {
     }
   };
 
+  // Validation function
+  const validateForm = () => {
+    let newErrors = {};
+
+    // Event Name Validation: Only letters & spaces allowed (max 50 characters)
+    if (!formData.fullName || formData.fullName.trim() === "") {
+      newErrors.fullName = "Full Name is required.";
+    } else if (!/^[a-zA-Z\s]{1,50}$/.test(formData.fullName)) {
+      newErrors.fullName = "Only letters & spaces allowed (max 50 characters).";
+    }
+
+    // Validate Relation
+    if (!formData.relation) {
+      newErrors.relation = "Relation is required.";
+    }
+
+    // Validate Date of Birth
+    if (!formData.dob) {
+      newErrors.dob = "Date of Birth is required.";
+    }
+
+    // Validate Gender
+    if (!formData.gender) {
+      newErrors.gender = "Gender is required.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   // Handle save event (for both normal and modal form data)
   const handleSave = async () => {
+    if (!validateForm()) return; // Stop if validation fails
+
     try {
       const eventData = formData; // Use formData to save
 
@@ -65,7 +99,7 @@ const Memberform = ({ show, setShow }) => {
         setFormData({
           fullName: '',
           relation: '',
-          dob,
+          dob: '',
           eventType: '',
           image: null,
         });
@@ -89,7 +123,7 @@ const Memberform = ({ show, setShow }) => {
           <img
             src={formData.image ? URL.createObjectURL(formData.image) : ""}
             className="img-fluid rounded wishlist-image"
-            alt="Wishlist"
+            alt="Profile"
           />
           <div className="camera-icon position-absolute">
             <FaCamera size={20} />
@@ -107,26 +141,32 @@ const Memberform = ({ show, setShow }) => {
               onChange={handleInputChange}
               placeholder="Enter the name of member"
             />
+            {errors.fullName && <span className="text-danger">{errors.fullName}</span>}
           </Form.Group>
 
           {/* Relation Dropdown */}
           <Form.Group className="mb-3">
             <Form.Label className="fw-bold">Relation</Form.Label>
-            <Form.Control
-              as="select"
-              name="relation"
-              value={formData.relation}
-              onChange={handleInputChange}
-            >
-              <option value="">Select Relation</option>
-              <option value="Father">Father</option>
-              <option value="Mother">Mother</option>
-              <option value="Spouse">Spouse</option>
-              <option value="Sibling">Sibling</option>
-              <option value="Son">Son</option>
-              <option value="Daughter">Daughter</option>
-              <option value="Other">Other</option>
-            </Form.Control>
+            <div className="d-flex align-items-center position-relative">
+              <Form.Control
+                as="select"
+                name="relation"
+                value={formData.relation}
+                onChange={handleInputChange}
+                className="form-control pr-5"
+              >
+                <option value="">Select Relation</option>
+                <option value="Father">Father</option>
+                <option value="Mother">Mother</option>
+                <option value="Spouse">Spouse</option>
+                <option value="Sibling">Sibling</option>
+                <option value="Son">Son</option>
+                <option value="Daughter">Daughter</option>
+                <option value="Other">Other</option>
+              </Form.Control>
+              <FaChevronDown size={20} className="position-absolute" style={{ right: '10px', top: '12px' }} />
+            </div>
+            {errors.relation && <span className="text-danger">{errors.relation}</span>}
           </Form.Group>
 
           {/* Date of Birth */}
@@ -135,28 +175,35 @@ const Memberform = ({ show, setShow }) => {
             <InputGroup>
               <Form.Control
                 type="date"
-                name="dob"   min="1900-01-01" // Minimum date is fixed to 1900-01-01
-                max={today} 
+                name="dob"
+                min="1900-01-01"
+                max={today}
                 value={formData.dob}
                 onChange={handleInputChange}
               />
             </InputGroup>
+            {errors.dob && <span className="text-danger">{errors.dob}</span>}
           </Form.Group>
 
           {/* Gender Dropdown */}
           <Form.Group className="mb-3">
             <Form.Label className="fw-bold">Gender</Form.Label>
-            <Form.Control
-              as="select"
-              name="gender"
-              value={formData.gender}
-              onChange={handleInputChange}
-            >
-              <option value="">Select Gender</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </Form.Control>
+            <div className="d-flex align-items-center position-relative">
+              <Form.Control
+                as="select"
+                name="gender"
+                value={formData.gender}
+                onChange={handleInputChange}
+                className="form-control pr-5"
+              >
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+                <option value="Other">Other</option>
+              </Form.Control>
+              <FaChevronDown size={20} className="position-absolute" style={{ right: '10px', top: '12px' }} />
+            </div>
+            {errors.gender && <span className="text-danger">{errors.gender}</span>}
           </Form.Group>
 
           {/* Image Upload */}
@@ -171,9 +218,7 @@ const Memberform = ({ show, setShow }) => {
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShow(false)}>
-          Close
-        </Button>
+     
         <Button variant="danger" onClick={handleSave}>
           Save
         </Button>
