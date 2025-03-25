@@ -4,6 +4,8 @@ import Navbar from "../Navbar/navbar";
 import Swal from "sweetalert2";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 
 
 function WishlistCard() {
@@ -82,14 +84,22 @@ function WishlistCard() {
 
   return (
     <section className="page-controls">
-  
+  <div className='d-flex'>
+  <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)}/>
+  <h2>Wishlist Details</h2>
+  </div>
       
       <div className="container mt-4">
         {!wishlistItem ? (
           <p>Loading data...</p>
         ) : (
           <div className="card mb-3 mx-auto m-2" style={{ maxWidth: "720px" }}>
-          <div>
+          <div style={{width: "100%",
+height: 240,
+top: "20px",
+left: "15px",
+borderRadius: "5px"
+}}>
   <img 
     src={wishlistItem.imageUrl ? `${process.env.REACT_APP_BASE_URL}/${wishlistItem.imageUrl}` : `${process.env.PUBLIC_URL}/img/image.png`} 
     alt="image" 

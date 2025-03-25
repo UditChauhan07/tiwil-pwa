@@ -507,10 +507,22 @@ const EventDetails = () => {
                             <ul className="guestlist">
                               {guest.map((g) => (
                                 <li key={g._id}>
-                                  <div style={{ display: 'flex', justifyContent: 'space-between' }}>
-                                    <span style={{}}> {g.name}</span><span>
-                                      {g.status}</span>
-                                  </div>
+                                <div key={guest.id} className="d-flex gap-3">
+  <div style={{ height: '40px', width: '40px', borderRadius: '50%', overflow:'hidden'}}>
+    <img
+      src={guest.profileImage ? `${process.env.REACT_APP_BASE_URL}/${guest.profileImage}` : `${process.env.PUBLIC_URL}/img/defaultUser.png`}
+      height="40px"
+      width="40px"
+      style={{ border:'2px solid',borderRadius:'50%' }}
+      alt={guest.name ? `${guest.name}'s profile` : "Default User Profile"} // Added meaningful alt text
+    />
+  </div>
+  <p style={{fontSize:'22px'}}>{guest.name}</p>
+ <span> {g.status}</span>
+</div>
+
+                                   
+                                  
                                   {/* <p
               style={{
                 border: "1px solid #ff3366",

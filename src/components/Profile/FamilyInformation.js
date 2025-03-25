@@ -3,6 +3,9 @@ import axios from "axios";
 import styles from "../Profile/FamilyInformation.module.css";
 import EditFamilyModal from "../Profile/EditFamilyModal";
 import Navbar from "../Navbar/navbar";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { useNavigate } from "react-router-dom";
 
 const FamilyInformation = () => {
   const [familyMembers, setFamilyMembers] = useState([]);
@@ -11,6 +14,7 @@ const FamilyInformation = () => {
     relation: null,
     detail: null,
   });
+  const navigate=useNavigate();
 
   useEffect(() => {
     fetchFamilyInfo(); // Fetch initial data
@@ -45,10 +49,11 @@ const FamilyInformation = () => {
   };
 
   return (
-    <div className={styles.container}>
-      
+    <div className={styles.container} >
+    <div className="d-flex " style={{gap:"69px"}}>
+        <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)}/>
       <h1 className={styles.header}>View Detail</h1>
-
+</div>
       {familyMembers.map((member, index) => (
         <FamilyCard
           key={index}

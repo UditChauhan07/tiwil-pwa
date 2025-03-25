@@ -532,7 +532,12 @@ console.log(events)
             </div>
           </div>
 
-          <div className="mt-3">
+          <div className="mt-3" style={{width: "100%",
+height: "174px",
+top: "97px",
+left: "21px",
+borderRadius: "10px"
+}}>
             <img
               src={
                 events.image &&
@@ -720,12 +725,22 @@ console.log(events)
 
                 {activeTab === "guests" && (
                   <div>
-                    <h5>💬 Guest List</h5>
+                
                     {guest.length > 0 ? (
                       guest.map((guest) => (
-                        <div key={guest.id}>
-                          <p>{guest.name}</p>
-                        </div>
+                        <div key={guest.id} className="d-flex gap-3">
+  <div style={{ height: '40px', width: '40px', borderRadius: '50%', overflow:'hidden'}}>
+    <img
+      src={guest.profileImage ? `${process.env.REACT_APP_BASE_URL}/${guest.profileImage}` : `${process.env.PUBLIC_URL}/img/defaultUser.png`}
+      height="40px"
+      width="40px"
+      style={{ border:'2px solid',borderRadius:'50%' }}
+      alt={guest.name ? `${guest.name}'s profile` : "Default User Profile"} // Added meaningful alt text
+    />
+  </div>
+  <p style={{fontSize:'22px'}}>{guest.name}</p>
+</div>
+
                       ))
                     ) : (
                       <p>No guests invited yet</p>
