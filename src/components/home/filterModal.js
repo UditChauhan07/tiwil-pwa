@@ -112,6 +112,8 @@ export default function EventsFilter({ closeFilter, isOpen }) {
 
         <button className="apply-filter-button">Apply Filter</button>
       </div>
+      <br/>
+      <br/>
 
       <div className="bottom-indicator">
         <div className="indicator-line"></div>

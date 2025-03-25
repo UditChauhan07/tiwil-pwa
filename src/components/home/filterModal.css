@@ -6,6 +6,7 @@
     background-color: #fff;
     border-radius: 8px;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    overflow-x: scroll;
   }
   
   .events-header {
@@ -166,7 +167,7 @@
     position: fixed;
     bottom: 0;
   top:69px;
-  left: 128px;
+  left: 100px;
    right: -2px;
     height: 100%;
     background: rgba(0, 0, 0, 0.4);
