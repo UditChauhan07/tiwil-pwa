@@ -66,17 +66,15 @@ const Eventlst = () => {
   const formatDateWithCurrentYear = (formattedDate, originalDate, alternateDate) => {
     // Prioritize originalDate, fallback to alternateDate
     const eventDate = new Date(originalDate || alternateDate);
-    if (isNaN(eventDate)) return "Invalid Date";
+    if (isNaN(eventDate.getTime())) return "Invalid Date";
 
     const today = new Date();
-
-    // Reset time to 00:00:00 for accurate comparison
     today.setHours(0, 0, 0, 0);
     eventDate.setHours(0, 0, 0, 0);
 
     const currentYear = today.getFullYear();
 
-    // Set event year to current year
+    // Ensure the eventDate uses the current year
     eventDate.setFullYear(currentYear);
 
     // If the event has already passed this year, move it to next year
@@ -84,7 +82,7 @@ const Eventlst = () => {
         eventDate.setFullYear(currentYear + 1);
     }
 
-    // Return formatted date in "Month day, Year" format
+    // Format the date as "15th June 2025" (Example)
     return eventDate.toLocaleDateString("en-GB", {
         day: "numeric",
         month: "long",
@@ -309,8 +307,8 @@ const Eventlst = () => {
                           marginLeft: "5px",
                         }}
                       >
-           {event.formattedDate 
-  ? event.formattedDate  
+       {event.formattedDate
+  ? formatDateWithCurrentYear(event.formattedDate, event.date)
   : "Date not available"}
 
                       </h6>

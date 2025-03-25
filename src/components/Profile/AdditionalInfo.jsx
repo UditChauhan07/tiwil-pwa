@@ -234,7 +234,10 @@ function AddInformation() {
     }
   };
 
-  
+const handleSkips=()=>{
+  navigate('/home')
+}
+
   const handleSkip = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -268,10 +271,18 @@ function AddInformation() {
 // console.log(document.getElementById)
 
   return (
-    <div className={styles.container}
-    >
-      <h2>Family Information</h2>
-
+    <>
+    <div className={styles.container}>
+    <div className={styles.skipps}>
+    <button onClick={handleSkips} className={styles.skipButton}>
+          Skip
+        </button>
+    </div>
+    
+     <div className="d-flex"> 
+     <h2>Family Information</h2>
+      
+        </div>
       {loading ? (
         <Loader />
       ) : (
@@ -521,13 +532,12 @@ function AddInformation() {
         <button onClick={handleSave} className={styles.saveButton}>
           Save
         </button>
-        <button onClick={handleSkip} className={styles.skipButton}>
-          Skip
-        </button>
+    
       </div>
       </>
     )}
     </div>
+    </>
   );
 }
 

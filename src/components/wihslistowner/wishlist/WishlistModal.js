@@ -15,6 +15,7 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
   const [previewImage, setPreviewImage] = useState(null);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
+  const [errors, setErrors] = useState({});
 
   const handleImageUpload = async (event) => {
     const file = event.target.files[0];
@@ -23,7 +24,6 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
     try {
       const options = {
         maxSizeMB: 0.5, // Max file size in MB
-        
         maxWidthOrHeight: 600, // Max width/height
         useWebWorker: true, // Enable WebWorker for better performance
         fileType: "image/webp", // Convert to WebP
@@ -35,7 +35,7 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
       // Convert compressed file to base64 for preview
       const reader = new FileReader();
       reader.onloadend = () => {
-        setImageFile(reader.result);
+        setImageFile(compressedFile); // Save the compressed file instead of base64
       };
       reader.readAsDataURL(compressedFile);
     } catch (error) {
@@ -43,9 +43,49 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
     }
   };
 
+  const validateForm = () => {
+    let newErrors = {};
   
+    // Check if giftName is null, undefined, or empty, and apply validation for length and format
+    if (!giftName || !giftName.trim()) {
+      newErrors.giftName = "Gift Name is required.";
+    } else if (!/^[a-zA-Z\s]{1,30}$/.test(giftName)) {
+      newErrors.giftName = "Only letters & spaces allowed (max 30 characters).";
+    }
+  console.log('jai ho')
+    // Check if price is null, undefined, or empty, and apply validation for numeric format
+    if (!price || !price.trim()) {
+      newErrors.price = "Price is required.";
+    } else if (!/^\d{1,8}$/.test(price)) {
+      newErrors.price = "Only numbers allowed (max 8 digits).";
+    }
+  
+    // Check if description is null, undefined, or empty, and apply validation for max word count
+    if (!description || !description.trim()) {
+      newErrors.description = "Description is required.";
+    } else if (description.trim().split(" ").length > 10) {
+      newErrors.description = "Max 10 words allowed.";
+    }
+  
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+  
+  const handleInputChange = (e, field) => {
+    const { value } = e.target;
+    if (field === "giftName") setGiftName(value);
+    if (field === "price") setPrice(value);
+    if (field === "description") setDescription(value);
+
+    // Clear errors when the user modifies the field
+    if (errors[field]) {
+      setErrors((prevErrors) => ({ ...prevErrors, [field]: undefined }));
+    }
+  };
+
   const handleSave = async () => {
     const token = localStorage.getItem("token");
+    if (!validateForm()) return; // Stop if validation fails
 
     if (!eventId) {
       alert("Event ID is missing.");
@@ -61,7 +101,7 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
     formData.append("description", description);
 
     if (imageFile) {
-      formData.append("image", imageFile);
+      formData.append("image", imageFile); // Directly append the compressed image file
     } else {
       console.log("⚠️ No image selected.");
     }
@@ -79,7 +119,7 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
       if (response.data.success) {
         Swal.fire("Success", "Wishlist item added successfully!", "success");
         setShow(false);
-        fetchWishlist();
+        refreshWishlist(); // Refresh the wishlist after adding
       }
     } catch (error) {
       console.error("❌ Error saving wishlist item:", error);
@@ -118,8 +158,11 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
             </div>
 
             <div className={styles.form}>
-              <input type="text" placeholder="Gift Name" value={giftName} onChange={(e) => setGiftName(e.target.value)} />
-              <input type="number" placeholder="Price" value={price} onChange={(e) => setPrice(e.target.value)} />
+              <input type="text" placeholder="Gift Name" value={giftName} onChange={(e) => handleInputChange(e, "giftName")} />
+              {errors.giftName && <span className={styles.error}>{errors.giftName}</span>}
+
+              <input type="number" placeholder="Price" value={price} onChange={(e) => handleInputChange(e, "price")} />
+              {errors.price && <span className={styles.error}>{errors.price}</span>}
 
               <div className={styles.productLink}>
                 <input type="text" placeholder="Product link" value={productLink} onChange={(e) => setProductLink(e.target.value)} />
@@ -129,8 +172,8 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
               <label className={styles.sliderLabel}>Desire Rate: {desireRate}%</label>
               <input type="range" min="0" max="100" value={desireRate} onChange={(e) => setDesireRate(e.target.value)} className={styles.slider} />
 
-              <textarea placeholder="Describe it..." value={description} onChange={(e) => setDescription(e.target.value)}></textarea>
-
+              <textarea placeholder="Describe it..." value={description}  onChange={(e) => handleInputChange(e, "description")}></textarea>
+              {errors.description && <span className={styles.error}>{errors.description}</span>}
               <button className={styles.saveButton} onClick={handleSave}>Save +</button>
             </div>
           </>

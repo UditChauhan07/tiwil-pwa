@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2"; // Import SweetAlert2
 import styles from "../Profile/profile.module.css";
 import axios from "axios";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { Spinner } from "react-bootstrap"; // Import the Bootstrap Spinner for loader
 
 function Profile() {
@@ -60,18 +62,55 @@ function Profile() {
 
   const validateForm = () => {
     let newErrors = {};
-
-    if (!userData.fullName.trim())
+  console.log('here')
+    // 1st Check: Full Name
+    if (!userData || typeof userData.fullName !== "string" || !userData.fullName.trim()) {
       newErrors.fullName = "Full Name is required.";
-    if (!userData.email.trim()) newErrors.email = "Email is required.";
-    if (!userData.gender) newErrors.gender = "Please select your gender.";
-    if (!userData.dob) newErrors.dob = "Please enter your Date of Birth.";
-    if (!userData.maritalStatus)
+      setErrors(newErrors);
+      return false; // Stop further validation
+    }
+    console.log('here')
+    // 2nd Check: Email
+    if (!userData.email  || !userData.email.trim()) {
+      newErrors.email = "Email is required.";
+      setErrors(newErrors);
+      return false;
+    } else {
+      // Regex for email validation
+      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+      if (!emailRegex.test(userData.email)) {
+        newErrors.email = "Please enter a valid email address.";
+      }
+         setErrors(newErrors);
+     
+    }
+    console.log('here')
+    // 3rd Check: Gender
+    if (!userData || !userData.gender) {
+      newErrors.gender = "Please select your gender.";
+      setErrors(newErrors);
+      return false;
+    }
+    console.log('here')
+    // 4th Check: Date of Birth
+    if (!userData || !userData.dob) {
+      newErrors.dob = "Please enter your Date of Birth.";
+      setErrors(newErrors);
+      return false;
+    }
+    console.log('here')
+    // 5th Check: Marital Status
+    if (!userData || !userData.maritalStatus) {
       newErrors.maritalStatus = "Please select your Marital Status.";
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+      setErrors(newErrors);
+      return false;
+    }
+    console.log('here')
+    // If all checks pass, reset errors and return true
+    setErrors({});
+    return true;
   };
+  
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -250,22 +289,29 @@ function Profile() {
           </div>
 
           <div className={styles.formGroup}>
-            <label>Gender</label>
-            <select
-              value={userData.gender}
-              onChange={(e) =>
-                setUserData({ ...userData, gender: e.target.value })
-              }
-            >
-              <option value="">Select</option>
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </select>
-            {errors.gender && (
-              <span className={styles.error}>{errors.gender}</span>
-            )}
-          </div>
+  <label>Gender</label>
+  <div className={styles.selectWrapper}>
+    <select
+      value={userData.gender}
+      onChange={(e) =>
+        setUserData({ ...userData, gender: e.target.value })
+      }
+    >
+      <option value="">Select</option>
+      <option value="Male">Male</option>
+      <option value="Female">Female</option>
+      <option value="Other">Other</option>
+    </select>
+    <FontAwesomeIcon
+      icon={faChevronDown}
+      className={styles.chevronIcon}
+    />
+  </div>
+  {errors.gender && (
+    <span className={styles.error}>{errors.gender}</span>
+  )}
+</div>
+
 
           <div className={styles.formGroup}>
             <label>Date of Birth</label>
@@ -280,31 +326,38 @@ function Profile() {
             />
             {errors.dob && <span className={styles.error}>{errors.dob}</span>}
           </div>
-
           <div className={styles.formGroup}>
-            <label>Marital Status</label>
-            <select
-              value={userData.maritalStatus}
-              onChange={(e) =>
-                setUserData({ ...userData, maritalStatus: e.target.value })
-              }
-            >
-              <option value="">Select</option>
-              <option value="Unmarried">Unmarried</option>
-              <option value="Married">Married</option>
-            </select>
-            {errors.maritalStatus && (
-              <span className={styles.error}>{errors.maritalStatus}</span>
-            )}
-          </div>
-
+  <label>Marital Status</label>
+  <div className={styles.selectWrapper}>
+    <select
+      value={userData.maritalStatus}
+      onChange={(e) =>
+        setUserData({ ...userData, maritalStatus: e.target.value })
+      }
+    >
+      <option value="">Select</option>
+      <option value="Unmarried">Unmarried</option>
+      <option value="Married">Married</option>
+    </select>
+    <FontAwesomeIcon
+      icon={faChevronDown}
+      className={styles.chevronIcon}
+    />
+  </div>
+  {errors.maritalStatus && (
+    <span className={styles.error}>{errors.maritalStatus}</span>
+  )}
+</div>
           <div className={styles.saveBtnBox}>
             <button className={styles.saveButton} onClick={handleSave}>
-              <span>Save</span>
-              <img
-                src={`${process.env.PUBLIC_URL}/img/Arrow.svg`}
-                alt="arrow"
+          
+          <div className={styles.ssave}>    <span>Save</span>
+          </div>
+             <div className={styles.righticon}> <img
+                src={`${process.env.PUBLIC_URL}/img/Arrow.svg`}  style={{ height: "30px" }}
+              
               />
+              </div>
             </button>
           </div>
         </div>

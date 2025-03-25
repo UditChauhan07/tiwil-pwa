@@ -16,12 +16,13 @@ const WishlistEditModal = ({ show, setShow, wishlist, fetchWishlist }) => {
     wishlist.imageUrl ? `${process.env.REACT_APP_BASE_URL}/${wishlist.imageUrl}` : null
   );
 
+  const [errors, setErrors] = useState({});
+
   useEffect(() => {
     if (wishlist) {
       setGiftName(wishlist.giftName || "");
       setDescription(wishlist.description || "");
       setPrice(wishlist.price || "");
-    
       setPreviewImage(wishlist.imageUrl ? `${process.env.REACT_APP_BASE_URL}/${wishlist.imageUrl}` : null);
     }
   }, [wishlist]);
@@ -30,20 +31,56 @@ const WishlistEditModal = ({ show, setShow, wishlist, fetchWishlist }) => {
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
+      // Validate image file type (optional)
+      const fileType = file.type.split("/")[0];
+      if (fileType !== "image") {
+        Swal.fire("Error", "Please upload a valid image file.", "error");
+        return;
+      }
       setImage(file);
       setPreviewImage(URL.createObjectURL(file));
     }
   };
 
+  // Validation function
+  const validateForm = () => {
+    let newErrors = {};
+
+    // Validate Gift Name: Must be between 1 and 50 characters
+    if (!giftName || giftName.trim() === "") {
+      newErrors.giftName = "Gift Name is required.";
+    } else if (giftName.length > 50) {
+      newErrors.giftName = "Gift Name cannot be more than 50 characters.";
+    }
+
+    // Validate Description: Max 200 characters
+    if (description && description.length > 200) {
+      newErrors.description = "Description cannot be more than 200 characters.";
+    }
+
+    // Validate Price: Must be a positive number and not exceed 8 digits
+    if (!price || price <= 0) {
+      newErrors.price = "Price must be a positive number.";
+    } else if (price > 99999999) {
+      newErrors.price = "Price cannot exceed 8 digits.";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
+
   // Handle form submission
   const handleSave = async () => {
+    const isValid = validateForm();
+    if (!isValid) return;
+
     try {
       const token = localStorage.getItem("token");
       const formData = new FormData();
       formData.append("giftName", giftName);
       formData.append("description", description);
       formData.append("price", price);
-     
+      
       if (image) {
         formData.append("image", image);
       }
@@ -66,7 +103,6 @@ const WishlistEditModal = ({ show, setShow, wishlist, fetchWishlist }) => {
           timer: 1000,
           showConfirmButton: false,
         });
-
         setShow(false); // Close modal
         fetchWishlist(); // Refresh wishlist
       } else {
@@ -91,6 +127,7 @@ const WishlistEditModal = ({ show, setShow, wishlist, fetchWishlist }) => {
 
       <Modal.Body>
         <Form>
+          {/* Gift Name */}
           <Form.Group className="mb-3">
             <Form.Label className="fw-bold">Gift Name</Form.Label>
             <Form.Control
@@ -99,8 +136,10 @@ const WishlistEditModal = ({ show, setShow, wishlist, fetchWishlist }) => {
               onChange={(e) => setGiftName(e.target.value)}
               placeholder="Enter gift name"
             />
+            {errors.giftName && <span className="text-danger">{errors.giftName}</span>}
           </Form.Group>
 
+          {/* Description */}
           <Form.Group className="mb-3">
             <Form.Label className="fw-bold">Description</Form.Label>
             <Form.Control
@@ -109,8 +148,10 @@ const WishlistEditModal = ({ show, setShow, wishlist, fetchWishlist }) => {
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Enter description"
             />
+            {errors.description && <span className="text-danger">{errors.description}</span>}
           </Form.Group>
 
+          {/* Price */}
           <Form.Group className="mb-3">
             <Form.Label className="fw-bold">Price</Form.Label>
             <Form.Control
@@ -119,9 +160,8 @@ const WishlistEditModal = ({ show, setShow, wishlist, fetchWishlist }) => {
               onChange={(e) => setPrice(e.target.value)}
               placeholder="Enter price"
             />
+            {errors.price && <span className="text-danger">{errors.price}</span>}
           </Form.Group>
-
-          
 
           {/* Image Upload */}
           <Form.Group className="mb-3">
@@ -131,8 +171,8 @@ const WishlistEditModal = ({ show, setShow, wishlist, fetchWishlist }) => {
               <div className="mt-2">
                 <img
                   src={previewImage}
-          
                   style={{ width: "100%", height: "auto", borderRadius: "5px" }}
+                  alt="Preview"
                 />
               </div>
             )}

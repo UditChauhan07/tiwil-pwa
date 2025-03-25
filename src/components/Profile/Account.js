@@ -164,7 +164,7 @@ const Account = () => {
             <button className={styles.editButton} onClick={handleEditProfile}>
           
 
-            <FontAwesomeIcon icon={faPencilAlt} />
+            <FontAwesomeIcon icon={faPencilAlt}  /> 
 
             </button>
           </div>
