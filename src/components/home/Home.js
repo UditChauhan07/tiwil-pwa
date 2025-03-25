@@ -115,8 +115,8 @@ const HomePage = () => {
               className="search-results"
               style={{
                 position: "absolute",
-                top: "113px",
-                width: "90%",
+                top: "130px",
+                width: "96%",
                 boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
                 margin: "0px 5px -2px 6px",
                 backgroundColor: "#FFEFF3",

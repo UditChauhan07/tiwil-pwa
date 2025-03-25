@@ -12,7 +12,14 @@
     animation: App-logo-spin infinite 20s linear;
   }
 }
-
+.css-19kzrtu{
+  padding: 0px !important;
+}
+.css-6p016c.Mui-selected{
+  background: #EE4266 !important;
+  border-radius: 23px !important;
+  color: white !important;
+}
 
 .App-header {
   background-color: #282c34;
