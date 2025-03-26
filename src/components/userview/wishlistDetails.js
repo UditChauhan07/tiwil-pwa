@@ -94,27 +94,28 @@ function WishlistCard() {
       
       <div className="container ">
         {!wishlistItem ? (
-          <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "150px" }}>
-            <Spinner animation="border" role="status" style={{ width: "10rem", height: "10rem" }} />
+          <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "200px" }}>
+            <Spinner animation="border" role="status" style={{ width: "7rem", height: "7rem" }} />
           </div>
         ) : (
-          <div className="card mb-3 mx-auto m-2" style={{ maxWidth: "720px" }}>
+          <div className="card mb-3 mx-auto m-2" style={{ maxWidth: "720px",borderColor:'none' }}>
           <div style={{width: "100%",
 height: 240,
 top: "20px",
 left: "15px",
-borderRadius: "5px"
-}}>
+borderRadius: "5px",
+boxShadow:'   0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
+}} className="imagediv">
   <img 
     src={wishlistItem.imageUrl ? `${process.env.REACT_APP_BASE_URL}/${wishlistItem.imageUrl}` : `${process.env.PUBLIC_URL}/img/image.png`} 
     alt="image" 
-    style={{ width: "100%",maxHeight:'240px' }} 
+    style={{ width: "100%",maxHeight:'240px' ,border:"1px solid #ffffff,border-radius:'5px"}} 
   />
 </div>
 
             <div className="card-body">
             <div>
-            <img
+            {/* <img
   src={wishlistItem.eventImage ? `${process.env.REACT_APP_BASE_URL}/${wishlistItem.eventImage}` : "/path/to/fallback/image.png"}
   alt="Product"
   onError={(e) => e.target.src = "/path/to/fallback/image.png"} // If image fails to load, show fallback
@@ -123,17 +124,18 @@ borderRadius: "5px"
     height: "20px", // Example height
     objectFit: "cover", // Ensures the image covers the area without distortion
   }}
-/>
+/> */}
    
-            <div>
+            {/* <div>
             
               <h5 className="card-title mb-0">{wishlistItem.eventName || "No  Name"}</h5>
               <h5 className="card-title mb-0">{wishlistItem.eventType || "No  Name"}</h5>
-              </div>
+              </div> */}
+              
               </div>
               <div className="d-flex justify-content-between align-items-center mb-3">
                      <h5 className="card-title mb-0">{wishlistItem.giftName || "No Gift Name"}</h5>
-                <div className="dropdown">
+                     <div className="dropdown">
                   <select
                     style={{ borderColor: "#ff3366", color: "#ff3366" }}
                     onChange={handlePurchase}

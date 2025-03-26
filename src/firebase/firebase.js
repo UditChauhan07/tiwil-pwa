@@ -1,5 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import { getMessaging, getToken, onMessage} from "firebase/messaging";
+import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
 import Swal from "sweetalert2";
 
 const firebaseConfig = {
@@ -14,7 +15,8 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const messaging = getMessaging(app);
-
+const auth = getAuth(app);
+auth.useDeviceLanguage();
 // Register service worker manually
 export const registerServiceWorker = async () => {
   if ("serviceWorker" in navigator) {
@@ -74,3 +76,12 @@ export const onMessageListener = () =>
       resolve(payload);
     });
   });
+  const setupRecaptcha = (number) => {
+    window.recaptchaVerifier = new RecaptchaVerifier("recaptcha-container", {
+      size: "invisible",
+      callback: () => {
+        handleSendOTP(number);
+      },
+    }, auth);
+  };
+  export { auth, setupRecaptcha, signInWithPhoneNumber };

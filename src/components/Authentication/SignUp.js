@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
 import { Card, Button, Spinner } from "react-bootstrap";
-import { genToken } from '../../firebase/firebase';
+import { genToken,auth, setupRecaptcha, signInWithPhoneNumber } from '../../firebase/firebase';
 
 const SignUpForm = () => {
   const [formData, setFormData] = useState({
@@ -58,82 +58,53 @@ const SignUpForm = () => {
   const handleSendOTP = async (e) => {
     e.preventDefault();
     setLoading(true);
-
-    // Validate name and phone
+  
     if (!validateName(formData.fullName) || !isPhoneValid(formData.phoneNumber)) {
       setLoading(false);
       return;
     }
-
+  
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/signup/send-otp`, {
-        fullName: formData.fullName,
-        email: formData.email,
-        phoneNumber: formData.phoneNumber,
-      });
-
-      if (response.data.success) {
-        setOtpGenerated(response.data.otp); // Display OTP for demo
-        setIsOtpSent(true);
-        Swal.fire("Success", `${response.data.otp}`, "success");
-      } else {
-        Swal.fire("Error", response.data.message, "error");
-      }
+      setupRecaptcha(formData.phoneNumber);
+      const confirmationResult = await signInWithPhoneNumber(auth, formData.phoneNumber, window.recaptchaVerifier);
+      window.confirmationResult = confirmationResult;
+      setIsOtpSent(true);
+      Swal.fire("Success", "OTP sent successfully!", "success");
     } catch (error) {
-      console.error("Error sending OTP:", error);
-      Swal.fire("Error", error.response?.data?.message || "Error sending OTP.", "error");
+      Swal.fire("Error", error.message, "error");
     } finally {
       setLoading(false);
     }
   };
-
+  
   // Handle Verify OTP
   const handleVerifyOTP = async (e) => {
     e.preventDefault();
     setLoading(true);
-
+  
     try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/signup/verify-otp`, {
-        fullName: formData.fullName,
-        phoneNumber: formData.phoneNumber,
-        otp: formData.otp,
-      });
-
-      if (response.data.success) {
-        Swal.fire({
-          title: `<div style="font-size: 2rem; color: #FF3366; font-weight: bold;">Dear ${formData.fullName}</div>`,
-          text: 'Account Created Successfully',
-          confirmButtonText: "Let's Go",
-          confirmButtonColor: "#FF3366",
-          imageUrl: logo,
-          imageWidth: 80,
-          imageHeight: 80,
-        });
-      
-        localStorage.setItem("fullName", response.data.user.fullName);
-        localStorage.setItem("phoneNumber", response.data.user.phoneNumber);
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("userId", response.data.userId);
-        localStorage.setItem("profileStatus", false);
-        localStorage.setItem("onboardingStatus", false);
-      
-
-
-        navigate("/profile"); // Force profile setup first
-      } else {
-        Swal.fire("Error", response.data.message, "error");
-      }
+      const confirmationResult = window.confirmationResult;
+      const result = await confirmationResult.confirm(formData.otp);
+      const user = result.user;
+  
+      Swal.fire("Success", `Welcome, ${formData.fullName}!`, "success");
+  
+      // Store user details in local storage
+      localStorage.setItem("fullName", formData.fullName);
+      localStorage.setItem("phoneNumber", formData.phoneNumber);
+      localStorage.setItem("userId", user.uid);
+      navigate("/profile");
     } catch (error) {
-      console.error("Error verifying OTP:", error);
-      Swal.fire("Error", error.response?.data?.message || "Error verifying OTP.", "error");
+      Swal.fire("Error", "Invalid OTP. Please try again.", "error");
     } finally {
       setLoading(false);
     }
   };
+  
   if (loading) {
     return (
-      <div style={{ display: "flex", justifyContent: "center", marginTop: "150px" }}>
-        <Spinner animation="border" role="status" style={{ width: "10rem", height: "10rem" }} />
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "200px" }}>
+        <Spinner animation="border" role="status" style={{ width: "7rem", height: "7rem" }} />
       </div>
     );
   }
@@ -141,7 +112,7 @@ const SignUpForm = () => {
     <section className="page-controls">
       <div className="container d-flex flex-column align-items-center justify-content-center">
         <div className="text-center">
-          <img src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" height="150px" width="200px" />
+          <img src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" height="100px" width="100px" />
           <h2 className="font-weight-bold mt-2 mb-0" style={{ fontSize: "48px" }}>Welcome</h2>
           <p className="text-muted">Connect with your friends today!</p>
         </div>
@@ -207,6 +178,8 @@ const SignUpForm = () => {
                   style={{display:'flex'}}
                   
                 />
+                <div id="recaptcha-container"></div>
+
                 {phoneError && <div className="invalid-feedback d-block">{phoneError}</div>}
               </div>
               <button type="submit" className="btn btn-danger w-100 py-2 mb-3" disabled={loading}>

@@ -41,7 +41,7 @@ const abc=localStorage.getItem("filters");
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.data.success) {
-          const sortedEvents = response.data.data.sort((a, b) => new Date(a.formattedDate) - new Date(b.formattedDate));
+          const sortedEvents = response.data.data.sort((a, b) => new Date(a.displayDate) - new Date(b.displayDate));
           setEvents(sortedEvents);
           applyFilters(sortedEvents); // Apply filters immediately after fetching events
         }
@@ -186,7 +186,7 @@ const abc=localStorage.getItem("filters");
                   <div style={{ display: "flex", justifyContent: "space-between" }}>
                     <img className="m-0.5" src={`${process.env.PUBLIC_URL}/img/calender.svg`} height="17px" alt="calendar" />
                     <h6 style={{ marginRight: "10px", marginBottom: "5px", fontWeight: "600", marginLeft: "5px" }}>
-                      {event.formattedDate ? formatDateWithCurrentYear(event.formattedDate, event.date) : "Date not available"}
+                      {event.displayDate ? formatDateWithCurrentYear(event.displayDate, event.date) : "Date not available"}
                     </h6>
                   </div>
                   <div>

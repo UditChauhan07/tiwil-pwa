@@ -136,8 +136,8 @@ const profileImage=localStorage.getItem('profileImage')
 
   if (loading) {
     return (
-      <div style={{ display: "flex", justifyContent: "center", marginTop: "150px" }}>
-        <Spinner animation="border" role="status" style={{ width: "10rem", height: "10rem", }} />
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "200px" }}>
+        <Spinner animation="border" role="status" style={{ width: "5rem", height: "5rem", }} />
       </div>
     );
   }

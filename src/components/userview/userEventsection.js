@@ -513,8 +513,8 @@ const handleClick = async (item) => {
          
  if(isLoading) {
       return (
-        <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "150px" }}>
-          <Spinner animation="border" role="status" style={{ width: "10rem", height: "10rem" }} />
+        <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "200px" }}>
+          <Spinner animation="border" role="status" style={{ width: "7rem", height: "7rem" }} />
         </div>
       );
     }
