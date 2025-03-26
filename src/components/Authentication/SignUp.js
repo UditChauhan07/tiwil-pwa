@@ -5,6 +5,7 @@ import Swal from 'sweetalert2';
 import { Link } from "react-router-dom";
 import PhoneInput from 'react-phone-number-input';
 import 'react-phone-number-input/style.css';
+import { Card, Button, Spinner } from "react-bootstrap";
 import { genToken } from '../../firebase/firebase';
 
 const SignUpForm = () => {
@@ -108,13 +109,15 @@ const SignUpForm = () => {
           imageWidth: 80,
           imageHeight: 80,
         });
-
+      
         localStorage.setItem("fullName", response.data.user.fullName);
         localStorage.setItem("phoneNumber", response.data.user.phoneNumber);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("userId", response.data.userId);
         localStorage.setItem("profileStatus", false);
         localStorage.setItem("onboardingStatus", false);
+      
+
 
         navigate("/profile"); // Force profile setup first
       } else {
@@ -127,7 +130,13 @@ const SignUpForm = () => {
       setLoading(false);
     }
   };
-
+  if (loading) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "150px" }}>
+        <Spinner animation="border" role="status" style={{ width: "10rem", height: "10rem" }} />
+      </div>
+    );
+  }
   return (
     <section className="page-controls">
       <div className="container d-flex flex-column align-items-center justify-content-center">

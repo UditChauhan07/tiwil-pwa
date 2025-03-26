@@ -181,9 +181,6 @@ const WishlistEditModal = ({ show, setShow, wishlist, fetchWishlist }) => {
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShow(false)}>
-          Close
-        </Button>
         <Button variant="danger" onClick={handleSave}>
           Save
         </Button>

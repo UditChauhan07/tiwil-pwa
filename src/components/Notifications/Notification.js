@@ -68,14 +68,14 @@ const PoolRequests = () => {
 
       await axios.put(
         `${process.env.REACT_APP_BASE_URL}/request/${requestId}`,
-        { status: "accepted", requesterId },
+        { status: "Accepted", requesterId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
       Swal.fire("Accepted!", "The request has been accepted.", "success");
       setRequests((prevRequests) =>
         prevRequests.map((req) =>
-          req._id === requestId ? { ...req, status: "accepted" } : req
+          req._id === requestId ? { ...req, status: "Accepted" } : req
         )
       );
     } catch (error) {
@@ -91,14 +91,14 @@ const PoolRequests = () => {
 
       await axios.put(
         `${process.env.REACT_APP_BASE_URL}/request/${requestId}`,
-        { status: "declined", requesterId },
+        { status: "Declined", requesterId },
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
       Swal.fire("Declined!", "The request has been declined.", "warning");
       setRequests((prevRequests) =>
         prevRequests.map((req) =>
-          req._id === requestId ? { ...req, status: "declined" } : req
+          req._id === requestId ? { ...req, status: "Declined" } : req
         )
       );
     } catch (error) {

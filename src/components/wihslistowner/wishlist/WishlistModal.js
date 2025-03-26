@@ -108,6 +108,8 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
 
     setLoading(true);
 
+    console.log(formData)
+
     try {
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/wishlist`, formData, {
         headers: {

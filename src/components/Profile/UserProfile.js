@@ -143,6 +143,8 @@ function Profile() {
 
       if (response.data.success) {
       console.log("profile updated successfully")
+      const profileImagePath = response.data.user.profileImage;
+      localStorage.setItem("profileImage", profileImagePath);
       }
     } catch (error) {
      
@@ -181,6 +183,8 @@ function Profile() {
 
       if (response.data.success) {
         localStorage.setItem("profileStatus", true);
+        const profileImagePath = response.data.data.profileImage;
+        localStorage.setItem("profileImage", profileImagePath);
         Swal.fire({
           text: "Profile added successfully",
           confirmButtonText: "Add family Info",

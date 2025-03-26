@@ -67,6 +67,7 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
     }
 
     const formData = new FormData();
+    console.log(formData,"formData")
     formData.append("eventId", eventId);
     formData.append("giftName", giftName);
     formData.append("price", price);
@@ -80,6 +81,8 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
 
     setLoading(true);
     setUploadProgress(0); // Reset progress bar
+
+    console.log("formDat2222222a",JSON.stringify(formData))
 
     try {
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/wishlist`, formData, {
@@ -230,7 +233,7 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
               {errors.description && <span className={styles.error}>{errors.description}</span>}
 
               <button className={styles.saveButton} onClick={handleSave} disabled={loading}>
-                {loading ? "Saving..." : "Save +"}
+                {loading ? "Saving..." : "Save "}
               </button>
             </div>
           </>

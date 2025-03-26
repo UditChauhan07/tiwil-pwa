@@ -6,6 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import {  useParams } from "react-router-dom";
 import Swal from "sweetalert2";
+import { Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
@@ -19,6 +20,7 @@ const EventDetails = () => {
   const [guest, setGuest] = useState([]);
   const [owner, setOwner] = useState(null);
   const { eventId, phoneNumber } = useParams();
+   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const currentUserId = localStorage.getItem("userId");
 
@@ -120,7 +122,7 @@ console.log("main")
       } catch (error) {
         console.error("Error fetching event details:", error);
       } finally {
-        setLoading(false);
+        setIsLoading(false);
       }
     };
 
@@ -509,15 +511,14 @@ const handleClick = async (item) => {
 };
 
          
-  if (loading)
-    return (
-      <div
-        style={{ display: "flex", justifyContent: "center", marginTop: "50%" }}
-      >
-        Loading...
-      </div>
-    );
-console.log(events)
+ if(isLoading) {
+      return (
+        <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "150px" }}>
+          <Spinner animation="border" role="status" style={{ width: "10rem", height: "10rem" }} />
+        </div>
+      );
+    }
+
   return (
     <>
       <section className="page-controls">
@@ -532,24 +533,30 @@ console.log(events)
             </div>
           </div>
 
-          <div className="mt-3">
-            <img
-              src={
-                events.image &&
-                events.image !== "null" &&
-                events.image !== `${process.env.REACT_APP_BASE_URL}/null`
-                  ? `${process.env.REACT_APP_BASE_URL}/${events.image}`
-                  : `${process.env.PUBLIC_URL}/img/eventdefault.png`
-              }
-              alt="event"
-              className="img-fluid"
-              style={{
-                width: "100%",
-                height: "300px",
-                objectFit: "cover",
-                borderRadius: "10px",
-              }}
-            />
+          <div className="mt-3" style={{width: "100%",
+height: "174px",
+top: "97px",
+left: "21px",
+borderRadius: "10px"
+}}>
+           <img
+  src={
+    events.newimage && events.newimage !== "null" && events.newimage !== `${process.env.REACT_APP_BASE_URL}/null`
+      ? `${process.env.REACT_APP_BASE_URL}/${events.newimage}` // Priority to newimage
+      : events.image && events.image !== "null" && events.image !== `${process.env.REACT_APP_BASE_URL}/null`
+      ? `${process.env.REACT_APP_BASE_URL}/${events.image}` // Fallback to image
+      : `${process.env.PUBLIC_URL}/img/eventdefault.png` // Default image
+  }
+  alt="event"
+  className="img-fluid"
+  style={{
+    width: "100%",
+    maxHeight: "174px",
+    objectFit: "cover",
+    borderRadius: "10px",
+  }}
+/>
+
           </div>
 
           {events && (
@@ -720,12 +727,22 @@ console.log(events)
 
                 {activeTab === "guests" && (
                   <div>
-                    <h5>💬 Guest List</h5>
+                
                     {guest.length > 0 ? (
                       guest.map((guest) => (
-                        <div key={guest.id}>
-                          <p>{guest.name}</p>
-                        </div>
+                        <div key={guest.id} className="d-flex gap-3">
+  <div style={{ height: '40px', width: '40px', borderRadius: '50%', overflow:'hidden'}}>
+    <img
+      src={guest.profileImage ? `${process.env.REACT_APP_BASE_URL}/${guest.profileImage}` : `${process.env.PUBLIC_URL}/img/defaultUser.png`}
+      height="40px"
+      width="40px"
+      style={{ border:'2px solid',borderRadius:'50%' }}
+      alt={guest.name ? `${guest.name}'s profile` : "Default User Profile"} // Added meaningful alt text
+    />
+  </div>
+  <p style={{fontSize:'22px'}}>{guest.name}</p>
+</div>
+
                       ))
                     ) : (
                       <p>No guests invited yet</p>
