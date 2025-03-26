@@ -145,8 +145,8 @@ console.log('jai ho2')
   };
   if(isLoading) {
       return (
-        <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "150px" }}>
-          <Spinner animation="border" role="status" style={{ width: "10rem", height: "10rem" }} />
+        <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "250px" }}>
+          <Spinner animation="border" role="status" style={{ width: "7rem", height: "7rem" }} />
         </div>
       );
     }
@@ -158,8 +158,8 @@ console.log('jai ho2')
           <img
             src={`${process.env.PUBLIC_URL}/img/logomain.svg`}
             alt="tiwillogo"
-            height={"150px"}
-            width={"200px"}
+            height={"100px"}
+            width={"100px"}
           />
           <h2 className="font-weight-bold mt-2 mb-0" style={{ fontSize: "48px" }}>Welcome</h2>
           <p className="text-muted">Connect with your friends today!</p>

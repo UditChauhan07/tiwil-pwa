@@ -159,7 +159,7 @@ const unreadNotificationCount = Array.isArray(notifications)
   {profileImage && profileImage !== "undefined" ? (
     <img
       src={`${process.env.REACT_APP_BASE_URL}/${profileImage}`}
-      alt="User Profile"
+      
       style={{
         width: "40px",
         height: "40px",

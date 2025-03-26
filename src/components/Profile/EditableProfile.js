@@ -3,6 +3,8 @@ import axios from "axios";
 import styles from "../Profile/EditableProfile.module.css";
 import { IoMdCamera } from "react-icons/io";
 import { Card, Button, Spinner } from "react-bootstrap";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) => {
   const [profileData, setProfileData] = useState(initialProfileData);
@@ -107,16 +109,17 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
 
   if (loading) {
     return (
-      <div style={{ display: "flex", justifyContent: "center", marginTop: "150px" }}>
-        <Spinner animation="border" role="status" style={{ width: "10rem", height: "10rem" }} />
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "200px" }}>
+        <Spinner animation="border" role="status" style={{ width: "7rem", height: "7rem" }} />
       </div>
     );
   }
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <button className={styles.backButton} onClick={onBack}>
-          ← Profile
+           <FontAwesomeIcon icon={faArrowLeft}  onClick={onBack}/>
+        <button className={styles.backButton} >
+           Profile
         </button>
       </div>
       <div className={styles.profileSection}>

@@ -5,6 +5,8 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../Wishlist/addtowish.css";
 import { useState, useEffect } from "react";
 import { FaCloudUploadAlt } from "react-icons/fa";
+import Swal from 'sweetalert2'
+import { Spinner } from "react-bootstrap";
 
 const AddEvents = ({ show, setShow, setActiveTab }) => {
   const token = localStorage.getItem("token");
@@ -19,6 +21,7 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
   const [today, setToday] = useState("");
   const [image, setImage] = useState(null);
   const [errors, setErrors] = useState({});
+  const [loading,setLoading]=useState(false)
 
   useEffect(() => {
     const todayDate = new Date().toISOString().split("T")[0];
@@ -81,10 +84,7 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
     if (!validateForm()) return; // Stop if validation fails
 
     const token = localStorage.getItem("token");
-    if (!eventId) {
-      alert("Event ID is missing.");
-      return;
-    }
+   
 
     const formDataToSend = new FormData();
     formDataToSend.append("fullName", formData.fullName);
@@ -95,7 +95,7 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
     if (image) {
       formDataToSend.append("image", image); // Append image if provided
     }
-
+    console.log(formDataToSend)
     setLoading(true);
     try {
       const response = await axios.post(
@@ -104,6 +104,8 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
         { headers: { Authorization: `Bearer ${token}` } }
       );
       setShow(false); // Close modal
+      console.log(response.data)
+      console.log(formDataToSend)
       Swal.fire("Success", "Event added successfully!", "success");
     } catch (error) {
       console.error("Error saving event:", error);
@@ -112,6 +114,13 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
       setLoading(false);
     }
   };
+  if(loading) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", alignItems:'center', marginTop: "250px" }}>
+        <Spinner animation="border" role="status" style={{ width: "10rem", height: "10rem" }} />
+      </div>
+    );
+  }
 
   return (
     <Modal show={show} onHide={() => setShow(false)} centered size="md">
