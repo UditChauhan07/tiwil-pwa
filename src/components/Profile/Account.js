@@ -9,8 +9,9 @@ import EditableProfile from "../Profile/EditableProfile";
 import { FontAwesomeIcon ,icon} from "@fortawesome/react-fontawesome";
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { faArrowLeft,faGift } from '@fortawesome/free-solid-svg-icons';
+import { Card, Button, Spinner } from "react-bootstrap";
 
-import {useNavigate} from 'react-router-dom'
+import {useFetcher, useNavigate} from 'react-router-dom'
 
 const Account = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -25,6 +26,10 @@ const Account = () => {
     maritalStatus: "",
     profileImage: "",
   });
+const profileImage=localStorage.getItem('profileImage')
+
+  console.log("profiledta", profileData)
+
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
   // useEffect(() => {
@@ -46,26 +51,36 @@ const Account = () => {
   //   fetchUsers();
   // }, []);
 
-  useEffect(() => {
-    const fetchProfileData = async () => {
-      const token = localStorage.getItem("token");
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/user-profile`, {
-          headers: { Authorization: `Bearer ${token}` },
-        });
+ // Empty dependency array ensures the effect runs once when the component mounts
 
-        if (response.data.success) {
-          setProfileData(response.data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching profile data:", error);
-      } finally {
-        setLoading(false);
+  const fetchProfileData = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      setLoading(true); // Set loading to true when fetching starts
+      const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/user-profile`, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      if (response.data.success) {
+        setProfileData(response.data.data);
       }
-    };
-
+    } catch (error) {
+      console.error("Error fetching profile data:", error);
+    } finally {
+      setLoading(false); // Set loading to false when fetching completes
+    }
+  };
+  useEffect(() => {
     fetchProfileData();
-  }, []);
+  }, [profileImage ]);
+
+  useEffect(()=>{
+
+  },[profileData])
+
+ 
+
+
 
   const handleEditProfile = () => {
     setIsEditing(true);
@@ -118,6 +133,14 @@ const Account = () => {
   const handleSurprise = () => {
     navigate("/surprise");
   };
+
+  if (loading) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "150px" }}>
+        <Spinner animation="border" role="status" style={{ width: "10rem", height: "10rem", }} />
+      </div>
+    );
+  }
   return (
     <div>
     
@@ -164,7 +187,7 @@ const Account = () => {
             <button className={styles.editButton} onClick={handleEditProfile}>
           
 
-            <FontAwesomeIcon icon={faPencilAlt}  /> 
+            <FontAwesomeIcon icon={faPencilAlt}  />  Edit Profile
 
             </button>
           </div>

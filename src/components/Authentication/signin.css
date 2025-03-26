@@ -34,6 +34,9 @@
   top: 0;
   left: 0;
   right: 0;
+  height: 100vh !important;
+  width: 50vh !important;
+
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
   display: flex;
@@ -49,6 +52,8 @@
 
 /* Adjust spinner size */
 .mainloader {
-  width: 50px;
-  height: 50px;
+  
+  height: 100vh !important;
+  width: 50vh !important;
+z-index: 10000;
 }

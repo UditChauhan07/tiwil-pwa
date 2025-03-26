@@ -4,6 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import { Link } from "react-router-dom";
 import PhoneInput from "react-phone-number-input";
+import { Spinner } from "react-bootstrap";
 import "react-phone-number-input/style.css"; // Ensure you include the styles
 import { genToken } from '../../firebase/firebase';
 
@@ -106,11 +107,15 @@ const SignInForm = () => {
           `${process.env.REACT_APP_BASE_URL}/save-fcm-token`,
           { userId, fcmToken }
         );
-
+        const profileImagePath = response.data.user.profileImage;
+        localStorage.setItem("profileImage", profileImagePath);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("profileStatus", JSON.stringify(response.data.profileStatus));
         localStorage.setItem("onboardingStatus", JSON.stringify(response.data.onboardingStatus));
+        console.log('jai ho1')
 
+
+console.log('jai ho2')
         if (!response.data.profileStatus) {
           navigate("/profile");
         } else {
@@ -138,6 +143,13 @@ const SignInForm = () => {
       console.log("🔚 OTP verification process completed.");
     }
   };
+  if(isLoading) {
+      return (
+        <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "150px" }}>
+          <Spinner animation="border" role="status" style={{ width: "10rem", height: "10rem" }} />
+        </div>
+      );
+    }
 
   return (
     <section className="page-controls">
@@ -154,13 +166,13 @@ const SignInForm = () => {
         </div>
 
         {/* Loader Overlay */}
-        {isLoading && (
+        {/* {isLoading && (
           <div className="mainloader-overlay">
             <div className="spinner-border text-primary mainloader" role="status">
               <span className="visually-hidden">Loading...</span>
             </div>
           </div>
-        )}
+        )} */}
 
         {/* Apply blur effect to the background */}
         {isLoading && <div className="blur-background"></div>}

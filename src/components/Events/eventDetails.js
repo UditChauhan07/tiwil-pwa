@@ -15,6 +15,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { Spinner } from "react-bootstrap";
 
 
 const EventDetails = () => {
@@ -29,6 +30,7 @@ const EventDetails = () => {
   const [events, setEvents] = useState([]);
   const [selectedWishlist, setSelectedWishlist] = useState(null);
   const [pastevents,setPastEvents]=useState([])
+  const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("token");
   const { eventId } = useParams(); // Get eventId from URL parameters
   console.log(eventId)
@@ -213,6 +215,7 @@ const EventDetails = () => {
   }, []);
 
   const getEvent = async () => {
+    setLoading(true); 
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/events/${eventId}`,
@@ -232,6 +235,7 @@ const EventDetails = () => {
     } catch (error) {
       console.log("Error while fetching event:", error);
     }
+    setLoading(false);
   };
   useEffect(() => {
     getEvent()
@@ -293,6 +297,14 @@ const EventDetails = () => {
     }
   };
 
+  if(loading) {
+        return (
+          <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "150px" }}>
+            <Spinner animation="border" role="status" style={{ width: "10rem", height: "10rem" }} />
+          </div>
+        );
+      }
+  
   
   return (
     <>
@@ -333,16 +345,19 @@ const EventDetails = () => {
                 <div key={event._id} style={{marginTop:'17px'}}>
                   {/* Event Image */}
                   <div >
-                    <img
-                      src={
-                        event.image && event.image !== "null" && event.image !== `${process.env.REACT_APP_BASE_URL}/null`
-                          ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
-                          : `${process.env.PUBLIC_URL}/img/eventdefault.png`
-                      }
-                 
-                      className="img-fluid event-img1"
-                      style={{ width: "550px", height: "174px",  borderRadius: "10px" }}
-                    />
+                  <img
+  src={
+    event.newimage && event.newimage !== "null" && event.newimage !== `${process.env.REACT_APP_BASE_URL}/null`
+      ? `${process.env.REACT_APP_BASE_URL}/${event.newimage}` // Priority to newimage
+      : event.image && event.image !== "null" && event.image !== `${process.env.REACT_APP_BASE_URL}/null`
+      ? `${process.env.REACT_APP_BASE_URL}/${event.image}` // Fallback to image
+      : `${process.env.PUBLIC_URL}/img/eventdefault.png` // Default image
+  }
+  className="img-fluid event-img1"
+  style={{ width: "550px", height: "174px", borderRadius: "10px" }}
+  alt="Event"
+/>
+
 
                   </div>
 
@@ -499,26 +514,27 @@ const EventDetails = () => {
 
                     {activeTab === "guests" && (
                       <div>
-                        <h5>👥 Guest List</h5>
-                        <p>List of guests attending the event.</p>
+                
 
                         {guest && guest.length > 0 ? (
                           <>
-                            <ul className="guestlist">
+                            <ul className="guestlist" style={{padding:'0px '}}>
                               {guest.map((g) => (
                                 <li key={g._id}>
-                                <div key={guest.id} className="d-flex gap-3">
+                                <div key={g.id} className="d-flex gap-3 align-items-center">
   <div style={{ height: '40px', width: '40px', borderRadius: '50%', overflow:'hidden'}}>
     <img
-      src={guest.profileImage ? `${process.env.REACT_APP_BASE_URL}/${guest.profileImage}` : `${process.env.PUBLIC_URL}/img/defaultUser.png`}
+      src={g.profileImage ? `${process.env.REACT_APP_BASE_URL}/${g.profileImage}` : `${process.env.PUBLIC_URL}/img/defaultUser.png`}
       height="40px"
       width="40px"
       style={{ border:'2px solid',borderRadius:'50%' }}
-      alt={guest.name ? `${guest.name}'s profile` : "Default User Profile"} // Added meaningful alt text
+      alt={g.name ? `${g.name}'s profile` : "Default User Profile"} // Added meaningful alt text
     />
   </div>
-  <p style={{fontSize:'22px'}}>{guest.name}</p>
- <span> {g.status}</span>
+  <p style={{fontSize:'22px',marginBottom:'0px'}}>{g.name}</p>
+  <div style={{display:'flex',justifyContent:'end',width:'30%'}}>
+ <span style={{width:'1%'}}> {g.status}</span>
+ </div>
 </div>
 
                                    

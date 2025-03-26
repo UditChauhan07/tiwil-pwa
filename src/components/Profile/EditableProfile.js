@@ -2,25 +2,69 @@ import React, { useState } from "react";
 import axios from "axios";
 import styles from "../Profile/EditableProfile.module.css";
 import { IoMdCamera } from "react-icons/io";
+import { Card, Button, Spinner } from "react-bootstrap";
 
 const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) => {
   const [profileData, setProfileData] = useState(initialProfileData);
   const [selectedImage, setSelectedImage] = useState(null);
+   const [loading, setLoading] = useState(false);
 
   const handleChange = (field, value) => {
     setProfileData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      setSelectedImage(file);
+      setSelectedImage(file); // Set the selected image in the state
+    }
+  
+    const formData = new FormData();
+    const token = localStorage.getItem('token');
+  
+    // Append all profile fields to FormData
+    Object.keys(profileData).forEach((key) => {
+      formData.append(key, profileData[key]);
+    });
+  
+    // Append profile image if a new one is selected
+    if (file) {
+      formData.append("profileImage", file); // Append the selected image (file) directly here
+    }
+  
+    try {
+      setLoading(true); // Show the spinner during the save process
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/user-profile`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+  
+      if (response.data.success) {
+        alert("Profile updated successfully!");
+        const profileImagePath = response.data.data.profileImage;
+        localStorage.setItem("profileImage", profileImagePath);
+        // Call the parent function to update the state, if needed
+       // You can call the `onSave` function to update the parent component's state
+      } else {
+        alert(response.data.message); // Display the response message if the update failed
+      }
+    } catch (error) {
+      console.error("Error updating profile:", error);
+      alert("Failed to update profile."); // Show error message
+    } finally {
+      setLoading(false); // Hide the spinner after the request completes
     }
   };
 
   const handleSave = async () => {
-    const token = localStorage.getItem("token");
     const formData = new FormData();
+    const token=localStorage.getItem('token')
 
     // Append all profile fields to FormData
     Object.keys(profileData).forEach((key) => {
@@ -33,6 +77,7 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
     }
 
     try {
+      setLoading(true); // Show the spinner during the save process
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/user-profile`,
         formData,
@@ -45,17 +90,28 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
       );
 
       if (response.data.success) {
-        alert("Profile updated successfully!");
-        onSave(response.data.data); // Update parent state
+        const profileImagePath = response.data.data.profileImage;
+        localStorage.setItem("profileImage", profileImagePath);
+     
+        onSave(response.data.data); // Call the parent function to update the state
       } else {
         alert(response.data.message);
       }
     } catch (error) {
       console.error("Error updating profile:", error);
       alert("Failed to update profile.");
+    } finally {
+      setLoading(false); // Hide the spinner after the request completes
     }
   };
 
+  if (loading) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "150px" }}>
+        <Spinner animation="border" role="status" style={{ width: "10rem", height: "10rem" }} />
+      </div>
+    );
+  }
   return (
     <div className={styles.container}>
       <div className={styles.header}>

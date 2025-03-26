@@ -5,7 +5,9 @@ import Swal from "sweetalert2";
 import { useNavigate, useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { Spinner } from "react-bootstrap";
 
 
 function WishlistCard() {
@@ -13,7 +15,7 @@ function WishlistCard() {
   const navigate = useNavigate();
   const { itemId } = useParams();
   const [wishlistItem, setWishlistItem] = useState(null);
-  const [loading, setLoading] = useState(false);
+   const [isLoading, setIsLoading] = useState(false);
   const token = localStorage.getItem("token");
   const { item } = location.state || {};
 
@@ -65,7 +67,7 @@ function WishlistCard() {
    
 
     try {
-      setLoading(true);
+      setIsLoading(true);
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/pool/create`,
         { wishId: itemId, totalAmount: wishlistItem?.price },
@@ -78,20 +80,23 @@ function WishlistCard() {
     } catch (error) {
       console.error("❌ Error creating pool:", error);
     } finally {
-      setLoading(false);
+      setIsLoading(false);
     }
   };
 
+ 
   return (
     <section className="page-controls">
-  <div className='d-flex'>
-  <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)}/>
+  <div className='d-flex align-items-baseline gap-4' style={{marginTop:'20px'}}>
+  <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)} style={{marginLeft:'6px'}}/>
   <h2>Wishlist Details</h2>
   </div>
       
-      <div className="container mt-4">
+      <div className="container ">
         {!wishlistItem ? (
-          <p>Loading data...</p>
+          <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "150px" }}>
+            <Spinner animation="border" role="status" style={{ width: "10rem", height: "10rem" }} />
+          </div>
         ) : (
           <div className="card mb-3 mx-auto m-2" style={{ maxWidth: "720px" }}>
           <div style={{width: "100%",
@@ -103,13 +108,31 @@ borderRadius: "5px"
   <img 
     src={wishlistItem.imageUrl ? `${process.env.REACT_APP_BASE_URL}/${wishlistItem.imageUrl}` : `${process.env.PUBLIC_URL}/img/image.png`} 
     alt="image" 
-    style={{ width: "100%" }} 
+    style={{ width: "100%",maxHeight:'240px' }} 
   />
 </div>
 
             <div className="card-body">
+            <div>
+            <img
+  src={wishlistItem.eventImage ? `${process.env.REACT_APP_BASE_URL}/${wishlistItem.eventImage}` : "/path/to/fallback/image.png"}
+  alt="Product"
+  onError={(e) => e.target.src = "/path/to/fallback/image.png"} // If image fails to load, show fallback
+  style={{
+    width: "20px",  // Example width
+    height: "20px", // Example height
+    objectFit: "cover", // Ensures the image covers the area without distortion
+  }}
+/>
+   
+            <div>
+            
+              <h5 className="card-title mb-0">{wishlistItem.eventName || "No  Name"}</h5>
+              <h5 className="card-title mb-0">{wishlistItem.eventType || "No  Name"}</h5>
+              </div>
+              </div>
               <div className="d-flex justify-content-between align-items-center mb-3">
-                <h5 className="card-title mb-0">{wishlistItem.giftName || "No Gift Name"}</h5>
+                     <h5 className="card-title mb-0">{wishlistItem.giftName || "No Gift Name"}</h5>
                 <div className="dropdown">
                   <select
                     style={{ borderColor: "#ff3366", color: "#ff3366" }}
@@ -136,16 +159,20 @@ borderRadius: "5px"
                 </button>
               )}
               <div>
-                <h6 className="fs-2">Desire rate:{wishlistItem.desireRate  || "just description"}</h6>
+                <h6 className="fs-2">Desire rate:{wishlistItem.desireRate  || "just description"}%</h6>
                 
               </div>
               <div  style={{display:'ruby-text'  }}>
                 <h6 className="d-flex align-item-center">Product Link :</h6>
-                <a href={wishlistItem.productLink || "#"} target="_blank" rel="noopener noreferrer">
-  <p className="p-1">
-    {wishlistItem.productLink ? wishlistItem.productLink : "  Link available soon"}
-  </p>
+                <a 
+  href={/^https?:\/\//.test(wishlistItem.productLink) ? wishlistItem.productLink : `https://${wishlistItem.productLink}`} 
+  target="_blank" 
+  rel="noopener noreferrer"
+>
+  <p className="p-1">{wishlistItem.productLink || "Link available soon"}</p>
 </a>
+
+
 </div>
 
               <div>

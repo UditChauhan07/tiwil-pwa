@@ -14,7 +14,8 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
 
   const [location, setLocation] = useState(event.location || "");
   const [description, setDescription] = useState(event.aboutEvent || "");
-  const [image, setImage] = useState(event.image || "");
+  const [image, setImage] = useState(event.newimage || event.image || "");
+
   const [name, setName] = useState(event.name || "");
   const [eventDate, setDate] = useState(event.date || "");
   const { eventId } = useParams();

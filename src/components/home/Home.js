@@ -6,44 +6,46 @@ import FooterNavBar from "../Floating Plus/TabFooter";
 import FloatingActionButton from "../Floating Plus/FloatingTab";
 import Eventlst from "./Eventlst";
 import Invitationlst from "./Invitationlst";
-import "./Home.css";
 import Box from "@mui/material/Box";
 import Tab from "@mui/material/Tab";
 import TabContext from "@mui/lab/TabContext";
 import TabList from "@mui/lab/TabList";
 import TabPanel from "@mui/lab/TabPanel";
-import moment from "moment";
 import { Filter } from "lucide-react";
 import EventsFilter from "./filterModal";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faDotCircle } from "@fortawesome/free-solid-svg-icons";
 
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
-  const [searchMonth, setSearchMonth] = useState("");
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [showFilterModal, setShowFilterModal] = useState(false);
   const [value, setValue] = useState("1");
+  const [filterData, setFilterData] = useState({
+    months: [],
+    relations: [],
+    eventTypes: [],
+    favoritesOnly: false,
+  });
+  const [selectedFilterCount, setSelectedFilterCount] = useState(0); // Store the count of selected filters
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const delayDebounceFn = setTimeout(() => {
-      if (searchQuery.trim() !== "" || searchMonth.value !== "") {
-        fetchSearchResults();
-      } else {
-        setResults([]);
-      }
-    }, 500); // 500ms debounce time
-
-    return () => clearTimeout(delayDebounceFn);
-  }, [searchQuery, searchMonth]);
+    if (searchQuery.trim() !== "") {
+      fetchSearchResults();
+    } else {
+      setResults([]);
+    }
+  }, [searchQuery, value, filterData]);
 
   const fetchSearchResults = async () => {
     const token = localStorage.getItem("token");
     setLoading(true);
     try {
       const res = await axios.get(
-        `${process.env.REACT_APP_BASE_URL}/search?query=${searchQuery}&date=${searchMonth.value}`,
+        `${process.env.REACT_APP_BASE_URL}/search?query=${searchQuery}`,
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -73,14 +75,33 @@ const HomePage = () => {
   };
 
   const handleChange = (event, newValue) => {
-    setValue(newValue);
+    setValue(newValue); // Change tab and fetch relevant results
   };
+  useEffect(() => {
+    const savedFilters = localStorage.getItem("filters");
+    if (savedFilters) {
+      const parsedFilters = JSON.parse(savedFilters);
+      setFilterData(parsedFilters);
+      setSelectedFilterCount(getSelectedFilterCount(parsedFilters));
+    }
+  }, []);
 
+
+  const handleApplyFilters = (filters, selectedCount) => {
+    setFilterData(filters); // Update filter data
+    setSelectedFilterCount(selectedCount); // Set the count of selected filters
+    setShowFilterModal(false); // Close the modal
+  };
+ const getSelectedFilterCount = (filters) => {
+    const { months, relations, eventTypes, favoritesOnly } = filters;
+    const selectedCount =
+      months.length + relations.length + eventTypes.length + (favoritesOnly ? 1 : 0);
+    return selectedCount;
+  };
   return (
     <>
       <section className="page-controls">
         <Navbar />
-
         <div className="mobileMode">
           <div className="d-flex">
             <div className="SearLast p-1" style={{ width: "100%" }}>
@@ -88,7 +109,7 @@ const HomePage = () => {
                 <input
                   type="text"
                   value={searchQuery}
-                  placeholder="  Find amazing events  "
+                  placeholder="Find amazing events"
                   className="text-mute inputhome"
                   style={{
                     width: "100%",
@@ -99,10 +120,16 @@ const HomePage = () => {
                   }}
                   onChange={(e) => setSearchQuery(e.target.value)}
                 />
-                <div className="filter-contain">
-                  <button className="filter-button" onClick={handleFilter}>
+                <div className="filter-contain d-flex">
+                  <button className="filter-button" onClick={handleFilter} >
                     <Filter size={18} />
-                    <span>Filters</span>
+                    <span className="d-flex">Filters{selectedFilterCount > 0 && (
+        <div className="active-filters-count" style={{marginBottom:'2px'}}>
+          {/* <button onClick={() => setFilterData({ months: [], relations: [], eventTypes: [], favoritesOnly: false })}> */}
+          <FontAwesomeIcon icon={faDotCircle} />
+          {/* </button> */}
+        </div>
+      )}</span>
                   </button>
                 </div>
               </div>
@@ -110,7 +137,7 @@ const HomePage = () => {
           </div>
 
           {/* SEARCH RESULTS */}
-          {searchQuery && (
+          {/* {searchQuery && (
             <div
               className="search-results"
               style={{
@@ -123,7 +150,6 @@ const HomePage = () => {
                 borderRadius: "30px",
                 maxHeight: "200px",
                 overflowY: results.length > 5 ? "auto" : "unset",
-                boxShadow: "0 4px 10px rgba(0, 0, 0, 0.1)",
                 zIndex: 1000,
                 padding: "10px",
               }}
@@ -157,7 +183,7 @@ const HomePage = () => {
                 ))
               )}
             </div>
-          )}
+          )} */}
 
           {/* TABS */}
           <div style={{ position: "relative" }}>
@@ -180,10 +206,10 @@ const HomePage = () => {
                   </TabList>
                 </Box>
                 <TabPanel value="1">
-                  <Eventlst searchQuery={searchQuery} />
+                  <Eventlst searchQuery={searchQuery} filterData={filterData} />
                 </TabPanel>
                 <TabPanel value="2">
-                  <Invitationlst searchQuery={searchQuery} />
+                  <Invitationlst searchQuery={searchQuery} filterData={filterData} />
                 </TabPanel>
               </TabContext>
             </Box>
@@ -201,9 +227,17 @@ const HomePage = () => {
       {/* Filter Modal */}
       {showFilterModal && (
         <div className="filter-modal-overlay">
-          <EventsFilter closeFilter={closeFilter} />
+          <EventsFilter
+            closeFilter={closeFilter}
+            isOpen={showFilterModal}
+            onApplyFilters={handleApplyFilters}
+            filterValues={filterData}
+          />
         </div>
       )}
+
+      {/* Display active filters count */}
+      
     </>
   );
 };
