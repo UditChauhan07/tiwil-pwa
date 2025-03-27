@@ -244,7 +244,7 @@ const abc=localStorage.getItem("filters");
                     style={{ width: '100%', height: '162px' }}
                     className="imgEvent"
                   />
-                  <div style={{ borderRadius: "0px 10px 0px 0px", position: "absolute", top: "0px", right: "1px", color: "white", fontSize: "15px", fontWeight: "bold", backgroundColor: "#ff3366", padding: "5px" }}>
+                  <div style={{ borderRadius: "0px 6px 0px 0px", position: "absolute", top: "0px", right: "1px", color: "white", fontSize: "15px", fontWeight: "bold", backgroundColor: "#ff3366", padding: "5px" }}>
                     {event.date && calculateAgeAndBirthdayText(event.displayDate, event.date, event.eventDate)}
                   </div>
                 </Card>

@@ -229,7 +229,9 @@ useEffect(() => {
     return `${nextDiffDays} Days Left` ;
   };
 
+const handlefavourite=()=>{
 
+}
   return (
     <div className="containers1 mt-4">
       {/* Search Bar */}
@@ -252,7 +254,7 @@ useEffect(() => {
                   />
                   <div
                     style={{
-                      borderRadius: "0px 10px 0px 0px",
+                      borderRadius: "0px 6px 0px 0px",
                       position: "absolute",
                       top: "0px",
                       right: "1px",
@@ -296,9 +298,39 @@ useEffect(() => {
                                      ) : null}
                                    </div>
                                </Card.Text>
-                <Button variant="danger" onClick={() => handleInvitation(invitation.event.eventId, invitation._id)}>
+                {/* <Button variant="danger" onClick={() => handleInvitation(invitation.event.eventId, invitation._id)}>
                   Plan and Celebrate
-                </Button>
+                </Button> */}
+                <div style={{ display: "flex", gap: "8px" }}>
+                    <Button
+                      className="planbtn"
+                      variant="danger"
+                      onClick={() => handleInvitation(invitation.event.eventId, invitation._id)}
+                    >
+                      Plan And Celebrate
+                    </Button>
+                    <div
+                      className="heartimage"
+                      style={{
+                        backgroundColor: "#FF3366",
+                        padding: "5px",
+                        width: "40px",
+                        height: "34px",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        borderBottomRightRadius: "5px",
+                        borderTopLeftRadius: "0px",
+                        borderTopRightRadius: "5px",
+                      }} onClick={handlefavourite}
+                    >
+                      <img
+                        src={`${process.env.PUBLIC_URL}/img/Hearticon.svg`}
+                   
+                        style={{ width: "26px", height: "20px" }}
+                      />
+                    </div>
+                  </div>
               </Card.Body>
             </Card>
           </div>
