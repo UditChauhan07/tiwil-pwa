@@ -68,46 +68,60 @@ const PoolRequests = () => {
       console.warn("Notification type is missing!");
       return;
     }
-
+  
     let apiUrl = "";
     let requestBody = {};
-
+    let navigatePath = null;
+  
     switch (notification.type) {
       case "Pool Invitation":
         apiUrl = `${process.env.REACT_APP_BASE_URL}/userId/${notification.wishId}`;
         requestBody = { status: action };
+        if (action === "Accepted") {
+          navigatePath = `/createpool/${notification.wishId}`;
+        }
         break;
-
+  
       case "Pool Join Request":
         apiUrl = `${process.env.REACT_APP_BASE_URL}/request/${notification._id}`;
         requestBody = { status: action };
         break;
-
+  
       case "Event Invitation":
         apiUrl = `${process.env.REACT_APP_BASE_URL}/updatestatus/${notification.eventId}`;
         requestBody = { status: action };
+        if (action === "Accepted") {
+          navigatePath = `/invitation-detail/${notification.eventId}`;
+        }
         break;
-
+  
       default:
         console.warn("No action required for this notification type.");
         return;
     }
-
+  
     try {
       const token = localStorage.getItem("token");
-
+  
       await axios.put(apiUrl, requestBody, {
         headers: { Authorization: `Bearer ${token}` },
       });
-
+  
       Swal.fire("Success!", `Notification ${action}ed successfully.`, "success");
-
+  
+      // Remove the notification from the list
       setNotifications((prev) => prev.filter((notif) => notif._id !== notification._id));
+  
+      // ✅ Navigate if applicable
+      if (navigatePath) {
+        navigate(navigatePath);
+      }
     } catch (error) {
       console.error(`Error on ${action}:`, error);
       Swal.fire("Error", `Failed to ${action} notification.`, "error");
     }
   };
+  
 
   const markNotificationsAsRead = async () => {
     try {

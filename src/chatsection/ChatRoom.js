@@ -113,7 +113,8 @@ const ChatRoom = () => {
   };
 
   const handleNewMessage = (message) => {
-    // ✅ Skip adding the message if the sender is the current user
+    // ✅ Skip adding the message if t
+    // he sender is the current user
     if (message.senderId._id !== currentUserId) {
       setMessages((prev) => [...prev, message]);
     }

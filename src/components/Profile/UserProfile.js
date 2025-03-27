@@ -253,10 +253,9 @@ function Profile() {
       </div>
 
       {loading ? (
-        <div className={styles.loaderWrapper}>
-          <Spinner animation="border" variant="primary" />
-          <span>Loading...</span>
-        </div>
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "200px" }}>
+        <Spinner animation="border" role="status" style={{ width: "5rem", height: "5rem", }} />
+      </div>
       ) : (
         <div className={styles.form}>
           <div className={styles.formGroup}>

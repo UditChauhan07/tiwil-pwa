@@ -5,6 +5,7 @@ import Swal from "sweetalert2"; // Import SweetAlert2
 import axios from "axios";
 import '../Profile/additionalinfo.css'
 import Loader from '../Loader/Loader'
+import { Card, Button, Spinner } from "react-bootstrap";
 
 function AddInformation() {
   const navigate = useNavigate();
@@ -284,7 +285,9 @@ const handleSkips=()=>{
       
         </div>
       {loading ? (
-        <Loader />
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "200px" }}>
+        <Spinner animation="border" role="status" style={{ width: "5rem", height: "5rem", }} />
+      </div>
       ) : (
         <>
       {/* Father Information */}
