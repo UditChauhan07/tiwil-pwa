@@ -8,9 +8,7 @@ function Invitationlst({ searchQuery }) {
   const [invitations, setInvitations] = useState([]);
   const [filteredInvitations, setFilteredInvitations] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [data,setdata]=useState();
   console.log("loadinggg",loading);
-
   const [filterData, setFilterData] = useState({
     months: [],
     relations: [],
@@ -20,11 +18,6 @@ function Invitationlst({ searchQuery }) {
 
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-
-  useEffect((=>{
-    const data=localStorage.getItem('filteredEvents');
-    setdata(data)
-  }))
 
   // Function to load filters from localStorage
   const loadFiltersFromLocalStorage = () => {
