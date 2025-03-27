@@ -302,11 +302,16 @@
 //   appId: process.env.REACT_APP_FIREBASE_AUTH_APP_ID,
 
 // };
-// console.log(firebaseConfiga.apiKey)
+// console.log(firebaseConfiga.apiKey,'jdd;fhud;f')
+// console.log(firebaseConfiga.authDomain,'jdd;fhud;f')
+// console.log(firebaseConfiga.projectId,'jdd;fhud;f')
+// console.log(firebaseConfiga.storageBucket,'jdd;fhud;f')
+// console.log(firebaseConfiga.messagingSenderId,'jdd;fhud;f')
+// console.log(firebaseConfiga.appId,'jdd;fhud;f')
 
 // // Initialize Firebase
-// const authapp = initializeApp(firebaseConfiga,"authapp");
-// const auth = getAuth(authapp);
+// const authService = initializeApp(firebaseConfiga,"authService");
+// const auth = getAuth(authService);
 // auth.languageCode = "en";
 
 // const SignUpForm = () => {
