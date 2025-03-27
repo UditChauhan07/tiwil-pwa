@@ -104,3 +104,7 @@ button#mui-p-82252-T-1 {
   background-color: #EE4266 !important;
   border-radius: 26px !important;
 }
+.span.MuiTabs-indicator.css-jkmkwa {
+  background-color:unset!important;
+  background-color:rgba(255, 255, 255, 0) !important;
+}
