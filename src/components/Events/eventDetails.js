@@ -193,8 +193,10 @@ const EventDetails = () => {
 
   //   getEvent();
   // }, [eventId]); // Dependency array ensures this effect runs when eventId changes
+  const inviteguest=localStorage.getItem('invited')
   useEffect(() => {
     const token = localStorage.getItem("token");
+    
     const fetchGuest = async () => {
       try {
         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests/${eventId}`, {
@@ -212,7 +214,7 @@ const EventDetails = () => {
     };
 
     fetchGuest();
-  }, []);
+  }, [inviteguest]);
 
   const getEvent = async () => {
     setLoading(true); 
@@ -344,7 +346,7 @@ const EventDetails = () => {
               events.map((event) => (
                 <div key={event._id} style={{marginTop:'17px'}}>
                   {/* Event Image */}
-                  <div >
+                  <div   style={{ width: "100%", height: "174px", borderRadius: "10px" }}  >
                   <img
   src={
     event.newimage && event.newimage !== "null" && event.newimage !== `${process.env.REACT_APP_BASE_URL}/null`
@@ -552,7 +554,9 @@ const EventDetails = () => {
                                 </li>
                               ))}
                             </ul>
-
+<br/>
+<br/>
+<br/>
                             {/* ADD MORE and START CHAT buttons when guests are available */}
                             <div className="text-center mt-4 d-flex " style={{justifyContent:'space-evenly'}}>
                             <InviteButton 

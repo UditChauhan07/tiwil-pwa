@@ -15,6 +15,8 @@ function Invitationlst({searchQuery}) {
     eventTypes: [],
     favoritesOnly: false,
   });
+
+  console.log(filterData)
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 const abc=localStorage.getItem('filters')
@@ -31,6 +33,7 @@ const abc=localStorage.getItem('filters')
   useEffect(() => {
     const savedFilters = loadFiltersFromLocalStorage();
     setFilterData(savedFilters);
+    console.log(savedFilters)
   }, []);
 
   useEffect(() => {
@@ -46,7 +49,8 @@ const abc=localStorage.getItem('filters')
 
         if (response.data) {
           setInvitations(response.data.data);
-          applyFilters(response.data.data); // Apply filters immediately after fetching data
+          applyFilters(response.data.data); 
+
         }
       } catch (error) {
         console.error("Error fetching invitations:", error);
@@ -64,7 +68,7 @@ const abc=localStorage.getItem('filters')
 
   const applyFilters = (invitationsList) => {
     let filtered = invitationsList;
-
+console.log(invitationsList)
     // Apply search query filter
     if (searchQuery.trim()) {
       filtered = filtered.filter(
@@ -146,6 +150,79 @@ const abc=localStorage.getItem('filters')
       </div>
     );
   }
+ 
+  const getUpcomingBirthdayNumber = (eventDate) => {
+    if (!eventDate) return null; // Handle invalid dates
+
+    const today = new Date();
+    const birthDate = new Date(eventDate); // The person's birthday date
+
+    // Calculate the initial age (number of birthdays already passed)
+    let upcomingBirthday = today.getFullYear() - birthDate.getFullYear();
+
+    // Check if their birthday hasn't occurred yet this year
+    const thisYearBirthday = new Date(birthDate);
+    thisYearBirthday.setFullYear(today.getFullYear());
+
+    if (today < thisYearBirthday) {
+      upcomingBirthday--; // Subtract 1 if the birthday hasn't occurred yet
+    }
+
+    // Determine the ordinal suffix (1st, 2nd, 3rd, nth)
+    return getOrdinalSuffix(upcomingBirthday + 1); // +1 since we start counting from the 1st birthday
+  };
+
+  // Determine the ordinal suffix (1st, 2nd, 3rd, nth)
+  const getOrdinalSuffix = (number) => {
+    const j = number % 10,
+      k = number % 100;
+    if (j === 1 && k !== 11) {
+      return number + "st";
+    }
+    if (j === 2 && k !== 12) {
+      return number + "nd";
+    }
+    if (j === 3 && k !== 13) {
+      return number + "rd";
+    }
+    return number + "th";
+  };
+  const calculateAgeAndBirthdayText = (eventDate) => {
+    if (!eventDate) return "N/A";
+
+    const today = new Date();
+    const targetDate = new Date(eventDate); // The person's birthday date
+    const currentYear = today.getFullYear();
+
+    // Ensure targetDate is set to the current year
+    targetDate.setFullYear(currentYear);
+
+    // Calculate age based on the birthdate year
+    const birthDate = new Date(eventDate);
+    const age = today.getFullYear() - birthDate.getFullYear();
+
+    // Calculate the difference in days between today and the birthday
+    const diffTime = targetDate - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    // If the birthday is today
+    if (diffDays === 0) {
+      return "Today!";
+    }
+
+    // If the birthday has passed this year, set the target date to next year
+    if (diffDays < 0) {
+      targetDate.setFullYear(currentYear + 1);
+    }
+
+    // Calculate days left for the next birthday (if already passed this year)
+    const nextDiffTime = targetDate - today;
+    const nextDiffDays = Math.ceil(nextDiffTime / (1000 * 60 * 60 * 24));
+
+    // If the birthday is in the future
+    return `${nextDiffDays} Days Left` ;
+  };
+
 
   return (
     <div className="containers1 mt-4">
@@ -180,15 +257,39 @@ const abc=localStorage.getItem('filters')
                       padding: "5px",
                     }}
                   >
-                    {formatDateWithCurrentYear(invitation.event.date)}
+                    {calculateAgeAndBirthdayText(invitation.event.date)}
                   </div>
                 </Card>
               </div>
               <Card.Body>
-                <Card.Title>{invitation.event.name}</Card.Title>
+                <Card.Title>{invitation.event.name} {invitation.event.date && getUpcomingBirthdayNumber(invitation.event.date)}  {invitation.event.eventType}</Card.Title>
                 <Card.Text className="d-flex justify-content-between" style={{ gap: "10px" }}>
-                  <h6>{invitation.event.formattedDate || "Date not available"}</h6>
-                </Card.Text>
+                                 <div style={{ display: "flex", justifyContent: "space-between" }}>
+                                   <img className="m-0.5" src={`${process.env.PUBLIC_URL}/img/calender.svg`} height="17px" alt="calendar" />
+                                   <h6 style={{ marginRight: "3px", marginBottom: "5px", fontWeight: "600", marginLeft: "5px",fontSize:'13px' }}>
+                                     {invitation.event.displayDate ? formatDateWithCurrentYear(invitation.event.displayDate, invitation.event.date) : "Date not available"}
+                                   </h6>
+                                 </div>
+                                 <div>
+                                     {invitation.event.relation &&
+                                      invitation.event.relation.toLowerCase() !== "parent anniversary" &&
+                                     invitation.event.relation.toLowerCase() !==
+                                       "marriage anniversary" ? (
+                                       <h4
+                                         style={{
+                                           background: "white",
+                                           color: "#ff3366",
+                                           border: "1px solid #ff3366",
+                                           paddingLeft: "10px",
+                                           padding: "3px 27px 0px 26px",
+                                           borderRadius: "10px",
+                                         }}
+                                       >
+                                         {invitation.event.relation}
+                                       </h4>
+                                     ) : null}
+                                   </div>
+                               </Card.Text>
                 <Button variant="danger" onClick={() => handleInvitation(invitation.event.eventId, invitation._id)}>
                   Plan and Celebrate
                 </Button>

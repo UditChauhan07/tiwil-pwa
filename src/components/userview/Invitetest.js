@@ -27,7 +27,10 @@ const InviteButton = ({ style, children }) => {
           });
 
           const data = await response.json();
-          alert(data.message);
+          localStorage.setItem("invited",data.message)
+          Swal.fire({
+            title:`${data.message}`
+          })
         }
       } catch (error) {
         console.error("Error accessing contacts:", error);
