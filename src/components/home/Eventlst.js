@@ -8,6 +8,7 @@ const Eventlst = ({ searchQuery }) => {
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [loading, setLoading] = useState(true);
+  localStorage.setItem('filteredEvents',JSON.stringify(filteredEvents))
   const [filterData, setFilterData] = useState({
     months: [],
     relations: [],

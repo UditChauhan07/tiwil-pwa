@@ -4,11 +4,13 @@ import { Card, Button, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
 
-function Invitationlst({searchQuery}) {
+function Invitationlst({ searchQuery }) {
   const [invitations, setInvitations] = useState([]);
   const [filteredInvitations, setFilteredInvitations] = useState([]);
-  
   const [loading, setLoading] = useState(true);
+  const [data,setdata]=useState();
+  console.log("loadinggg",loading);
+
   const [filterData, setFilterData] = useState({
     months: [],
     relations: [],
@@ -16,10 +18,14 @@ function Invitationlst({searchQuery}) {
     favoritesOnly: false,
   });
 
-  console.log(filterData)
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-const abc=localStorage.getItem('filters')
+
+  useEffect((=>{
+    const data=localStorage.getItem('filteredEvents');
+    setdata(data)
+  }))
+
   // Function to load filters from localStorage
   const loadFiltersFromLocalStorage = () => {
     const savedFilters = localStorage.getItem("filters");
@@ -28,47 +34,45 @@ const abc=localStorage.getItem('filters')
     }
     return { months: [], relations: [], eventTypes: [], favoritesOnly: false }; // Default filters if no data is in localStorage
   };
-
+  const abc=localStorage.getItem("filters");
   // Initial load of filters from localStorage
   useEffect(() => {
     const savedFilters = loadFiltersFromLocalStorage();
     setFilterData(savedFilters);
-    console.log(savedFilters)
   }, []);
 
-  useEffect(() => {
-    const fetchInvitations = async () => {
-      setLoading(true);
-      try {
-        const response = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}/invitations`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        if (response.data) {
-          setInvitations(response.data.data);
-          applyFilters(response.data.data); 
-
+useEffect(() => {
+  const fetchInvitations = async () => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/invitations`,
+        {
+          headers: { Authorization: `Bearer ${token}` },
         }
-      } catch (error) {
-        console.error("Error fetching invitations:", error);
-      } finally {
-        setLoading(false);
+      );
+
+      if (response.data) {
+        setInvitations(response.data.data);
+        console.log("Invitations data:", response.data.data); // Add this line
       }
-    };
-    fetchInvitations();
-  }, [token,abc]);
+    } catch (error) {
+      console.error("Error fetching invitations:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+  fetchInvitations();
+}, [token, localStorage.getItem("filters")]);
 
   // Reapply filters whenever searchQuery or filterData changes
   useEffect(() => {
-    applyFilters(invitations); // Reapply filters whenever searchQuery or filterData changes
+    applyFilters(invitations);
   }, [searchQuery, filterData, invitations,abc]);
 
   const applyFilters = (invitationsList) => {
     let filtered = invitationsList;
-console.log(invitationsList)
+  
     // Apply search query filter
     if (searchQuery.trim()) {
       filtered = filtered.filter(
@@ -76,35 +80,41 @@ console.log(invitationsList)
           invitation.event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
           invitation.event.eventType.toLowerCase().includes(searchQuery.toLowerCase())
       );
+      console.log("After search filter:", filtered);
     }
-
+  
     // Apply month filter
     if (filterData.months.length > 0) {
       filtered = filtered.filter((invitation) =>
         filterData.months.includes(new Date(invitation.event.date).toLocaleString("en-us", { month: "long" }))
       );
+      console.log("After month filter:", filtered);
     }
-
+  
     // Apply event type filter
     if (filterData.eventTypes.length > 0) {
       filtered = filtered.filter((invitation) =>
         filterData.eventTypes.includes(invitation.event.eventType)
       );
+      console.log("After event type filter:", filtered);
     }
-
+  
     // Apply relation filter
     if (filterData.relations.length > 0) {
       filtered = filtered.filter((invitation) =>
         filterData.relations.includes(invitation.event.relation)
       );
+      console.log("After relation filter:", filtered);
     }
-
+  
     // Apply favorites filter
     if (filterData.favoritesOnly) {
       filtered = filtered.filter((invitation) => invitation.event.favorites === true);
+      console.log("After favorites filter:", filtered);
     }
-
+  
     setFilteredInvitations(filtered);
+    console.log("Final filtered invitations:", filtered);
   };
 
   const handleInvitation = (eventId, invitationId) => {
@@ -124,13 +134,13 @@ console.log(invitationsList)
     eventDate.setFullYear(currentYear);
     return eventDate.toLocaleDateString("en-GB");
   };
-
   const handleApplyFilters = (filters) => {
     setFilterData(filters);
-    localStorage.setItem("filters", JSON.stringify(filters)); // Save filters to localStorage
-    applyFilters(invitations); // Apply filters immediately
+    localStorage.setItem("filters", JSON.stringify(filters));
+    applyFilters(invitations);
+    console.log("Filter data after apply:", filters); // Add this line
   };
-
+  
   const handleClearFilters = () => {
     const defaultFilters = {
       months: [],
@@ -139,9 +149,11 @@ console.log(invitationsList)
       favoritesOnly: false,
     };
     setFilterData(defaultFilters);
-    localStorage.setItem("filters", JSON.stringify(defaultFilters)); // Reset filters in localStorage
-    applyFilters(invitations); // Fetch all invitations again
+    localStorage.setItem("filters", JSON.stringify(defaultFilters));
+    applyFilters(invitations);
+    console.log("Filter data after clear:", defaultFilters); // Add this line
   };
+
 
   if (loading) {
     return (
@@ -150,6 +162,7 @@ console.log(invitationsList)
       </div>
     );
   }
+
  
   const getUpcomingBirthdayNumber = (eventDate) => {
     if (!eventDate) return null; // Handle invalid dates
