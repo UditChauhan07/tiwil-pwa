@@ -22,6 +22,7 @@ import { requestNotificationPermission, onMessageListener } from "../src/firebas
 import HomePage from "./components/home/Home";
 import SurpriseReveal from "./components/surpriseReveal/surpriseScreen";
 import EventsFilter from "./components/home/filterModal";
+import './App.css'
 function App() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallDialog, setShowInstallDialog] = useState(false);
