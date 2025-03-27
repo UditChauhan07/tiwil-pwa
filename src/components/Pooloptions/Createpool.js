@@ -7,6 +7,8 @@ import { FaArrowRight } from "react-icons/fa";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import InviteModal from "../GuestInvite/PoolguestModal";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 
 function PoolingWish() {
   const { wishId } = useParams();
@@ -260,28 +262,30 @@ console.log('pool',poolCreator)
     <div className="container mt-3" style={{background:'#fff'}}>
       {/* Back Button */}
       <div className="d-flex align-items-center mb-3">
-        <span
+        {/* <span
           className="me-2"
           onClick={() => navigate(-1)}
           style={{ cursor: "pointer" }}
         >
           &larr;
-        </span>
+        </span> */}
+
+         <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)}/>
         <h5 className="mb-0">Pooling Wish</h5>
       </div>
 
       {/* Image Section */}
-      <div className="text-center">
+      <div className="text-center" style={{ height:'300px',width:'100%'}}>
       {/* Display the gift image dynamically with fallback to default image */}
       <img
   src={
-    pool?.imageUrl
-      ? `${process.env.REACT_APP_BASE_URL}${pool.imageUrl}`
+    pool?.Image
+      ? `${process.env.REACT_APP_BASE_URL}/${pool.Image}`
       : `${process.env.PUBLIC_URL}/img/defaultproduct.jpg`
   }
   alt={pool?.wishname || "Default Gift"}
   className="img-fluid rounded"
-  style={{ width: "100%", maxHeight: "300px" }}
+  style={{ width: "100%", maxHeight: "258px" }}
   onError={(e) => {
     e.target.onerror = null; // Prevent infinite loop
     e.target.src = `${process.env.PUBLIC_URL}/img/defaultproduct.jpg`;
@@ -309,23 +313,28 @@ console.log('pool',poolCreator)
                 textSize: "16px",
               })}
             />
+            
                {pool.wishItem && pool.wishItem.length > 0 && (
         <h5 className="m-2">{pool.giftName}</h5>
+        
       )}
+      
           </div>
         </div>
 
         {/* Contribution Details */}
         <div className="text-center">
-          <p>{pool.giftName}</p>
+   
           <h6>Total Amount: &#8377;{totalAmount}</h6>
           <h6 className="text-muted" >Collected: &#8377;{collectedAmount}</h6>
           <h6 className="text-danger">
             Pending: <strong>&#8377;{pendingAmount}</strong>
           </h6>
-          
+          <div>
+          <h5 className="m-2">{pool.giftName}</h5></div>
+
         </div>
-        
+   
       </div>
 
       {/* If pool is completed, show message and don't allow further contributions */}

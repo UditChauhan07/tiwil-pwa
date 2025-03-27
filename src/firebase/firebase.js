@@ -1,23 +1,25 @@
 import { initializeApp } from "firebase/app";
-import { getMessaging, getToken, onMessage} from "firebase/messaging";
-import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { getMessaging, getToken, onMessage } from "firebase/messaging";
+
+
 import Swal from "sweetalert2";
 
-const firebaseConfig = {
+// Firebase configuration
+const firebaseNotifConfig  = {
   apiKey: "AIzaSyAS6KhuPYihmJFO0pCFt0wXjrx_abiLorY",
   authDomain: "tiwil-718cf.firebaseapp.com",
   projectId: "tiwil-718cf",
   storageBucket: "tiwil-718cf.firebasestorage.app",
   messagingSenderId: "385369508354",
   appId: "1:385369508354:web:e99f7239e7a8671553b51b",
-  measurementId: "G-R6T8CV0QRG"
+  measurementId: "G-R6T8CV0QRG",
 };
 
-const app = initializeApp(firebaseConfig);
-const messaging = getMessaging(app);
-const auth = getAuth(app);
-auth.useDeviceLanguage();
-// Register service worker manually
+// Initialize Firebase
+const notifapp = initializeApp(firebaseNotifConfig ,"notifapp");
+const messaging = getMessaging(notifapp);
+
+// Register Service Worker
 export const registerServiceWorker = async () => {
   if ("serviceWorker" in navigator) {
     try {
@@ -30,7 +32,31 @@ export const registerServiceWorker = async () => {
   }
 };
 
-// Function to request permission and generate token
+// Request notification permission and generate token
+export const requestNotificationPermission = async () => {
+  try {
+    // First, register service worker
+    await registerServiceWorker();
+
+    // Request notification permission
+    const permission = await Notification.requestPermission();
+
+    if (permission === "granted") {
+      const token = await getToken(messaging, {
+        vapidKey: "BBvmoxoOK-m3XEx1qr8aG6J8WvGWqOhJ94qPkXEbLEi_qx26vI1di6cMMNFiadRBqtCxsdnKKSMicBaRhnBMumQ",
+      });
+
+      console.log("FCM Token:", token);
+      localStorage.setItem("PushToken", token);
+      return token;
+    } else {
+      console.log("Notification permission denied.");
+    }
+  } catch (error) {
+    console.error("Error in getting notification token:", error);
+  }
+};
+
 export const genToken = async () => {
   await registerServiceWorker(); // Ensure SW is registered before requesting token
 
@@ -51,19 +77,7 @@ export const genToken = async () => {
   }
 };
 
-export const requestNotificationPermission = async () => {
-  try {
-    await registerServiceWorker();
-    const token = await getToken(messaging, {
-      vapidKey: "BBvmoxoOK-m3XEx1qr8aG6J8WvGWqOhJ94qPkXEbLEi_qx26vI1di6cMMNFiadRBqtCxsdnKKSMicBaRhnBMumQ",
-    });
-    console.log("FCM Token:", token);
-    return token;
-  } catch (error) {
-    console.error("Permission Denied", error);
-  }
-};
-
+// Listener for foreground messages
 export const onMessageListener = () =>
   new Promise((resolve) => {
     onMessage(messaging, (payload) => {
@@ -76,12 +90,3 @@ export const onMessageListener = () =>
       resolve(payload);
     });
   });
-  const setupRecaptcha = (number) => {
-    window.recaptchaVerifier = new RecaptchaVerifier("recaptcha-container", {
-      size: "invisible",
-      callback: () => {
-        handleSendOTP(number);
-      },
-    }, auth);
-  };
-  export { auth, setupRecaptcha, signInWithPhoneNumber };

@@ -274,7 +274,7 @@ const handleSkips=()=>{
     <>
     <div className={styles.container}>
     <div className={styles.skipps}>
-    <button onClick={handleSkips} className={styles.skipButton}>
+    <button onClick={handleSkip} className={styles.skipButton}>
           Skip
         </button>
     </div>

@@ -92,13 +92,13 @@ function WishlistCard() {
   <h2>Wishlist Details</h2>
   </div>
       
-      <div className="container ">
+      <div className="container " style={{borderColor:'white',padding:"7px"}}>
         {!wishlistItem ? (
           <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "200px" }}>
             <Spinner animation="border" role="status" style={{ width: "7rem", height: "7rem" }} />
           </div>
         ) : (
-          <div className="card mb-3 mx-auto m-2" style={{ maxWidth: "720px",borderColor:'none' }}>
+          <div className="card mb-3 mx-auto m-2" style={{ maxWidth: "720px",borderColor:'white' }}>
           <div style={{width: "100%",
 height: 240,
 top: "20px",

@@ -154,7 +154,77 @@ const abc=localStorage.getItem("filters");
     const response=await axios.put()
 
   }
+  const calculateAgeAndBirthdayText = (eventDate) => {
+    if (!eventDate) return "N/A";
 
+    const today = new Date();
+    const targetDate = new Date(eventDate); // The person's birthday date
+    const currentYear = today.getFullYear();
+
+    // Ensure targetDate is set to the current year
+    targetDate.setFullYear(currentYear);
+
+    // Calculate age based on the birthdate year
+    const birthDate = new Date(eventDate);
+    const age = today.getFullYear() - birthDate.getFullYear();
+
+    // Calculate the difference in days between today and the birthday
+    const diffTime = targetDate - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    // If the birthday is today
+    if (diffDays === 0) {
+      return "Today!";
+    }
+
+    // If the birthday has passed this year, set the target date to next year
+    if (diffDays < 0) {
+      targetDate.setFullYear(currentYear + 1);
+    }
+
+    // Calculate days left for the next birthday (if already passed this year)
+    const nextDiffTime = targetDate - today;
+    const nextDiffDays = Math.ceil(nextDiffTime / (1000 * 60 * 60 * 24));
+
+    // If the birthday is in the future
+    return `${nextDiffDays} Days Left` ;
+  };
+  const getUpcomingBirthdayNumber = (eventDate) => {
+    if (!eventDate) return null; // Handle invalid dates
+
+    const today = new Date();
+    const birthDate = new Date(eventDate); // The person's birthday date
+
+    // Calculate the initial age (number of birthdays already passed)
+    let upcomingBirthday = today.getFullYear() - birthDate.getFullYear();
+
+    // Check if their birthday hasn't occurred yet this year
+    const thisYearBirthday = new Date(birthDate);
+    thisYearBirthday.setFullYear(today.getFullYear());
+
+    if (today < thisYearBirthday) {
+      upcomingBirthday--; // Subtract 1 if the birthday hasn't occurred yet
+    }
+
+    // Determine the ordinal suffix (1st, 2nd, 3rd, nth)
+    return getOrdinalSuffix(upcomingBirthday + 1); // +1 since we start counting from the 1st birthday
+  };
+
+  // Determine the ordinal suffix (1st, 2nd, 3rd, nth)
+  const getOrdinalSuffix = (number) => {
+    const j = number % 10,
+      k = number % 100;
+    if (j === 1 && k !== 11) {
+      return number + "st";
+    }
+    if (j === 2 && k !== 12) {
+      return number + "nd";
+    }
+    if (j === 3 && k !== 13) {
+      return number + "rd";
+    }
+    return number + "th";
+  };
   return (
     <div className="mt-4 mainns121">
       {/* <div>
@@ -174,18 +244,18 @@ const abc=localStorage.getItem("filters");
                     className="imgEvent"
                   />
                   <div style={{ borderRadius: "0px 10px 0px 0px", position: "absolute", top: "0px", right: "1px", color: "white", fontSize: "15px", fontWeight: "bold", backgroundColor: "#ff3366", padding: "5px" }}>
-                    {event.date && formatDateWithCurrentYear(event.formattedDate, event.date, event.eventDate)}
+                    {event.date && calculateAgeAndBirthdayText(event.displayDate, event.date, event.eventDate)}
                   </div>
                 </Card>
               </div>
               <Card.Body>
                 <div className="d-flex">
-                  <Card.Title>{event.name}</Card.Title>
+                  <Card.Title>{event.name}    {event.date && getUpcomingBirthdayNumber( event.date)} {event.eventType}</Card.Title>
                 </div>
                 <Card.Text className="d-flex justify-content-between" style={{ gap: "10px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between" }}>
                     <img className="m-0.5" src={`${process.env.PUBLIC_URL}/img/calender.svg`} height="17px" alt="calendar" />
-                    <h6 style={{ marginRight: "10px", marginBottom: "5px", fontWeight: "600", marginLeft: "5px" }}>
+                    <h6 style={{ marginRight: "3px", marginBottom: "5px", fontWeight: "600", marginLeft: "5px",fontSize:'13px' }}>
                       {event.displayDate ? formatDateWithCurrentYear(event.displayDate, event.date) : "Date not available"}
                     </h6>
                   </div>
