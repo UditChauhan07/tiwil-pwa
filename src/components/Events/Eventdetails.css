@@ -1,6 +1,12 @@
 .nav-tabs .nav-link {
     color: black;
   }
+
+  .p-history{
+    font-size:30px;
+    font-weight:700;
+    color:#EE42663D;
+  }
   .nav-link{
     font-size: 13px !important;
     padding: 3px !important;
@@ -43,6 +49,9 @@
         padding: 12px 20px;
         font-size: 18px;
       }
+
+
+
       @media (max-width: 440px){
         .event-img1 {
           object-fit: contain;

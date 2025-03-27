@@ -652,6 +652,46 @@ const SignUpForm = () => {
       setLoading(false);
     }
   };
+  function openDatabase() {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open("UserDataDB", 1); // Database name and version
+  
+      request.onerror = (event) => {
+        reject("Database error: " + event.target.errorCode);
+      };
+  
+      request.onupgradeneeded = (event) => {
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains("users")) {
+          db.createObjectStore("users", { keyPath: "userId" }); // Store name and key path
+        }
+      };
+  
+      request.onsuccess = (event) => {
+        resolve(event.target.result);
+      };
+    });
+  }
+  async function storeUserDataInIndexedDB(userData) {
+    try {
+      const db = await openDatabase();
+      const transaction = db.transaction(["users"], "readwrite");
+      const store = transaction.objectStore("users");
+      store.put(userData); // Store the user data
+  
+      transaction.oncomplete = () => {
+        console.log("User data stored in IndexedDB");
+      };
+  
+      transaction.onerror = (event) => {
+        console.error("Error storing user data in IndexedDB:", event.target.errorCode);
+      };
+  
+      db.close();
+    } catch (error) {
+      console.error("IndexedDB error:", error);
+    }
+  }
 
   // Handle Verify OTP
   const handleVerifyOTP = async (e) => {
@@ -683,7 +723,16 @@ const SignUpForm = () => {
         localStorage.setItem("profileStatus", false);
         localStorage.setItem("onboardingStatus", false);
       
-
+        const userData = {
+            userId: response.data.userId,
+            fullName: response.data.user.fullName,
+            phoneNumber: response.data.user.phoneNumber,
+            token: response.data.token,
+            profileStatus: false,
+            onboardingStatus: false,
+          };
+          
+          storeUserDataInIndexedDB(userData);
 
         navigate("/profile"); // Force profile setup first
       } else {

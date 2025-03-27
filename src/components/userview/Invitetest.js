@@ -27,7 +27,7 @@ const InviteButton = ({ style, children }) => {
           });
 
           const data = await response.json();
-          localStorage.setItem("invited",data.message)
+          localStorage.setItem("invited",data.data)
           Swal.fire({
             title:`${data.message}`
           })

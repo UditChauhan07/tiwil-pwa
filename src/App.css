@@ -115,3 +115,7 @@ button#mui-p-82252-T-1 {
   background-color:rgba(255, 255, 255, 0) !important;
   display:none !important;
 }
+
+.nav-tabs .nav-link {
+  border:none !important;
+}

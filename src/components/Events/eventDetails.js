@@ -388,7 +388,7 @@ const EventDetails = () => {
                   </ul>
 
                   {/* Tab Content */}
-                  <div className="tab-content p-3 mt-3 border rounded shadow-sm bg-white">
+                  <div className="tab-content p-3 mt-3 bg-white">
                     {activeTab === "details" && (
                       <>
                         <p className="d-flex align-items-center ">
@@ -605,9 +605,9 @@ const EventDetails = () => {
                       </div>
                     )}
                     {activeTab === "history" && (
-  <div className="container mt-3">
+  <div className="container mt-5">
     {surpriseData.length === 0 ? (
-      <p>No history available</p>
+      <p className=" p-history" >No History </p>
     ) : (
       surpriseData.map((event, index) => (
         <div key={index} className="card mb-3 history-card">
