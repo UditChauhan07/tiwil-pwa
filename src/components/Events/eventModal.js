@@ -19,7 +19,7 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
   const [name, setName] = useState(event.name || "");
   const [eventDate, setDate] = useState(event.date || "");
   const { eventId } = useParams();
-  const today = new Date();
+
   // Validation for null, undefined, and character limits
   const validateForm = () => {
     let newErrors = {};
@@ -109,7 +109,6 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
       });
     }
   };
-
   
   // Handle Image Change
   const handleImageChange = (event) => {
@@ -127,12 +126,7 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
       setName(e.target.value);
     }
   };
-  const handleDateChange = (e) => {
-    const selectedDate = e.target.value;
-    if (selectedDate >= today) {
-      setEventDate(selectedDate);
-    }
-  };
+
   const handleLocationChange = (e) => {
     if (e.target.value.length <= 30) {
       setLocation(e.target.value);
@@ -159,15 +153,14 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
           </Form.Group>
 
           <Form.Group className="mb-3">
-      <Form.Label className="fw-bold">Event Date</Form.Label>
-      <Form.Control
-        type="date"
-        name="eventDate"
-        value={eventDate}
-        min={today} // Prevents past dates from being selected
-        onChange={handleDateChange}
-      />
-    </Form.Group>
+            <Form.Label className="fw-bold">Event Date</Form.Label>
+            <Form.Control
+              type="date"
+              name="eventDate"
+              value={eventDate}
+              onChange={(e) => setDate(e.target.value)}
+            />
+          </Form.Group>
 
           <Form.Group className="mb-3">
             <Form.Label className="fw-bold">Location</Form.Label>

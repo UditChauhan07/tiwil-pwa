@@ -83,6 +83,27 @@ const SignInForm = () => {
     }
   };
 
+
+  function openDatabase() {
+    return new Promise((resolve, reject) => {
+      const request = indexedDB.open("UserDataDB", 1); // Database name and version
+  
+      request.onerror = (event) => {
+        reject("Database error: " + event.target.errorCode);
+      };
+  
+      request.onupgradeneeded = (event) => {
+        const db = event.target.result;
+        if (!db.objectStoreNames.contains("users")) {
+          db.createObjectStore("users", { keyPath: "userId" }); // Store name and key path
+        }
+      };
+  
+      request.onsuccess = (event) => {
+        resolve(event.target.result);
+      };
+    });
+  }
   // When Verifying OTP
   const handleVerifyOTP = async () => {
     setIsLoading(true); // Start loading
@@ -107,12 +128,43 @@ const SignInForm = () => {
           `${process.env.REACT_APP_BASE_URL}/save-fcm-token`,
           { userId, fcmToken }
         );
+        async function storeUserDataInIndexedDB(userData) {
+          try {
+            const db = await openDatabase();
+            const transaction = db.transaction(["users"], "readwrite");
+            const store = transaction.objectStore("users");
+            store.put(userData);
+        
+            transaction.oncomplete = () => {
+              console.log("User data stored in IndexedDB");
+            };
+        
+            transaction.onerror = (event) => {
+              console.error("Error storing user data in IndexedDB:", event.target.errorCode);
+            };
+        
+            db.close();
+          } catch (error) {
+            console.error("IndexedDB error:", error);
+          }
+        }
         const profileImagePath = response.data.user.profileImage;
+     
         localStorage.setItem("profileImage", profileImagePath);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("profileStatus", JSON.stringify(response.data.profileStatus));
         localStorage.setItem("onboardingStatus", JSON.stringify(response.data.onboardingStatus));
-        console.log('jai ho1')
+        
+        // Store data in IndexedDB
+        const userData = {
+          userId: response.data.userId,
+          profileImage: profileImagePath,
+          token: response.data.token,
+          profileStatus: response.data.profileStatus, // Assuming profileStatus is a boolean
+          onboardingStatus: response.data.onboardingStatus, // Assuming onboardingStatus is a boolean
+        };
+        
+        storeUserDataInIndexedDB(userData);
 
 
 console.log('jai ho2')
