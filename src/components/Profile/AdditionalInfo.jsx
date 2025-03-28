@@ -273,6 +273,11 @@ const handleSkips=()=>{
 
   return (
     <>
+      {loading ? (
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "200px" }}>
+        <Spinner animation="border" role="status" style={{ width: "5rem", height: "5rem", }} />
+      </div>
+      ) : (
     <div className={styles.container}>
     <div className={styles.skipps}>
     <button onClick={handleSkip} className={styles.skipButton}>
@@ -284,11 +289,7 @@ const handleSkips=()=>{
      <h2>Family Information</h2>
       
         </div>
-      {loading ? (
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "200px" }}>
-        <Spinner animation="border" role="status" style={{ width: "5rem", height: "5rem", }} />
-      </div>
-      ) : (
+    
         <>
       {/* Father Information */}
       <div className={styles.section}>
@@ -538,8 +539,9 @@ const handleSkips=()=>{
     
       </div>
       </>
-    )}
+
     </div>
+  )}
     </>
   );
 }

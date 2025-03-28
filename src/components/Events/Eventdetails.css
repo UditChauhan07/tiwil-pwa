@@ -1,11 +1,35 @@
 .nav-tabs .nav-link {
     color: black;
   }
+  .about-event{
+    width: 335;
+height: 154;
+top: 550px;
+left: 20px;
 
+  }
+  .aboutevent2{
+    width: 335;
+height: 112;
+top: 592px;
+left: 20px;
+
+  }
+  .headersevent{
+    width: 108;
+height: 34;
+top: 550px;
+left: 20px;
+opacity: 0.84;
+
+  }
   .p-history{
-    font-size:30px;
-    font-weight:700;
+    font-size:larger;
+    font-weight:600;
     color:#EE42663D;
+    display:flex;
+    justify-content:center;
+    align-items:center
   }
   .nav-link{
     font-size: 13px !important;
@@ -54,7 +78,7 @@
 
       @media (max-width: 440px){
         .event-img1 {
-          object-fit: contain;
+          object-fit: contain !important;
         }
       }
       

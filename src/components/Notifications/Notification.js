@@ -83,7 +83,7 @@ const PoolRequests = () => {
         break;
   
       case "Pool Join Request":
-        apiUrl = `${process.env.REACT_APP_BASE_URL}/request/${notification._id}`;
+        apiUrl = `${process.env.REACT_APP_BASE_URL}/request/${notification.poolId}/${notification.senderUserId}`;
         requestBody = { status: action };
         break;
   
@@ -192,8 +192,8 @@ const PoolRequests = () => {
             {notifications
               .filter((notif) => ["Pool Invitation", "Pool Join Request", "Event Invitation"].includes(notif.type))
               .map((notification) => {
-                const userImage = notification?.userImage
-                  ? `${process.env.REACT_APP_IMAGE_BASE_URL}/${notification.userImage}`
+                const userImage = notification?.senderProfileImage
+                  ? `${process.env.REACT_APP_BASE_URL}/${notification.senderProfileImage}`
                   : `${process.env.PUBLIC_URL}/img/userimage3.jpg`;
 
                 return (

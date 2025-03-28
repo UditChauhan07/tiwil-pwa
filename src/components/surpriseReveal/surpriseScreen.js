@@ -58,7 +58,7 @@ const SurpriseReveal = () => {
 
   return (
     <div className="container mt-4 ">
-    <div className="d-flex">
+    <div className="d-flex" style={{alignItems:'baseline',gap:'20px'}}>
        <img
         src={`${process.env.PUBLIC_URL}/img/arrow-left.svg`}
         alt="back"
@@ -107,7 +107,7 @@ const SurpriseReveal = () => {
             </Accordion.Item>
           ))
         ) : (
-          <p className="text-center  d-flex align-items-center justify-content-center text-muted">No Surprise reveal</p>
+          <p className="text-center  d-flex align-items-center justify-content-center text-muted mt-8">No Surprise reveal</p>
         )}
       </Accordion>
 

@@ -237,14 +237,14 @@ const abc=localStorage.getItem("filters");
           <div key={index} style={{ gap: "30px", display: "flex", justifyContent: "center" }}>
             <Card style={{ width: "100%", minWidth: "310px", border: "0.5px solid rgb(229 229 229)", borderRadius: "10px", marginBottom: index === filteredEvents.length - 1 ? "80px" : "10px" }}>
               <div style={{ height: "150px" }}>
-                <Card variant="top" style={{ position: "relative", width: "100%", height: "162px" }}>
+                <Card variant="top" style={{ position: "relative", width: "100%", height: "162px" ,borderBottom:'unset'}}>
                   <img
                     src={event.newimage && event.newimage !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.newimage}` : event.image && event.image !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.image}` : `${process.env.PUBLIC_URL}/img/eventdefault.png`}
                     alt="Event"
-                    style={{ width: '100%', height: '162px' }}
+                    style={{ width: '100%', height: '162px' ,padding:'5px'}}
                     className="imgEvent"
                   />
-                  <div style={{ borderRadius: "0px 6px 0px 0px", position: "absolute", top: "0px", right: "1px", color: "white", fontSize: "15px", fontWeight: "bold", backgroundColor: "#ff3366", padding: "5px" }}>
+                  <div style={{ borderRadius: "0px 4px 0px 0px", position: "absolute", top: "5px", right: "5px", color: "white", fontSize: "15px", fontWeight: "bold", backgroundColor: "#ff3366", padding: "5px" }}>
                     {event.date && calculateAgeAndBirthdayText(event.displayDate, event.date, event.eventDate)}
                   </div>
                 </Card>

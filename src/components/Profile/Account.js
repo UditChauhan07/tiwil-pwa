@@ -90,6 +90,7 @@ const profileImage=localStorage.getItem('profileImage')
     localStorage.removeItem("token");
     localStorage.removeItem("fullname");
     setIsConfirming(true);
+    navigate('/signin')
   };
 
   const handleLogout = () => {
