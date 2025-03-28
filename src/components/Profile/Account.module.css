@@ -200,7 +200,7 @@ border-radius: 10px;
     background-color: #b3b3b3;
   }
   .icons{
-    margin-right: 211px ;
+  display:flex
   }
   
   /* Responsive Design */

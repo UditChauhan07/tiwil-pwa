@@ -114,6 +114,11 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
       </div>
     );
   }
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    const date = new Date(dateString);
+    return date.toISOString().split("T")[0]; // Extract the date in YYYY-MM-DD format
+  };
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -185,7 +190,7 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
           <label>Date of Birth</label>
           <input
             type="date"
-            value={profileData.dob}
+            value={formatDate(profileData.dob)}
             onChange={(e) => handleChange("dob", e.target.value)}
           />
         </div>

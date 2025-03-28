@@ -405,8 +405,9 @@
 //       }
 
 //       const appVerifier = window.recaptchaVerifier;
+//       console.log(appVerifier);
 //       const result = await signInWithPhoneNumber(auth, formData.phoneNumber, appVerifier);
-
+// console.log(result)
 //       setConfirmationResult(result);
 //       setIsOtpSent(true);
 //       Swal.fire("Success", "OTP sent successfully!", "success");

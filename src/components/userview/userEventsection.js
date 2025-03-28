@@ -129,18 +129,22 @@ console.log("main")
     fetchEventDetail();
   }, [eventId]);
 
-  const formatDateWithCurrentYear = (dateString) => {
-    if (!dateString) return null;
+  const formatDateWithCurrentYear = (originalDate) => {
+    const eventDate = new Date(originalDate);
+    if (isNaN(eventDate.getTime())) return "Invalid Date";
   
-    const eventDate = new Date(dateString);
-    if (isNaN(eventDate.getTime())) return null; // Check if date is valid
+    const today = new Date();
+    const currentYear = today.getFullYear();
   
-    eventDate.setFullYear(new Date().getFullYear());
+    // Set the event year to the current year
+    eventDate.setFullYear(currentYear);
   
-    return eventDate.toLocaleDateString("en-GB"); // "DD/MM/YYYY"
+    return eventDate.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+    }) + ` ${currentYear}`; // Append the current year at the end
   };
   
-
   const handleAccept = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -527,7 +531,7 @@ const handleClick = async (item) => {
         <div className="container mt-4">
           <div className="d-flex justify-content-between align-items-center">
                  <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)}/>
-            <h4 className="fw-bold">Event Details</h4>
+            <h4 className="fw-bold"  style={{marginBottom:'0px'}}>Event Details</h4>
             <div className="d-flex align-items-center">
               <FaShareAlt className="me-3 fs-5" />
             </div>
@@ -562,8 +566,7 @@ borderRadius: "10px"
           {events && (
             <div>
               <h2 className="mt-3 fw-bold">
-                {events.name}
-                {events.eventType}
+                {events.name}  {events.eventType}
               </h2>
               <ul className="nav nav-tabs mt-3">
                 {[
@@ -586,12 +589,12 @@ borderRadius: "10px"
                   ))}
               </ul>
 
-              <div className="tab-content p-3 mt-3 border rounded shadow-sm bg-white">
+              <div className="tab-content p-3 mt-3   bg-white">
                 {activeTab === "details" && (
                   <>
-                    <p className="d-flex align-items-center">
+                  <p className="d-flex align-items-center">
   <span className="bg-danger text-white p-2 rounded me-2">📅</span>
-  {events.formattedDate || "Date not available"}
+  {formatDateWithCurrentYear(events.displayDate) || "Date not available"}
 </p>
                     <p className="d-flex align-items-center">
                       <span className="bg-danger text-white p-2 rounded me-2">
@@ -602,7 +605,16 @@ borderRadius: "10px"
                     <p className="d-flex align-items-center">
                       {events.description}
                     </p>
+     
+                    <div className='about-event'>
+<div className='headersevent'>
+                    <h5>About event</h5>
+     </div>
+                    <div className='aboutevent2'>
+                    {event.description}
+                    </div>
 
+                    </div>
                     {invitationStatus === "Pending" ||
                     invitationStatus === "invited" || 
                     null ||
@@ -643,13 +655,14 @@ borderRadius: "10px"
                         justifyContent: "space-between",
                       }}
                     >
-                      <h5>🎁 Wishlist</h5>
-                      <h5>Show All</h5>
+                   
+                   
                     </div>
                     <div className="wishlist-items">
                       {wishlistItems.length > 0 ? (
                         wishlistItems.map((item) => (
                           <div key={item._id}>
+                          <h5>🎁 Wishlist</h5>
                             <div className="row">
                               <div
                                 className="col-lg-4 col-md-6 col-sm-12"
@@ -719,7 +732,22 @@ borderRadius: "10px"
                           </div>
                         ))
                       ) : (
-                        <p>No wishlist items found.</p>
+                        
+                        <div className="no-wishlist">
+                              <br/>
+                              <br/>
+                              <br/>
+                              <br/>
+                              <br/>
+                              <br/>
+                              <p>No wishlist found.</p>
+                              <br/>
+                              <br/>
+                              <br/>
+                              <br/>
+                              <br/>
+                              <br/>
+                           </div>
                       )}
                     </div>
                   </div>
@@ -745,7 +773,23 @@ borderRadius: "10px"
 
                       ))
                     ) : (
-                      <p>No guests invited yet</p>
+                      <div className=" mt-4">
+                         
+                         <div className="notinvited">
+                         <br/>
+                         <br/>
+                      
+             
+                        
+                           No Guest Invited
+                         </div>
+                     
+                         <br/>
+                 
+                         <br/>
+                         <br/>
+                         <br/>
+                         </div>
                     )}
                   </div>
                 )}

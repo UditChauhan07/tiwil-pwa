@@ -11,13 +11,19 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
     return null; // Return null if the event prop is undefined or not available
   }
   console.log(event);
+  const formatDate = (dateString) => {
+    if (!dateString) return "";
+    return new Date(dateString).toISOString().split("T")[0];
+  };
+  
 
   const [location, setLocation] = useState(event.location || "");
   const [description, setDescription] = useState(event.aboutEvent || "");
   const [image, setImage] = useState(event.newimage || event.image || "");
 
   const [name, setName] = useState(event.name || "");
-  const [eventDate, setDate] = useState(event.date || "");
+  const [eventDate, setDate] = useState(event.displayDate ? formatDate(event.displayDate) : "");
+
   const { eventId } = useParams();
 
   // Validation for null, undefined, and character limits
@@ -126,7 +132,12 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
       setName(e.target.value);
     }
   };
-
+  const handledescriptionchange = (e) => {
+    if (e.target.value.length <= 100) {
+      setDescription(e.target.value);  // Update the description state instead of name
+    }
+  };
+  
   const handleLocationChange = (e) => {
     if (e.target.value.length <= 30) {
       setLocation(e.target.value);
@@ -176,15 +187,16 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label className="fw-bold">About Event</Form.Label>
-            <Form.Control
-              type="text"
-              name="aboutEvent"
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              placeholder="Enter event description"
-            />
-          </Form.Group>
+  <Form.Label className="fw-bold">About Event</Form.Label>
+  <Form.Control
+    type="text"
+    name="aboutEvent"
+    value={description}
+    onChange={handledescriptionchange}
+    placeholder="Enter event description (max 100 characters)"
+  />
+</Form.Group>
+
 
           {/* Image Section */}
           <div className="upload-container" onClick={() => document.getElementById("fileInput").click()}>

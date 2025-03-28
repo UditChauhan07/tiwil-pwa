@@ -120,13 +120,6 @@ useEffect(() => {
     });
   };
 
-  const formatDateWithCurrentYear = (dateString) => {
-    if (!dateString) return "Invalid Date";
-    const eventDate = new Date(dateString);
-    const currentYear = new Date().getFullYear();
-    eventDate.setFullYear(currentYear);
-    return eventDate.toLocaleDateString("en-GB");
-  };
   const handleApplyFilters = (filters) => {
     setFilterData(filters);
     localStorage.setItem("filters", JSON.stringify(filters));
@@ -157,6 +150,28 @@ useEffect(() => {
   }
 
  
+  const formatDateWithCurrentYear = (formattedDate, originalDate, alternateDate) => {
+    const eventDate = new Date(originalDate || alternateDate);
+    if (isNaN(eventDate.getTime())) return "Invalid Date";
+  
+    const today = new Date();
+    const currentYear = today.getFullYear();
+  
+    // Set the event year to the current year
+    eventDate.setFullYear(currentYear);
+  
+    // If today's date is later than the event date, set the event year to the next year
+    if (today > eventDate) {
+      eventDate.setFullYear(currentYear + 1);
+    }
+  
+    return eventDate.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+  
   const getUpcomingBirthdayNumber = (eventDate) => {
     if (!eventDate) return null; // Handle invalid dates
 
@@ -237,27 +252,25 @@ const handlefavourite=()=>{
       {/* Search Bar */}
     
 
-  
-
       {/* Display Invitations */}
       {filteredInvitations.length > 0 ? (
         filteredInvitations.map((invitation, index) => (
           <div key={index} className="d-flex justify-content-center mb-3">
             <Card style={{ width: "100%", minWidth: "310px", border: "0.5px solid rgb(229 229 229)", borderRadius: "10px" }}>
               <div style={{ height: "150px" }}>
-                <Card variant="top" style={{ position: "relative", width: "100%", height: "162px" }}>
+                <Card variant="top" style={{ position: "relative", width: "100%", height: "162px",borderBottom:'unset' }}>
                   <img
                     src={invitation.event.newimage && invitation.event.newimage !== "null" ? `${process.env.REACT_APP_BASE_URL}/${invitation.event.newimage}` : `${process.env.PUBLIC_URL}/img/eventdefault.png`}
                     alt="Event"
-                    style={{ width: '100%', height: '162px' }}
+                    style={{ width: '100%', height: '162px',padding:'5px' }}
                     className="imgEvent"
                   />
                   <div
                     style={{
-                      borderRadius: "0px 6px 0px 0px",
+                      borderRadius: "0px 4px 0px 0px",
                       position: "absolute",
-                      top: "0px",
-                      right: "1px",
+                      top: "5px",
+                      right: "5px",
                       color: "white",
                       fontSize: "15px",
                       fontWeight: "bold",

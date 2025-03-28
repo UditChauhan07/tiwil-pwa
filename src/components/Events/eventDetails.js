@@ -140,34 +140,21 @@ const EventDetails = () => {
   };
 
 
-  const formatDateWithCurrentYear = (formattedDate, originalDate, alternateDate) => {
-    // Prioritize originalDate, fallback to alternateDate
-    const eventDate = new Date(originalDate || alternateDate);
-    if (isNaN(eventDate)) return "Invalid Date";
-
+  const formatDateWithCurrentYear = (originalDate) => {
+    const eventDate = new Date(originalDate);
+    if (isNaN(eventDate.getTime())) return "Invalid Date";
+  
     const today = new Date();
-
-    // Reset time to 00:00:00 for accurate comparison
-    today.setHours(0, 0, 0, 0);
-    eventDate.setHours(0, 0, 0, 0);
-
     const currentYear = today.getFullYear();
-
-    // Set event year to current year
+  
+    // Set the event year to the current year
     eventDate.setFullYear(currentYear);
-
-    // If the event has already passed this year, move it to next year
-    if (eventDate < today) {
-        eventDate.setFullYear(currentYear + 1);
-    }
-
-    // Return formatted date in "Month day, Year" format
+  
     return eventDate.toLocaleDateString("en-GB", {
-        day: "numeric",
-        month: "long",
-        year: "numeric",
-    });
-};
+      day: "numeric",
+      month: "long",
+    }) + ` ${currentYear}`; // Append the current year at the end
+  };
 
 
 
@@ -388,15 +375,15 @@ const EventDetails = () => {
                   </ul>
 
                   {/* Tab Content */}
-                  <div className="tab-content p-3 mt-3 bg-white">
+                  <div className="tab-content mt-3 bg-white">
                     {activeTab === "details" && (
                       <>
-                        <p className="d-flex align-items-center ">
+                        <p className="d-flex align-items-center gap-2">
                         <div className='calender-icon'>
                         <FontAwesomeIcon icon={faCalendarAlt} style={{ color: "#ff3366", fontSize: "20px" }} />
 </div>
-                      {event.formattedDate
-  ? formatDateWithCurrentYear(event.formattedDate, event.date)
+                      {event.displayDate
+  ? formatDateWithCurrentYear(event.displayDate, event.date,event.eventDate)
   : "Date not available"}
                         </p>
 
@@ -409,6 +396,16 @@ const EventDetails = () => {
                           {event.location || "Location not available"}
                         </p>
                     
+                    <div className='about-event'>
+<div className='headersevent'>
+                    <h5>About event</h5>
+     </div>
+                    <div className='aboutevent2'>
+                    {event.description}
+                    </div>
+
+                    </div>
+
                       </>
                     )}
 
@@ -524,7 +521,7 @@ const EventDetails = () => {
                               {guest.map((g) => (
                                 <li key={g._id}>
                                 <div key={g.id} className="d-flex gap-3 align-items-center">
-  <div style={{ height: '40px', width: '40px', borderRadius: '50%', overflow:'hidden'}}>
+  <div style={{ height: '40px', width: '40px', borderRadius: '50%'}}>
     <img
       src={g.profileImage ? `${process.env.REACT_APP_BASE_URL}/${g.profileImage}` : `${process.env.PUBLIC_URL}/img/defaultUser.png`}
       height="40px"
@@ -535,7 +532,10 @@ const EventDetails = () => {
   </div>
   <p style={{fontSize:'22px',marginBottom:'0px'}}>{g.name}</p>
   <div style={{display:'flex',justifyContent:'end',width:'30%'}}>
- <span style={{width:'1%'}}> {g.status}</span>
+ <span style={{ width: "100%",
+    display: "flex",
+    justifyContent: "end",
+    alignItems: "end"}}> {g.status}</span>
  </div>
 </div>
 
@@ -586,12 +586,19 @@ const EventDetails = () => {
                           
                           // Invite button only when there are no guests
                           <div className=" mt-4">
-                          <br/>
-                          <br/>
-                          <br/>
+                         
                           <div className="notinvited">
+                          <br/>
+                          <br/>
+                       
+              
+                         
                             No Guest Invited
                           </div>
+                      
+                          <br/>
+                  
+                          <br/>
                           <br/>
                           <br/>
                          
@@ -607,7 +614,11 @@ const EventDetails = () => {
                     {activeTab === "history" && (
   <div className="container mt-5">
     {surpriseData.length === 0 ? (
+      <div>
+      <br/>
       <p className=" p-history" >No History </p>
+      <br/>
+    </div>
     ) : (
       surpriseData.map((event, index) => (
         <div key={index} className="card mb-3 history-card">
