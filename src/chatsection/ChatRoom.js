@@ -81,7 +81,7 @@ const ChatRoom = () => {
   }, [page]);
 
   useEffect(() => {
-    socketRef.current = io("http://45.77.110.58:6543", {
+    socketRef.current = io("wss://45.77.110.58:6543", {
       query: { token },
       transports: ["websocket","polling"],
       withCredentials: true
