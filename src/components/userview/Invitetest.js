@@ -29,7 +29,24 @@ const InviteButton = ({ style, children }) => {
           const data = await response.json();
           localStorage.setItem("invited",data.data)
           Swal.fire({
-            title:`${data.message}`
+            title:'Your guest has invited!'
+            ,
+     
+        confirmButtonText: 'Ok got it!',
+        confirmButtonColor: '#FF3366',
+        customClass: {
+          popup: 'swal-popup',
+          title: 'swal-title',
+          confirmButton: 'swal-confirm-btn',
+          text: 'swal-text',
+        },
+        imageUrl:   `${process.env.PUBLIC_URL}/img/letsgo.png`, // Optional: Set a custom icon or use the default one
+        imageWidth: 80,
+        imageHeight: 80,
+        
+        padding: '2rem',
+        background: '#fff',
+      
           })
         }
       } catch (error) {
