@@ -109,7 +109,7 @@ const GroupDetails = () => {
                   src={
                     member.profileImage
                       ? `${process.env.REACT_APP_BASE_URL}${member.profileImage}`
-                      : `${PUBLIC_URL}/DefaultUser.png`
+                      : `${process.env.PUBLIC_URL}/DefaultUser.png`
                   }
               
                   className={styles.profileImage}
