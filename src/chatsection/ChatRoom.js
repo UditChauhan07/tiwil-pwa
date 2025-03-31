@@ -7,7 +7,7 @@ import styles from "./ChatRoom.module.css";
 import { FiArrowLeft, FiSearch } from "react-icons/fi";
 
 // Define your backend URL (replace with your actual backend URL)
-const SOCKET_SERVER_URL = "http://45.77.110.58:6543"  // Or your deployed backend URL
+const SOCKET_SERVER_URL = "https://45.77.110.58:8025"  // Or your deployed backend URL
 const BASE_API_URL = process.env.REACT_APP_BASE_URL; // Make sure this is set
 
 const ChatRoom = () => {
@@ -193,7 +193,7 @@ const ChatRoom = () => {
             socket.off("newMessage", handleNewMessage);
             socket.off("userJoined");
             socket.off("userLeft");
-            socket.disconnect();
+            // socket.disconnect();
             socketRef.current = null;
         };
 
