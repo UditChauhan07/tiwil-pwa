@@ -193,7 +193,7 @@ const ChatRoom = () => {
             socket.off("newMessage", handleNewMessage);
             socket.off("userJoined");
             socket.off("userLeft");
-            socket.disconnect();
+            // socket.disconnect();
             socketRef.current = null;
         };
 
