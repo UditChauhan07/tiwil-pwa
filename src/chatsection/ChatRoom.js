@@ -99,8 +99,13 @@ const ChatRoom = () => {
     }, [groupId, token, scrollToBottom]);
 
     useEffect(() => {
-        fetchMessages(1);
+        const interval = setInterval(() => {
+            fetchMessages(1);
+        }, 1000); // every second
+    
+        return () => clearInterval(interval); // cleanup on unmount
     }, [fetchMessages]);
+    
 
     useEffect(() => {
         if (!token || !groupId) return;
