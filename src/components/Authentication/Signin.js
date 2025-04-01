@@ -121,7 +121,7 @@ const SignInForm = () => {
       if (response.data.success) {
         localStorage.setItem("userId", response.data.userId);
 
-        // const userId = localStorage.getItem("userId");
+        const userId = localStorage.getItem("userId");
         // const fcmToken = await genToken();
 
         // const FCM_response = await axios.put(
@@ -148,13 +148,14 @@ const SignInForm = () => {
         //     console.error("IndexedDB error:", error);
         //   }
         // }
+        console.log("reached here uppr")
         const profileImagePath = response.data.user.profileImage;
      
         localStorage.setItem("profileImage", profileImagePath);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("profileStatus", JSON.stringify(response.data.profileStatus));
         localStorage.setItem("onboardingStatus", JSON.stringify(response.data.onboardingStatus));
-        
+        console.log("reached here")
         // Store data in IndexedDB
         const userData = {
           userId: response.data.userId,
@@ -164,8 +165,8 @@ const SignInForm = () => {
           onboardingStatus: response.data.onboardingStatus, // Assuming onboardingStatus is a boolean
         };
         
-        storeUserDataInIndexedDB(userData);
-
+        // storeUserDataInIndexedDB(userData);
+console.log("here")
 
 console.log('jai ho2')
         if (!response.data.profileStatus) {
