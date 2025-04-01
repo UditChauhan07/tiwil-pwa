@@ -106,7 +106,7 @@ const ChatRoom = () => {
         if (!token || !groupId) return;
 
         socketRef.current = io(SOCKET_SERVER_URL, {
-            query: { token },
+          
             transports: ["websocket", "polling"],
             withCredentials: true,
         });
