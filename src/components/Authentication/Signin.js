@@ -121,33 +121,33 @@ const SignInForm = () => {
       if (response.data.success) {
         localStorage.setItem("userId", response.data.userId);
 
-        const userId = localStorage.getItem("userId");
-        const fcmToken = await genToken();
+        // const userId = localStorage.getItem("userId");
+        // const fcmToken = await genToken();
 
-        const FCM_response = await axios.put(
-          `${process.env.REACT_APP_BASE_URL}/save-fcm-token`,
-          { userId, fcmToken }
-        );
-        async function storeUserDataInIndexedDB(userData) {
-          try {
-            const db = await openDatabase();
-            const transaction = db.transaction(["users"], "readwrite");
-            const store = transaction.objectStore("users");
-            store.put(userData);
+        // const FCM_response = await axios.put(
+        //   `${process.env.REACT_APP_BASE_URL}/save-fcm-token`,
+        //   { userId, fcmToken }
+        // );
+        // async function storeUserDataInIndexedDB(userData) {
+        //   try {
+        //     const db = await openDatabase();
+        //     const transaction = db.transaction(["users"], "readwrite");
+        //     const store = transaction.objectStore("users");
+        //     store.put(userData);
         
-            transaction.oncomplete = () => {
-              console.log("User data stored in IndexedDB");
-            };
+        //     transaction.oncomplete = () => {
+        //       console.log("User data stored in IndexedDB");
+        //     };
         
-            transaction.onerror = (event) => {
-              console.error("Error storing user data in IndexedDB:", event.target.errorCode);
-            };
+        //     transaction.onerror = (event) => {
+        //       console.error("Error storing user data in IndexedDB:", event.target.errorCode);
+        //     };
         
-            db.close();
-          } catch (error) {
-            console.error("IndexedDB error:", error);
-          }
-        }
+        //     db.close();
+        //   } catch (error) {
+        //     console.error("IndexedDB error:", error);
+        //   }
+        // }
         const profileImagePath = response.data.user.profileImage;
      
         localStorage.setItem("profileImage", profileImagePath);
