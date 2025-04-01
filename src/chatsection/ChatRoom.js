@@ -13,7 +13,7 @@ const ChatRoom = () => {
     const { groupId } = useParams();
     const eventId = groupId.replace("group_", "");
     const token = localStorage.getItem("token");
-    const [eventDetails, setEventDetails] = useState(null);
+    const [eventDetails, setEventDetails] = useState(null);     
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState("");
     const [loading, setLoading] = useState(true);
