@@ -280,6 +280,391 @@
 // };
 
 // export default SignUpForm;
+// import React, { useState, useEffect, useRef } from "react";
+// import { useNavigate, Link } from "react-router-dom";
+// import Swal from "sweetalert2";
+// import PhoneInput, { isPossiblePhoneNumber } from "react-phone-number-input";
+// import "react-phone-number-input/style.css";
+// import { Spinner } from "react-bootstrap";
+// import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+// import { initializeApp } from "firebase/app";
+
+// const firebaseConfiga = {
+//     apiKey: process.env.REACT_APP_FIREBASE_API_AUTH_KEY,
+//     authDomain: process.env.REACT_APP_FIREBASE_AUTH_AUTH_DOMAIN,
+//     projectId: process.env.REACT_APP_FIREBASE_AUTH_PROJECT_ID,
+//     storageBucket: process.env.REACT_APP_FIREBASE_AUTH_STORAGE_BUCKET,
+//     messagingSenderId: process.env.REACT_APP_FIREBASE_AUTH_MESSAGING_SENDER_ID,
+//     appId: process.env.REACT_APP_FIREBASE_AUTH_APP_ID,
+// };
+
+// const app = initializeApp(firebaseConfiga);
+// const authService = getAuth(app);
+// authService.languageCode = "en";
+
+// const SignUpForm = () => {
+//     const [formData, setFormData] = useState({
+//         fullName: "",
+//         phoneNumber: "",
+//         otp: "",
+//     });
+//     const [active, setActive] = useState("signup");
+//     const [isOtpSent, setIsOtpSent] = useState(false);
+//     const [loading, setLoading] = useState(false);
+//     const [confirmationResult, setConfirmationResult] = useState(null);
+//     const navigate = useNavigate();
+//     const [nameError, setNameError] = useState("");
+//     const [phoneError, setPhoneError] = useState("");
+//     const recaptchaVerifierRef = useRef(null);
+//     const recaptchaSetupComplete = useRef(false);
+
+//     const handleChange = (e) => {
+//         setFormData({ ...formData, [e.target.name]: e.target.value });
+//         if (e.target.name === 'fullName') {
+//             setNameError("");
+//         }
+//         if (e.target.name === 'otp') {
+//             // Optional: Clear OTP errors if any are added later
+//         }
+//     };
+
+//     const handlePhoneChange = (value) => {
+//         setFormData({ ...formData, phoneNumber: value });
+//         setPhoneError("");
+//     };
+
+//     const validateName = (name) => {
+//         const trimmedName = name.trim();
+//         if (!trimmedName) {
+//             setNameError("Full name is required.");
+//             return false;
+//         }
+//         const nameRegex = /^[A-Za-z\s]{3,25}$/;
+//         if (!nameRegex.test(trimmedName)) {
+//             setNameError("Name must be 3-25 characters long and contain only letters and spaces.");
+//             return false;
+//         }
+//         setNameError("");
+//         return true;
+//     };
+
+//     const validatePhoneNumber = (phone) => {
+//         if (!phone) {
+//             setPhoneError("Phone number is required.");
+//             return false;
+//         }
+//         if (!isPossiblePhoneNumber(phone)) {
+//             setPhoneError("Please enter a valid phone number.");
+//             return false;
+//         }
+//         setPhoneError("");
+//         return true;
+//     };
+
+//     useEffect(() => {
+//         if (recaptchaSetupComplete.current || !document.getElementById('recaptcha-container')) {
+//              return; // Don't run setup if already done or container not ready
+//         }
+
+//         try {
+//             console.log("Setting up reCAPTCHA...");
+//             const verifier = new RecaptchaVerifier(authService, 'recaptcha-container', {
+//                 'size': 'invisible',
+//                 'callback': (response) => {
+//                     console.log("reCAPTCHA solved, response:", response);
+//                 },
+//                 'expired-callback': () => {
+//                     console.warn("reCAPTCHA expired. Please try sending OTP again.");
+//                     Swal.fire("Warning", "reCAPTCHA expired. Please try sending OTP again.", "warning");
+//                     if (recaptchaVerifierRef.current) {
+//                         recaptchaVerifierRef.current.render().then(widgetId => {
+//                             recaptchaVerifierRef.current.reset(widgetId);
+//                         });
+//                     }
+//                 }
+//             });
+
+//             verifier.render().then((widgetId) => {
+//                 console.log("reCAPTCHA rendered with widget ID:", widgetId);
+//                 window.recaptchaWidgetId = widgetId;
+//             }).catch(err => {
+//                 console.error("Error rendering reCAPTCHA:", err);
+//                 Swal.fire("Error", "Could not initialize reCAPTCHA. Please refresh the page.", "error");
+//             });
+
+//             recaptchaVerifierRef.current = verifier;
+//             recaptchaSetupComplete.current = true;
+
+//         } catch (error) {
+//             console.error("Error setting up reCAPTCHA:", error);
+//             Swal.fire("Error", "Failed to set up phone sign-in. Please check your connection or configuration.", "error");
+//         }
+
+//         return () => {
+//             console.log("Cleaning up reCAPTCHA...");
+//             const container = document.getElementById('recaptcha-container');
+//             if (recaptchaVerifierRef.current) {
+//                 try {
+//                      recaptchaVerifierRef.current.clear();
+//                      console.log("reCAPTCHA instance cleared.");
+//                 } catch (error) {
+//                     console.error("Error clearing reCAPTCHA instance:", error);
+//                 }
+//                 recaptchaVerifierRef.current = null; // Remove reference
+//             }
+//              // Optional: Clear the container's content as well if needed
+//              if (container) {
+//                  container.innerHTML = '';
+//              }
+
+//             recaptchaSetupComplete.current = false;
+//         };
+    
+//     }, []); 
+
+
+//     const handleSendOTP = async (e) => {
+//         e.preventDefault();
+//         setNameError("");
+//         setPhoneError("");
+
+//         const isNameValid = validateName(formData.fullName);
+//         const isPhoneValid = validatePhoneNumber(formData.phoneNumber);
+
+//         if (!isNameValid || !isPhoneValid) {
+//             console.log("Validation failed.");
+//             return;
+//         }
+
+//         if (!recaptchaVerifierRef.current) {
+//             console.error("reCAPTCHA Verifier not initialized.");
+//             Swal.fire("Error", "reCAPTCHA not ready. Please wait a moment or refresh.", "error");
+//             return;
+//         }
+
+//         setLoading(true);
+//         const appVerifier = recaptchaVerifierRef.current;
+
+//         try {
+//             console.log(`Sending OTP to ${formData.phoneNumber}...`);
+//             const result = await signInWithPhoneNumber(authService, formData.phoneNumber, appVerifier);
+//             console.log("OTP sent successfully. Confirmation Result:", result);
+
+//             setConfirmationResult(result);
+//             setIsOtpSent(true);
+//             Swal.fire("Success", "OTP sent successfully!", "success");
+
+//         } catch (error) {
+//             console.error("Error sending OTP:", error);
+//             let errorMessage = "An error occurred while sending the OTP. Please try again.";
+//             if (error.code === 'auth/invalid-phone-number') {
+//                 errorMessage = "Invalid phone number format.";
+//                 setPhoneError(errorMessage);
+//             } else if (error.code === 'auth/too-many-requests') {
+//                 errorMessage = "Too many requests. Please try again later.";
+//             } else if (error.message.includes('reCAPTCHA')) {
+//                 errorMessage = "reCAPTCHA verification failed. Please try again.";
+//             }
+
+//             Swal.fire("Error", errorMessage, "error");
+
+//             if (window.recaptchaWidgetId && recaptchaVerifierRef.current) {
+//                try {
+//                    recaptchaVerifierRef.current.reset(window.recaptchaWidgetId);
+//                    console.log("reCAPTCHA reset after send error.");
+//                } catch (resetError) {
+//                    console.error("Failed to reset reCAPTCHA:", resetError);
+//                }
+//            }
+//         } finally {
+//             setLoading(false);
+//         }
+//     };
+
+//     const handleVerifyOTP = async (e) => {
+//         e.preventDefault();
+
+//         if (!formData.otp || formData.otp.length !== 6) {
+//              Swal.fire("Error", "Please enter a valid 6-digit OTP.", "error");
+//              return;
+//          }
+
+//         setLoading(true);
+
+//         if (!confirmationResult) {
+//             Swal.fire("Error", "Could not verify OTP. Please try sending the OTP again.", "error");
+//             setLoading(false);
+//             setIsOtpSent(false);
+//             return;
+//         }
+
+
+//         try {
+//             console.log(`Verifying OTP: ${formData.otp}`);
+//             const result = await confirmationResult.confirm(formData.otp);
+//             const user = result.user;
+//             console.log("Phone verification successful. User:", user);
+
+//             Swal.fire("Success", "Phone verified successfully!", "success");
+
+//             localStorage.setItem("fullName", formData.fullName);
+//             localStorage.setItem("phoneNumber", user.phoneNumber);
+
+//             navigate("/profile");
+
+//         } catch (error) {
+//             console.error("Error verifying OTP:", error);
+//              let errorMessage = "Failed to verify OTP. Please check the code and try again.";
+//              if(error.code === 'auth/invalid-verification-code') {
+//                  errorMessage = "Invalid OTP. Please try again.";
+//              } else if (error.code === 'auth/code-expired') {
+//                   errorMessage = "The OTP has expired. Please request a new one.";
+//                   setIsOtpSent(false);
+//                   setConfirmationResult(null);
+//              }
+//             Swal.fire("Error", errorMessage, "error");
+//         } finally {
+//             setLoading(false);
+//         }
+//     };
+
+//     return (
+//         <section className="page-controls py-5" style={{ backgroundColor: "#f8f9fa" }}>
+//             <div className="container d-flex flex-column align-items-center justify-content-center">
+//                 <div className="text-center mb-4">
+//                     <h2 className="font-weight-bold mt-2 mb-0" style={{ fontSize: "clamp(2rem, 5vw, 3rem)" }}>Welcome</h2>
+//                     <p className="text-muted">Connect with your friends today!</p>
+//                 </div>
+
+//                 <div className="d-flex justify-content-center mb-4">
+//                     <Link to="/signin" className="text-decoration-none">
+//                         <p
+//                             onClick={() => setActive("signin")}
+//                             style={{
+//                                 fontSize: "1rem",
+//                                 border: "1px solid rgb(216, 210, 210)",
+//                                 padding: "8px 24px",
+//                                 backgroundColor: active === "signin" ? "#ddd" : "transparent",
+//                                 fontWeight: active === "signin" ? "bold" : "600",
+//                                 cursor: "pointer",
+//                                 color: "#ff3366",
+//                                 margin: "0",
+//                                 borderTopLeftRadius: "5px",
+//                                 borderBottomLeftRadius: "5px",
+//                             }}
+//                         >
+//                             Sign in
+//                         </p>
+//                     </Link>
+//                     <p
+//                         onClick={() => setActive("signup")}
+//                         style={{
+//                             border: "1px solid rgb(238, 234, 234)",
+//                             padding: "8px 24px",
+//                             color: active === "signup" ? "#ffffff" : "#ff3366",
+//                             backgroundColor: active === "signup" ? "#ff3366" : "transparent",
+//                             fontWeight: "600",
+//                             cursor: "pointer",
+//                             margin: "0",
+//                             borderTopRightRadius: "5px",
+//                             borderBottomRightRadius: "5px",
+//                             borderLeft: "none",
+//                         }}
+//                     >
+//                         Sign up
+//                     </p>
+//                 </div>
+
+//                 <div className="w-100 p-4 rounded shadow-sm" style={{ maxWidth: "400px", backgroundColor: "#fff" }}>
+//                     {!isOtpSent ? (
+//                         <form onSubmit={handleSendOTP} noValidate>
+//                             <div className="mb-3">
+//                                 <label htmlFor="fullName" className="form-label">Full Name</label>
+//                                 <input
+//                                     type="text"
+//                                     className={`form-control ${nameError ? 'is-invalid' : ''}`}
+//                                     id="fullName"
+//                                     name="fullName"
+//                                     value={formData.fullName}
+//                                     onChange={handleChange}
+//                                     placeholder="Enter full name"
+//                                     required
+//                                     aria-describedby="nameErrorHelp"
+//                                 />
+//                                 {nameError && <div id="nameErrorHelp" className="invalid-feedback d-block">{nameError}</div>}
+//                             </div>
+
+//                             <div className="mb-3">
+//                                 <label htmlFor="phoneNumber" className="form-label">Phone</label>
+//                                 <PhoneInput
+//                                     international
+//                                     countryCallingCodeEditable={false}
+//                                     defaultCountry="IN"
+//                                     value={formData.phoneNumber}
+//                                     onChange={handlePhoneChange}
+//                                     className={`form-control ${phoneError ? 'is-invalid' : ''}`}
+//                                     placeholder="Enter phone number"
+//                                     id="phoneNumber"
+//                                     aria-describedby="phoneErrorHelp"
+//                                 />
+//                                 {phoneError && <div id="phoneErrorHelp" className="invalid-feedback d-block">{phoneError}</div>}
+//                             </div>
+
+//                             <div id="recaptcha-container" style={{ marginTop: '10px' }}></div>
+
+//                             <button type="submit" className="btn btn-danger w-100 py-2 mb-3" disabled={loading}>
+//                                 {loading ? (
+//                                     <>
+//                                         <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="me-2" />
+//                                         Sending OTP...
+//                                     </>
+//                                 ) : (
+//                                     "Send OTP"
+//                                 )}
+//                             </button>
+//                         </form>
+//                     ) : (
+//                         <form onSubmit={handleVerifyOTP} noValidate>
+//                             <div className="mb-3">
+//                                 <label htmlFor="otp" className="form-label">Enter OTP</label>
+//                                 <input
+//                                     type="text"
+//                                     inputMode="numeric"
+//                                     autoComplete="one-time-code"
+//                                     className="form-control"
+//                                     id="otp"
+//                                     name="otp"
+//                                     value={formData.otp}
+//                                     onChange={handleChange}
+//                                     placeholder="Enter 6-digit OTP"
+//                                     required
+//                                     maxLength="6"
+//                                 />
+//                             </div>
+
+//                             <button type="submit" className="btn btn-danger w-100 py-2 mb-3" disabled={loading}>
+//                                 {loading ? (
+//                                     <>
+//                                         <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="me-2" />
+//                                         Verifying OTP...
+//                                     </>
+//                                 ) : (
+//                                     "Verify OTP"
+//                                 )}
+//                             </button>
+//                         </form>
+//                     )}
+
+//                     <p className="text-center text-muted mt-3 mb-0">
+//                         Already registered? <Link to="/signin" className="text-primary fw-semibold text-decoration-none">Sign In</Link>
+//                     </p>
+//                 </div>
+//             </div>
+//         </section>
+//     );
+// };
+
+// export default SignUpForm;
 
 
 // import React, { useState, useEffect, useRef } from "react"; // Added useRef
