@@ -1,25 +1,24 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
-
-
 import Swal from "sweetalert2";
 
-// Firebase configuration
-const firebaseNotifConfig  = {
-  apiKey: "AIzaSyAS6KhuPYihmJFO0pCFt0wXjrx_abiLorY",
-  authDomain: "tiwil-718cf.firebaseapp.com",
-  projectId: "tiwil-718cf",
-  storageBucket: "tiwil-718cf.firebasestorage.app",
-  messagingSenderId: "385369508354",
-  appId: "1:385369508354:web:e99f7239e7a8671553b51b",
-  measurementId: "G-R6T8CV0QRG",
+const firebaseConfig = {
+  apiKey: process.env.REACT_APP_FIREBASE_API_AUTH_KEY,
+  authDomain: process.env.REACT_APP_FIREBASE_AUTH_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_FIREBASE_AUTH_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_FIREBASE_AUTH_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_FIREBASE_AUTH_MESSAGING_SENDER_ID,
+  appId: process.env.REACT_APP_FIREBASE_AUTH_APP_ID,
 };
 
-// Initialize Firebase
-const notifapp = initializeApp(firebaseNotifConfig ,"notifapp");
-const messaging = getMessaging(notifapp);
+// ✅ Initialize and export the shared app
+const firebaseApp = initializeApp(firebaseConfig);
+export default firebaseApp;
 
-// Register Service Worker
+const messaging = getMessaging(firebaseApp);
+
+// --- Notifications ---
+
 export const registerServiceWorker = async () => {
   if ("serviceWorker" in navigator) {
     try {
@@ -32,20 +31,15 @@ export const registerServiceWorker = async () => {
   }
 };
 
-// Request notification permission and generate token
 export const requestNotificationPermission = async () => {
   try {
-    // First, register service worker
     await registerServiceWorker();
-
-    // Request notification permission
     const permission = await Notification.requestPermission();
 
     if (permission === "granted") {
       const token = await getToken(messaging, {
-        vapidKey: "BBvmoxoOK-m3XEx1qr8aG6J8WvGWqOhJ94qPkXEbLEi_qx26vI1di6cMMNFiadRBqtCxsdnKKSMicBaRhnBMumQ",
+        vapidKey: process.env.REACT_APP_VAPID_KEY, // ✅ use env here too
       });
-
       console.log("FCM Token:", token);
       localStorage.setItem("PushToken", token);
       return token;
@@ -58,13 +52,12 @@ export const requestNotificationPermission = async () => {
 };
 
 export const genToken = async () => {
-  await registerServiceWorker(); // Ensure SW is registered before requesting token
-
+  await registerServiceWorker();
   const permission = await Notification.requestPermission();
   if (permission === "granted") {
     try {
-      const token = await getToken(messaging, { 
-        vapidKey: "BBvmoxoOK-m3XEx1qr8aG6J8WvGWqOhJ94qPkXEbLEi_qx26vI1di6cMMNFiadRBqtCxsdnKKSMicBaRhnBMumQ" 
+      const token = await getToken(messaging, {
+        vapidKey: process.env.REACT_APP_VAPID_KEY,
       });
       console.log("FCM Token:", token);
       localStorage.setItem("PushToken", token);
@@ -77,7 +70,6 @@ export const genToken = async () => {
   }
 };
 
-// Listener for foreground messages
 export const onMessageListener = () =>
   new Promise((resolve) => {
     onMessage(messaging, (payload) => {
