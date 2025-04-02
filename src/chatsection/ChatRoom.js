@@ -7,6 +7,7 @@ import styles from "./ChatRoom.module.css";
 import { FiArrowLeft } from "react-icons/fi";
 
 const SOCKET_SERVER_URL = " wss://tiwil.truet.net";
+
 const BASE_API_URL = process.env.REACT_APP_BASE_URL;
 
 const ChatRoom = () => {
