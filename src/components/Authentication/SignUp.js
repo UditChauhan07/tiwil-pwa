@@ -292,7 +292,7 @@ import PhoneInput, { isPossiblePhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { Spinner } from "react-bootstrap";
 // import { RecaptchaVerifier, signInWithPhoneNumber,getAuth } from "firebase/auth";
-import {auth,RecaptchaVerifier, signInWithPhoneNumber } from "C:/Users/Pushp battu/Desktop/Tiwil-V2/tiwil-pwa/src/firebase/firebase.js"
+import {auth,RecaptchaVerifier, signInWithPhoneNumber } from "../../firebase/firebase.js"
 import axios from "axios"
 
   const logo = `${process.env.PUBLIC_URL}/img/letsgo2.svg`;

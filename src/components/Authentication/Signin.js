@@ -7,7 +7,7 @@ import PhoneInput from "react-phone-number-input";
 import { Spinner } from "react-bootstrap";
 import "react-phone-number-input/style.css"; // Ensure you include the styles
 import { genToken } from '../../firebase/firebase';
-import {auth,RecaptchaVerifier, signInWithPhoneNumber } from "C:/Users/Pushp battu/Desktop/Tiwil-V2/tiwil-pwa/src/firebase/firebase.js"
+import {auth,RecaptchaVerifier, signInWithPhoneNumber } from "../../firebase/firebase"
 
 const SignInForm = () => {
   const [formData, setFormData] = useState({
