@@ -261,7 +261,7 @@ console.log('pool',poolCreator)
   return (
     <div className="container mt-3" style={{background:'#fff'}}>
       {/* Back Button */}
-      <div className="d-flex align-items-center mb-3">
+      <div className="d-flex align-items-center mb-3 gap-3">
         {/* <span
           className="me-2"
           onClick={() => navigate(-1)}
@@ -276,7 +276,7 @@ console.log('pool',poolCreator)
 
       {/* Image Section */}
       <div className="text-center" style={{ height:'300px',width:'100%'}}>
-      {/* Display the gift image dynamically with fallback to default image */}
+ 
       <img
   src={
     pool?.Image
@@ -292,17 +292,14 @@ console.log('pool',poolCreator)
   }}
 />
 
-      
-      {/* Display the gift name under the image */}
    
-    </div>
  
 
       <div className="d-flex align-items-center mt-4" style={{position:'absolute', top:'141px',backgroundColor:'#fff',borderRadius:'20px', opacity:'0.8',gap:'10px',margin:'12px',width:'80%',height:'20%'}}>
         {/* Circular Progress Bar */}
         <div className="d-flex justify-content-center my-4">
           
-          <div style={{ width: "50px", height: "70px" }}>
+          <div style={{ width: "50px", height: "70px",marginLeft: "5px"}}>
             <CircularProgressbar
               value={percentage}
               text={`${percentage.toFixed(0)}%`}
@@ -336,6 +333,20 @@ console.log('pool',poolCreator)
         </div>
    
       </div>
+
+      <div className="d-flex justify-content-between align-items-center mt-2" style={{width:'100%'}}>
+    <img
+      />
+      <div className="d-flex " style={{width:'100%' }}>
+        <div className="d-flex align-items-center" style={{gap:'10px'}}>
+         <div><h6>{pool.giftName}</h6></div>
+         <div></div>
+
+      </div>
+     </div> 
+    
+   
+    </div>
 
       {/* If pool is completed, show message and don't allow further contributions */}
       {isPoolCompleted ? (
@@ -393,13 +404,13 @@ console.log('pool',poolCreator)
       {/* Show My Contribution separately */}
       {myContribution && !isPoolCompleted && (
         <div className="mt-4">
-          <h6 className="fw-bold">My Contribution: &#8377;{myContribution.amount}</h6>
+          <h6 className="fw-bold d-flex justify-content-between" >My Contribution: &#8377;{myContribution.amount}</h6>
         </div>
       )}
 
       {/* Contributors List */}
       <div className="mt-4">
-        <h2>Contributors</h2>
+        <h2 style={{textAlign:'left'}}>Contributors</h2>
         {otherContributors.length > 0 ? (
           <>
             <ul>
@@ -450,6 +461,7 @@ console.log('pool',poolCreator)
         )}
         <InviteModal wishId={wishId} show={showInviteModal} poolId={poolId} setShow={setShowInviteModal} />
       </div>
+    </div>
     </div>
   );
 }
