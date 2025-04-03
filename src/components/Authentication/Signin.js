@@ -152,22 +152,19 @@ const SignInForm = () => {
   // }
   // When Verifying OTP
   const handleVerifyOTP = async () => {
-
-
     if (!confirmationResult) {
       Swal.fire("Error", "OTP session expired. Please send OTP again.", "error");
       return;
     }
-    setIsLoading(true); // Start loading
+  
+    setIsLoading(true);
     console.log("⏳ OTP verification started...");
-
-
+  
     try {
-
       const result = await confirmationResult.confirm(formData.otp);
-   
-    
+  
       Swal.fire("Success", "Phone verified successfully!", "success");
+  
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/login/verify-otp`,
         {
@@ -175,39 +172,36 @@ const SignInForm = () => {
           otp: formData.otp,
         }
       );
-
+  
       if (response.data.success) {
-        localStorage.setItem("userId", response.data.userId);
-
-        const userId = localStorage.getItem("userId");
-        const fcmToken = await genToken();
-
-        const FCM_response = await axios.put(
-          `${process.env.REACT_APP_BASE_URL}/save-fcm-token`,
-          { userId, fcmToken }
-        );
-        
-        console.log("reached here uppr")
+        const userId = response.data.userId;
+        localStorage.setItem("userId", userId);
+  
+        const fcmToken = localStorage.getItem("PushToken");
+  
+        // ✅ Conditionally call save-fcm-token if token exists
+        if (fcmToken) {
+          try {
+            await axios.put(`${process.env.REACT_APP_BASE_URL}/save-fcm-token`, {
+              userId,
+              fcmToken,
+            });
+            console.log("✅ FCM token saved successfully.");
+          } catch (err) {
+            console.error("❌ Error saving FCM token:", err);
+          }
+        } else {
+          console.log("ℹ️ No FCM token found. Skipping FCM token save.");
+        }
+  
+        // Set other localStorage items
         const profileImagePath = response.data.user.profileImage;
-     
         localStorage.setItem("profileImage", profileImagePath);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("profileStatus", JSON.stringify(response.data.profileStatus));
         localStorage.setItem("onboardingStatus", JSON.stringify(response.data.onboardingStatus));
-        console.log("reached here")
-        // Store data in IndexedDB
-        // const userData = {
-        //   userId: response.data.userId,
-        //   profileImage: profileImagePath,
-        //   token: response.data.token,
-        //   profileStatus: response.data.profileStatus, // Assuming profileStatus is a boolean
-        //   onboardingStatus: response.data.onboardingStatus, // Assuming onboardingStatus is a boolean
-        // };
-        
-      
-console.log("here")
-
-console.log('jai ho2')
+  
+        // Navigate based on profile status
         if (!response.data.profileStatus) {
           navigate("/profile");
         } else {
@@ -226,15 +220,16 @@ console.log('jai ho2')
       Swal.fire({
         icon: "error",
         title: "Error",
-        text: error.response?.data?.message || "Error verifying OTP.",
+        text: error?.response?.data?.message || "Error verifying OTP.",
         timer: 3000,
         showConfirmButton: false,
       });
     } finally {
-      setIsLoading(false); // Stop loading after OTP verification
+      setIsLoading(false);
       console.log("🔚 OTP verification process completed.");
     }
   };
+  
   if(isLoading) {
       return (
         <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "250px" }}>
