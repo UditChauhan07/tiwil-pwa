@@ -13,8 +13,34 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
   console.log(event);
   const formatDate = (dateString) => {
     if (!dateString) return "";
-    return new Date(dateString).toISOString().split("T")[0];
+  
+    const inputDate = new Date(dateString);
+    const today = new Date();
+  
+    const inputMonth = inputDate.getMonth();
+    const inputDay = inputDate.getDate();
+  
+    const todayMonth = today.getMonth();
+    const todayDay = today.getDate();
+  
+    let yearToUse;
+  
+    if (inputMonth > todayMonth || (inputMonth === todayMonth && inputDay > todayDay)) {
+      // Future in this year
+      yearToUse = today.getFullYear();
+    } else if (inputMonth === todayMonth && inputDay === todayDay) {
+      // Today
+      yearToUse = today.getFullYear();
+    } else {
+      // Already passed → next year
+      yearToUse = today.getFullYear() + 1;
+    }
+  
+    // Build date with corrected year
+    const formattedDate = new Date(yearToUse, inputMonth, inputDay);
+    return formattedDate.toISOString().split("T")[0]; // returns YYYY-MM-DD
   };
+  
   
 
   const [location, setLocation] = useState(event.location || "");
@@ -22,7 +48,7 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
   const [image, setImage] = useState(event.newimage || event.image || "");
 
   const [name, setName] = useState(event.name || "");
-  const [eventDate, setDate] = useState(event.displayDate ? formatDate(event.displayDate) : "");
+  const [eventDate, setDate] = useState(null);
 
   const { eventId } = useParams();
 

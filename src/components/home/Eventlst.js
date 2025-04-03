@@ -251,7 +251,16 @@ const abc=localStorage.getItem("filters");
               </div>
               <Card.Body>
                 <div className="d-flex">
-                  <Card.Title>{event.name}    {event.date && getUpcomingBirthdayNumber( event.date)} {event.eventType}</Card.Title>
+                <Card.Title>
+  {event.name}{" "}
+  {event.relation &&
+    
+    event.date &&
+    getUpcomingBirthdayNumber(event.date)
+  }{" "}
+  {event.eventType}
+</Card.Title>
+
                 </div>
                 <Card.Text className="d-flex justify-content-between" style={{ gap: "10px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between" }}>

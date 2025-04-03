@@ -239,14 +239,14 @@ const ChatRoom = () => {
                     <img
                         src={
                             eventDetails.eventImage
-                                ? `${BASE_API_URL}/${eventDetails.eventImage.replace(/\\/g, '/')}`
+                                ? `${BASE_API_URL}/${eventDetails.eventImage}`
                                 : `${process.env.PUBLIC_URL}/img/defaultUser.png`
                         }
                         alt={eventDetails.eventName}
                         className={styles.eventImage}
                         onError={(e) => e.target.src = `${process.env.PUBLIC_URL}/img/defaultUser.png`}
                     />
-                    <div className={styles.eventText}>
+                    <div className={styles.eventText}  onClick={() => navigate(`/group/${groupId}/details`)}>
                         <h2 style={{ fontSize: "15px", margin: "5px" }}>{eventDetails.eventName}</h2>
                         <p style={{ marginTop: "10px" }}>
                             {eventDetails.totalMembers ? `Members: ${eventDetails.totalMembers}` : 'Loading...'}

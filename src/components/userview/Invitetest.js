@@ -3,7 +3,7 @@ import Swal from 'sweetalert2';
 import { useParams } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
 
-const InviteButton = ({ style, children }) => {
+const InviteButton = ({ style, children ,onInviteSuccess }) => {
   const { eventId } = useParams();
   const token = localStorage.getItem('token');
 
@@ -48,7 +48,11 @@ const InviteButton = ({ style, children }) => {
         background: '#fff',
       
           })
+          if (onInviteSuccess) {
+            onInviteSuccess();
+          }
         }
+        
       } catch (error) {
         console.error("Error accessing contacts:", error);
       }
@@ -69,10 +73,10 @@ const styles = {
   button: {
     width: '75%',
     padding: "10px 20px",
-    backgroundColor: "#EE4266",
+    backgroundColor: "#dc3545",
     color: "white",
     border: "none",
-    borderRadius: "25px",
+    borderRadius: "15px",
     cursor: "pointer",
     display: "flex",  // Add flex display for text alignment
     justifyContent: "center", // Center text horizontally

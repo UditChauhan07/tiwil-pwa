@@ -1,15 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "../Events/Eventdetails.css";
-import {  FaShareAlt } from "react-icons/fa";
+import { FaShareAlt } from "react-icons/fa";
 import Navbar from "../Navbar/navbar";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-import {  useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Swal from "sweetalert2";
 import { Spinner } from "react-bootstrap";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
-
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 
 const EventDetails = () => {
   const [activeTab, setActiveTab] = useState("details");
@@ -20,14 +19,13 @@ const EventDetails = () => {
   const [guest, setGuest] = useState([]);
   const [owner, setOwner] = useState(null);
   const { eventId, phoneNumber } = useParams();
-   const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const currentUserId = localStorage.getItem("userId");
 
-
   useEffect(() => {
     console.log("Updated Owner State:", owner);
-}, [owner]); 
+  }, [owner]);
   useEffect(() => {
     const token = localStorage.getItem("token");
     const fetchGuest = async () => {
@@ -78,37 +76,35 @@ const EventDetails = () => {
 
   useEffect(() => {
     const fetchWishlist = async () => {
-        try {
-            const token = localStorage.getItem("token");
-            const response = await axios.get(
-                `${process.env.REACT_APP_BASE_URL}/wishlist/event/${eventId}`,
-                {
-                    headers: { Authorization: `Bearer ${token}` },
-                }
-            );
-            
-            const wishlistData = response.data.data || [];
-            setWishlistItems(wishlistData);
-console.log("main")
-            // Check if there's at least one item in the wishlist
-            const markedItem = wishlistData.find(item => item.markedBy?.userId);
+      try {
+        const token = localStorage.getItem("token");
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/wishlist/event/${eventId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
 
-            if (markedItem) {
-                console.log("Found Marked Owner ID:", markedItem.markedBy.userId);
-                setOwner(markedItem.markedBy.userId);
-            } else {
-                console.log("No MarkedBy User Found in Any Item");
-                setOwner(null);
-            }
-            
+        const wishlistData = response.data.data || [];
+        setWishlistItems(wishlistData);
+        console.log("main");
+        // Check if there's at least one item in the wishlist
+        const markedItem = wishlistData.find((item) => item.markedBy?.userId);
 
-        } catch (error) {
-            console.error("Error fetching wishlist:", error);
+        if (markedItem) {
+          console.log("Found Marked Owner ID:", markedItem.markedBy.userId);
+          setOwner(markedItem.markedBy.userId);
+        } else {
+          console.log("No MarkedBy User Found in Any Item");
+          setOwner(null);
         }
+      } catch (error) {
+        console.error("Error fetching wishlist:", error);
+      }
     };
 
     fetchWishlist();
-}, [eventId]);
+  }, [eventId]);
 
   useEffect(() => {
     const fetchEventDetail = async () => {
@@ -132,19 +128,21 @@ console.log("main")
   const formatDateWithCurrentYear = (originalDate) => {
     const eventDate = new Date(originalDate);
     if (isNaN(eventDate.getTime())) return "Invalid Date";
-  
+
     const today = new Date();
     const currentYear = today.getFullYear();
-  
+
     // Set the event year to the current year
     eventDate.setFullYear(currentYear);
-  
-    return eventDate.toLocaleDateString("en-GB", {
-      day: "numeric",
-      month: "long",
-    }) + ` ${currentYear}`; // Append the current year at the end
+
+    return (
+      eventDate.toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "long",
+      }) + ` ${currentYear}`
+    ); // Append the current year at the end
   };
-  
+
   const handleAccept = async () => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -248,331 +246,355 @@ console.log("main")
       );
     }
   };
-//   const handleClick = async (item) => {
-//     const isPurchasedOrMarked =
-//       item.status === "Purchased" || item.status === "Mark";
-//     const isUnmarked = item.status === "Unmark";
-//     const isPooling = item.status === "Pooling";
-//     const isOwner = owner === currentUserId;
-    
-//     const wishId = item._id;
-// console.log(owner)
-// console.log(currentUserId)
-// console.log(isOwner)
-//     if (isPurchasedOrMarked) {
-//       if (isOwner) {
-//         navigate(`/wishlistdetails/${item._id}`, { state: { item } });
-//       } else {
-//         Swal.fire({
-//           title: "Error",
-//           text: "Someone already wants to purchase it or it has already been purchased.",
-//           icon: "warning",
-//           confirmButtonColor: "#FF3366",
-//         });
-//       }
-//     } 
-    
-const handleClick = async (item) => {
-  const isPurchasedOrMarked =
-    item.status === "Purchased" || item.status === "Mark";
-  const isUnmarked = item.status === "Unmark";
-  const isPooling = item.status === "Pooling";
-  const isOwner = owner === currentUserId;
-  console.log(isOwner)
-  console.log(owner)
-  console.log(currentUserId)
-  const wishId = item._id;
+  //   const handleClick = async (item) => {
+  //     const isPurchasedOrMarked =
+  //       item.status === "Purchased" || item.status === "Mark";
+  //     const isUnmarked = item.status === "Unmark";
+  //     const isPooling = item.status === "Pooling";
+  //     const isOwner = owner === currentUserId;
 
-  if (isPurchasedOrMarked) {
-    if (isOwner) {
-      navigate(`/wishlistdetails/${item._id}`, { state: { item } });
-    } else {
-      Swal.fire({
-        title: "Error",
-        text: "Someone already wants to purchase it or it has already been purchased.",
-        icon: "warning",
-        confirmButtonColor: "#FF3366",
-      });
-    }
-  } else if (isUnmarked) {
-    navigate(`/wishlistdetails/${item._id}`, { state: { item } });
-  } else if (isPooling) {
-    try {
-      const token = localStorage.getItem("token");
+  //     const wishId = item._id;
+  // console.log(owner)
+  // console.log(currentUserId)
+  // console.log(isOwner)
+  //     if (isPurchasedOrMarked) {
+  //       if (isOwner) {
+  //         navigate(`/wishlistdetails/${item._id}`, { state: { item } });
+  //       } else {
+  //         Swal.fire({
+  //           title: "Error",
+  //           text: "Someone already wants to purchase it or it has already been purchased.",
+  //           icon: "warning",
+  //           confirmButtonColor: "#FF3366",
+  //         });
+  //       }
+  //     }
 
-      if (!token) {
-        console.error("No token found in localStorage");
+  const handleClick = async (item) => {
+    const isPurchasedOrMarked =
+      item.status === "Purchased" || item.status === "Mark";
+    const isUnmarked = item.status === "Unmark";
+    const isPooling = item.status === "Pooling";
+    const isOwner = owner === currentUserId;
+    console.log(isOwner);
+    console.log(owner);
+    console.log(currentUserId);
+    const wishId = item._id;
+
+    if (isPurchasedOrMarked) {
+      if (isOwner) {
+        navigate(`/wishlistdetails/${item._id}`, { state: { item } });
+      } else {
         Swal.fire({
-          title: "Unauthorized",
-          text: "You must be logged in to access this feature.",
+          title: "Error",
+          text: "Someone already wants to purchase it or it has already been purchased.",
+          icon: "warning",
+          confirmButtonColor: "#FF3366",
+        });
+      }
+    } else if (isUnmarked) {
+      navigate(`/wishlistdetails/${item._id}`, { state: { item } });
+    } else if (isPooling) {
+      try {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          console.error("No token found in localStorage");
+          Swal.fire({
+            title: "Unauthorized",
+            text: "You must be logged in to access this feature.",
+            icon: "error",
+            confirmButtonColor: "#FF3366",
+          });
+          return;
+        }
+
+        // Try to fetch the guest data to check if the user is invited
+        try {
+          if (isOwner) {
+            console.log(isOwner);
+            console.log(owner);
+            navigate(`/createpool/${item._id}`, { state: { item } });
+            return;
+          }
+
+          const { data } = await axios.get(
+            `${process.env.REACT_APP_BASE_URL}/guests/userId/${wishId}`,
+            {
+              headers: { Authorization: `Bearer ${token}` },
+            }
+          );
+
+          // If no invited users are found, show the contribution dialog
+          if (data.message === "No invited users found.") {
+            const ItemId = item._id;
+            Swal.fire({
+              title: "Access Denied",
+              text: "Invited users can contribute to the pool! Wanna contribute? Click OK.",
+              icon: "error",
+              showCancelButton: true,
+              confirmButtonText: "OK",
+              cancelButtonText: "Cancel",
+              confirmButtonColor: "#FF3366",
+            }).then(async (result) => {
+              if (result.isConfirmed) {
+                try {
+                  const response = await axios.post(
+                    `${process.env.REACT_APP_BASE_URL}/request`,
+                    { ItemId },
+                    {
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                          "token"
+                        )}`,
+                      },
+                    }
+                  );
+
+                  if (response.data.success) {
+                    Swal.fire({
+                      title: "Request Sent!",
+                      text: "Your request has been sent to the pool admin.",
+                      icon: "success",
+                      confirmButtonColor: "#FF3366",
+                    });
+                  } else {
+                    Swal.fire({
+                      title: "Error!",
+                      text: "There was an issue sending the request.",
+                      icon: "error",
+                      confirmButtonColor: "#FF3366",
+                    });
+                  }
+                } catch (error) {
+                  Swal.fire({
+                    title: "Error!",
+                    text: "An error occurred while sending the request.",
+                    icon: "error",
+                    confirmButtonColor: "#FF3366",
+                  });
+                }
+              }
+            });
+            return;
+          }
+
+          // If the user is invited, proceed to the pooling page
+          const isInvited = data.guestUsers?.some(
+            (user) => user.userId.toString() === currentUserId.toString()
+          );
+          if (isOwner) {
+            navigate(`/createpool/${item._id}`, { state: { item } });
+            return;
+          }
+
+          if (isInvited) {
+            navigate(`/createpool/${item._id}`, { state: { item } });
+          } else {
+            const ItemId = item._id;
+            Swal.fire({
+              title: "Access Denied",
+              text: "You need to be invited to contribute to the pool. Wanna contribute? Click OK.",
+              icon: "error",
+              showCancelButton: true,
+              confirmButtonText: "OK",
+              cancelButtonText: "Cancel",
+              confirmButtonColor: "#FF3366",
+            }).then(async (result) => {
+              if (result.isConfirmed) {
+                try {
+                  const response = await axios.post(
+                    `${process.env.REACT_APP_BASE_URL}/request`,
+                    { wishId },
+                    {
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                          "token"
+                        )}`,
+                      },
+                    }
+                  );
+
+                  if (response.data.success) {
+                    Swal.fire({
+                      title: "Request Sent!",
+                      text: "Your request has been sent to the pool admin.",
+                      icon: "success",
+                      confirmButtonColor: "#FF3366",
+                    });
+                  } else {
+                    Swal.fire({
+                      title: "Error!",
+                      text: "There was an issue sending the request.",
+                      icon: "error",
+                      confirmButtonColor: "#FF3366",
+                    });
+                  }
+                } catch (error) {
+                  Swal.fire({
+                    title: "Error!",
+                    text: "An error occurred while sending the request.",
+                    icon: "error",
+                    confirmButtonColor: "#FF3366",
+                  });
+                }
+              }
+            });
+          }
+        } catch (error) {
+          // Handle error if the resource isn't found (404) or any other issue
+          if (error.response && error.response.status === 404) {
+            const ItemId = item._id;
+            Swal.fire({
+              title: "Access Denied",
+              text: "Invited users can contribute to the pool! Wanna contribute? Click OK.",
+              icon: "error",
+              showCancelButton: true,
+              confirmButtonText: "OK",
+              cancelButtonText: "Cancel",
+              confirmButtonColor: "#FF3366",
+            }).then(async (result) => {
+              if (result.isConfirmed) {
+                try {
+                  const response = await axios.post(
+                    `${process.env.REACT_APP_BASE_URL}/request`,
+                    { wishId },
+                    {
+                      headers: {
+                        Authorization: `Bearer ${localStorage.getItem(
+                          "token"
+                        )}`,
+                      },
+                    }
+                  );
+
+                  if (response.data.success) {
+                    Swal.fire({
+                      title: "Request Sent!",
+                      text: "Your request has been sent to the pool admin.",
+                      icon: "success",
+                      confirmButtonColor: "#FF3366",
+                    });
+                  } else {
+                    Swal.fire({
+                      title: "Error!",
+                      text: "There was an issue sending the request.",
+                      icon: "error",
+                      confirmButtonColor: "#FF3366",
+                    });
+                  }
+                } catch (error) {
+                  Swal.fire({
+                    title: "Error!",
+                    text: "An error occurred while sending the request.",
+                    icon: "error",
+                    confirmButtonColor: "#FF3366",
+                  });
+                }
+              }
+            });
+          } else {
+            // Generic error handling if the error isn't 404
+            Swal.fire({
+              title: "Error!",
+              text: "An error occurred while checking guest status.",
+              icon: "error",
+              confirmButtonColor: "#FF3366",
+            });
+          }
+        }
+      } catch (error) {
+        console.error("Unexpected error:", error);
+        Swal.fire({
+          title: "Unexpected Error!",
+          text: "An unexpected error occurred. Please try again later.",
           icon: "error",
           confirmButtonColor: "#FF3366",
         });
-        return;
       }
-
-      
-
-      // Try to fetch the guest data to check if the user is invited
-      try {
-        if (isOwner) {
-          console.log(isOwner)
-          console.log(owner)
-          navigate(`/createpool/${item._id}`, { state: { item } });
-          return;
-        }
-        
-        const { data } = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}/guests/userId/${wishId}`,
-          {
-            headers: { Authorization: `Bearer ${token}` },
-          }
-        );
-
-        // If no invited users are found, show the contribution dialog
-        if (data.message === "No invited users found.") {
-          const ItemId = item._id;
-          Swal.fire({
-            title: "Access Denied",
-            text: "Invited users can contribute to the pool! Wanna contribute? Click OK.",
-            icon: "error",
-            showCancelButton: true,
-            confirmButtonText: "OK",
-            cancelButtonText: "Cancel",
-            confirmButtonColor: "#FF3366",
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              try {
-                const response = await axios.post(
-                  `${process.env.REACT_APP_BASE_URL}/request`,
-                  { ItemId },
-                  {
-                    headers: {
-                      Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                  }
-                );
-
-                if (response.data.success) {
-                  Swal.fire({
-                    title: "Request Sent!",
-                    text: "Your request has been sent to the pool admin.",
-                    icon: "success",
-                    confirmButtonColor: "#FF3366",
-                  });
-                } else {
-                  Swal.fire({
-                    title: "Error!",
-                    text: "There was an issue sending the request.",
-                    icon: "error",
-                    confirmButtonColor: "#FF3366",
-                  });
-                }
-              } catch (error) {
-                Swal.fire({
-                  title: "Error!",
-                  text: "An error occurred while sending the request.",
-                  icon: "error",
-                  confirmButtonColor: "#FF3366",
-                });
-              }
-            }
-          });
-          return;
-        }
-
-        // If the user is invited, proceed to the pooling page
-        const isInvited = data.guestUsers?.some(
-          (user) => user.userId.toString() === currentUserId.toString()
-        ); if (isOwner) {
-          navigate(`/createpool/${item._id}`, { state: { item } });
-          return;
-        }
-  
-
-        if (isInvited) {
-          navigate(`/createpool/${item._id}`, { state: { item } });
-        } else {
-          const ItemId = item._id;
-          Swal.fire({
-            title: "Access Denied",
-            text: "You need to be invited to contribute to the pool. Wanna contribute? Click OK.",
-            icon: "error",
-            showCancelButton: true,
-            confirmButtonText: "OK",
-            cancelButtonText: "Cancel",
-            confirmButtonColor: "#FF3366",
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              try {
-                const response = await axios.post(
-                  `${process.env.REACT_APP_BASE_URL}/request`,
-                  { wishId },
-                  {
-                    headers: {
-                      Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                  }
-                );
-
-                if (response.data.success) {
-                  Swal.fire({
-                    title: "Request Sent!",
-                    text: "Your request has been sent to the pool admin.",
-                    icon: "success",
-                    confirmButtonColor: "#FF3366",
-                  });
-                } else {
-                  Swal.fire({
-                    title: "Error!",
-                    text: "There was an issue sending the request.",
-                    icon: "error",
-                    confirmButtonColor: "#FF3366",
-                  });
-                }
-              } catch (error) {
-                Swal.fire({
-                  title: "Error!",
-                  text: "An error occurred while sending the request.",
-                  icon: "error",
-                  confirmButtonColor: "#FF3366",
-                });
-              }
-            }
-          });
-        }
-
-      } catch (error) {
-        // Handle error if the resource isn't found (404) or any other issue
-        if (error.response && error.response.status === 404) {
-          const ItemId = item._id;
-          Swal.fire({
-            title: "Access Denied",
-            text: "Invited users can contribute to the pool! Wanna contribute? Click OK.",
-            icon: "error",
-            showCancelButton: true,
-            confirmButtonText: "OK",
-            cancelButtonText: "Cancel",
-            confirmButtonColor: "#FF3366",
-          }).then(async (result) => {
-            if (result.isConfirmed) {
-              try {
-                const response = await axios.post(
-                  `${process.env.REACT_APP_BASE_URL}/request`,
-                  { wishId },
-                  {
-                    headers: {
-                      Authorization: `Bearer ${localStorage.getItem("token")}`,
-                    },
-                  }
-                );
-
-                if (response.data.success) {
-                  Swal.fire({
-                    title: "Request Sent!",
-                    text: "Your request has been sent to the pool admin.",
-                    icon: "success",
-                    confirmButtonColor: "#FF3366",
-                  });
-                } else {
-                  Swal.fire({
-                    title: "Error!",
-                    text: "There was an issue sending the request.",
-                    icon: "error",
-                    confirmButtonColor: "#FF3366",
-                  });
-                }
-              } catch (error) {
-                Swal.fire({
-                  title: "Error!",
-                  text: "An error occurred while sending the request.",
-                  icon: "error",
-                  confirmButtonColor: "#FF3366",
-                });
-              }
-            }
-          });
-        } else {
-          // Generic error handling if the error isn't 404
-          Swal.fire({
-            title: "Error!",
-            text: "An error occurred while checking guest status.",
-            icon: "error",
-            confirmButtonColor: "#FF3366",
-          });
-        }
-      }
-    } catch (error) {
-      console.error("Unexpected error:", error);
-      Swal.fire({
-        title: "Unexpected Error!",
-        text: "An unexpected error occurred. Please try again later.",
-        icon: "error",
-        confirmButtonColor: "#FF3366",
-      });
     }
+  };
+
+  if (isLoading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "200px",
+        }}
+      >
+        <Spinner
+          animation="border"
+          role="status"
+          style={{ width: "7rem", height: "7rem" }}
+        />
+      </div>
+    );
   }
-};
-
-         
- if(isLoading) {
-      return (
-        <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "200px" }}>
-          <Spinner animation="border" role="status" style={{ width: "7rem", height: "7rem" }} />
-        </div>
-      );
-    }
 
   return (
     <>
       <section className="page-controls">
-   
-   
         <div className="container mt-4">
           <div className="d-flex justify-content-between align-items-center">
-                 <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)}/>
-            <h4 className="fw-bold"  style={{marginBottom:'0px'}}>Event Details</h4>
+            <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate(-1)} />
+            <h4 className="fw-bold" style={{ marginBottom: "0px" }}>
+              Event Details
+            </h4>
             <div className="d-flex align-items-center">
               <FaShareAlt className="me-3 fs-5" />
             </div>
           </div>
 
-          <div className="mt-3" style={{width: "100%",
-height: "174px",
-top: "97px",
-left: "21px",
-borderRadius: "10px"
-}}>
-           <img
-  src={
-    events.newimage && events.newimage !== "null" && events.newimage !== `${process.env.REACT_APP_BASE_URL}/null`
-      ? `${process.env.REACT_APP_BASE_URL}/${events.newimage}` // Priority to newimage
-      : events.image && events.image !== "null" && events.image !== `${process.env.REACT_APP_BASE_URL}/null`
-      ? `${process.env.REACT_APP_BASE_URL}/${events.image}` // Fallback to image
-      : `${process.env.PUBLIC_URL}/img/eventdefault.png` // Default image
-  }
-  alt="event"
-  className="img-fluid"
-  style={{
-    width: "100%",
-    maxHeight: "174px",
-    objectFit: "cover",
-    borderRadius: "10px",
-  }}
-/>
-
+          <div
+            className="mt-3"
+            style={{
+              width: "100%",
+              height: "174px",
+              top: "97px",
+              left: "21px",
+              borderRadius: "10px",
+            }}
+          >
+            <img
+              src={
+                events.newimage &&
+                events.newimage !== "null" &&
+                events.newimage !== `${process.env.REACT_APP_BASE_URL}/null`
+                  ? `${process.env.REACT_APP_BASE_URL}/${events.newimage}` // Priority to newimage
+                  : events.image &&
+                    events.image !== "null" &&
+                    events.image !== `${process.env.REACT_APP_BASE_URL}/null`
+                  ? `${process.env.REACT_APP_BASE_URL}/${events.image}` // Fallback to image
+                  : `${process.env.PUBLIC_URL}/img/eventdefault.png` // Default image
+              }
+              alt="event"
+              className="img-fluid"
+              style={{
+                width: "100%",
+                maxHeight: "174px",
+                objectFit: "cover",
+                borderRadius: "10px",
+              }}
+            />
           </div>
 
           {events && (
             <div>
               <h2 className="mt-3 fw-bold">
-                {events.name}  {events.eventType}
+                {events.name} {events.eventType}
               </h2>
               <ul className="nav nav-tabs mt-3">
                 {[
                   "details",
-                  invitationStatus === "Accepted"||"accepted" ? "wishlist" : null,
-                  invitationStatus === "Accepted"||"accepted"  ? "guests" : null,
+                  invitationStatus === "Accepted" || "accepted"
+                    ? "wishlist"
+                    : null,
+                  invitationStatus === "Accepted" || "accepted"
+                    ? "guests"
+                    : null,
                 ]
                   .filter((tab) => tab !== null)
                   .map((tab) => (
@@ -592,10 +614,13 @@ borderRadius: "10px"
               <div className="tab-content  mt-3   bg-white">
                 {activeTab === "details" && (
                   <>
-                  <p className="d-flex align-items-center">
-  <span className="bg-danger text-white p-2 rounded me-2">📅</span>
-  {formatDateWithCurrentYear(events.displayDate) || "Date not available"}
-</p>
+                    <p className="d-flex align-items-center">
+                      <span className="bg-danger text-white p-2 rounded me-2">
+                        📅
+                      </span>
+                      {formatDateWithCurrentYear(events.displayDate) ||
+                        "Date not available"}
+                    </p>
                     <p className="d-flex align-items-center">
                       <span className="bg-danger text-white p-2 rounded me-2">
                         📍
@@ -605,18 +630,15 @@ borderRadius: "10px"
                     {/* <p className="d-flex align-items-center">
                       {events.description}
                     </p> */}
-     
-                    <div className='about-event'>
-<div className='headersevent'>
-                    <h5>About event</h5>
-     </div>
-                    <div className='aboutevent2'>
-                    {events.description}
-                    </div>
 
+                    <div className="about-event">
+                      <div className="headersevent">
+                        <h5>About event</h5>
+                      </div>
+                      <div className="aboutevent2">{events.description}</div>
                     </div>
                     {invitationStatus === "Pending" ||
-                    invitationStatus === "invited" || 
+                    invitationStatus === "invited" ||
                     null ||
                     !invitationStatus ? (
                       <div className="text-center mt-4 d-flex gap-1">
@@ -654,15 +676,12 @@ borderRadius: "10px"
                         display: "flex",
                         justifyContent: "space-between",
                       }}
-                    >
-                   
-                   
-                    </div>
+                    ></div>
                     <div className="wishlist-items">
                       {wishlistItems.length > 0 ? (
                         wishlistItems.map((item) => (
                           <div key={item._id}>
-                          <h5>🎁 Wishlist</h5>
+                            <h5>🎁 Wishlist</h5>
                             <div className="row">
                               <div
                                 className="col-lg-4 col-md-6 col-sm-12"
@@ -679,7 +698,7 @@ borderRadius: "10px"
                                 >
                                   <div
                                     className="card-img-top"
-                                    style={{ height: "226px" }}
+                                    style={{ height: "161px" }}
                                   >
                                     <div className="d-flex justify-content-end m-2">
                                       <p
@@ -732,22 +751,21 @@ borderRadius: "10px"
                           </div>
                         ))
                       ) : (
-                        
                         <div className="no-wishlist">
-                              <br/>
-                              <br/>
-                              <br/>
-                              <br/>
-                              <br/>
-                              <br/>
-                              <p>No wishlist found.</p>
-                              <br/>
-                              <br/>
-                              <br/>
-                              <br/>
-                              <br/>
-                              <br/>
-                           </div>
+                          <br />
+                          <br />
+                          <br />
+                          <br />
+                          <br />
+                          <br />
+                          <p>No wishlist found.</p>
+                          <br />
+                          <br />
+                          <br />
+                          <br />
+                          <br />
+                          <br />
+                        </div>
                       )}
                     </div>
                   </div>
@@ -755,41 +773,53 @@ borderRadius: "10px"
 
                 {activeTab === "guests" && (
                   <div>
-                
                     {guest.length > 0 ? (
                       guest.map((guest) => (
                         <div key={guest.id} className="d-flex gap-3">
-  <div style={{ height: '40px', width: '40px', borderRadius: '50%', overflow:'hidden'}}>
-    <img
-      src={guest.profileImage ? `${process.env.REACT_APP_BASE_URL}/${guest.profileImage}` : `${process.env.PUBLIC_URL}/img/defaultUser.png`}
-      height="40px"
-      width="40px"
-      style={{ border:'2px solid',borderRadius:'50%' }}
-      alt={guest.name ? `${guest.name}'s profile` : "Default User Profile"} // Added meaningful alt text
-    />
-  </div>
-  <p style={{fontSize:'22px'}}>{guest.name}</p>
-</div>
-
+                          <div
+                            style={{
+                              height: "40px",
+                              width: "40px",
+                              borderRadius: "50%",
+                              overflow: "hidden",
+                            }}
+                          >
+                            <img
+                              src={
+                                guest.profileImage
+                                  ? `${process.env.REACT_APP_BASE_URL}/${guest.profileImage}`
+                                  : `${process.env.PUBLIC_URL}/img/defaultUser.png`
+                              }
+                              height="40px"
+                              width="40px"
+                              style={{
+                                border: "2px solid",
+                                borderRadius: "50%",
+                              }}
+                              // alt={
+                              //   guest.name
+                              //     ? `${guest.name}'s profile`
+                              //     : "Default User Profile"
+                              // } // Added meaningful alt text
+                            />
+                          </div>
+                          <p style={{ fontSize: "22px" }}>{guest.name}</p>
+                        </div>
                       ))
                     ) : (
                       <div className=" mt-4">
-                         
-                         <div className="notinvited">
-                         <br/>
-                         <br/>
-                      
-             
-                        
-                           No Guest Invited
-                         </div>
-                     
-                         <br/>
-                 
-                         <br/>
-                         <br/>
-                         <br/>
-                         </div>
+                        <div className="notinvited">
+                          <br />
+                          <br />
+                          No Guest Invited
+                        </div>
+
+                        <br />
+
+                        <br />
+                        <br />
+                        <br />
+                      </div>
                     )}
                   </div>
                 )}

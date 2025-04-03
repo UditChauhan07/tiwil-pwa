@@ -116,6 +116,10 @@ button#mui-p-82252-T-1 {
   display:none !important;
 }
 
-.nav-tabs .nav-link {
+.nav-tabs  {
   border:none !important;
+}
+.nav-link.active {
+  /* your styles here */
+ border: none !important;
 }

@@ -283,7 +283,11 @@ const handlefavourite=()=>{
                 </Card>
               </div>
               <Card.Body>
-                <Card.Title>{invitation.event.name} {invitation.event.date && getUpcomingBirthdayNumber(invitation.event.date)}  {invitation.event.eventType}</Card.Title>
+                <Card.Title>{invitation.event.name}   {invitation.event.relation &&
+    
+    invitation.event.date &&
+    getUpcomingBirthdayNumber(invitation.event.date)
+  }{" "}  {invitation.event.eventType}</Card.Title>
                 <Card.Text className="d-flex justify-content-between" style={{ gap: "10px" }}>
                                  <div style={{ display: "flex", justifyContent: "space-between" }}>
                                    <img className="m-0.5" src={`${process.env.PUBLIC_URL}/img/calender.svg`} height="17px" alt="calendar" />

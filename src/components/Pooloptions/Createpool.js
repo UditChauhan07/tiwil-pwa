@@ -270,7 +270,7 @@ console.log('pool',poolCreator)
           &larr;
         </span> */}
 
-         <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)}/>
+         <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(`/invitation-detail/${pool.eventId}`)}/>
         <h5 className="mb-0">Pooling Wish</h5>
       </div>
 
@@ -295,7 +295,7 @@ console.log('pool',poolCreator)
    
  
 
-      <div className="d-flex align-items-center mt-4" style={{position:'absolute', top:'141px',backgroundColor:'#fff',borderRadius:'20px', opacity:'0.8',gap:'10px',margin:'12px',width:'80%',height:'20%'}}>
+      <div className="d-flex align-items-center mt-4" style={{position:'absolute', top:'180px',backgroundColor:'#fff',borderRadius:'20px', opacity:'0.8',gap:'10px',margin:'12px',width:'90%',height:'14%'}}>
         {/* Circular Progress Bar */}
         <div className="d-flex justify-content-center my-4">
           
@@ -311,11 +311,11 @@ console.log('pool',poolCreator)
               })}
             />
             
-               {pool.wishItem && pool.wishItem.length > 0 && (
+               {/* {pool.wishItem && pool.wishItem.length > 0 && (
         <h5 className="m-2">{pool.giftName}</h5>
         
       )}
-      
+       */}
           </div>
         </div>
 
@@ -452,7 +452,12 @@ console.log('pool',poolCreator)
         ) : (
           isOwner  &&(
             <button
-              style={{ padding: "6px", background: "#ff3366", borderRadius: "20px" }}
+              style={{ padding: "9px", background: "#ff3366", borderRadius: "20px",color: "white"
+   , position: "fixed"
+    ,right: "46px",
+    width: '78%',
+    border: "none" ,
+    bottom:'50px'}}
               onClick={() => setShowInviteModal(true)}
             >
               Invite Member
