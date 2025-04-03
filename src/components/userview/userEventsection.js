@@ -589,7 +589,7 @@ borderRadius: "10px"
                   ))}
               </ul>
 
-              <div className="tab-content p-3 mt-3   bg-white">
+              <div className="tab-content  mt-3   bg-white">
                 {activeTab === "details" && (
                   <>
                   <p className="d-flex align-items-center">
@@ -602,16 +602,16 @@ borderRadius: "10px"
                       </span>
                       {events.location || "Location not available"}
                     </p>
-                    <p className="d-flex align-items-center">
+                    {/* <p className="d-flex align-items-center">
                       {events.description}
-                    </p>
+                    </p> */}
      
                     <div className='about-event'>
 <div className='headersevent'>
                     <h5>About event</h5>
      </div>
                     <div className='aboutevent2'>
-                    {event.description}
+                    {events.description}
                     </div>
 
                     </div>
