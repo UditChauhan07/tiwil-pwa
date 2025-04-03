@@ -85,7 +85,7 @@ const Chatlist = () => {
       {/* 💬 Dynamic Group List */}
       <div className={styles.groupList}>
         {filteredGroups.length === 0 ? (
-          <p className={styles.noDataText}>Loading...</p>
+          <p className={styles.noDataText}>No chat Found</p>
         ) : (
           filteredGroups.map((group) => (
             <div

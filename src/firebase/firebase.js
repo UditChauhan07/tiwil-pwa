@@ -1,6 +1,10 @@
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken, onMessage } from "firebase/messaging";
+import {getAuth,RecaptchaVerifier, signInWithPhoneNumber } from 'firebase/auth'
 import Swal from "sweetalert2";
+import { onAuthStateChanged } from 'firebase/auth';
+import { connectAuthEmulator } from 'firebase/auth';
+
 
 const firebaseConfig = {
   apiKey: process.env.REACT_APP_FIREBASE_API_AUTH_KEY,
@@ -11,13 +15,25 @@ const firebaseConfig = {
   appId: process.env.REACT_APP_FIREBASE_AUTH_APP_ID,
 };
 
+console.log("Firebase Config:", firebaseConfig);
 // ✅ Initialize and export the shared app
-const firebaseApp = initializeApp(firebaseConfig);
-export default firebaseApp;
+const app = initializeApp(firebaseConfig);
 
-const messaging = getMessaging(firebaseApp);
+
+
+
+export const auth = getAuth(app);
+
+export const messaging = getMessaging(app);
 
 // --- Notifications ---
+onAuthStateChanged(auth, (user) => {
+  if (user) {
+    console.log("User is logged in:", user);
+  } else {
+    console.log("User is not logged in");
+  }
+});
 
 export const registerServiceWorker = async () => {
   if ("serviceWorker" in navigator) {
@@ -82,3 +98,4 @@ export const onMessageListener = () =>
       resolve(payload);
     });
   });
+export {RecaptchaVerifier, signInWithPhoneNumber }

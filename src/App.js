@@ -88,6 +88,7 @@ function App() {
                 Add to Home Screen
               </button>
             </div>
+
           )}
         </div>
 
@@ -115,6 +116,7 @@ function App() {
               <Route path="/familyinfo" element={<FamilyInformation />} />
               <Route path="/chats" element={<ChatList />} />
               <Route path="/chats/:groupId" element={<ChatRoom />} />
+              
               <Route path="/group/:groupId/details" element={<GroupDetails />} />
               <Route path="/surprise" element={<SurpriseReveal/>}/>
             <Route path="/filter" element={<EventsFilter/>}/>
@@ -124,6 +126,9 @@ function App() {
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Router>
+
+
+        <div id="recaptcha-container" style={{ marginTop: "10px" }}></div>
       </div>
     </>
   );

@@ -280,391 +280,404 @@
 // };
 
 // export default SignUpForm;
-// import React, { useState, useEffect, useRef } from "react";
-// import { useNavigate, Link } from "react-router-dom";
-// import Swal from "sweetalert2";
-// import PhoneInput, { isPossiblePhoneNumber } from "react-phone-number-input";
-// import "react-phone-number-input/style.css";
-// import { Spinner } from "react-bootstrap";
-// import { getAuth, RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
-// import { initializeApp } from "firebase/app";
 
-// const firebaseConfiga = {
-//     apiKey: process.env.REACT_APP_FIREBASE_API_AUTH_KEY,
-//     authDomain: process.env.REACT_APP_FIREBASE_AUTH_AUTH_DOMAIN,
-//     projectId: process.env.REACT_APP_FIREBASE_AUTH_PROJECT_ID,
-//     storageBucket: process.env.REACT_APP_FIREBASE_AUTH_STORAGE_BUCKET,
-//     messagingSenderId: process.env.REACT_APP_FIREBASE_AUTH_MESSAGING_SENDER_ID,
-//     appId: process.env.REACT_APP_FIREBASE_AUTH_APP_ID,
-// };
 
-// const app = initializeApp(firebaseConfiga);
-// const authService = getAuth(app);
-// authService.languageCode = "en";
 
-// const SignUpForm = () => {
-//     const [formData, setFormData] = useState({
-//         fullName: "",
-//         phoneNumber: "",
-//         otp: "",
-//     });
-//     const [active, setActive] = useState("signup");
-//     const [isOtpSent, setIsOtpSent] = useState(false);
-//     const [loading, setLoading] = useState(false);
-//     const [confirmationResult, setConfirmationResult] = useState(null);
-//     const navigate = useNavigate();
-//     const [nameError, setNameError] = useState("");
-//     const [phoneError, setPhoneError] = useState("");
-//     const recaptchaVerifierRef = useRef(null);
-//     const recaptchaSetupComplete = useRef(false);
 
-//     const handleChange = (e) => {
-//         setFormData({ ...formData, [e.target.name]: e.target.value });
-//         if (e.target.name === 'fullName') {
-//             setNameError("");
-//         }
-//         if (e.target.name === 'otp') {
-//             // Optional: Clear OTP errors if any are added later
-//         }
+
+import React, { useState, useEffect, useRef } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import Swal from "sweetalert2";
+import PhoneInput, { isPossiblePhoneNumber } from "react-phone-number-input";
+import "react-phone-number-input/style.css";
+import { Spinner } from "react-bootstrap";
+// import { RecaptchaVerifier, signInWithPhoneNumber,getAuth } from "firebase/auth";
+import {auth,RecaptchaVerifier, signInWithPhoneNumber } from "C:/Users/Pushp battu/Desktop/Tiwil-V2/tiwil-pwa/src/firebase/firebase.js"
+import axios from "axios"
+
+  const logo = `${process.env.PUBLIC_URL}/img/letsgo2.svg`;
+const SignUpForm = () => {
+
+  const [formData, setFormData] = useState({ fullName: "", phoneNumber: "", otp: "" });
+  const [active, setActive] = useState("signup");
+  const [isOtpSent, setIsOtpSent] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [confirmationResult, setConfirmationResult] = useState(null);
+  const navigate = useNavigate();
+  const [nameError, setNameError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
+  const recaptchaVerifierRef = useRef(null);
+  const recaptchaSetupComplete = useRef(false);
+  const logo = `${process.env.PUBLIC_URL}/img/letsgo2.svg`;
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+    if (e.target.name === "fullName") setNameError("");
+  };
+  console.log("auth",auth)
+
+  const handlePhoneChange = (value) => {
+    setFormData({ ...formData, phoneNumber: value });
+    setPhoneError("");
+  };
+
+  const validateName = (name) => {
+    const trimmed = name.trim();
+    if (!trimmed) {
+      setNameError("Full name is required.");
+      return false;
+    }
+    const nameRegex = /^[A-Za-z\s]{3,25}$/;
+    if (!nameRegex.test(trimmed)) {
+      setNameError("Name must be 3-25 characters long, only letters/spaces.");
+      return false;
+    }
+    return true;
+  };
+
+  const validatePhoneNumber = (phone) => {
+    if (!phone) {
+      setPhoneError("Phone number is required.");
+      return false;
+    }
+    if (!isPossiblePhoneNumber(phone)) {
+      setPhoneError("Please enter a valid phone number.");
+      return false;
+    }
+    return true;
+  };
+
+//   useEffect(() => {
+//     if (recaptchaSetupComplete.current || !document.getElementById("recaptcha-container")) return;
+  
+//     try {
+//       if (window.location.hostname === "localhost") {
+//         auth.settings.appVerificationDisabledForTesting = true; // Allow bypass for local testing
+//         console.log("✔ appVerificationDisabledForTesting enabled");
+//       }
+  
+//       const verifier = new RecaptchaVerifier(auth,"recaptcha-container", {
+//         size: "normal",
+//         callback: (response) => console.log("reCAPTCHA solved:", response),
+//         "expired-callback": () => Swal.fire("Warning", "reCAPTCHA expired. Try again.", "warning"),
+//       });
+  
+//       verifier.render().then((widgetId) => {
+//         console.log("reCAPTCHA rendered with ID:", widgetId);
+//         window.recaptchaWidgetId = widgetId;
+//       });
+  
+//       recaptchaVerifierRef.current = verifier;
+//       recaptchaSetupComplete.current = true;
+//     } catch (err) {
+//       console.error("❌ Error setting up reCAPTCHA:", err);
+//       Swal.fire("Error", "Failed to setup reCAPTCHA. Try refresh.", "error");
+//     }
+  
+//     return () => {
+//       if (window.recaptchaWidgetId && recaptchaVerifierRef.current) {
+//         recaptchaVerifierRef.current.clear();
+//         console.log("reCAPTCHA cleared after error.");
+//       }
+//       const container = document.getElementById("recaptcha-container");
+//       if (container) container.innerHTML = "";
+//       recaptchaSetupComplete.current = false;
 //     };
+//   }, []);
+  
 
-//     const handlePhoneChange = (value) => {
-//         setFormData({ ...formData, phoneNumber: value });
-//         setPhoneError("");
-//     };
+const handleSendOTP = async (e) => {
+  e.preventDefault();
 
-//     const validateName = (name) => {
-//         const trimmedName = name.trim();
-//         if (!trimmedName) {
-//             setNameError("Full name is required.");
-//             return false;
-//         }
-//         const nameRegex = /^[A-Za-z\s]{3,25}$/;
-//         if (!nameRegex.test(trimmedName)) {
-//             setNameError("Name must be 3-25 characters long and contain only letters and spaces.");
-//             return false;
-//         }
-//         setNameError("");
-//         return true;
-//     };
+  const isNameValid = validateName(formData.fullName);
+  const isPhoneValid = validatePhoneNumber(formData.phoneNumber);
 
-//     const validatePhoneNumber = (phone) => {
-//         if (!phone) {
-//             setPhoneError("Phone number is required.");
-//             return false;
-//         }
-//         if (!isPossiblePhoneNumber(phone)) {
-//             setPhoneError("Please enter a valid phone number.");
-//             return false;
-//         }
-//         setPhoneError("");
-//         return true;
-//     };
+  if (!isNameValid || !isPhoneValid) return;
 
-//     useEffect(() => {
-//         if (recaptchaSetupComplete.current || !document.getElementById('recaptcha-container')) {
-//              return; // Don't run setup if already done or container not ready
-//         }
+  setLoading(true);
 
-//         try {
-//             console.log("Setting up reCAPTCHA...");
-//             const verifier = new RecaptchaVerifier(authService, 'recaptcha-container', {
-//                 'size': 'invisible',
-//                 'callback': (response) => {
-//                     console.log("reCAPTCHA solved, response:", response);
-//                 },
-//                 'expired-callback': () => {
-//                     console.warn("reCAPTCHA expired. Please try sending OTP again.");
-//                     Swal.fire("Warning", "reCAPTCHA expired. Please try sending OTP again.", "warning");
-//                     if (recaptchaVerifierRef.current) {
-//                         recaptchaVerifierRef.current.render().then(widgetId => {
-//                             recaptchaVerifierRef.current.reset(widgetId);
-//                         });
-//                     }
-//                 }
-//             });
+  try {
+    const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/signup/send-otp`, {
+      fullName: formData.fullName,
+      phoneNumber: formData.phoneNumber,
+    });
 
-//             verifier.render().then((widgetId) => {
-//                 console.log("reCAPTCHA rendered with widget ID:", widgetId);
-//                 window.recaptchaWidgetId = widgetId;
-//             }).catch(err => {
-//                 console.error("Error rendering reCAPTCHA:", err);
-//                 Swal.fire("Error", "Could not initialize reCAPTCHA. Please refresh the page.", "error");
-//             });
+    if (!response.data.success) {
+      Swal.fire("Error", response.data.message, "error");
+      return;
+    }
 
-//             recaptchaVerifierRef.current = verifier;
-//             recaptchaSetupComplete.current = true;
+    // Step 1: Initialize reCAPTCHA (invisible)
+    if (!window.recaptchaVerifier) {
+      window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+        size: 'invisible',
+        callback: (response) => {
+          console.log('✔ reCAPTCHA solved:', response);
+        },
+        'expired-callback': () => {
+          console.warn('⚠ reCAPTCHA expired');
+          Swal.fire("Warning", "reCAPTCHA expired. Please try again.", "warning");
+        },
+      });
+    }
 
-//         } catch (error) {
-//             console.error("Error setting up reCAPTCHA:", error);
-//             Swal.fire("Error", "Failed to set up phone sign-in. Please check your connection or configuration.", "error");
-//         }
+    // Step 2: Add timeout for reCAPTCHA rendering
+    const timeout = 10000; // 10 seconds
+    const renderRecaptcha = new Promise((resolve, reject) => {
+      window.recaptchaVerifier.render().then(resolve).catch(reject);
+    });
 
-//         return () => {
-//             console.log("Cleaning up reCAPTCHA...");
-//             const container = document.getElementById('recaptcha-container');
-//             if (recaptchaVerifierRef.current) {
-//                 try {
-//                      recaptchaVerifierRef.current.clear();
-//                      console.log("reCAPTCHA instance cleared.");
-//                 } catch (error) {
-//                     console.error("Error clearing reCAPTCHA instance:", error);
-//                 }
-//                 recaptchaVerifierRef.current = null; // Remove reference
-//             }
-//              // Optional: Clear the container's content as well if needed
-//              if (container) {
-//                  container.innerHTML = '';
-//              }
+    const timeoutPromise = new Promise((_, reject) =>
+      setTimeout(() => reject("reCAPTCHA timeout"), timeout)
+    );
 
-//             recaptchaSetupComplete.current = false;
-//         };
-    
-//     }, []); 
+    // Step 3: Try to render reCAPTCHA
+    try {
+      await Promise.race([renderRecaptcha, timeoutPromise]);
+      console.log("✅ reCAPTCHA rendered successfully.");
+    } catch (error) {
+      const msg = error === "reCAPTCHA timeout"
+        ? "reCAPTCHA timed out. Please try again."
+        : "Error rendering reCAPTCHA.";
+      console.error("❌", msg, error);
+      Swal.fire("Error", msg, "error");
+      setLoading(false);
+      return;
+    }
 
+    // Step 4: Request Firebase to send OTP
+    const confirmation = await signInWithPhoneNumber(
+      auth,
+      formData.phoneNumber,
+      window.recaptchaVerifier
+    );
 
-//     const handleSendOTP = async (e) => {
-//         e.preventDefault();
-//         setNameError("");
-//         setPhoneError("");
+    // Step 5: Store confirmation result
+    setConfirmationResult(confirmation);
+    setIsOtpSent(true);
+    Swal.fire("Success", "OTP sent successfully!", "success");
+  } catch (error) {
+    console.error("❌ Error sending OTP:", error);
 
-//         const isNameValid = validateName(formData.fullName);
-//         const isPhoneValid = validatePhoneNumber(formData.phoneNumber);
+    let msg = "Failed to send OTP.";
+    if (error.code === "auth/invalid-phone-number") msg = "Invalid phone number.";
+    if (error.code === "auth/too-many-requests") msg = "Too many requests. Try again later.";
 
-//         if (!isNameValid || !isPhoneValid) {
-//             console.log("Validation failed.");
-//             return;
-//         }
+    Swal.fire("Error", msg, "error");
 
-//         if (!recaptchaVerifierRef.current) {
-//             console.error("reCAPTCHA Verifier not initialized.");
-//             Swal.fire("Error", "reCAPTCHA not ready. Please wait a moment or refresh.", "error");
-//             return;
-//         }
-
-//         setLoading(true);
-//         const appVerifier = recaptchaVerifierRef.current;
-
-//         try {
-//             console.log(`Sending OTP to ${formData.phoneNumber}...`);
-//             const result = await signInWithPhoneNumber(authService, formData.phoneNumber, appVerifier);
-//             console.log("OTP sent successfully. Confirmation Result:", result);
-
-//             setConfirmationResult(result);
-//             setIsOtpSent(true);
-//             Swal.fire("Success", "OTP sent successfully!", "success");
-
-//         } catch (error) {
-//             console.error("Error sending OTP:", error);
-//             let errorMessage = "An error occurred while sending the OTP. Please try again.";
-//             if (error.code === 'auth/invalid-phone-number') {
-//                 errorMessage = "Invalid phone number format.";
-//                 setPhoneError(errorMessage);
-//             } else if (error.code === 'auth/too-many-requests') {
-//                 errorMessage = "Too many requests. Please try again later.";
-//             } else if (error.message.includes('reCAPTCHA')) {
-//                 errorMessage = "reCAPTCHA verification failed. Please try again.";
-//             }
-
-//             Swal.fire("Error", errorMessage, "error");
-
-//             if (window.recaptchaWidgetId && recaptchaVerifierRef.current) {
-//                try {
-//                    recaptchaVerifierRef.current.reset(window.recaptchaWidgetId);
-//                    console.log("reCAPTCHA reset after send error.");
-//                } catch (resetError) {
-//                    console.error("Failed to reset reCAPTCHA:", resetError);
-//                }
-//            }
-//         } finally {
-//             setLoading(false);
-//         }
-//     };
-
-//     const handleVerifyOTP = async (e) => {
-//         e.preventDefault();
-
-//         if (!formData.otp || formData.otp.length !== 6) {
-//              Swal.fire("Error", "Please enter a valid 6-digit OTP.", "error");
-//              return;
-//          }
-
-//         setLoading(true);
-
-//         if (!confirmationResult) {
-//             Swal.fire("Error", "Could not verify OTP. Please try sending the OTP again.", "error");
-//             setLoading(false);
-//             setIsOtpSent(false);
-//             return;
-//         }
+    if (window.recaptchaVerifier) {
+      try {
+        window.recaptchaVerifier.clear();
+        window.recaptchaVerifier = null;
+      } catch (err) {
+        console.error("Error clearing reCAPTCHA:", err);
+      }
+    }
+  } finally {
+    setLoading(false);
+  }
+};
 
 
-//         try {
-//             console.log(`Verifying OTP: ${formData.otp}`);
-//             const result = await confirmationResult.confirm(formData.otp);
-//             const user = result.user;
-//             console.log("Phone verification successful. User:", user);
 
-//             Swal.fire("Success", "Phone verified successfully!", "success");
+  
+const handleVerifyOTP = async (e) => {
+  e.preventDefault();
 
-//             localStorage.setItem("fullName", formData.fullName);
-//             localStorage.setItem("phoneNumber", user.phoneNumber);
+  // Step 1: Validate OTP
+  if (!formData.otp || formData.otp.length !== 6) {
+    Swal.fire("Error", "Enter a valid 6-digit OTP", "error");
+    return;
+  }
 
-//             navigate("/profile");
+  // Step 2: Check confirmation result exists
+  if (!confirmationResult) {
+    Swal.fire("Error", "OTP session expired. Please send OTP again.", "error");
+    return;
+  }
 
-//         } catch (error) {
-//             console.error("Error verifying OTP:", error);
-//              let errorMessage = "Failed to verify OTP. Please check the code and try again.";
-//              if(error.code === 'auth/invalid-verification-code') {
-//                  errorMessage = "Invalid OTP. Please try again.";
-//              } else if (error.code === 'auth/code-expired') {
-//                   errorMessage = "The OTP has expired. Please request a new one.";
-//                   setIsOtpSent(false);
-//                   setConfirmationResult(null);
-//              }
-//             Swal.fire("Error", errorMessage, "error");
-//         } finally {
-//             setLoading(false);
-//         }
-//     };
+  setLoading(true);
 
-//     return (
-//         <section className="page-controls py-5" style={{ backgroundColor: "#f8f9fa" }}>
-//             <div className="container d-flex flex-column align-items-center justify-content-center">
-//                 <div className="text-center mb-4">
-//                     <h2 className="font-weight-bold mt-2 mb-0" style={{ fontSize: "clamp(2rem, 5vw, 3rem)" }}>Welcome</h2>
-//                     <p className="text-muted">Connect with your friends today!</p>
-//                 </div>
+  try {
+    const result = await confirmationResult.confirm(formData.otp);
+    localStorage.setItem("fullName", formData.fullName);
+    localStorage.setItem("phoneNumber", result.user.phoneNumber);
+  
+    Swal.fire("Success", "Phone verified successfully!", "success");
+  
+    const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/signup/verify-otp`, {
+      fullName: formData.fullName,
+      phoneNumber: formData.phoneNumber,
+      otp: formData.otp,
+    });
+  
+    console.log("✅ Backend Response:", response.data);
+  
+    if (response.data?.success) {
+      const user = response.data?.user;
+      const token = response.data?.token;
+      const userId = response.data?.userId;
+  
+      if (!user || !token || !userId) {
+        throw new Error("Missing user, token, or userId in response");
+      }
+  
+      Swal.fire({
+        title: `<div style="font-size: 2rem; color: #FF3366; font-weight: bold;">Dear ${user.fullName}</div>`,
+        text: "Account Created Successfully",
+        confirmButtonText: "Let's Go",
+        confirmButtonColor: "#FF3366",
+        imageUrl: logo,
+        imageWidth: 80,
+        imageHeight: 80,
+      });
+  
+      localStorage.setItem("fullName", user.fullName || "");
+      localStorage.setItem("phoneNumber", user.phoneNumber || "");
+      localStorage.setItem("token", token);
+      localStorage.setItem("userId", userId);
+      localStorage.setItem("profileStatus", false);
+      localStorage.setItem("onboardingStatus", false);
+  
+      // Optional: Save to IndexedDB
+     
+  
+      navigate("/profile");
+    } else {
+      Swal.fire("Error", response.data?.message || "Verification failed", "error");
+    }
+  } catch (error) {
+    let msg = "Failed to verify OTP.";
+    if (error.code === "auth/invalid-verification-code") {
+      msg = "Invalid OTP.";
+    } else if (error.code === "auth/code-expired") {
+      msg = "OTP expired. Please try again.";
+    } else if (error.response?.data?.message) {
+      msg = error.response.data.message;
+    } else {
+      msg = error.message || msg;
+    }
+  
+    Swal.fire("Error", msg, "error");
+    setIsOtpSent(false);
+  } finally {
+    setLoading(false);
+  }
+}  
 
-//                 <div className="d-flex justify-content-center mb-4">
-//                     <Link to="/signin" className="text-decoration-none">
-//                         <p
-//                             onClick={() => setActive("signin")}
-//                             style={{
-//                                 fontSize: "1rem",
-//                                 border: "1px solid rgb(216, 210, 210)",
-//                                 padding: "8px 24px",
-//                                 backgroundColor: active === "signin" ? "#ddd" : "transparent",
-//                                 fontWeight: active === "signin" ? "bold" : "600",
-//                                 cursor: "pointer",
-//                                 color: "#ff3366",
-//                                 margin: "0",
-//                                 borderTopLeftRadius: "5px",
-//                                 borderBottomLeftRadius: "5px",
-//                             }}
-//                         >
-//                             Sign in
-//                         </p>
-//                     </Link>
-//                     <p
-//                         onClick={() => setActive("signup")}
-//                         style={{
-//                             border: "1px solid rgb(238, 234, 234)",
-//                             padding: "8px 24px",
-//                             color: active === "signup" ? "#ffffff" : "#ff3366",
-//                             backgroundColor: active === "signup" ? "#ff3366" : "transparent",
-//                             fontWeight: "600",
-//                             cursor: "pointer",
-//                             margin: "0",
-//                             borderTopRightRadius: "5px",
-//                             borderBottomRightRadius: "5px",
-//                             borderLeft: "none",
-//                         }}
-//                     >
-//                         Sign up
-//                     </p>
-//                 </div>
+  
+    return (
+    <section className="page-controls py-5" >
+      <div className="container d-flex flex-column align-items-center justify-content-center">
+       
 
-//                 <div className="w-100 p-4 rounded shadow-sm" style={{ maxWidth: "400px", backgroundColor: "#fff" }}>
-//                     {!isOtpSent ? (
-//                         <form onSubmit={handleSendOTP} noValidate>
-//                             <div className="mb-3">
-//                                 <label htmlFor="fullName" className="form-label">Full Name</label>
-//                                 <input
-//                                     type="text"
-//                                     className={`form-control ${nameError ? 'is-invalid' : ''}`}
-//                                     id="fullName"
-//                                     name="fullName"
-//                                     value={formData.fullName}
-//                                     onChange={handleChange}
-//                                     placeholder="Enter full name"
-//                                     required
-//                                     aria-describedby="nameErrorHelp"
-//                                 />
-//                                 {nameError && <div id="nameErrorHelp" className="invalid-feedback d-block">{nameError}</div>}
-//                             </div>
+        <div className="text-center">
+          <img src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" height="150px" width="200px" />
+          <h2 className="font-weight-bold mt-2 mb-0" style={{ fontSize: "48px" }}>Welcome</h2>
+         <p className="text-muted">Connect with your friends today!</p>
+         </div>
+        <div className="d-flex justify-content-center">
+          <Link to="/signin">
+             <p
+              onClick={() => setActive("signin")}
+              style={{
+                fontSize: "1rem",
+                border: "1px solid rgb(216, 210, 210)",
+                padding: "2px 24px 0px 30px",
+                backgroundColor: active === "signin" ? "#ddd" : "transparent",
+                fontWeight: active === "signin" ? "bold" : "600",
+                cursor: "pointer",
+                color: "#ff3366",
+              }}
+            >
+              Sign in
+            </p>
+          </Link>
+          <Link to="/signup">
+            <p
+              onClick={() => setActive("signup")}
+              style={{
+                border: "1px solid rgb(238, 234, 234)",
+                padding: "2px 24px 0px 30px",
+                color: active === "signup" ? "#ffffff" : "#ff3366",
+                backgroundColor: active === "signup" ? "#ff3366" : "transparent",
+                fontWeight: "600",
+                cursor: "pointer",
+              }}
+            >
+              Sign up
+            </p>
+          </Link>
+        </div>
+        <div className="w-100 p-4 rounded shadow-sm" style={{ maxWidth: "400px", backgroundColor: "#fff" }}>
+          {!isOtpSent ? (
+            <form onSubmit={handleSendOTP} noValidate>
+              <div className="mb-3">
+                <label htmlFor="fullName" className="form-label">Full Name</label>
+                <input
+                  type="text"
+                  className={`form-control ${nameError ? "is-invalid" : ""}`}
+                  id="fullName"
+                  name="fullName"
+                  value={formData.fullName}
+                  onChange={handleChange}
+                  required
+                />
+                {nameError && <div className="invalid-feedback d-block">{nameError}</div>}
+              </div>
+              <div id="recaptcha-container"></div>
 
-//                             <div className="mb-3">
-//                                 <label htmlFor="phoneNumber" className="form-label">Phone</label>
-//                                 <PhoneInput
-//                                     international
-//                                     countryCallingCodeEditable={false}
-//                                     defaultCountry="IN"
-//                                     value={formData.phoneNumber}
-//                                     onChange={handlePhoneChange}
-//                                     className={`form-control ${phoneError ? 'is-invalid' : ''}`}
-//                                     placeholder="Enter phone number"
-//                                     id="phoneNumber"
-//                                     aria-describedby="phoneErrorHelp"
-//                                 />
-//                                 {phoneError && <div id="phoneErrorHelp" className="invalid-feedback d-block">{phoneError}</div>}
-//                             </div>
+              <div className="mb-3">
+                <label htmlFor="phoneNumber" className="form-label">Phone Number</label>
+                <PhoneInput
+                  international
+                  defaultCountry="IN"
+                  value={formData.phoneNumber}
+                  onChange={handlePhoneChange}
+                  className={`form-control ${phoneError ? "is-invalid" : ""}`}
+                  style={{display:'flex'}}
+                />
+                {phoneError && <div className="invalid-feedback d-block">{phoneError}</div>}
+              </div>
 
-//                             <div id="recaptcha-container" style={{ marginTop: '10px' }}></div>
+       
 
-//                             <button type="submit" className="btn btn-danger w-100 py-2 mb-3" disabled={loading}>
-//                                 {loading ? (
-//                                     <>
-//                                         <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="me-2" />
-//                                         Sending OTP...
-//                                     </>
-//                                 ) : (
-//                                     "Send OTP"
-//                                 )}
-//                             </button>
-//                         </form>
-//                     ) : (
-//                         <form onSubmit={handleVerifyOTP} noValidate>
-//                             <div className="mb-3">
-//                                 <label htmlFor="otp" className="form-label">Enter OTP</label>
-//                                 <input
-//                                     type="text"
-//                                     inputMode="numeric"
-//                                     autoComplete="one-time-code"
-//                                     className="form-control"
-//                                     id="otp"
-//                                     name="otp"
-//                                     value={formData.otp}
-//                                     onChange={handleChange}
-//                                     placeholder="Enter 6-digit OTP"
-//                                     required
-//                                     maxLength="6"
-//                                 />
-//                             </div>
+              <button type="submit" className="btn btn-danger w-100" disabled={loading}>
+                {loading ? <Spinner size="sm" animation="border" className="me-2" /> : "Send OTP"}
+              </button>
+            </form>
+          ) : (
+            <form onSubmit={handleVerifyOTP} noValidate>
+              <div className="mb-3">
+                <label htmlFor="otp" className="form-label">Enter OTP</label>
+                <input
+                  type="text"
+                  inputMode="numeric"
+                  maxLength="6"
+                  className="form-control"
+                  id="otp"
+                  name="otp"
+                  value={formData.otp}
+                  onChange={handleChange}
+                  placeholder="6-digit OTP"
+                />
+              </div>
+              <button type="submit" className="btn btn-danger w-100" disabled={loading}>
+                {loading ? <Spinner size="sm" animation="border" className="me-2" /> : "Verify OTP"}
+              </button>
+            </form>
+          )}
 
-//                             <button type="submit" className="btn btn-danger w-100 py-2 mb-3" disabled={loading}>
-//                                 {loading ? (
-//                                     <>
-//                                         <Spinner as="span" animation="border" size="sm" role="status" aria-hidden="true" className="me-2" />
-//                                         Verifying OTP...
-//                                     </>
-//                                 ) : (
-//                                     "Verify OTP"
-//                                 )}
-//                             </button>
-//                         </form>
-//                     )}
+          <p className="text-center text-muted mt-3">
+            Already registered? <Link to="/signin" className="text-primary fw-bold">Sign In</Link>
+          </p>
+        </div>
+      </div>
+    </section>
+  );
+};
 
-//                     <p className="text-center text-muted mt-3 mb-0">
-//                         Already registered? <Link to="/signin" className="text-primary fw-semibold text-decoration-none">Sign In</Link>
-//                     </p>
-//                 </div>
-//             </div>
-//         </section>
-//     );
-// };
+export default SignUpForm;
 
-// export default SignUpForm;
 
 
 // import React, { useState, useEffect, useRef } from "react"; // Added useRef
@@ -1111,310 +1124,310 @@
 // export default SignUpForm;
 
 
-import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import axios from "axios";
-import Swal from 'sweetalert2';
-import { Link } from "react-router-dom";
-import PhoneInput from 'react-phone-number-input';
-import 'react-phone-number-input/style.css';
-import { Card, Button, Spinner } from "react-bootstrap";
-import { genToken } from '../../firebase/firebase';
+// import React, { useState } from "react";
+// import { useNavigate } from "react-router-dom";
+// import axios from "axios";
+// import Swal from 'sweetalert2';
+// import { Link } from "react-router-dom";
+// import PhoneInput from 'react-phone-number-input';
+// import 'react-phone-number-input/style.css';
+// import { Card, Button, Spinner } from "react-bootstrap";
+// import { genToken } from '../../firebase/firebase';
 
-const SignUpForm = () => {
-  const [formData, setFormData] = useState({
-    fullName: "",
-    email: "",
-    phoneNumber: "",
-    otp: "",
-  });
-  const [otpGenerated, setOtpGenerated] = useState(""); // Store generated OTP for display
-  const [isOtpSent, setIsOtpSent] = useState(false); // To show OTP field
-  const [loading, setLoading] = useState(false); // Loading state for OTP sending and verification
-  const [active, setActive] = useState("signup");
-  const [nameError, setNameError] = useState(""); // Name validation error
-  const [phoneError, setPhoneError] = useState(""); // Phone validation error
-  const navigate = useNavigate();
-  const logo = `${process.env.PUBLIC_URL}/img/letsgo2.svg`;
+// const SignUpForm = () => {
+//   const [formData, setFormData] = useState({
+//     fullName: "",
+//     email: "",
+//     phoneNumber: "",
+//     otp: "",
+//   });
+//   const [otpGenerated, setOtpGenerated] = useState(""); // Store generated OTP for display
+//   const [isOtpSent, setIsOtpSent] = useState(false); // To show OTP field
+//   const [loading, setLoading] = useState(false); // Loading state for OTP sending and verification
+//   const [active, setActive] = useState("signup");
+//   const [nameError, setNameError] = useState(""); // Name validation error
+//   const [phoneError, setPhoneError] = useState(""); // Phone validation error
+//   const navigate = useNavigate();
+//   const logo = `${process.env.PUBLIC_URL}/img/letsgo2.svg`;
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+//   const handleChange = (e) => {
+//     setFormData({ ...formData, [e.target.name]: e.target.value });
+//   };
 
-  // Name Validation (only letters, max length of 30)
-  const validateName = (fullName) => {
-    const nameRegex = /^[A-Za-z\s]+$/; // Only letters and spaces
-    if (!nameRegex.test(fullName)) {
-      setNameError("should only contain letters and spaces and must be between 3 to 25 word.");
-      return false;
-    }
-    if (fullName.length > 25) {
-      setNameError("Name cannot exceed 25 characters.");
-      return false;
-    }
-    setNameError("");
-    return true;
-  };
+//   // Name Validation (only letters, max length of 30)
+//   const validateName = (fullName) => {
+//     const nameRegex = /^[A-Za-z\s]+$/; // Only letters and spaces
+//     if (!nameRegex.test(fullName)) {
+//       setNameError("should only contain letters and spaces and must be between 3 to 25 word.");
+//       return false;
+//     }
+//     if (fullName.length > 25) {
+//       setNameError("Name cannot exceed 25 characters.");
+//       return false;
+//     }
+//     setNameError("");
+//     return true;
+//   };
 
-  // Phone Number Validation (9 to 15 digits)
-  const isPhoneValid = (phone) => {
-    const cleanedPhone = phone?.replace(/\D/g, ""); // remove non-digits
-    if (cleanedPhone.length < 9 || cleanedPhone.length > 15) {
-      setPhoneError("Phone number must be between 9 to 15 digits.");
-      return false;
-    }
-    setPhoneError("");
-    return true;
-  };
+//   // Phone Number Validation (9 to 15 digits)
+//   const isPhoneValid = (phone) => {
+//     const cleanedPhone = phone?.replace(/\D/g, ""); // remove non-digits
+//     if (cleanedPhone.length < 9 || cleanedPhone.length > 15) {
+//       setPhoneError("Phone number must be between 9 to 15 digits.");
+//       return false;
+//     }
+//     setPhoneError("");
+//     return true;
+//   };
 
-  // Handle Send OTP
-  const handleSendOTP = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+//   // Handle Send OTP
+//   const handleSendOTP = async (e) => {
+//     e.preventDefault();
+//     setLoading(true);
 
-    // Validate name and phone
-    if (!validateName(formData.fullName) || !isPhoneValid(formData.phoneNumber)) {
-      setLoading(false);
-      return;
-    }
+//     // Validate name and phone
+//     if (!validateName(formData.fullName) || !isPhoneValid(formData.phoneNumber)) {
+//       setLoading(false);
+//       return;
+//     }
 
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/signup/send-otp`, {
-        fullName: formData.fullName,
-        email: formData.email,
-        phoneNumber: formData.phoneNumber,
-      });
+//     try {
+//       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/signup/send-otp`, {
+//         fullName: formData.fullName,
+//         email: formData.email,
+//         phoneNumber: formData.phoneNumber,
+//       });
 
-      if (response.data.success) {
-        setOtpGenerated(response.data.otp); // Display OTP for demo
-        setIsOtpSent(true);
-        Swal.fire("Success", `${response.data.otp}`, "success");
-      } else {
-        Swal.fire("Error", response.data.message, "error");
-      }
-    } catch (error) {
-      console.error("Error sending OTP:", error);
-      Swal.fire("Error", error.response?.data?.message || "Error sending OTP.", "error");
-    } finally {
-      setLoading(false);
-    }
-  };
-  function openDatabase() {
-    return new Promise((resolve, reject) => {
-      const request = indexedDB.open("UserDataDB", 1); // Database name and version
+//       if (response.data.success) {
+//         setOtpGenerated(response.data.otp); // Display OTP for demo
+//         setIsOtpSent(true);
+//         Swal.fire("Success", `${response.data.otp}`, "success");
+//       } else {
+//         Swal.fire("Error", response.data.message, "error");
+//       }
+//     } catch (error) {
+//       console.error("Error sending OTP:", error);
+//       Swal.fire("Error", error.response?.data?.message || "Error sending OTP.", "error");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+//   function openDatabase() {
+//     return new Promise((resolve, reject) => {
+//       const request = indexedDB.open("UserDataDB", 1); // Database name and version
   
-      request.onerror = (event) => {
-        reject("Database error: " + event.target.errorCode);
-      };
+//       request.onerror = (event) => {
+//         reject("Database error: " + event.target.errorCode);
+//       };
   
-      request.onupgradeneeded = (event) => {
-        const db = event.target.result;
-        if (!db.objectStoreNames.contains("users")) {
-          db.createObjectStore("users", { keyPath: "userId" }); // Store name and key path
-        }
-      };
+//       request.onupgradeneeded = (event) => {
+//         const db = event.target.result;
+//         if (!db.objectStoreNames.contains("users")) {
+//           db.createObjectStore("users", { keyPath: "userId" }); // Store name and key path
+//         }
+//       };
   
-      request.onsuccess = (event) => {
-        resolve(event.target.result);
-      };
-    });
-  }
-  async function storeUserDataInIndexedDB(userData) {
-    try {
-      const db = await openDatabase();
-      const transaction = db.transaction(["users"], "readwrite");
-      const store = transaction.objectStore("users");
-      store.put(userData); // Store the user data
+//       request.onsuccess = (event) => {
+//         resolve(event.target.result);
+//       };
+//     });
+//   }
+//   async function storeUserDataInIndexedDB(userData) {
+//     try {
+//       const db = await openDatabase();
+//       const transaction = db.transaction(["users"], "readwrite");
+//       const store = transaction.objectStore("users");
+//       store.put(userData); // Store the user data
   
-      transaction.oncomplete = () => {
-        console.log("User data stored in IndexedDB");
-      };
+//       transaction.oncomplete = () => {
+//         console.log("User data stored in IndexedDB");
+//       };
   
-      transaction.onerror = (event) => {
-        console.error("Error storing user data in IndexedDB:", event.target.errorCode);
-      };
+//       transaction.onerror = (event) => {
+//         console.error("Error storing user data in IndexedDB:", event.target.errorCode);
+//       };
   
-      db.close();
-    } catch (error) {
-      console.error("IndexedDB error:", error);
-    }
-  }
+//       db.close();
+//     } catch (error) {
+//       console.error("IndexedDB error:", error);
+//     }
+//   }
 
-  // Handle Verify OTP
-  const handleVerifyOTP = async (e) => {
-    e.preventDefault();
-    setLoading(true);
+//   // Handle Verify OTP
+//   const handleVerifyOTP = async (e) => {
+//     e.preventDefault();
+//     setLoading(true);
 
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/signup/verify-otp`, {
-        fullName: formData.fullName,
-        phoneNumber: formData.phoneNumber,
-        otp: formData.otp,
-      });
+//     try {
+//       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/signup/verify-otp`, {
+//         fullName: formData.fullName,
+//         phoneNumber: formData.phoneNumber,
+//         otp: formData.otp,
+//       });
 
-      if (response.data.success) {
-        Swal.fire({
-          title: `<div style="font-size: 2rem; color: #FF3366; font-weight: bold;">Dear ${formData.fullName}</div>`,
-          text: 'Account Created Successfully',
-          confirmButtonText: "Let's Go",
-          confirmButtonColor: "#FF3366",
-          imageUrl: logo,
-          imageWidth: 80,
-          imageHeight: 80,
-        });
+//       if (response.data.success) {
+//         Swal.fire({
+//           title: `<div style="font-size: 2rem; color: #FF3366; font-weight: bold;">Dear ${formData.fullName}</div>`,
+//           text: 'Account Created Successfully',
+//           confirmButtonText: "Let's Go",
+//           confirmButtonColor: "#FF3366",
+//           imageUrl: logo,
+//           imageWidth: 80,
+//           imageHeight: 80,
+//         });
       
-        localStorage.setItem("fullName", response.data.user.fullName);
-        localStorage.setItem("phoneNumber", response.data.user.phoneNumber);
-        localStorage.setItem("token", response.data.token);
-        localStorage.setItem("userId", response.data.userId);
-        localStorage.setItem("profileStatus", false);
-        localStorage.setItem("onboardingStatus", false);
+//         localStorage.setItem("fullName", response.data.user.fullName);
+//         localStorage.setItem("phoneNumber", response.data.user.phoneNumber);
+//         localStorage.setItem("token", response.data.token);
+//         localStorage.setItem("userId", response.data.userId);
+//         localStorage.setItem("profileStatus", false);
+//         localStorage.setItem("onboardingStatus", false);
       
-        const userData = {
-            userId: response.data.userId,
-            fullName: response.data.user.fullName,
-            phoneNumber: response.data.user.phoneNumber,
-            token: response.data.token,
-            profileStatus: false,
-            onboardingStatus: false,
-          };
+//         const userData = {
+//             userId: response.data.userId,
+//             fullName: response.data.user.fullName,
+//             phoneNumber: response.data.user.phoneNumber,
+//             token: response.data.token,
+//             profileStatus: false,
+//             onboardingStatus: false,
+//           };
           
-          storeUserDataInIndexedDB(userData);
+//           storeUserDataInIndexedDB(userData);
 
-        navigate("/profile"); // Force profile setup first
-      } else {
-        Swal.fire("Error", response.data.message, "error");
-      }
-    } catch (error) {
-      console.error("Error verifying OTP:", error);
-      Swal.fire("Error", error.response?.data?.message || "Error verifying OTP.", "error");
-    } finally {
-      setLoading(false);
-    }
-  };
-  if (loading) {
-    return (
-      <div style={{ display: "flex", justifyContent: "center", marginTop: "150px" }}>
-        <Spinner animation="border" role="status" style={{ width: "10rem", height: "10rem" }} />
-      </div>
-    );
-  }
-  return (
-    <section className="page-controls">
-      <div className="container d-flex flex-column align-items-center justify-content-center">
-        <div className="text-center">
-          <img src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" height="150px" width="200px" />
-          <h2 className="font-weight-bold mt-2 mb-0" style={{ fontSize: "48px" }}>Welcome</h2>
-          <p className="text-muted">Connect with your friends today!</p>
-        </div>
-        <div className="d-flex justify-content-center">
-          <Link to="/signin">
-            <p
-              onClick={() => setActive("signin")}
-              style={{
-                fontSize: "1rem",
-                border: "1px solid rgb(216, 210, 210)",
-                padding: "2px 24px 0px 30px",
-                backgroundColor: active === "signin" ? "#ddd" : "transparent",
-                fontWeight: active === "signin" ? "bold" : "600",
-                cursor: "pointer",
-                color: "#ff3366",
-              }}
-            >
-              Sign in
-            </p>
-          </Link>
-          <Link to="/signup">
-            <p
-              onClick={() => setActive("signup")}
-              style={{
-                border: "1px solid rgb(238, 234, 234)",
-                padding: "2px 24px 0px 30px",
-                color: active === "signup" ? "#ffffff" : "#ff3366",
-                backgroundColor: active === "signup" ? "#ff3366" : "transparent",
-                fontWeight: "600",
-                cursor: "pointer",
-              }}
-            >
-              Sign up
-            </p>
-          </Link>
-        </div>
-        <div className="w-100 p-4 rounded shadow-sm" style={{ maxWidth: "400px", backgroundColor: "#fff" }}>
-          {!isOtpSent ? (
-            <form onSubmit={handleSendOTP}>
-              <div className="mb-3">
-                <label htmlFor="fullName" className="form-label">Full Name</label>
-                <input
-                  type="text"
-                  className={`form-control ${nameError ? 'is-invalid' : ''}`}
-                  name="fullName"
-                  value={formData.fullName}
-                  onChange={handleChange}
-                  placeholder="Enter full name"
+//         navigate("/profile"); // Force profile setup first
+//       } else {
+//         Swal.fire("Error", response.data.message, "error");
+//       }
+//     } catch (error) {
+//       console.error("Error verifying OTP:", error);
+//       Swal.fire("Error", error.response?.data?.message || "Error verifying OTP.", "error");
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+//   if (loading) {
+//     return (
+//       <div style={{ display: "flex", justifyContent: "center", marginTop: "150px" }}>
+//         <Spinner animation="border" role="status" style={{ width: "10rem", height: "10rem" }} />
+//       </div>
+//     );
+//   }
+//   return (
+//     <section className="page-controls">
+//       <div className="container d-flex flex-column align-items-center justify-content-center">
+//         <div className="text-center">
+//           <img src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" height="150px" width="200px" />
+//           <h2 className="font-weight-bold mt-2 mb-0" style={{ fontSize: "48px" }}>Welcome</h2>
+//           <p className="text-muted">Connect with your friends today!</p>
+//         </div>
+//         <div className="d-flex justify-content-center">
+//           <Link to="/signin">
+//             <p
+//               onClick={() => setActive("signin")}
+//               style={{
+//                 fontSize: "1rem",
+//                 border: "1px solid rgb(216, 210, 210)",
+//                 padding: "2px 24px 0px 30px",
+//                 backgroundColor: active === "signin" ? "#ddd" : "transparent",
+//                 fontWeight: active === "signin" ? "bold" : "600",
+//                 cursor: "pointer",
+//                 color: "#ff3366",
+//               }}
+//             >
+//               Sign in
+//             </p>
+//           </Link>
+//           <Link to="/signup">
+//             <p
+//               onClick={() => setActive("signup")}
+//               style={{
+//                 border: "1px solid rgb(238, 234, 234)",
+//                 padding: "2px 24px 0px 30px",
+//                 color: active === "signup" ? "#ffffff" : "#ff3366",
+//                 backgroundColor: active === "signup" ? "#ff3366" : "transparent",
+//                 fontWeight: "600",
+//                 cursor: "pointer",
+//               }}
+//             >
+//               Sign up
+//             </p>
+//           </Link>
+//         </div>
+//         <div className="w-100 p-4 rounded shadow-sm" style={{ maxWidth: "400px", backgroundColor: "#fff" }}>
+//           {!isOtpSent ? (
+//             <form onSubmit={handleSendOTP}>
+//               <div className="mb-3">
+//                 <label htmlFor="fullName" className="form-label">Full Name</label>
+//                 <input
+//                   type="text"
+//                   className={`form-control ${nameError ? 'is-invalid' : ''}`}
+//                   name="fullName"
+//                   value={formData.fullName}
+//                   onChange={handleChange}
+//                   placeholder="Enter full name"
              
-                />
-                {nameError && <div className="invalid-feedback d-block">{nameError}</div>}
-              </div>
-              <div className="mb-3">
-                <label htmlFor="phoneNumber" className="form-label">Phone</label>
-                <PhoneInput
-                  international
-                  countryCallingCodeEditable={false}
-                  defaultCountry="IN"
-                  value={formData.phoneNumber}
-                  onChange={(value) => setFormData({ ...formData, phoneNumber: value })}
-                  className={`form-control ${phoneError ? 'is-invalid' : ''}`}
-                  placeholder="Enter phone"
-                  style={{display:'flex'}}
+//                 />
+//                 {nameError && <div className="invalid-feedback d-block">{nameError}</div>}
+//               </div>
+//               <div className="mb-3">
+//                 <label htmlFor="phoneNumber" className="form-label">Phone</label>
+//                 <PhoneInput
+//                   international
+//                   countryCallingCodeEditable={false}
+//                   defaultCountry="IN"
+//                   value={formData.phoneNumber}
+//                   onChange={(value) => setFormData({ ...formData, phoneNumber: value })}
+//                   className={`form-control ${phoneError ? 'is-invalid' : ''}`}
+//                   placeholder="Enter phone"
+//                   style={{display:'flex'}}
                   
-                />
-                {phoneError && <div className="invalid-feedback d-block">{phoneError}</div>}
-              </div>
-              <button type="submit" className="btn btn-danger w-100 py-2 mb-3" disabled={loading}>
-                {loading ? (
-                  <>
-                    <span className="spinner-border spinner-border-sm me-2" role="status"></span>
-                    Sending OTP...
-                  </>
-                ) : (
-                  "Send OTP"
-                )}
-              </button>
-            </form>
-          ) : (
-            <form onSubmit={handleVerifyOTP}>
-              <div className="mb-3">
-                <label htmlFor="otp" className="form-label">OTP</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="otp"
-                  value={formData.otp}
-                  onChange={handleChange}
-                  placeholder="Enter OTP"
-                  required
-                />
-              </div>
-              <button type="submit" className="btn btn-danger w-100 py-2 mb-3" disabled={loading}>
-                {loading ? (
-                  <>
-                    <span className="spinner-border spinner-border-sm me-2" role="status"></span>
-                    Verifying OTP...
-                  </>
-                ) : (
-                  "Verify OTP"
-                )}
-              </button>
-            </form>
-          )}
-          <p className="text-muted mt-3" style={{ marginLeft: '24px' }}>
-            Already registered? <Link to="/signin" className="text-primary fw-semibold text-decoration-none">Sign In</Link>
-          </p>
-        </div>
-      </div>
-    </section>
-  );
-};
+//                 />
+//                 {phoneError && <div className="invalid-feedback d-block">{phoneError}</div>}
+//               </div>
+//               <button type="submit" className="btn btn-danger w-100 py-2 mb-3" disabled={loading}>
+//                 {loading ? (
+//                   <>
+//                     <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+//                     Sending OTP...
+//                   </>
+//                 ) : (
+//                   "Send OTP"
+//                 )}
+//               </button>
+//             </form>
+//           ) : (
+//             <form onSubmit={handleVerifyOTP}>
+//               <div className="mb-3">
+//                 <label htmlFor="otp" className="form-label">OTP</label>
+//                 <input
+//                   type="text"
+//                   className="form-control"
+//                   name="otp"
+//                   value={formData.otp}
+//                   onChange={handleChange}
+//                   placeholder="Enter OTP"
+//                   required
+//                 />
+//               </div>
+//               <button type="submit" className="btn btn-danger w-100 py-2 mb-3" disabled={loading}>
+//                 {loading ? (
+//                   <>
+//                     <span className="spinner-border spinner-border-sm me-2" role="status"></span>
+//                     Verifying OTP...
+//                   </>
+//                 ) : (
+//                   "Verify OTP"
+//                 )}
+//               </button>
+//             </form>
+//           )}
+//           <p className="text-muted mt-3" style={{ marginLeft: '24px' }}>
+//             Already registered? <Link to="/signin" className="text-primary fw-semibold text-decoration-none">Sign In</Link>
+//           </p>
+//         </div>
+//       </div>
+//     </section>
+//   );
+// };
 
-export default SignUpForm;
+// export default SignUpForm;
