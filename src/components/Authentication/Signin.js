@@ -7,6 +7,7 @@ import PhoneInput from "react-phone-number-input";
 import { Spinner } from "react-bootstrap";
 import "react-phone-number-input/style.css"; // Ensure you include the styles
 import { genToken } from '../../firebase/firebase';
+import {auth,RecaptchaVerifier, signInWithPhoneNumber } from "C:/Users/Pushp battu/Desktop/Tiwil-V2/tiwil-pwa/src/firebase/firebase.js"
 
 const SignInForm = () => {
   const [formData, setFormData] = useState({
@@ -20,6 +21,7 @@ const SignInForm = () => {
   const [isLoading, setIsLoading] = useState(false); // Loader state
   const [phoneError, setPhoneError] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [confirmationResult, setConfirmationResult] = useState(null);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -51,65 +53,121 @@ const SignInForm = () => {
         { phoneNumber: formData.phoneNumber }
       );
 
-      if (response.data.success) {
-        setOtpGenerated(response.data.otp);
-        setIsOtpSent(true);
-        setMessage(response.data.message);
-        Swal.fire({
-          icon: "success",
-          title: `OTP Sent: ${response.data.otp}`,
-          showConfirmButton: false,
-          timer: 1500,
-        });
-      } else {
-        Swal.fire({
-          icon: "error",
-          title: "Error",
-          text: response.data.message,
-          timer: 3000,
-          showConfirmButton: false,
+      if (!response.data.success) {
+        Swal.fire("Error", response.data.message, "error");
+        return;
+      }
+  
+      // Step 1: Initialize reCAPTCHA (invisible)
+      if (!window.recaptchaVerifier) {
+        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+          size: 'invisible',
+          callback: (response) => {
+            console.log('✔ reCAPTCHA solved:', response);
+          },
+          'expired-callback': () => {
+            console.warn('⚠ reCAPTCHA expired');
+            Swal.fire("Warning", "reCAPTCHA expired. Please try again.", "warning");
+          },
         });
       }
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: error.response?.data?.message || "Error sending OTP.",
-        timer: 3000,
-        showConfirmButton: false,
+  
+      // Step 2: Add timeout for reCAPTCHA rendering
+      const timeout = 10000; // 10 seconds
+      const renderRecaptcha = new Promise((resolve, reject) => {
+        window.recaptchaVerifier.render().then(resolve).catch(reject);
       });
+  
+      const timeoutPromise = new Promise((_, reject) =>
+        setTimeout(() => reject("reCAPTCHA timeout"), timeout)
+      );
+  
+      // Step 3: Try to render reCAPTCHA
+      try {
+        await Promise.race([renderRecaptcha, timeoutPromise]);
+        console.log("✅ reCAPTCHA rendered successfully.");
+      } catch (error) {
+        const msg = error === "reCAPTCHA timeout"
+          ? "reCAPTCHA timed out. Please try again."
+          : "Error rendering reCAPTCHA.";
+        console.error("❌", msg, error);
+        Swal.fire("Error", msg, "error");
+        setIsLoading(false);
+        return;
+      }
+  
+      // Step 4: Request Firebase to send OTP
+      const confirmation = await signInWithPhoneNumber(
+        auth,
+        formData.phoneNumber,
+        window.recaptchaVerifier
+      );
+  
+      // Step 5: Store confirmation result
+      setConfirmationResult(confirmation);
+      setIsOtpSent(true);
+      Swal.fire("Success", "OTP sent successfully!", "success");
+    } catch (error) {
+      console.error("❌ Error sending OTP:", error);
+  
+      let msg = "Failed to send OTP.";
+      if (error.code === "auth/invalid-phone-number") msg = "Invalid phone number.";
+      if (error.code === "auth/too-many-requests") msg = "Too many requests. Try again later.";
+  
+      Swal.fire("Error", msg, "error");
+  
+      if (window.recaptchaVerifier) {
+        try {
+          window.recaptchaVerifier.clear();
+          window.recaptchaVerifier = null;
+        } catch (err) {
+          console.error("Error clearing reCAPTCHA:", err);
+        }
+      }
     } finally {
-      setIsLoading(false); // Stop loading after request completes
+      setIsLoading(false);
     }
   };
+  
 
-
-  function openDatabase() {
-    return new Promise((resolve, reject) => {
-      const request = indexedDB.open("UserDataDB", 1); // Database name and version
+  // function openDatabase() {
+  //   return new Promise((resolve, reject) => {
+  //     const request = indexedDB.open("UserDataDB", 1); // Database name and version
   
-      request.onerror = (event) => {
-        reject("Database error: " + event.target.errorCode);
-      };
+  //     request.onerror = (event) => {
+  //       reject("Database error: " + event.target.errorCode);
+  //     };
   
-      request.onupgradeneeded = (event) => {
-        const db = event.target.result;
-        if (!db.objectStoreNames.contains("users")) {
-          db.createObjectStore("users", { keyPath: "userId" }); // Store name and key path
-        }
-      };
+  //     request.onupgradeneeded = (event) => {
+  //       const db = event.target.result;
+  //       if (!db.objectStoreNames.contains("users")) {
+  //         db.createObjectStore("users", { keyPath: "userId" }); // Store name and key path
+  //       }
+  //     };
   
-      request.onsuccess = (event) => {
-        resolve(event.target.result);
-      };
-    });
-  }
+  //     request.onsuccess = (event) => {
+  //       resolve(event.target.result);
+  //     };
+  //   });
+  // }
   // When Verifying OTP
   const handleVerifyOTP = async () => {
+
+
+    if (!confirmationResult) {
+      Swal.fire("Error", "OTP session expired. Please send OTP again.", "error");
+      return;
+    }
     setIsLoading(true); // Start loading
     console.log("⏳ OTP verification started...");
 
+
     try {
+
+      const result = await confirmationResult.confirm(formData.otp);
+   
+    
+      Swal.fire("Success", "Phone verified successfully!", "success");
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/login/verify-otp`,
         {
@@ -122,32 +180,13 @@ const SignInForm = () => {
         localStorage.setItem("userId", response.data.userId);
 
         const userId = localStorage.getItem("userId");
-        // const fcmToken = await genToken();
+        const fcmToken = await genToken();
 
-        // const FCM_response = await axios.put(
-        //   `${process.env.REACT_APP_BASE_URL}/save-fcm-token`,
-        //   { userId, fcmToken }
-        // );
-        // async function storeUserDataInIndexedDB(userData) {
-        //   try {
-        //     const db = await openDatabase();
-        //     const transaction = db.transaction(["users"], "readwrite");
-        //     const store = transaction.objectStore("users");
-        //     store.put(userData);
+        const FCM_response = await axios.put(
+          `${process.env.REACT_APP_BASE_URL}/save-fcm-token`,
+          { userId, fcmToken }
+        );
         
-        //     transaction.oncomplete = () => {
-        //       console.log("User data stored in IndexedDB");
-        //     };
-        
-        //     transaction.onerror = (event) => {
-        //       console.error("Error storing user data in IndexedDB:", event.target.errorCode);
-        //     };
-        
-        //     db.close();
-        //   } catch (error) {
-        //     console.error("IndexedDB error:", error);
-        //   }
-        // }
         console.log("reached here uppr")
         const profileImagePath = response.data.user.profileImage;
      
@@ -157,15 +196,15 @@ const SignInForm = () => {
         localStorage.setItem("onboardingStatus", JSON.stringify(response.data.onboardingStatus));
         console.log("reached here")
         // Store data in IndexedDB
-        const userData = {
-          userId: response.data.userId,
-          profileImage: profileImagePath,
-          token: response.data.token,
-          profileStatus: response.data.profileStatus, // Assuming profileStatus is a boolean
-          onboardingStatus: response.data.onboardingStatus, // Assuming onboardingStatus is a boolean
-        };
+        // const userData = {
+        //   userId: response.data.userId,
+        //   profileImage: profileImagePath,
+        //   token: response.data.token,
+        //   profileStatus: response.data.profileStatus, // Assuming profileStatus is a boolean
+        //   onboardingStatus: response.data.onboardingStatus, // Assuming onboardingStatus is a boolean
+        // };
         
-        // storeUserDataInIndexedDB(userData);
+      
 console.log("here")
 
 console.log('jai ho2')
@@ -206,18 +245,14 @@ console.log('jai ho2')
 
   return (
     <section className="page-controls">
-      <div className="container d-flex flex-column align-items-center justify-content-center mt-3">
-        <div className="text-center mb-1">
-          <img
-            src={`${process.env.PUBLIC_URL}/img/logomain.svg`}
-            alt="tiwillogo"
-            height={"100px"}
-            width={"100px"}
-          />
-          <h2 className="font-weight-bold mt-2 mb-0" style={{ fontSize: "48px" }}>Welcome</h2>
-          <p className="text-muted">Connect with your friends today!</p>
-        </div>
+      <div className="container d-flex flex-column align-items-center justify-content-center mt-5">
+        
 
+      <div className="text-center">
+          <img src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" height="150px" width="200px" />
+          <h2 className="font-weight-bold mt-2 mb-0" style={{ fontSize: "48px" }}>Welcome</h2>
+         <p className="text-muted">Connect with your friends today!</p>
+         </div>
         {/* Loader Overlay */}
         {/* {isLoading && (
           <div className="mainloader-overlay">

@@ -224,3 +224,10 @@
   margin-left: 10px;
   cursor: pointer;
 }
+.noDataText{
+  font-size: 20px;
+  margin-top: 20px;
+  font-weight: 700;
+  color: #ff336664;
+  text-align: center;
+}
