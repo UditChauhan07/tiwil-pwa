@@ -39,14 +39,14 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
   const handleImageChange = (event) => {
     const file = event.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImage(imageUrl);
+      setImage(URL.createObjectURL(file)); // for preview
       setFormData((prevData) => ({
         ...prevData,
-        image: file,
+        image: file, // ✅ store File object here
       }));
     }
   };
+  
 
   // Validation for the form fields
   const validateForm = () => {
@@ -92,9 +92,10 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
     formDataToSend.append("eventDate", formData.eventDate);
     formDataToSend.append("description", formData.description);
 
-    if (image) {
-      formDataToSend.append("image", image); // Append image if provided
+    if (formData.image) {
+      formDataToSend.append("image", formData.image); // ✅ send the real File object
     }
+    
     console.log(formDataToSend)
     setLoading(true);
     try {
