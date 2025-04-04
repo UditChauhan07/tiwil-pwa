@@ -89,7 +89,7 @@ const SignInForm = () => {
       } catch (error) {
         const msg = error === "reCAPTCHA timeout"
           ? "reCAPTCHA timed out. Please try again."
-          : "Error rendering reCAPTCHA.";
+          : "captcha expire .Please refresh .";
         console.error("❌", msg, error);
         Swal.fire("Error", msg, "error");
         setIsLoading(false);
