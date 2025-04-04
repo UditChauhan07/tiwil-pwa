@@ -50,7 +50,9 @@ const Chatlist = () => {
       <FiArrowLeft
             className={styles.backIcon}
             onClick={() => navigate("/home")}
-          />
+           style={{fontSize: "32px",
+    marginBottom: "17px",
+    marginTop: "0px"}}/>
       <div className={styles.searchContainer}>
         <FaSearch className={styles.searchIcon} />
         <input

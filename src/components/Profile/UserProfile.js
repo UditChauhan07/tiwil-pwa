@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { Spinner } from "react-bootstrap"; // Import the Bootstrap Spinner for loader
 import Compressor from 'compressorjs'; // Import Compressor.js
+import  CropperModal from "../Wishlist/cropModal"
 
 function Profile() {
   const navigate = useNavigate();
@@ -31,6 +32,9 @@ function Profile() {
   const [selectedProfileImage, setSelectedProfileImage] = useState(null);
   const [errors, setErrors] = useState({}); // State to store validation errors
   const [loading, setLoading] = useState(false); // State to handle loading
+  const [showCropper, setShowCropper] = useState(false);
+const [tempImage, setTempImage] = useState(null);
+
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -110,21 +114,21 @@ function Profile() {
   };
 
   const handleImageChange = (e) => {
-    const image = e.target.files[0];
-    if (image) {
-      // Compress image using Compressor.js
-      new Compressor(image, {
-        quality: 0.8, // Compress to 80% quality
-        success: (compressedResult) => {
-          // Once the image is compressed, update the state
-          setSelectedProfileImage(compressedResult);
-        },
-        error: (err) => {
-          console.error("Compression error:", err);
-        }
-      });
-    }
+    const file = e.target.files[0];
+    if (!file) return;
+  
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setTempImage(reader.result); // base64 image for cropping
+      setShowCropper(true);
+    };
+    reader.readAsDataURL(file);
   };
+  const handleCroppedImage = (croppedBlob) => {
+    setSelectedProfileImage(croppedBlob);
+    setShowCropper(false);
+  };
+    
 
   const handleSave = async () => {
     if (!validateForm()) return;
@@ -339,8 +343,18 @@ function Profile() {
               </button>
             </div>
           </div>
+          
         </div>
+        
       )}
+      {showCropper && (
+  <CropperModal
+    imageSrc={tempImage}
+    onCropDone={handleCroppedImage}
+    onCancel={() => setShowCropper(false)}
+  />
+)}
+
     </>
   );
 }

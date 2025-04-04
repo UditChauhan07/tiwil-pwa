@@ -116,8 +116,10 @@ const ChatRoom = () => {
 
         const handleNewMessage = (message) => {
             console.log("📩 Received new message via socket:", message);
+            
             setMessages((prevMessages) => {
-                if (!prevMessages.some(msg => msg._id === message._id)) {
+                // Check if the message already exists by checking both _id and timestamp
+                if (!prevMessages.some(msg => msg._id === message._id && msg.timestamp === message.timestamp)) {
                     return [...prevMessages, message].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
                 }
                 return prevMessages;
@@ -125,6 +127,7 @@ const ChatRoom = () => {
             
             scrollToBottom();
         };
+       
 
         socket.on("connect", () => {
             console.log("✅ Socket connected:", socket.id);

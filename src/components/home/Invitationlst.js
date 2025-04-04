@@ -256,7 +256,7 @@ const handlefavourite=()=>{
       {filteredInvitations.length > 0 ? (
         filteredInvitations.map((invitation, index) => (
           <div key={index} className="d-flex justify-content-center mb-3">
-            <Card style={{ width: "100%", minWidth: "310px", border: "0.5px solid rgb(229 229 229)", borderRadius: "10px" }}>
+            <Card style={{ width: "100%", minWidth: "310px", border: "0.5px solid rgb(229 229 229)", borderRadius: "10px",marginBottom: index === filteredInvitations.length - 1 ? "80px" : "10px"  }}>
               <div style={{ height: "150px" }}>
                 <Card variant="top" style={{ position: "relative", width: "100%", height: "162px",borderBottom:'unset' }}>
                   <img
@@ -295,7 +295,7 @@ const handlefavourite=()=>{
                                      {invitation.event.displayDate ? formatDateWithCurrentYear(invitation.event.displayDate, invitation.event.date) : "Date not available"}
                                    </h6>
                                  </div>
-                                 <div>
+                                 {/* <div>
                                      {invitation.event.relation &&
                                       invitation.event.relation.toLowerCase() !== "parent anniversary" &&
                                      invitation.event.relation.toLowerCase() !==
@@ -313,7 +313,7 @@ const handlefavourite=()=>{
                                          {invitation.event.relation}
                                        </h4>
                                      ) : null}
-                                   </div>
+                                   </div> */}
                                </Card.Text>
                 {/* <Button variant="danger" onClick={() => handleInvitation(invitation.event.eventId, invitation._id)}>
                   Plan and Celebrate
@@ -324,7 +324,7 @@ const handlefavourite=()=>{
                       variant="danger"
                       onClick={() => handleInvitation(invitation.event.eventId, invitation._id)}
                     >
-                      Plan And Celebrate
+                     View Detail
                     </Button>
                     <div
                       className="heartimage"

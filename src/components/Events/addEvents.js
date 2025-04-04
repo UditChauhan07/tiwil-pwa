@@ -126,7 +126,7 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
   return (
     <Modal show={show} onHide={() => setShow(false)} centered size="md">
       <Modal.Header closeButton>
-        <Modal.Title>Add Event Form</Modal.Title>
+        <Modal.Title>Add Event</Modal.Title>
       </Modal.Header>
 
       <Modal.Body>

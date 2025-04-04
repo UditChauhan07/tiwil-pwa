@@ -5,6 +5,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../Wishlist/addtowish.css";
 import { useState, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa"; // Chevron icon for dropdown
+import { FaCloudUploadAlt } from "react-icons/fa"; 
 
 const Memberform = ({ show, setShow }) => {
   const token = localStorage.getItem("token");
@@ -114,7 +115,7 @@ const Memberform = ({ show, setShow }) => {
   return (
     <Modal show={show} onHide={() => setShow(false)} centered size="md">
       <Modal.Header closeButton>
-        <Modal.Title>Add Member Form</Modal.Title>
+        <Modal.Title>Add Member </Modal.Title>
       </Modal.Header>
 
       <Modal.Body>
@@ -207,13 +208,21 @@ const Memberform = ({ show, setShow }) => {
           </Form.Group>
 
           {/* Image Upload */}
+        
           <Form.Group className="mb-3">
-            <Form.Label>Upload Image</Form.Label>
-            <input type="file" onChange={handleImageUpload} />
-            {formData.image && (
-              <p className="uploadedFileName">Selected File: {formData.image.name}</p>
-            )}
-          </Form.Group>
+  <div className="upload-container" onClick={() => document.getElementById("fileInput").click()}>
+    {formData.image ? (
+      <img src={formData.image} alt="Preview" className="uploaded-image" />
+    ) : (
+      <div className="upload-icon">
+        <FaCloudUploadAlt size={50} color="#E11531" />
+        <p>Upload Image</p>
+      </div>
+    )}
+    <input type="file" id="fileInput" accept="image/*" onChange={handleImageUpload} hidden />
+  </div>
+</Form.Group>
+
         </Form>
       </Modal.Body>
 

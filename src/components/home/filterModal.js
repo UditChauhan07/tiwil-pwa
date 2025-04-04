@@ -165,7 +165,7 @@ export default function EventsFilter({ closeFilter, isOpen, onApplyFilters, filt
         </div>
 
         {/* Favorites Section */}
-        <div className="favorites-section">
+        {/* <div className="favorites-section">
           <label className="checkbox-label favorites-label d-flex align-items-normal">
             <input
               type="checkbox"
@@ -175,7 +175,7 @@ export default function EventsFilter({ closeFilter, isOpen, onApplyFilters, filt
             />
             <span>Favorites Only</span>
           </label>
-        </div>
+        </div> */}
 
         <button className="apply-filter-button" onClick={handleApplyFilters}>
           Apply
