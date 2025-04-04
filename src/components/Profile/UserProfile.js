@@ -67,14 +67,21 @@ const [tempImage, setTempImage] = useState(null);
 
   const validateForm = () => {
     let newErrors = {};
-
+  
     // 1st Check: Full Name
     if (!userData || typeof userData.fullName !== "string" || !userData.fullName.trim()) {
       newErrors.fullName = "Full Name is required.";
       setErrors(newErrors);
       return false; // Stop further validation
     }
-
+  
+    // Validate Name (external function)
+    const isValidName = validateName(userData.fullName);
+    if (!isValidName) {
+      setErrors(newErrors); // Ensure errors are updated if validation fails
+      return false; // Stop further validation
+    }
+  
     // 2nd Check: Email
     if (!userData.email || !userData.email.trim()) {
       newErrors.email = "Email is required.";
@@ -87,32 +94,47 @@ const [tempImage, setTempImage] = useState(null);
       }
       setErrors(newErrors);
     }
-
+  
     // 3rd Check: Gender
-    if (!userData || !userData.gender) {
+    if (!userData.gender) {
       newErrors.gender = "Please select your gender.";
       setErrors(newErrors);
       return false;
     }
-
+  
     // 4th Check: Date of Birth
-    if (!userData || !userData.dob) {
+    if (!userData.dob) {
       newErrors.dob = "Please enter your Date of Birth.";
       setErrors(newErrors);
       return false;
     }
-
+  
     // 5th Check: Marital Status
-    if (!userData || !userData.maritalStatus) {
+    if (!userData.maritalStatus) {
       newErrors.maritalStatus = "Please select your Marital Status.";
       setErrors(newErrors);
       return false;
     }
-
-    setErrors({});
+  
+    setErrors({}); // Reset errors if everything is valid
     return true;
   };
-
+  
+  // validateName function (outside of validateForm)
+  const validateName = (name) => {
+    const trimmed = name.trim();
+    if (!trimmed) {
+      setNameError("Full name is required.");
+      return false;
+    }
+    const nameRegex = /^[A-Za-z\s]{3,25}$/;
+    if (!nameRegex.test(trimmed)) {
+      setNameError("Name must be 3-25 characters long, only letters/spaces.");
+      return false;
+    }
+    return true;
+  };
+  
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;

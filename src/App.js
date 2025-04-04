@@ -74,17 +74,19 @@ function App() {
           {showInstallDialog && (
             <div
               style={{
-                position: "fixed",
-                top: "20%",
-                left: "50%",
-                transform: "translate(-50%, -50%)",
-                padding: "20px",
-                background: "white",
-                boxShadow: "0px 0px 10px rgba(0, 0, 0, 0.1)",
-                borderRadius: "10px",
+            position: "fixed",
+    top: "3%",
+    right: "-70px",
+    fontSize: "0px",
+  
+    transform: "translate(-50%, -50%)",
+    padding: "0px",
+    background: "white",
+    boxShadow:" rgba(0, 0, 0, 0.1) 0px 0px 10px",
+    borderRadius: "10px",
               }}
             >
-              <button onClick={handleInstallClick} style={{ padding: "10px", fontSize: "16px" }}>
+              <button onClick={handleInstallClick} style={{ padding: "10px", fontSize: "13px",border:'none',background:'#rgb(195 144 157)',color:'#ff3366',cursor:'pointer' }}>
                 Add to Home Screen
               </button>
             </div>

@@ -47,17 +47,20 @@ const Chatlist = () => {
   return (
     <div className={styles.container}>
       {/* 🔍 Search Bar */}
+      <div className="d-flex gap-3">
       <FiArrowLeft
             className={styles.backIcon}
             onClick={() => navigate("/home")}
            style={{fontSize: "32px",
     marginBottom: "17px",
     marginTop: "0px"}}/>
+    <h2 className={styles.title}>Group Chats</h2>
+    </div>
       <div className={styles.searchContainer}>
         <FaSearch className={styles.searchIcon} />
         <input
           type="text"
-          placeholder="Search events..."
+          placeholder="Search here..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           className={styles.searchInput}
