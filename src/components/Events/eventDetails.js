@@ -181,10 +181,11 @@ const EventDetails = () => {
   //   getEvent();
   // }, [eventId]); // Dependency array ensures this effect runs when eventId changes
   const inviteguest=localStorage.getItem('invited')
-  useEffect(() => {
-    const token = localStorage.getItem("token");
+  
+    
     
     const fetchGuest = async () => {
+      const token = localStorage.getItem("token");
       try {
         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests/${eventId}`, {
           headers: { Authorization: `Bearer ${token}` },
@@ -200,6 +201,8 @@ const EventDetails = () => {
       }
     };
 
+    
+  useEffect(() => {
     fetchGuest();
   }, [inviteguest]);
 
@@ -503,7 +506,7 @@ const EventDetails = () => {
                             style={{ background:'#EE4266',
                               alignItems: 'center', justifyContent: 'center', 
                               margin: "auto",borderRadius:'15px',width:'75%'
-                            }}
+                          ,color:'white'}}
                           >
                             ADD WISHLIST <FaArrowRight className="ms-2" />
                           </button>
@@ -559,7 +562,7 @@ const EventDetails = () => {
 <br/>
                             {/* ADD MORE and START CHAT buttons when guests are available */}
                             <div className="text-center mt-4 d-flex " style={{justifyContent:'space-evenly'}}>
-                            <InviteButton 
+                            <InviteButton onInviteSuccess={fetchGuest}
   style={{ 
     borderRadius: '5px', 
     width: '50%', 
@@ -604,7 +607,7 @@ const EventDetails = () => {
                          
                           
                           <div className="invtebtn">
-                            <InviteButton> Invite  
+                            <InviteButton onInviteSuccess={fetchGuest}> Invite  
                             </InviteButton>
 </div>
                           </div>
@@ -615,6 +618,7 @@ const EventDetails = () => {
   <div className="container mt-5">
     {surpriseData.length === 0 ? (
       <div>
+      <br/>
       <br/>
       <p className=" p-history" >No History </p>
       <br/>

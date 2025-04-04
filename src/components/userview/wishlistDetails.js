@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { Spinner } from "react-bootstrap";
+import { faCircleCheck } from '@fortawesome/free-solid-svg-icons';
 
 
 function WishlistCard() {
@@ -89,7 +90,7 @@ function WishlistCard() {
     <section className="page-controls">
   <div className='d-flex align-items-baseline gap-4' style={{marginTop:'20px'}}>
   <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)} style={{marginLeft:'6px'}}/>
-  <h2>Wishlist Details</h2>
+  <h2>Wishlist</h2>
   </div>
       
       <div className="container " style={{borderColor:'white',padding:"7px"}}>
@@ -141,11 +142,25 @@ boxShadow:'   0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
                     onChange={handlePurchase}
                     value={wishlistItem.status || "Unmark"}
                   >
-                    <option value="Unmark">Unmark</option>
-                    <option value="Mark">Mark</option>
-                    <option value="Purchased">Purchased</option>
-                    <option value="CreatePool">Create Pool</option>
+                    <option value="Unmark"><FontAwesomeIcon icon={faCircleCheck} size="lg" color="#28a745" />
+                    Unmark</option>
+                    <option value="Mark"><FontAwesomeIcon icon={faCircleCheck} size="lg" color="#28a745" />
+                      Mark</option>
+                    <option value="Purchased"><FontAwesomeIcon icon={faCircleCheck} size="lg" color="#28a745" />
+                    Purchased</option>
+                    <option value="CreatePool"><FontAwesomeIcon icon={faCircleCheck} size="lg"  />
+                    Create Pool</option>
                   </select>
+                   <FontAwesomeIcon
+                                    icon={faChevronDown}
+                                   style={{  position: "absolute",
+  right: "10px",
+  top: "50%",
+  transform: "translateY(-50%)" ,
+  fontSize: "18px",
+  color: "#ff3366",
+  pointerEvents: "none"}}
+                                  />
                 </div>
               </div>
               <p className="mb-3" style={{ color: "#EE4266" }}>

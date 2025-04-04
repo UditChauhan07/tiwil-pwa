@@ -1,0 +1,82 @@
+/* .modalOverlay {
+    position: fixed;
+    
+    width: 90%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+  }
+   */
+  /* .cropperContainer {
+    background: #fff;
+    padding: 20px;
+top:0px;
+bottom: 0px;
+    height: 100vh;
+    border-radius: 12px;
+    position: relative;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+   */
+  .controls {
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    position: relative;
+    z-index: 1;
+
+
+      height: 20%;
+      width: 100%;
+      position: absolute;
+      display: flex;
+      z-index: 1;
+      left: 0;
+  }
+  .controlbutton{
+    padding: 20px;
+    border: none;
+    color: white;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #ff3366;
+  }
+  
+  .controls button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    background-color: #ff3366;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s ease;
+  }
+  
+  .controlbutton:hover {
+    background-color: #e02a59;
+  }
+  .crop{
+    background-color: black !important;
+  }
+  
+  div.reactEasyCrop_Container{ top: 104px;
+background-color: black !important;
+}
+/* 
+
+/* .reactEasyCrop_Image reactEasyCrop_Contain{
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+}  */

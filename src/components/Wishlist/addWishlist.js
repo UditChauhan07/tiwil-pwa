@@ -4,7 +4,7 @@ import styles from "../wihslistowner/wishlist/WishlistModal.module.css";
 import Swal from "sweetalert2";
 import { Spinner, ProgressBar } from "react-bootstrap"; // Importing ProgressBar
 import imageCompression from "browser-image-compression";
-
+import CropperModal from "./cropModal"; 
 const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
   const [giftName, setGiftName] = useState("");
   const [price, setPrice] = useState("");
@@ -16,16 +16,26 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
   const [loading, setLoading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0); // ✅ Upload Progress State
   const [errors, setErrors] = useState({}); // Store errors
-
+  const [showCropper, setShowCropper] = useState(false);
+  const [tempImageSrc, setTempImageSrc] = useState(null);
   // ✅ Handle File Selection
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
-    if (file) {
-      setImageFile(file);
-      setPreview(URL.createObjectURL(file)); // Show preview image
-    }
+    if (!file) return;
+  
+    const reader = new FileReader();
+    reader.onloadend = () => {
+      setTempImageSrc(reader.result); // Open cropper with base64 image
+      setShowCropper(true);
+    };
+    reader.readAsDataURL(file);
   };
-
+  const handleCroppedImage = (croppedBlob) => {
+    setImageFile(croppedBlob);
+    setPreview(URL.createObjectURL(croppedBlob));
+    setShowCropper(false);
+  };
+  
   // ✅ Validate Form
   const validateForm = () => {
     let newErrors = {};
@@ -235,10 +245,20 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
               <button className={styles.saveButton} onClick={handleSave} disabled={loading}>
                 {loading ? "Saving..." : "Save "}
               </button>
+            
+
             </div>
+            
           </>
         )}
       </div>
+      {showCropper && (
+  <CropperModal
+    imageSrc={tempImageSrc}
+    onCropDone={handleCroppedImage}
+    onCancel={() => setShowCropper(false)}
+  />
+)}
     </div>
   );
 };

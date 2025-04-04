@@ -117,8 +117,10 @@ const ChatRoom = () => {
 
         const handleNewMessage = (message) => {
             console.log("📩 Received new message via socket:", message);
+            
             setMessages((prevMessages) => {
-                if (!prevMessages.some(msg => msg._id === message._id)) {
+                // Check if the message already exists by checking both _id and timestamp
+                if (!prevMessages.some(msg => msg._id === message._id && msg.timestamp === message.timestamp)) {
                     return [...prevMessages, message].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
                 }
                 return prevMessages;
@@ -126,6 +128,7 @@ const ChatRoom = () => {
             
             scrollToBottom();
         };
+       
 
         socket.on("connect", () => {
             console.log("✅ Socket connected:", socket.id);
@@ -240,14 +243,14 @@ const ChatRoom = () => {
                     <img
                         src={
                             eventDetails.eventImage
-                                ? `${BASE_API_URL}/${eventDetails.eventImage.replace(/\\/g, '/')}`
+                                ? `${BASE_API_URL}/${eventDetails.eventImage}`
                                 : `${process.env.PUBLIC_URL}/img/defaultUser.png`
                         }
                         alt={eventDetails.eventName}
                         className={styles.eventImage}
                         onError={(e) => e.target.src = `${process.env.PUBLIC_URL}/img/defaultUser.png`}
                     />
-                    <div className={styles.eventText}>
+                    <div className={styles.eventText}  onClick={() => navigate(`/group/${groupId}/details`)}>
                         <h2 style={{ fontSize: "15px", margin: "5px" }}>{eventDetails.eventName}</h2>
                         <p style={{ marginTop: "10px" }}>
                             {eventDetails.totalMembers ? `Members: ${eventDetails.totalMembers}` : 'Loading...'}

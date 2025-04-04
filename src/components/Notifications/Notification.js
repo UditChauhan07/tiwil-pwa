@@ -149,7 +149,7 @@ const PoolRequests = () => {
     <>
       <div className="mainnotify">
         <div className="d-flex heading-notification">
-          <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate(-1)} />
+          <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate(-1)}  style={{fontSize:"23px"}}/>
           <h4>Notification</h4>
         </div>
 
@@ -171,7 +171,7 @@ const PoolRequests = () => {
               .map((notification) => {
                 const userImage = notification?.userImage
                   ? `${process.env.REACT_APP_IMAGE_BASE_URL}/${notification.userImage}`
-                  : `${process.env.PUBLIC_URL}/img/userimage3.jpg`;
+                  : `${process.env.PUBLIC_URL}/img/defaultUser.png`;
 
                 return (
                   <div key={notification._id} className="notification-item">

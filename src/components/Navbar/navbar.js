@@ -81,6 +81,8 @@ const Navbar = () => {
 const handleUser=()=>{
   navigate('/userdetail')
 }
+
+
 const unreadNotificationCount = Array.isArray(notifications) 
     ? notifications.filter(notif => notif.status !== "read").length 
     : 0;
@@ -91,6 +93,9 @@ const unreadNotificationCount = Array.isArray(notifications)
     const handnotify=()=>{
       navigate('/notifications')
     }
+
+
+    
   return (
     <>
       <div className="mainClass1" style={{ backgroundColor: "#e3e3e3" }}>
