@@ -260,7 +260,8 @@ const handlefavourite=()=>{
               <div style={{ height: "150px" }}>
                 <Card variant="top" style={{ position: "relative", width: "100%", height: "162px",borderBottom:'unset' }}>
                   <img
-                    src={invitation.event.newimage && invitation.event.newimage !== "null" ? `${process.env.REACT_APP_BASE_URL}/${invitation.event.newimage}` : `${process.env.PUBLIC_URL}/img/eventdefault.png`}
+                    // src={invitation.event.newimage && invitation.event.newimage !== "null" ? `${process.env.REACT_APP_BASE_URL}/${invitation.event.newimage}` : `${process.env.PUBLIC_URL}/img/eventdefault.png`}
+                    src={invitation.event.newimage && invitation.event.newimage !== "null" ? `${process.env.REACT_APP_BASE_URL}/${invitation.event.newimage}` : invitation.event.image && invitation.event.image !== "null" ? `${process.env.REACT_APP_BASE_URL}/${invitation.event.image}` : `${process.env.PUBLIC_URL}/img/eventdefault.png`}
                     alt="Event"
                     style={{ width: '100%', height: '162px',padding:'5px' }}
                     className="imgEvent"
