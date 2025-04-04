@@ -336,6 +336,17 @@ const EventDetails = () => {
               events.map((event) => (
                 <div key={event._id} style={{marginTop:'17px'}}>
                   {/* Event Image */}
+                   {/* <Card variant="top" style={{ position: "relative", width: "100%", height: "162px" ,borderBottom:'unset'}}>
+                                    <img
+                                      src={event.newimage && event.newimage !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.newimage}` : event.image && event.image !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.image}` : `${process.env.PUBLIC_URL}/img/eventdefault.png`}
+                                      alt="Event"
+                                      style={{ width: '100%', height: '162px' ,padding:'5px'}}
+                                      className="imgEvent"
+                                    />
+                                    <div style={{ borderRadius: "0px 4px 0px 0px", position: "absolute", top: "5px", right: "5px", color: "white", fontSize: "15px", fontWeight: "bold", backgroundColor: "#ff3366", padding: "5px" }}>
+                                      {event.date && calculateAgeAndBirthdayText(event.displayDate, event.date, event.eventDate)}
+                                    </div>
+                                  </Card> */}
                   <div   style={{ width: "100%", height: "174px", borderRadius: "10px" }}  >
                   <img
   src={

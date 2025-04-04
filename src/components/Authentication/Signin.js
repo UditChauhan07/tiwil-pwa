@@ -38,59 +38,69 @@ const SignInForm = () => {
   const handleSendOTP = async (e) => {
     e.preventDefault();
     setIsLoading(true); // Start loading
-
     setPhoneError(""); // Clear error initially
-
+  
     if (!isPhoneValid(formData.phoneNumber)) {
       setPhoneError("Phone number must be between 9 to 15 digits.");
       setIsLoading(false); // Stop loading if validation fails
       return;
     }
-
+  
     try {
+      // Call your backend login API
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/login/send-otp`,
         { phoneNumber: formData.phoneNumber }
       );
-
+  
+      // Handle 2xx response where API indicates logical failure (e.g., user not found but API doesn't use 404)
       if (!response.data.success) {
-        Swal.fire("Error", response.data.message, "error");
-        return;
+        // Use the message provided by your API
+        Swal.fire("Login Failed", response.data.message || "This phone number is not registered.", "error");
+        setIsLoading(false); // Stop loading
+        return; // Exit
       }
+  
+      // --- Proceed with reCAPTCHA and Firebase OTP ---
   
       // Step 1: Initialize reCAPTCHA (invisible)
       if (!window.recaptchaVerifier) {
-        window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
-          size: 'invisible',
-          callback: (response) => {
-            console.log('✔ reCAPTCHA solved:', response);
-          },
-          'expired-callback': () => {
-            console.warn('⚠ reCAPTCHA expired');
-            Swal.fire("Warning", "reCAPTCHA expired. Please try again.", "warning");
-          },
-        });
+          // Ensure the container exists in your JSX: <div id="recaptcha-container"></div>
+          window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
+              size: 'invisible',
+              callback: (response) => console.log('✔ reCAPTCHA solved:', response),
+              'expired-callback': () => {
+                console.warn('⚠ reCAPTCHA expired');
+                Swal.fire("Warning", "reCAPTCHA expired. Please try again.", "warning");
+              },
+            });
       }
   
       // Step 2: Add timeout for reCAPTCHA rendering
       const timeout = 10000; // 10 seconds
       const renderRecaptcha = new Promise((resolve, reject) => {
-        window.recaptchaVerifier.render().then(resolve).catch(reject);
+          // Check if already rendered to avoid errors/redundancy
+          if (window.recaptchaVerifier?.controller?.rendered) {
+              resolve();
+          } else {
+              window.recaptchaVerifier.render().then(resolve).catch(reject);
+          }
       });
   
       const timeoutPromise = new Promise((_, reject) =>
-        setTimeout(() => reject("reCAPTCHA timeout"), timeout)
+          setTimeout(() => reject(new Error("reCAPTCHA timeout")), timeout) // Use Error object
       );
   
       // Step 3: Try to render reCAPTCHA
       try {
         await Promise.race([renderRecaptcha, timeoutPromise]);
-        console.log("✅ reCAPTCHA rendered successfully.");
+        console.log("✅ reCAPTCHA rendered successfully or already rendered.");
       } catch (error) {
-        const msg = error === "reCAPTCHA timeout"
-          ? "reCAPTCHA timed out. Please try again."
-          : "captcha expire .Please refresh .";
-        console.error("❌", msg, error);
+        const msg = error.message === "reCAPTCHA timeout"
+          ? "reCAPTCHA verification timed out. Please check your connection and try again."
+          // Improved message for other render errors
+          : "Couldn't initialize verification. Please refresh the page and try again.";
+        console.error("❌ Error rendering reCAPTCHA:", error);
         Swal.fire("Error", msg, "error");
         setIsLoading(false);
         return;
@@ -107,28 +117,59 @@ const SignInForm = () => {
       setConfirmationResult(confirmation);
       setIsOtpSent(true);
       Swal.fire("Success", "OTP sent successfully!", "success");
+  
     } catch (error) {
-      console.error("❌ Error sending OTP:", error);
+      console.error("❌ Error sending OTP (Login Flow):", error);
   
-      let msg = "Failed to send OTP.";
-      if (error.code === "auth/invalid-phone-number") msg = "Invalid phone number.";
-      if (error.code === "auth/too-many-requests") msg = "Too many requests. Try again later.";
+      let errorHandled = false;
   
-      Swal.fire("Error", msg, "error");
+      // Check for specific API errors first (e.g., 404 User Not Found)
+      if (error.response) {
+          console.error("API Response Error - Status:", error.response.status);
+          console.error("API Response Error - Data:", error.response.data);
   
+          // Example: Handle User Not Found (assuming API uses 404)
+          if (error.response.status === 404) {
+              Swal.fire("Login Failed", error.response.data?.message || "This phone number is not registered.", "error");
+              errorHandled = true;
+          }
+          // Add other API status checks if needed (e.g., 403 Forbidden, 500 Server Error)
+          // else if (error.response.status === 500) { ... }
+      }
+  
+      // Handle Firebase specific errors if not handled above
+      if (!errorHandled && error.code) {
+         let msg = "Failed to send OTP."; // Default message
+         if (error.code === "auth/invalid-phone-number") {
+             msg = "The phone number format is invalid.";
+         } else if (error.code === "auth/too-many-requests") {
+             msg = "We have blocked all requests from this device due to unusual activity. Try again later.";
+         } else if (error.message.includes("reCAPTCHA")) {
+             msg = "reCAPTCHA check failed. Please try again.";
+         } // Add more specific Firebase codes if needed
+  
+         Swal.fire("Error", msg, "error");
+         errorHandled = true;
+      }
+  
+      // Fallback for any other unexpected errors
+      if (!errorHandled) {
+         Swal.fire("Error", "An unexpected error occurred during login. Please try again.", "error");
+      }
+  
+      // Clean up reCAPTCHA instance if it exists
       if (window.recaptchaVerifier) {
         try {
           window.recaptchaVerifier.clear();
           window.recaptchaVerifier = null;
-        } catch (err) {
-          console.error("Error clearing reCAPTCHA:", err);
+        } catch (clearError) {
+          console.error("Error clearing reCAPTCHA:", clearError);
         }
       }
     } finally {
-      setIsLoading(false);
+      setIsLoading(false); // Ensure loading state is always reset
     }
   };
-  
 
   // function openDatabase() {
   //   return new Promise((resolve, reject) => {

@@ -396,18 +396,29 @@ const handleSendOTP = async (e) => {
   setLoading(true);
 
   try {
+    console.log("Sending request to /signup/send-otp"); // Added log
     const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/signup/send-otp`, {
       fullName: formData.fullName,
       phoneNumber: formData.phoneNumber,
     });
+    console.log("Received success response from /signup/send-otp:", response.status, response.data); // Added log
 
+    // This block now likely only handles non-error responses (2xx status)
+    // where the backend might *still* indicate failure for other reasons.
+    // The "User already exists" case (400 error) is now handled in the catch block.
     if (!response.data.success) {
-      Swal.fire("Error", response.data.message, "error");
+      console.warn("API returned 2xx status but success: false", response.data);
+      // You might want a different message here if it's not "User exists"
+      Swal.fire("Info", response.data.message || "Could not initiate OTP process.", "info");
+      setLoading(false);
       return;
     }
 
+    console.log("API response indicates success: true. Proceeding with reCAPTCHA/OTP flow."); // Added log
+
     // Step 1: Initialize reCAPTCHA (invisible)
     if (!window.recaptchaVerifier) {
+      // Ensure the container exists in your JSX: <div id="recaptcha-container"></div>
       window.recaptchaVerifier = new RecaptchaVerifier(auth, 'recaptcha-container', {
         size: 'invisible',
         callback: (response) => {
@@ -423,21 +434,26 @@ const handleSendOTP = async (e) => {
     // Step 2: Add timeout for reCAPTCHA rendering
     const timeout = 10000; // 10 seconds
     const renderRecaptcha = new Promise((resolve, reject) => {
-      window.recaptchaVerifier.render().then(resolve).catch(reject);
+        // Ensure render is only called once if verifier already exists and rendered
+        if (window.recaptchaVerifier?.controller?.rendered) {
+            resolve(); // Already rendered
+        } else {
+            window.recaptchaVerifier.render().then(resolve).catch(reject);
+        }
     });
 
     const timeoutPromise = new Promise((_, reject) =>
-      setTimeout(() => reject("reCAPTCHA timeout"), timeout)
+      setTimeout(() => reject(new Error("reCAPTCHA timeout")), timeout) // Use Error object
     );
 
     // Step 3: Try to render reCAPTCHA
     try {
       await Promise.race([renderRecaptcha, timeoutPromise]);
-      console.log("✅ reCAPTCHA rendered successfully.");
+      console.log("✅ reCAPTCHA rendered successfully or already rendered.");
     } catch (error) {
-      const msg = error === "reCAPTCHA timeout"
-        ? "reCAPTCHA timed out. Please try again."
-        : "Error rendering reCAPTCHA.";
+      const msg = error.message === "reCAPTCHA timeout"
+        ? "reCAPTCHA verification timed out. Please check your connection and try again."
+        : "Error rendering reCAPTCHA verification.";
       console.error("❌", msg, error);
       Swal.fire("Error", msg, "error");
       setLoading(false);
@@ -445,6 +461,7 @@ const handleSendOTP = async (e) => {
     }
 
     // Step 4: Request Firebase to send OTP
+    console.log("Requesting OTP from Firebase..."); // Added log
     const confirmation = await signInWithPhoneNumber(
       auth,
       formData.phoneNumber,
@@ -452,28 +469,71 @@ const handleSendOTP = async (e) => {
     );
 
     // Step 5: Store confirmation result
+    console.log("OTP request successful, confirmation received."); // Added log
     setConfirmationResult(confirmation);
     setIsOtpSent(true);
     Swal.fire("Success", "OTP sent successfully!", "success");
+
   } catch (error) {
-    console.error("❌ Error sending OTP:", error);
+    console.error("❌ Error caught in handleSendOTP:", error); // Log the whole error
 
-    let msg = "Failed to send OTP.";
-    if (error.code === "auth/invalid-phone-number") msg = "Invalid phone number.";
-    if (error.code === "auth/too-many-requests") msg = "Too many requests. Try again later.";
+    // ---- MODIFIED CATCH BLOCK ----
+    let errorHandled = false;
 
-    Swal.fire("Error", msg, "error");
+    // Check if it's an Axios error caused by the API response (like 400)
+    if (error.response) {
+      console.error("API Response Error - Status:", error.response.status);
+      console.error("API Response Error - Data:", error.response.data);
 
+      // Specifically handle the 400 Bad Request for "User already exists"
+      if (error.response.status === 400) {
+        // Recommended: Check a specific code/message in the response data if your API provides it
+        // e.g., if (error.response.data?.errorCode === 'USER_EXISTS') { ... }
+        // Assuming ANY 400 from this endpoint means user exists:
+        Swal.fire("User already exists", "This phone number is already registered. You can sign in.", "error");
+        errorHandled = true;
+      }
+      // You could add else if for other specific HTTP error codes (401, 403, 409 etc.) if needed
+    }
+
+    // Handle Firebase specific errors (if the error wasn't the API 400 response)
+    if (!errorHandled && error.code) {
+       let msg = "Failed to send OTP."; // Default message
+       if (error.code === "auth/invalid-phone-number") {
+           msg = "The phone number format is invalid.";
+       } else if (error.code === "auth/too-many-requests") {
+           msg = "We have blocked all requests from this device due to unusual activity. Try again later.";
+       } else if (error.message.includes("reCAPTCHA")) { // Catch reCAPTCHA specific errors from Firebase
+           msg = "reCAPTCHA check failed. Please try again.";
+       }
+       // Add more Firebase error codes as needed:
+       // https://firebase.google.com/docs/auth/admin/errors
+
+       Swal.fire("Error", msg, "error");
+       errorHandled = true;
+    }
+
+    // Fallback for any other unexpected errors
+    if (!errorHandled) {
+       Swal.fire("Error", "An unexpected error occurred. Please try again.", "error");
+    }
+
+    // --- End of Modified Catch Block ---
+
+
+    // Clean up reCAPTCHA instance if it exists, regardless of error type
     if (window.recaptchaVerifier) {
       try {
+        console.log("Clearing reCAPTCHA due to error.");
         window.recaptchaVerifier.clear();
-        window.recaptchaVerifier = null;
-      } catch (err) {
-        console.error("Error clearing reCAPTCHA:", err);
+        window.recaptchaVerifier = null; // Ensure it's fully reset
+      } catch (clearError) {
+        console.error("Error clearing reCAPTCHA:", clearError);
       }
     }
   } finally {
-    setLoading(false);
+    console.log("Running finally block."); // Added log
+    setLoading(false); // Ensure loading state is always reset
   }
 };
 
@@ -502,7 +562,7 @@ const handleVerifyOTP = async (e) => {
     localStorage.setItem("fullName", formData.fullName);
     localStorage.setItem("phoneNumber", result.user.phoneNumber);
   
-    Swal.fire("Success", "Phone verified successfully!", "success");
+    
   
     const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/signup/verify-otp`, {
       fullName: formData.fullName,
@@ -659,6 +719,7 @@ const handleVerifyOTP = async (e) => {
                   value={formData.otp}
                   onChange={handleChange}
                   placeholder="6-digit OTP"
+                  required
                 />
               </div>
               <button type="submit" className="btn btn-danger w-100" disabled={loading}>

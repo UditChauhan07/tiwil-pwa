@@ -50,8 +50,8 @@ const FamilyInformation = () => {
 
   return (
     <div className={styles.container} >
-    <div className="d-flex " style={{gap:"69px"}}>
-        <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)}/>
+    <div className="d-flex align-items-center" style={{gap:"69px"}}>
+        <FontAwesomeIcon icon={faArrowLeft} style={{fontSize:'x-large'}} onClick={() => navigate(-1)}/>
       <h1 className={styles.header}>View Detail</h1>
 </div>
       {familyMembers.map((member, index) => (
