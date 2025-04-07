@@ -614,7 +614,7 @@ const EventDetails = () => {
               <div className="tab-content  mt-3   bg-white">
                 {activeTab === "details" && (
                   <>
-                    <p className="d-flex align-items-center">
+                    <p className="d-flex align-items-center pdate " style={{marginBottom:'4px'}}>
                       <span className="bg-danger text-white p-2 rounded me-2">
                         📅
                       </span>
@@ -630,8 +630,11 @@ const EventDetails = () => {
                     {/* <p className="d-flex align-items-center">
                       {events.description}
                     </p> */}
-
+<br/>
+<br/>
                     <div className="about-event">
+                    <br/>
+
                       <div className="headersevent">
                         <h5>About event</h5>
                       </div>
@@ -678,10 +681,11 @@ const EventDetails = () => {
                       }}
                     ></div>
                     <div className="wishlist-items">
+                    <h5> Wishlist</h5>
                       {wishlistItems.length > 0 ? (
                         wishlistItems.map((item) => (
                           <div key={item._id}>
-                            <h5>🎁 Wishlist</h5>
+                           
                             <div className="row">
                               <div
                                 className="col-lg-4 col-md-6 col-sm-12"

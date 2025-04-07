@@ -277,13 +277,14 @@ console.log('pool',poolCreator)
       {/* Image Section */}
       <div className="text-center" style={{ height:'300px',width:'100%'}}>
  
+  
       <img
   src={
     pool?.Image
       ? `${process.env.REACT_APP_BASE_URL}/${pool.Image}`
       : `${process.env.PUBLIC_URL}/img/defaultproduct.jpg`
   }
-  alt={pool?.wishname || "Default Gift"}
+  alt={pool?.wishName || "Default Gift"}
   className="img-fluid rounded"
   style={{ width: "100%", maxHeight: "258px" }}
   onError={(e) => {
@@ -327,10 +328,9 @@ console.log('pool',poolCreator)
           <h6 className="text-danger">
             Pending: <strong>&#8377;{pendingAmount}</strong>
           </h6>
-          <div>
-          <h5 className="m-2">{pool.giftName}</h5></div>
+    
 
-        </div>
+   </div>
    
       </div>
 
@@ -452,8 +452,8 @@ console.log('pool',poolCreator)
         ) : (
           isOwner  &&(
             <button
-              style={{ padding: "9px", background: "#ff3366", borderRadius: "20px",color: "white"
-   , position: "fixed"
+              style={{ padding: "9px", background: "#dc3545", borderRadius: "20px",color: "white"
+  
     ,right: "46px",
     width: '78%',
     border: "none" ,

@@ -357,7 +357,7 @@ const EventDetails = () => {
       : `${process.env.PUBLIC_URL}/img/eventdefault.png` // Default image
   }
   className="img-fluid event-img1"
-  style={{ width: "550px", height: "174px", borderRadius: "10px" }}
+  style={{ width: "550px", height: "174px", borderRadius: "10px",    objectFit: "contain" }}
   alt="Event"
 />
 
@@ -409,6 +409,7 @@ const EventDetails = () => {
                           </span>
                           {event.location || "Location not available"}
                         </p>
+                    <br/>
                     
                     <div className='about-event'>
 <div className='headersevent'>
@@ -447,7 +448,7 @@ const EventDetails = () => {
                                         backgroundSize: "cover",
                                       }}
                                     >
-                                      <div className="card-img-top" style={{ height: "226px" }}>
+                                      <div className="card-img-top" style={{ height: "161px" }}>
                                         {/* ✅ Dynamically Display Image */}
                                         {/* <img
                             src={`${process.env.REACT_APP_BASE_URL}/${item.imageUrl}`}

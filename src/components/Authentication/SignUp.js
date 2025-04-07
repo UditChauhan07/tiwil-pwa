@@ -453,7 +453,7 @@ const handleSendOTP = async (e) => {
     } catch (error) {
       const msg = error.message === "reCAPTCHA timeout"
         ? "reCAPTCHA verification timed out. Please check your connection and try again."
-        : "Error rendering reCAPTCHA verification.";
+        : "Error rendering reCAPTCHA verification please refresh.";
       console.error("❌", msg, error);
       Swal.fire("Error", msg, "error");
       setLoading(false);
@@ -472,7 +472,13 @@ const handleSendOTP = async (e) => {
     console.log("OTP request successful, confirmation received."); // Added log
     setConfirmationResult(confirmation);
     setIsOtpSent(true);
-    Swal.fire("Success", "OTP sent successfully!", "success");
+    Swal.fire({
+      title: "Success",
+      text: "OTP sent successfully!",
+      icon: "success",
+      confirmButtonColor: "#ff3366" // Custom confirm button color
+    });
+    
 
   } catch (error) {
     console.error("❌ Error caught in handleSendOTP:", error); // Log the whole error
@@ -544,15 +550,24 @@ const handleVerifyOTP = async (e) => {
   e.preventDefault();
 
   // Step 1: Validate OTP
-  if (!formData.otp || formData.otp.length !== 6) {
-    Swal.fire("Error", "Enter a valid 6-digit OTP", "error");
-    return;
-  }
+  // if (!formData.otp || formData.otp.length !== 6) {
+  //   Swal.fire("Error", "Enter a valid 6-digit OTP", "error");
+  //   return;
+  // }
 
   // Step 2: Check confirmation result exists
   if (!confirmationResult) {
     Swal.fire("Error", "OTP session expired. Please send OTP again.", "error");
     return;
+  }
+  if (!formData.otp) {
+    setPhoneError({ hasError: true, message: "Enter OTP first" });
+    return; // Don't proceed if OTP is empty
+  }
+
+  if (formData.otp.length !== 6) {
+    setPhoneError({ hasError: true, message: "OTP must be exactly 6 digits." });
+    return; // Don't proceed if OTP is not 6 digits
   }
 
   setLoading(true);
@@ -589,7 +604,8 @@ const handleVerifyOTP = async (e) => {
         imageUrl: logo,
         imageWidth: 80,
         imageHeight: 80,
-      });
+      
+           });
   
       localStorage.setItem("fullName", user.fullName || "");
       localStorage.setItem("phoneNumber", user.phoneNumber || "");
@@ -611,7 +627,10 @@ const handleVerifyOTP = async (e) => {
       msg = "Invalid OTP.";
     } else if (error.code === "auth/code-expired") {
       msg = "OTP expired. Please try again.";
-    } else if (error.response?.data?.message) {
+    }
+    else if (error.code === "auth/too-many-requests") {
+      msg = "Limit exceeds. Please try again after some time.";}
+       else if (error.response?.data?.message) {
       msg = error.response.data.message;
     } else {
       msg = error.message || msg;
@@ -721,6 +740,7 @@ const handleVerifyOTP = async (e) => {
                   placeholder="6-digit OTP"
                   required
                 />
+                  {phoneError.hasError && <div className="invalid-feedback d-block">{phoneError.message}</div>}
               </div>
               <button type="submit" className="btn btn-danger w-100" disabled={loading}>
                 {loading ? <Spinner size="sm" animation="border" className="me-2" /> : "Verify OTP"}
