@@ -327,7 +327,7 @@ function Invitationlst({ searchQuery }) {
               </div>
               <Card.Body>
                 <Card.Title>
-                  {invitation.eventfullName}{" "}
+                  {invitation.event.fullName}{" "}
                   {invitation.event?.relation &&
                     invitation.event?.date &&
                     getUpcomingBirthdayNumber(invitation.event.date)}{" "}
