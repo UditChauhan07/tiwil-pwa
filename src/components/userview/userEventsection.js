@@ -539,7 +539,7 @@ const EventDetails = () => {
       <section className="page-controls">
         <div className="container mt-4">
           <div className="d-flex justify-content-between align-items-center">
-            <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate(-1)} />
+            <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate("/home")} />
             <h4 className="fw-bold" style={{ marginBottom: "0px" }}>
               Event Details
             </h4>
