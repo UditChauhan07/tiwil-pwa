@@ -123,3 +123,22 @@ button#mui-p-82252-T-1 {
   /* your styles here */
  border: none !important;
 }
+.navbar-toggler:focus{
+  outline: none !important;
+  box-shadow: none !important;
+  border: none !important;
+  background: none !important;
+} 
+
+
+.reactEasyCrop_Container{
+background-color: black !important;
+top: 0% !important;
+
+}
+.reactEasyCrop_CropArea{
+  height: 190px !important;
+  top: 35% !important;
+  
+  width: 368.135px !important;
+}

@@ -100,7 +100,7 @@ const SignInForm = () => {
           ? "reCAPTCHA verification timed out. Please check your connection and try again."
           // Improved message for other render errors
           : "Couldn't initialize verification. Please refresh the page and try again.";
-        console.error("❌ Error rendering reCAPTCHA:", error);
+        console.error("❌ Error rendering reCAPTCHA :", error);
         Swal.fire("Error", msg, "error");
         setIsLoading(false);
         return;
@@ -196,6 +196,15 @@ const SignInForm = () => {
     if (!confirmationResult) {
       Swal.fire("Error", "OTP session expired. Please send OTP again.", "error");
       return;
+    }
+    if (!formData.otp) {
+      setPhoneError({ hasError: true, message: "Enter OTP first" });
+      return; // Don't proceed if OTP is empty
+    }
+  
+    if (formData.otp.length !== 6) {
+      setPhoneError({ hasError: true, message: "OTP must be exactly 6 digits." });
+      return; // Don't proceed if OTP is not 6 digits
     }
   
     setIsLoading(true);
@@ -414,7 +423,9 @@ const SignInForm = () => {
                   placeholder="Enter OTP"
                   required
                   maxLength="6" // Limit input to 6 characters
-                />
+                 />
+                 {phoneError.hasError && <div className="invalid-feedback d-block">{phoneError.message}</div>}
+         
               </div>
               <button
                 className="btn btn-primary w-100 py-2 mb-3"

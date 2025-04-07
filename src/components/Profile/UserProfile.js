@@ -6,8 +6,8 @@ import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { Spinner } from "react-bootstrap"; // Import the Bootstrap Spinner for loader
-import Compressor from 'compressorjs'; // Import Compressor.js
-import  CropperModal from "../Wishlist/cropModal"
+import Compressor from "compressorjs"; // Import Compressor.js
+import CropperModal from "../Wishlist/cropModal";
 
 function Profile() {
   const navigate = useNavigate();
@@ -33,8 +33,7 @@ function Profile() {
   const [errors, setErrors] = useState({}); // State to store validation errors
   const [loading, setLoading] = useState(false); // State to handle loading
   const [showCropper, setShowCropper] = useState(false);
-const [tempImage, setTempImage] = useState(null);
-
+  const [tempImage, setTempImage] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -66,79 +65,79 @@ const [tempImage, setTempImage] = useState(null);
   }, []);
 
   const validateForm = () => {
-    let newErrors = {};
+    let newErrors = {}; // Collect all errors here
   
     // 1st Check: Full Name
     if (!userData || typeof userData.fullName !== "string" || !userData.fullName.trim()) {
       newErrors.fullName = "Full Name is required.";
-      setErrors(newErrors);
-      return false; // Stop further validation
-    }
-  
-    // Validate Name (external function)
-    const isValidName = validateName(userData.fullName);
-    if (!isValidName) {
-      setErrors(newErrors); // Ensure errors are updated if validation fails
-      return false; // Stop further validation
+    } else {
+      const isValidName = validateName(userData.fullName);
+      if (!isValidName) {
+        newErrors.fullName = "Name must be 3-25 characters long, only letters and spaces.";
+      }
     }
   
     // 2nd Check: Email
     if (!userData.email || !userData.email.trim()) {
       newErrors.email = "Email is required.";
-      setErrors(newErrors);
-      return false;
     } else {
       const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
       if (!emailRegex.test(userData.email)) {
         newErrors.email = "Please enter a valid email address.";
       }
-      setErrors(newErrors);
     }
   
     // 3rd Check: Gender
     if (!userData.gender) {
       newErrors.gender = "Please select your gender.";
-      setErrors(newErrors);
-      return false;
     }
   
     // 4th Check: Date of Birth
     if (!userData.dob) {
       newErrors.dob = "Please enter your Date of Birth.";
-      setErrors(newErrors);
-      return false;
     }
   
     // 5th Check: Marital Status
     if (!userData.maritalStatus) {
       newErrors.maritalStatus = "Please select your Marital Status.";
+    }
+  
+    // If there are any errors, set them. Otherwise, reset errors state.
+    if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
-      return false;
+      return false; // Return false if there are any errors
     }
   
     setErrors({}); // Reset errors if everything is valid
-    return true;
+    return true; // All fields are valid
   };
   
   // validateName function (outside of validateForm)
   const validateName = (name) => {
     const trimmed = name.trim();
+    
     if (!trimmed) {
-      setNameError("Full name is required.");
+      setErrors((prev) => ({ ...prev, fullName: "Full name is required." }));
       return false;
     }
-    const nameRegex = /^[A-Za-z\s]{3,25}$/;
+    
+    const nameRegex = /^[A-Za-z\s]{3,25}$/;  // Updated regex to allow only spaces
     if (!nameRegex.test(trimmed)) {
-      setNameError("Name must be 3-25 characters long, only letters/spaces.");
+      setErrors((prev) => ({
+        ...prev,
+        fullName: "Name must be 3-25 characters long, only letters and spaces.",
+      }));
       return false;
     }
+    
     return true;
   };
   
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
-  
+
     const reader = new FileReader();
     reader.onloadend = () => {
       setTempImage(reader.result); // base64 image for cropping
@@ -150,7 +149,6 @@ const [tempImage, setTempImage] = useState(null);
     setSelectedProfileImage(croppedBlob);
     setShowCropper(false);
   };
-    
 
   const handleSave = async () => {
     if (!validateForm()) return;
@@ -183,17 +181,24 @@ const [tempImage, setTempImage] = useState(null);
         const profileImagePath = response.data.data.profileImage;
         localStorage.setItem("profileImage", profileImagePath);
         Swal.fire({
-          text: "Profile added successfully",
-          confirmButtonText: "Add family Info",
-          confirmButtonColor: "#FF3366",
-          imageUrl: `${process.env.PUBLIC_URL}/img/letsgo.png`,
-          imageWidth: 80,
-          imageHeight: 80,
-          imageAlt: "Data Added",
-          padding: "2rem",
-          background: "#fff",
+          title: 'Profile Added',
+          text: 'Would you like to add family info?',
+          icon: 'success',
+          showCancelButton: true,
+          confirmButtonColor: '#FF3366',
+          cancelButtonColor: '#d33',
+          confirmButtonText: 'Yes, Proceed!',
+          cancelButtonText: 'No, Thanks',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            // User clicked "Yes, Proceed!"
+            navigate("/additionalinfo");
+          } else if (result.isDismissed) {
+            // User clicked "No, Thanks" or dismissed the alert
+            navigate("/home");
+          }
         });
-        navigate("/additionalinfo");
+        
       } else {
         setErrors((prevErrors) => ({
           ...prevErrors,
@@ -221,8 +226,18 @@ const [tempImage, setTempImage] = useState(null);
   return (
     <>
       {loading ? (
-        <div style={{ display: "flex", justifyContent: "center", marginTop: "200px" }}>
-          <Spinner animation="border" role="status" style={{ width: "5rem", height: "5rem" }} />
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "center",
+            marginTop: "200px",
+          }}
+        >
+          <Spinner
+            animation="border"
+            role="status"
+            style={{ width: "5rem", height: "5rem" }}
+          />
         </div>
       ) : (
         <div className={styles.container}>
@@ -310,7 +325,9 @@ const [tempImage, setTempImage] = useState(null);
                   className={styles.chevronIcon}
                 />
               </div>
-              {errors.gender && <span className={styles.error}>{errors.gender}</span>}
+              {errors.gender && (
+                <span className={styles.error}>{errors.gender}</span>
+              )}
             </div>
 
             <div className={styles.formGroup}>
@@ -365,18 +382,15 @@ const [tempImage, setTempImage] = useState(null);
               </button>
             </div>
           </div>
-          
         </div>
-        
       )}
       {showCropper && (
-  <CropperModal
-    imageSrc={tempImage}
-    onCropDone={handleCroppedImage}
-    onCancel={() => setShowCropper(false)}
-  />
-)}
-
+        <CropperModal
+          imageSrc={tempImage}
+          onCropDone={handleCroppedImage}
+          onCancel={() => setShowCropper(false)}
+        />
+      )}
     </>
   );
 }
