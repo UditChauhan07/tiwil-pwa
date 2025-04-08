@@ -47,7 +47,7 @@ const Chatlist = () => {
   return (
     <div className={styles.container}>
       {/* 🔍 Search Bar */}
-      <div className="d-flex gap-3">
+      <div className="d-flex gap-3 "style={{marginTop:"20px"}}>
       <FiArrowLeft
             className={styles.backIcon}
             onClick={() => navigate("/home")}

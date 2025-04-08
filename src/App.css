@@ -142,3 +142,7 @@ top: 0% !important;
   
   width: 368.135px !important;
 }
+
+.grecaptcha-badge {
+   visibility: hidden; 
+  }

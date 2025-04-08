@@ -43,9 +43,10 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
     // Gift Name Validation: Ensure not null/undefined and meets requirements
     if (!giftName || giftName.trim() === "") {
       newErrors.giftName = "Gift Name is required.";
-    } else if (!/^[a-zA-Z\s]{1,30}$/.test(giftName)) {
-      newErrors.giftName = "Only letters & spaces allowed (max 30 characters).";
+    } else if (!/^[a-zA-Z0-9\s]{1,30}$/.test(giftName)) {
+      newErrors.giftName = "Only letters, numbers, and spaces are allowed (max 30 characters).";
     }
+    
 
     // Price Validation: Ensure not null/undefined and meets requirements
     if (!price || price.trim() === "") {
