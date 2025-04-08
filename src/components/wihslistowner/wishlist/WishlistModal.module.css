@@ -129,3 +129,12 @@
     background-color: #ff3361;
   }
   
+
+  .error{
+    color: red;
+    width: 100%;
+    text-align: left;
+    justify-content: left;
+    display: flex;
+    align-items: left;
+  }

@@ -8,7 +8,7 @@ const SplashScreen1 = () => (
      <br/>
   <div className="d-flex flex-column justify-content-center align-items-center vh-80 vw-60 text-center">
 
-    <img  src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" className="pb-1" style={{maxHeight:"100px"}}/>
+    <img  src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" className="pb-1" style={{maxHeight:"100px",width:'141px'}}/>
     <img
    src={`${process.env.PUBLIC_URL}/img/SplashScreen1image.webp`}
       alt="Celebration"
