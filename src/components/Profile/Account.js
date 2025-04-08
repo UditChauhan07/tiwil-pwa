@@ -12,6 +12,7 @@ import { faArrowLeft,faGift } from '@fortawesome/free-solid-svg-icons';
 import { Card, Button, Spinner } from "react-bootstrap";
 
 import {useFetcher, useNavigate} from 'react-router-dom'
+import Swal from "sweetalert2";
 
 const Account = () => {
   const [isEditing, setIsEditing] = useState(false);
@@ -92,40 +93,80 @@ const profileImage=localStorage.getItem('profileImage')
     setIsConfirming(true);
     navigate('/signin')
   };
-
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("fullname");
-    localStorage.clear();
-    navigate("/signin");
-    window.dispatchEvent(new Event("storage"));
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You will be logged out of your session.",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ff3366',
+      cancelButtonColor: '#ff3366',
+      confirmButtonText: 'Yes, logout',
+      cancelButtonText: 'Cancel'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("fullname");
+        localStorage.clear();
+        navigate("/signin");
+        window.dispatchEvent(new Event("storage"));
+        
+        Swal.fire(
+          'Logged Out!',
+          'You have been successfully logged out.',
+          'success'
+        );
+      }
+    });
   };
-
-  const deleteAccount = async () => {
+  const handleDeleteAccount = async () => {
+    const confirmResult = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'Your account will be permanently deleted!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#ff3366',
+      cancelButtonColor: '#ff3366',
+      confirmButtonText: 'Yes, delete it',
+      cancelButtonText: 'Cancel',
+    });
+  
+    if (!confirmResult.isConfirmed) return;
+  
     const token = localStorage.getItem("token");
+  
     try {
       const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/profile`, {
         headers: { Authorization: `Bearer ${token}` },
       });
+  
       if (response.data.success) {
-        alert("Account deleted successfully");
+        await Swal.fire({
+          icon: 'success',
+          title: 'Account Deleted',
+          text: 'Your account has been successfully deleted.',
+          confirmButtonColor: '#ff3366',
+        });
+  
         localStorage.clear();
         navigate("/signin");
       } else {
-        alert("Failed to delete account");
+        Swal.fire({
+          icon: 'error',
+          title: 'Failed',
+          text: 'Failed to delete your account.',
+          confirmButtonColor: '#ff3366',
+        });
       }
     } catch (error) {
       console.error("Error deleting account:", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Error',
+        text: 'Something went wrong while deleting your account.',
+        confirmButtonColor: '#ff3366',
+      });
     }
-  };
-
-  const handleYes = () => {
-    deleteAccount();
-    setIsConfirming(false);
-  };
-
-  const handleNo = () => {
-    setIsConfirming(false);
   };
   const handleFamilyInfo = ()=> {
     navigate("/familyInfo")
@@ -156,7 +197,7 @@ const profileImage=localStorage.getItem('profileImage')
         />
       ) : isConfirming ? (
         <div className={styles.confirmContainer}>
-          <h3>Are you sure you want to close your account?</h3>
+          <h3>Are you sure you want to Delete your account?</h3>
           <div className={styles.confirmButtons}>
             <button className={styles.yesButton} onClick={handleYes}>
               Yes
@@ -222,9 +263,9 @@ const profileImage=localStorage.getItem('profileImage')
               <FiLogOut className={styles.menuIcon} />
               <span className={styles.menuText}>Logout</span>
             </div>
-            <div className={styles.menuItem} onClick={handleCloseAccount}>
+            <div className={styles.menuItem} onClick={handleDeleteAccount}>
               <IoMdCloseCircleOutline className={styles.menuIcon} />
-              <span className={styles.menuText}>Close Account</span>
+              <span className={styles.menuText}>Delete Account</span>
             </div>
           </div>
         </div>

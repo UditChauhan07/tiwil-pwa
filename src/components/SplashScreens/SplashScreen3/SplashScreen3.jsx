@@ -1,6 +1,6 @@
 import React from "react";
 
-
+import './SplashScreen3.css'
 
 const SplashScreen3 = () => (
   <>
@@ -11,7 +11,7 @@ const SplashScreen3 = () => (
     <img
      src={`${process.env.PUBLIC_URL}/img/SplashScreen3.webp`}
       alt="Enjoy"
-      className="img-fluid my-3"
+      className="img-fluid my-3 imagefirstsplash"
       style={{ maxHeight:"180px" }}
     />
     <p className="fw-semibold " style={{color:"#ff3366" ,height:'70px'}}>

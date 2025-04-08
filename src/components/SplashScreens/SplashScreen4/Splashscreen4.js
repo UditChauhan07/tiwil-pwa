@@ -1,5 +1,5 @@
 import React from "react";
-
+import './SplashScreen4.css'
 
 const SplashScreen4 = () => (
   <>
@@ -13,7 +13,7 @@ const SplashScreen4 = () => (
       <img
              src={`${process.env.PUBLIC_URL}/img/SplashScreen4.webp`}
         alt="Plan"
-        className="img-fluid my-3"
+        className="img-fluid my-3 imagefirstsplash"
         style={{ maxHeight:"180px" }}
       />
       {/* Text */}

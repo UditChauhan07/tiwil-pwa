@@ -144,7 +144,7 @@ const unreadNotificationCount = Array.isArray(notifications)
                       style={{
                         position: "absolute",
                         top: "15px",
-                        right: "73px",
+                        right: "63px",
                         backgroundColor: "#EE4266",
                         color: "white",
                         borderRadius: "50%",
