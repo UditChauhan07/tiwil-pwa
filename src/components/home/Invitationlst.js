@@ -327,11 +327,11 @@ function Invitationlst({ searchQuery }) {
               </div>
               <Card.Body>
                 <Card.Title>
-                  {invitation.event.fullName}{" "}
+                  {invitation.event?.name}{""}&nbsp;
                   {invitation.event?.relation &&
                     invitation.event?.date &&
-                    getUpcomingBirthdayNumber(invitation.event.date)}{" "}
-                  {invitation.event?.eventType}
+                    getUpcomingBirthdayNumber(invitation.event.date)}
+                  {""}&nbsp;{invitation.event?.eventType}
                 </Card.Title>
                 <Card.Text
                   className="d-flex justify-content-between"

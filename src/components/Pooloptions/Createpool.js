@@ -303,7 +303,8 @@ console.log('pool',poolCreator)
           <div style={{ width: "50px", height: "70px",marginLeft: "5px"}}>
             <CircularProgressbar
               value={percentage}
-              text={`${percentage.toFixed(0)}%`}
+              text={`${Math.floor(percentage)}%`}
+
               styles={buildStyles({
                 pathColor: `#ff3366`,
                 textColor: "#ff3366",

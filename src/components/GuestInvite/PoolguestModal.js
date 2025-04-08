@@ -4,18 +4,19 @@ import { FaCheckCircle, FaCircle } from "react-icons/fa";
 import axios from "axios";
 import Swal from "sweetalert2";
 
-const InviteModal = ({ show, setShow, wishId,poolId }) => {
+const InviteModal = ({ show, setShow, wishId, poolId }) => {
   const [selectedInvites, setSelectedInvites] = useState([]);
   const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
 
   const token = localStorage.getItem("token");
+  const currentUserId = localStorage.getItem("userId"); // Assuming userId is stored in localStorage
 
   console.log("📌 Modal Opened with Wish ID:", wishId);
 
   // Fetch users when modal opens
   useEffect(() => {
-    if (!show) return; // Prevent fetching if modal is closed
+    if (!show) return;
 
     const fetchUsers = async () => {
       try {
@@ -26,27 +27,33 @@ const InviteModal = ({ show, setShow, wishId,poolId }) => {
           }
         );
 
-        console.log("🟢 Users fetched:", response.data.data);
-        setUsers(response.data.data || []);
+        const fetchedUsers = response.data.data || [];
+        // Exclude the current user from the list
+        const filtered = fetchedUsers.filter(
+          (user) => user.userId !== currentUserId
+        );
+
+        console.log("🟢 Users fetched (excluding current user):", filtered);
+        setUsers(filtered);
       } catch (error) {
         console.error("❌ Failed to fetch users:", error);
       }
     };
 
     fetchUsers();
-  }, [token, show, wishId]);
+  }, [token, show, wishId, currentUserId]);
 
   // Toggle invite selection
   const toggleInvite = (userId) => {
-    if (!userId) {
-      console.error("❌ Invalid user ID:", userId);
+    if (!userId || userId === currentUserId) {
+      console.warn("⚠️ Can't invite self or invalid ID:", userId);
       return;
     }
 
     setSelectedInvites((prev) => {
       const updatedInvites = prev.includes(userId)
-        ? prev.filter((item) => item !== userId) // Remove if already selected
-        : [...prev, userId]; // Add if not selected
+        ? prev.filter((item) => item !== userId)
+        : [...prev, userId];
 
       console.log("✅ Updated selectedInvites:", updatedInvites);
       return updatedInvites;
@@ -62,23 +69,28 @@ const InviteModal = ({ show, setShow, wishId,poolId }) => {
         title: "Error",
         text: "Please select at least one valid guest.",
         icon: "error",
+        customClass: {
+          popup: 'custom-swal-popup' // Use a class name for the popup
+        },
+        willOpen: () => {
+          // Access the popup and set z-index directly
+          const swalPopup = document.querySelector('.swal2-popup');
+          if (swalPopup) {
+            swalPopup.style.zIndex = 2000;  // Set z-index higher than the modal
+          }
+        }
       });
+      
       return;
     }
 
-    console.log("📤 Sending Invite with:", {
-      poolId,
-      wishId,
-      invitedUserIds: selectedInvites.filter(Boolean), // Remove null values
-    });
-console.log(poolId)
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/pool/invite`,
         {
           poolId,
           wishId,
-          invitedUserIds: selectedInvites.filter(Boolean), // Remove null values
+          invitedUserIds: selectedInvites.filter(Boolean),
         },
         {
           headers: { Authorization: `Bearer ${token}` },
@@ -92,8 +104,8 @@ console.log(poolId)
       });
 
       console.log("✅ Invite sent successfully:", response.data);
-      setShow(false); // Close modal
-      setSelectedInvites([]); // Reset selection
+      setShow(false);
+      setSelectedInvites([]);
     } catch (error) {
       console.error("❌ Error sending invite:", error.response?.data || error.message);
       Swal.fire({
@@ -104,7 +116,6 @@ console.log(poolId)
     }
   };
 
-  // Filter users based on search query
   const filteredUsers = users.filter((user) =>
     user.fullName.toLowerCase().includes(searchQuery.toLowerCase())
   );
@@ -116,7 +127,6 @@ console.log(poolId)
       </Modal.Header>
 
       <Modal.Body>
-        {/* Search Input */}
         <div className="search-container mb-3">
           <input
             type="text"
@@ -127,7 +137,6 @@ console.log(poolId)
           />
         </div>
 
-        {/* User List */}
         <div className="user-list">
           {filteredUsers.length === 0 ? (
             <p className="text-center text-muted">No users found</p>
@@ -172,5 +181,6 @@ console.log(poolId)
     </Modal>
   );
 };
+
 
 export default InviteModal;

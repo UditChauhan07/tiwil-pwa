@@ -104,6 +104,7 @@ const ChatRoom = () => {
         fetchMessages(1);
     }, [fetchMessages]);
 
+    
     useEffect(() => {
         if (!token || !groupId) return;
 

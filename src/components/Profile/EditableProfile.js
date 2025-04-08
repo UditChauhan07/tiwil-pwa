@@ -46,18 +46,70 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
     // Add validation for other fields here if needed
   };
 
-  // --- 4. Modify handleImageChange to ONLY set state ---
-  // It should NOT save automatically anymore. Saving happens via handleSave.
+
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
       // Set the selected image file object in state for preview and later upload
       setSelectedImage(file);
+      const formData = new FormData();
+      const token = localStorage.getItem('token');
+  
+      // Append all profile fields EXCEPT potentially the old profileImage path
+      Object.keys(profileData).forEach((key) => {
+          // Avoid sending the old image path if a new image is selected or if it shouldn't be sent
+          if (key !== 'profileImage') {
+              formData.append(key, profileData[key] ?? ''); // Send empty string for null/undefined values
+          }
+      });
+  
+      // Append the NEW profile image file if one was selected
+      if (selectedImage) {
+        formData.append("profileImage", selectedImage, selectedImage.name); // Include filename
+      }
+      // Note: If no new image is selected, the backend should ideally
+      // know not to clear the existing image unless explicitly told to.
+  
+      try {
+        const response =  axios.post(
+          `${process.env.REACT_APP_BASE_URL}/user-profile`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+  
+        if (response.data.success) {
+         
+          // Update localStorage if the image path changed
+          if (response.data.data?.profileImage) {
+              const profileImagePath = response.data.data.profileImage;
+              localStorage.setItem("profileImage", profileImagePath);
+          }
+          // Crucially, call the onSave callback passed from the parent (Account component)
+          // This updates the state in the Account component to reflect the changes.
+          onSave(response.data.data);
+        } else {
+          // Use error message from backend if available
+          alert(response.data.message || "Failed to update profile.");
+        }
+      } catch (error) {
+        console.error("Error updating profile:", error);
+        // Provide more specific error feedback if possible (e.g., check error.response)
+        alert("Failed to update profile. An error occurred.");
+      } finally {
+        setLoading(false); // Hide spinner regardless of success/failure
+      }
+    };
+    
       // Optionally update profileData state if you want to track the image name/info there too
       // setProfileData((prev) => ({ ...prev, profileImage: file.name })); // Example
     }
     // REMOVED THE API CALL FROM HERE
-  };
+  ;
 
   // --- 5. Modify handleSave to include final validation ---
   const handleSave = async (e) => {
@@ -173,9 +225,9 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
   return (
     <div className={styles.container}>
       <div className={styles.header}>
-        <FontAwesomeIcon icon={faArrowLeft} onClick={onBack} style={{cursor: 'pointer'}} /> {/* Make icon clickable */}
+        <FontAwesomeIcon icon={faArrowLeft} onClick={onBack} style={{cursor: 'pointer',fontSize:'x-large'}} /> {/* Make icon clickable */}
         {/* Removed button wrapper around "Profile" text for simplicity */}
-        <span style={{fontWeight: 'bold', marginLeft: '10px'}}>Profile</span> {/* Simple text header */}
+        <span style={{fontWeight: '700', marginLeft: '10px',fontSize:'22px'}}>Profile</span> {/* Simple text header */}
       </div>
       <div className={styles.profileSection}>
         <div className={styles.profileImageWrapper}>

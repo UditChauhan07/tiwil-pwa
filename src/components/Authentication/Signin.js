@@ -116,7 +116,13 @@ const SignInForm = () => {
       // Step 5: Store confirmation result
       setConfirmationResult(confirmation);
       setIsOtpSent(true);
-      Swal.fire("Success", "OTP sent successfully!", "success");
+      Swal.fire({
+           title: "Success",
+           text: "OTP sent successfully!",
+           icon: "success",
+           confirmButtonColor: "#ff3366" // Custom confirm button color
+         });
+         
   
     } catch (error) {
       console.error("❌ Error sending OTP (Login Flow):", error);
@@ -213,7 +219,7 @@ const SignInForm = () => {
     try {
       const result = await confirmationResult.confirm(formData.otp);
   
-      Swal.fire("Success", "Phone verified successfully!", "success");
+     
   
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/login/verify-otp`,
