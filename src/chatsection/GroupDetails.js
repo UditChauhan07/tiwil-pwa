@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import styles from "./GroupDetails.module.css";
 import { FiArrowLeft } from "react-icons/fi";
+import { Spinner } from "react-bootstrap";
 
 const GroupDetails = () => {
   const { groupId } = useParams();
@@ -57,14 +58,21 @@ const GroupDetails = () => {
     }
   };
 
-  if (loading) return <p>Loading group details...</p>;
+  if(loading) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "250px" }}>
+        <Spinner animation="border" role="status" style={{ width: "7rem", height: "7rem" }} />
+      </div>
+    );
+  }
 
   return (
     <div className={styles.container}>
       {groupDetails ? (
         <>
+        <FiArrowLeft onClick={() => navigate(-1)} className={styles.backIcon} style={{fontSize:'25px',fontWeight:'700'}} />
           <div className={styles.header}>
-            <FiArrowLeft onClick={() => navigate(-1)} className={styles.backIcon} />
+            
             <img
               src={
                 groupDetails.eventImage
@@ -108,7 +116,7 @@ const GroupDetails = () => {
                 <img
                   src={
                     member.profileImage
-                      ? `${process.env.REACT_APP_BASE_URL}${member.profileImage}`
+                      ? `${process.env.REACT_APP_BASE_URL}/${member.profileImage}`
                       : `${process.env.PUBLIC_URL}/DefaultUser.png`
                   }
               

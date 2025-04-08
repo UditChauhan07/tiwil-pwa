@@ -183,8 +183,6 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
       }
     } catch (error) {
       console.error("Error updating profile:", error);
-      // Provide more specific error feedback if possible (e.g., check error.response)
-      alert("Failed to update profile. An error occurred.");
     } finally {
       setLoading(false); // Hide spinner regardless of success/failure
     }
