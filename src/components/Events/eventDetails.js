@@ -392,7 +392,7 @@ const EventDetails = () => {
                   <div className="tab-content mt-3 bg-white">
                     {activeTab === "details" && (
                       <>
-                        <p className="d-flex align-items-center gap-2">
+                        <p className="d-flex align-items-center gap-2 mb-2">
                         <div className='calender-icon'>
                         <FontAwesomeIcon icon={faCalendarAlt} style={{ color: "#ff3366", fontSize: "20px" }} />
 </div>
@@ -444,7 +444,7 @@ const EventDetails = () => {
                                       style={{
                                         backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/${item.imageUrl})`,
                                         position: "relative",
-                                        backgroundRepeat: "round",
+                                        backgroundRepeat: "no-repeat",
                                         backgroundSize: "cover",
                                       }}
                                     >

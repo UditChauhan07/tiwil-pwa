@@ -802,7 +802,7 @@ verticalAlign: "middle",
               </div>
               <div className="d-flex justify-content-center align-items-center">
               <button type="submit" className=" btn-primary w-80 py-2 mb-3 d-flex justify-content-center align-items-center"
-                style={{ background: "#ff3366", border: "none", color: "#fff", width: "70%", height: "50px", fontSize: "16px", fontWeight: "600", }} disabled={loading}>
+                style={{ background: "#ff3366", border: "none", color: "#fff", width: "70%", height: "50px", fontSize: "16px", fontWeight: "600",marginTop:'20px' }} disabled={loading}>
                 {loading ? <Spinner size="sm" animation="border" className="me-2" /> : "Verify OTP"}
               </button>
               </div>
