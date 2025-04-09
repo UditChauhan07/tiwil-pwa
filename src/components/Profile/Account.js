@@ -110,12 +110,7 @@ const profileImage=localStorage.getItem('profileImage')
         localStorage.clear();
         navigate("/signin");
         window.dispatchEvent(new Event("storage"));
-        
-        Swal.fire(
-          'Logged Out!',
-          'You have been successfully logged out.',
-          'success'
-        );
+     
       }
     });
   };

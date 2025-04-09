@@ -748,7 +748,7 @@ verticalAlign: "middle",
           
 
           <p className="text-center text-muted mt-3">
-            Already registered? <Link to="/signin" className="text-primary fw-bold">Sign In</Link>
+           <u> Already registered?</u> <Link to="/signin" className="text-primary fw-bold">Sign In</Link>
           </p>
         </div>
       </div>

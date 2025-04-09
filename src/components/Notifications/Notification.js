@@ -170,7 +170,7 @@ const PoolRequests = () => {
               .filter((notif) => !["Pool Invitation", "Pool Join Request", "Event Invitation"].includes(notif.type))
               .map((notification) => {
                 const userImage = notification?.senderProfileImage
-                  ? `${process.env.REACT_APP_IMAGE_BASE_URL}/${notification.senderProfileImage}`
+                  ? `${process.env.REACT_APP_BASE_URL}/${notification.senderProfileImage}`
                   : `${process.env.PUBLIC_URL}/img/defaultUser.png`;
 
                 return (
