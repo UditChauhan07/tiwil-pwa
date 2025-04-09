@@ -482,7 +482,8 @@ verticalAlign: "middle",
   }}
   numInputs={6}
   renderSeparator={<span>-</span>}
-  renderInput={(props) => <input {...props} />}
+  renderInput={(props) => <input {...props} type="tel" />}
+
   inputStyle={{
     width: '40px',
     height: '50px',
