@@ -48,7 +48,8 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
   const [image, setImage] = useState(event.newimage || event.image || "");
 
   const [name, setName] = useState(event.name || "");
-  const [eventDate, setDate] = useState(null);
+  const [eventDate, setDate] = useState(""); // leave blank initially
+
 
   const { eventId } = useParams();
 
@@ -96,7 +97,10 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
       formData.append("description", description);
       formData.append("location", location);
       formData.append("name", name);
-      formData.append("eventDate", eventDate);
+      if (eventDate) {
+        formData.append("eventDate", eventDate); // ✅ only send if user picked a date
+      }
+      
       if (image && image.startsWith("blob")) {
         formData.append("image", document.getElementById("fileInput").files[0]); // Append file only if changed
       }

@@ -537,7 +537,7 @@ const EventDetails = () => {
                                 <li key={g._id} style={{marginBottom:'3px'}}>
                                 <div key={g.id} className=" d-flex gap-3 align-items-center">
                                 
-  <div style={{display:'flex',gap:'8px',width:'50%'}}>
+  <div style={{display:'flex',gap:'8px',width:'70%'}}>
   
     <img
       src={g.profileImage ? `${process.env.REACT_APP_BASE_URL}/${g.profileImage}` : `${process.env.PUBLIC_URL}/img/defaultUser.png`}
@@ -550,7 +550,7 @@ const EventDetails = () => {
   <p style={{fontSize:'22px',marginBottom:'0px',fontWeight:'500'}}>{g.name}</p> 
   </div>
 
-  <div style={{display:'flex',justifyContent:'end',width:'50%'}}>
+  <div style={{display:'flex',justifyContent:'end',width:'30%'}}>
  <span style={{}}> {g.status}</span>
  </div>
 </div>

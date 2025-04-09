@@ -21,6 +21,7 @@ function PoolingWish() {
   const [userStatus, setUserStatus] = useState(null);
   const [poolCreator,setpoolCreator]=useState(null) 
   const userId = localStorage.getItem("userId");
+  const [eventId,seteventId]=useState(pool.eventId)
 
 
 
@@ -195,12 +196,12 @@ console.log('pool',poolCreator)
       const token = localStorage.getItem("token");
       try {
         const response = await axios.post(
-          `${process.env.REACT_APP_BASE_URL}/chats/group`,
+          `${process.env.REACT_APP_BASE_URL}/chats/pool`,
           { eventId },
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (response.data.success) {
-          navigate(`/chats/${response.data.chat.groupId}`);
+          navigate(`/chats/${response.data.chat._id}`);
         }
       } catch (error) {
         console.error(
@@ -275,7 +276,7 @@ console.log('pool',poolCreator)
       </div>
 
       {/* Image Section */}
-      <div className="text-center" style={{ height:'300px',width:'100%'}}>
+      <div  style={{ height:'300px',width:'100%'}}>
  
   
       <img
@@ -437,13 +438,13 @@ console.log('pool',poolCreator)
             {isOwner && (
               <div className="d-flex gap-2 mt-3">
                 <button
-                  style={{ padding: "6px", background: "#ff3366", borderRadius: "20px" }}
+                  style={{ padding: "6px", background: "#dc3545", borderRadius: "8px",color:'#ffffff' , border:"none",padding:'15px'}}
                   onClick={() => setShowInviteModal(true)}
                 >
                   Add More
                 </button>
-                <button
-                  style={{ padding: "6px", background: "#007bff", borderRadius: "20px", color: "#fff" }}
+                <button variant="danger"
+                  style={{ padding: "6px", background: "#dc3545", borderRadius: "8px", color: "#ffffff" ,border:'none',padding:'15px'}}
              onClick={handleStartChat}   >
                   Start Chat
                 </button>
@@ -452,7 +453,7 @@ console.log('pool',poolCreator)
           </>
         ) : (
           isOwner  &&(
-            <button
+            <button variant="danger"
               style={{ padding: "9px", background: "#dc3545", borderRadius: "20px",color: "white"
   
     ,right: "46px",
