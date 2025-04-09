@@ -73,7 +73,7 @@ const styles = {
   button: {
     width: '75%',
     padding: "10px 20px",
-    backgroundColor: "#dc3545",
+    backgroundColor: "#EE4266",
     color: "white",
     border: "none",
     borderRadius: "15px",

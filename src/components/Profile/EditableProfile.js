@@ -67,8 +67,7 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
       if (selectedImage) {
         formData.append("profileImage", selectedImage, selectedImage.name); // Include filename
       }
-      // Note: If no new image is selected, the backend should ideally
-      // know not to clear the existing image unless explicitly told to.
+
   
       try {
         const response =  axios.post(
@@ -94,12 +93,12 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
           onSave(response.data.data);
         } else {
           // Use error message from backend if available
-          alert(response.data.message || "Failed to update profile.");
+          console.log(response.data.message || "Failed to update profile.");
         }
       } catch (error) {
         console.error("Error updating profile:", error);
         // Provide more specific error feedback if possible (e.g., check error.response)
-        alert("Failed to update profile. An error occurred.");
+  
       } finally {
         setLoading(false); // Hide spinner regardless of success/failure
       }

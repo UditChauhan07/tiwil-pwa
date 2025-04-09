@@ -1,23 +1,18 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Swal from "sweetalert2"; // Import SweetAlert2
+import Swal from "sweetalert2";
 import styles from "../Profile/profile.module.css";
 import axios from "axios";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
-import { Spinner } from "react-bootstrap"; // Import the Bootstrap Spinner for loader
-import Compressor from "compressorjs"; // Import Compressor.js
-import CropperModal from "../Wishlist/cropModal";
+import { Spinner } from "react-bootstrap";
 
 function Profile() {
   const navigate = useNavigate();
   const [today, setToday] = useState("");
-
-  useEffect(() => {
-    // Get today's date in YYYY-MM-DD format
-    const todayDate = new Date().toISOString().split("T")[0];
-    setToday(todayDate);
-  }, []);
+  const [selectedProfileImage, setSelectedProfileImage] = useState(null);
+  const [errors, setErrors] = useState({});
+  const [loading, setLoading] = useState(false);
 
   const [userData, setUserData] = useState({
     fullName: localStorage.getItem("fullName") || "",
@@ -29,13 +24,10 @@ function Profile() {
     profileImage: "",
   });
 
-  const [selectedProfileImage, setSelectedProfileImage] = useState(null);
-  const [errors, setErrors] = useState({}); // State to store validation errors
-  const [loading, setLoading] = useState(false); // State to handle loading
-  const [showCropper, setShowCropper] = useState(false);
-  const [tempImage, setTempImage] = useState(null);
-
   useEffect(() => {
+    const todayDate = new Date().toISOString().split("T")[0];
+    setToday(todayDate);
+
     const fetchUserData = async () => {
       setLoading(true);
       const token = localStorage.getItem("token");
@@ -46,14 +38,12 @@ function Profile() {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-
         if (response.data.success) {
           setUserData(response.data.data);
         }
       } catch (error) {
-        console.error("Error fetching user data:", error);
-        setErrors((prevErrors) => ({
-          ...prevErrors,
+        setErrors((prev) => ({
+          ...prev,
           fetch: "Failed to fetch user data.",
         }));
       } finally {
@@ -65,89 +55,30 @@ function Profile() {
   }, []);
 
   const validateForm = () => {
-    let newErrors = {}; // Collect all errors here
-  
-    // 1st Check: Full Name
-    if (!userData || typeof userData.fullName !== "string" || !userData.fullName.trim()) {
-      newErrors.fullName = "Full Name is required.";
-    } else {
-      const isValidName = validateName(userData.fullName);
-      if (!isValidName) {
-        newErrors.fullName = "Name must be 3-25 characters long, only letters and spaces.";
-      }
+    const newErrors = {};
+    if (!userData.fullName.trim() || !/^[A-Za-z\s]{3,25}$/.test(userData.fullName)) {
+      newErrors.fullName = "Name must be 3-25 characters long, only letters and spaces.";
     }
-  
-    // 2nd Check: Email
-    if (!userData.email || !userData.email.trim()) {
-      newErrors.email = "Email is required.";
-    } else {
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      if (!emailRegex.test(userData.email)) {
-        newErrors.email = "Please enter a valid email address.";
-      }
+    if (!userData.email || !/^[\w-.]+@([\w-]+\.)+[\w-]{2,}$/.test(userData.email)) {
+      newErrors.email = "Please enter a valid email address.";
     }
-  
-    // 3rd Check: Gender
     if (!userData.gender) {
       newErrors.gender = "Please select your gender.";
     }
-  
-    // 4th Check: Date of Birth
     if (!userData.dob) {
       newErrors.dob = "Please enter your Date of Birth.";
     }
-  
-    // 5th Check: Marital Status
     if (!userData.maritalStatus) {
       newErrors.maritalStatus = "Please select your Marital Status.";
     }
-  
-    // If there are any errors, set them. Otherwise, reset errors state.
-    if (Object.keys(newErrors).length > 0) {
-      setErrors(newErrors);
-      return false; // Return false if there are any errors
-    }
-  
-    setErrors({}); // Reset errors if everything is valid
-    return true; // All fields are valid
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
-  
-  // validateName function (outside of validateForm)
-  const validateName = (name) => {
-    const trimmed = name.trim();
-    
-    if (!trimmed) {
-      setErrors((prev) => ({ ...prev, fullName: "Full name is required." }));
-      return false;
-    }
-    
-    const nameRegex = /^[A-Za-z\s]{3,25}$/;  // Updated regex to allow only spaces
-    if (!nameRegex.test(trimmed)) {
-      setErrors((prev) => ({
-        ...prev,
-        fullName: "Name must be 3-25 characters long, only letters and spaces.",
-      }));
-      return false;
-    }
-    
-    return true;
-  };
-  
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
-    if (!file) return;
-
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setTempImage(reader.result); // base64 image for cropping
-      setShowCropper(true);
-    };
-    reader.readAsDataURL(file);
-  };
-  const handleCroppedImage = (croppedBlob) => {
-    setSelectedProfileImage(croppedBlob);
-    setShowCropper(false);
+    if (file) setSelectedProfileImage(file);
   };
 
   const handleSave = async () => {
@@ -155,8 +86,9 @@ function Profile() {
 
     const token = localStorage.getItem("token");
     const formData = new FormData();
-    Object.keys(userData).forEach((key) => {
-      formData.append(key, userData[key]);
+
+    Object.entries(userData).forEach(([key, value]) => {
+      formData.append(key, value);
     });
 
     if (selectedProfileImage) {
@@ -178,46 +110,33 @@ function Profile() {
 
       if (response.data.success) {
         localStorage.setItem("profileStatus", true);
-        const profileImagePath = response.data.data.profileImage;
-        localStorage.setItem("profileImage", profileImagePath);
+        localStorage.setItem("profileImage", response.data.data.profileImage);
+
         Swal.fire({
-          title: 'Profile Added',
-          text: 'Would you like to add family info?',
-          icon: 'success',
+          title: "Profile Added",
+          text: "Would you like to add family info?",
+          icon: "success",
           showCancelButton: true,
-          confirmButtonColor: '#FF3366',
-          cancelButtonColor: '#d33',
-          confirmButtonText: 'Yes, Proceed!',
-          cancelButtonText: 'No, Thanks',
+          confirmButtonColor: "#FF3366",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Yes, Proceed!",
+          cancelButtonText: "No, Thanks",
         }).then((result) => {
-          if (result.isConfirmed) {
-            // User clicked "Yes, Proceed!"
-            navigate("/additionalinfo");
-          } else if (result.isDismissed) {
-            // User clicked "No, Thanks" or dismissed the alert
-            navigate("/home");
-          }
+          navigate(result.isConfirmed ? "/additionalinfo" : "/home");
         });
-        
       } else {
-        setErrors((prevErrors) => ({
-          ...prevErrors,
+        setErrors({
           email: response.data.message.includes("duplicate key")
-            ? "The email address is already in use. Please try a different one."
-            : response.data.message || "An unknown error occurred.",
-        }));
+            ? "This email is already in use."
+            : response.data.message || "An error occurred.",
+        });
       }
     } catch (error) {
       Swal.fire({
         icon: "error",
         title: "Oops...",
-        text:
-          error.response?.data?.message ||
-          error.message ||
-          "Error updating profile.",
-        confirmButtonColor: "#FF3366",
+        text: error.response?.data?.message || "Error updating profile.",
       });
-      console.error("Error updating profile:", error.message);
     } finally {
       setLoading(false);
     }
@@ -226,18 +145,8 @@ function Profile() {
   return (
     <>
       {loading ? (
-        <div
-          style={{
-            display: "flex",
-            justifyContent: "center",
-            marginTop: "200px",
-          }}
-        >
-          <Spinner
-            animation="border"
-            role="status"
-            style={{ width: "5rem", height: "5rem" }}
-          />
+        <div style={{ display: "flex", justifyContent: "center", marginTop: "200px" }}>
+          <Spinner animation="border" role="status" style={{ width: "5rem", height: "5rem" }} />
         </div>
       ) : (
         <div className={styles.container}>
@@ -261,13 +170,9 @@ function Profile() {
                   src={`${process.env.PUBLIC_URL}/img/uplodbutton.svg`}
                   height={"20px"}
                   width={"20px"}
-                  alt="Upload Icon"
+                  alt="Upload"
                 />
-                <input
-                  type="file"
-                  style={{ display: "none" }}
-                  onChange={handleImageChange}
-                />
+                <input type="file" style={{ display: "none" }} onChange={handleImageChange} />
               </label>
             </div>
           </div>
@@ -278,13 +183,9 @@ function Profile() {
               <input
                 type="text"
                 value={userData.fullName}
-                onChange={(e) =>
-                  setUserData({ ...userData, fullName: e.target.value })
-                }
+                onChange={(e) => setUserData({ ...userData, fullName: e.target.value })}
               />
-              {errors.fullName && (
-                <span className={styles.error}>{errors.fullName}</span>
-              )}
+              {errors.fullName && <span className={styles.error}>{errors.fullName}</span>}
             </div>
 
             <div className={styles.formGroup}>
@@ -292,13 +193,9 @@ function Profile() {
               <input
                 type="email"
                 value={userData.email}
-                onChange={(e) =>
-                  setUserData({ ...userData, email: e.target.value })
-                }
+                onChange={(e) => setUserData({ ...userData, email: e.target.value })}
               />
-              {errors.email && (
-                <span className={styles.error}>{errors.email}</span>
-              )}
+              {errors.email && <span className={styles.error}>{errors.email}</span>}
             </div>
 
             <div className={styles.formGroup}>
@@ -311,23 +208,16 @@ function Profile() {
               <div className={styles.selectWrapper}>
                 <select
                   value={userData.gender}
-                  onChange={(e) =>
-                    setUserData({ ...userData, gender: e.target.value })
-                  }
+                  onChange={(e) => setUserData({ ...userData, gender: e.target.value })}
                 >
                   <option value="">Select</option>
                   <option value="Male">Male</option>
                   <option value="Female">Female</option>
                   <option value="Other">Other</option>
                 </select>
-                <FontAwesomeIcon
-                  icon={faChevronDown}
-                  className={styles.chevronIcon}
-                />
+                <FontAwesomeIcon icon={faChevronDown} className={styles.chevronIcon} />
               </div>
-              {errors.gender && (
-                <span className={styles.error}>{errors.gender}</span>
-              )}
+              {errors.gender && <span className={styles.error}>{errors.gender}</span>}
             </div>
 
             <div className={styles.formGroup}>
@@ -337,9 +227,7 @@ function Profile() {
                 value={userData.dob}
                 min="1900-12-01"
                 max={today}
-                onChange={(e) =>
-                  setUserData({ ...userData, dob: e.target.value })
-                }
+                onChange={(e) => setUserData({ ...userData, dob: e.target.value })}
               />
               {errors.dob && <span className={styles.error}>{errors.dob}</span>}
             </div>
@@ -349,18 +237,13 @@ function Profile() {
               <div className={styles.selectWrapper}>
                 <select
                   value={userData.maritalStatus}
-                  onChange={(e) =>
-                    setUserData({ ...userData, maritalStatus: e.target.value })
-                  }
+                  onChange={(e) => setUserData({ ...userData, maritalStatus: e.target.value })}
                 >
                   <option value="">Select</option>
                   <option value="Unmarried">Unmarried</option>
                   <option value="Married">Married</option>
                 </select>
-                <FontAwesomeIcon
-                  icon={faChevronDown}
-                  className={styles.chevronIcon}
-                />
+                <FontAwesomeIcon icon={faChevronDown} className={styles.chevronIcon} />
               </div>
               {errors.maritalStatus && (
                 <span className={styles.error}>{errors.maritalStatus}</span>
@@ -376,20 +259,13 @@ function Profile() {
                   <img
                     src={`${process.env.PUBLIC_URL}/img/Arrow.svg`}
                     style={{ height: "30px" }}
-                    alt="Arrow Icon"
+                    alt="Arrow"
                   />
                 </div>
               </button>
             </div>
           </div>
         </div>
-      )}
-      {showCropper && (
-        <CropperModal
-          imageSrc={tempImage}
-          onCropDone={handleCroppedImage}
-          onCancel={() => setShowCropper(false)}
-        />
       )}
     </>
   );

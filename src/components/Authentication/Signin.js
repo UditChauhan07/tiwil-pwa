@@ -8,7 +8,8 @@ import { Spinner } from "react-bootstrap";
 import "react-phone-number-input/style.css"; // Ensure you include the styles
 import { genToken } from '../../firebase/firebase';
 import {auth,RecaptchaVerifier, signInWithPhoneNumber } from "../../firebase/firebase"
-
+import styles from './signin.module.css'
+import OtpInput from 'react-otp-input'; // Import the OtpInput component
 const SignInForm = () => {
   const [formData, setFormData] = useState({
     phoneNumber: "",
@@ -22,6 +23,7 @@ const SignInForm = () => {
   const [phoneError, setPhoneError] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [confirmationResult, setConfirmationResult] = useState(null);
+  const [otp, setOtp] = useState("");
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -115,6 +117,7 @@ const SignInForm = () => {
   
       // Step 5: Store confirmation result
       setConfirmationResult(confirmation);
+      localStorage.setItem('setIsOtpSent', true); 
       setIsOtpSent(true);
       Swal.fire({
            title: "Success",
@@ -295,14 +298,27 @@ const SignInForm = () => {
     }
 
   return (
-    <section className="page-controls">
-      <div className="container d-flex flex-column align-items-center justify-content-center mt-5">
+    <section className="page-controls py-4">
+         {!isOtpSent ? (
+      <div className="container d-flex flex-column align-items-center justify-content-center ">
         
 
-      <div className="text-center">
-          <img src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" height="150px" width="200px" />
-          <h2 className="font-weight-bold mt-2 mb-0" style={{ fontSize: "48px" }}>Welcome</h2>
-         <p className="text-muted">Connect with your friends today!</p>
+      <div className="text-center m-1">
+          <img src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" height="100px" width="200px" />
+          <h2 className="font-weight-bold mt-4 mb-0" style={{ fontSize: "48px",fontFamily: "Poppins",
+fontWeight: "500",
+fontSize: "48px",
+lineHeight: "100%",
+letterSpacing: "0%",
+ }}>Welcome</h2>
+         <p style={{fontFamily: "Poppins",
+fontWeight: "500",
+fontSize: "12px",
+lineHeight: "100%",
+letterSpacing: "0%",
+textAlign: "center",
+verticalAlign: "middle",
+}}>To continue, enter your phone number</p>
          </div>
         {/* Loader Overlay */}
         {/* {isLoading && (
@@ -316,11 +332,13 @@ const SignInForm = () => {
         {/* Apply blur effect to the background */}
         {isLoading && <div className="blur-background"></div>}
 
-        <div className="d-flex justify-content-center">
-          <Link to="/signin">
+        <div className="d-flex justify-content-center m-2" style={{padding:'6px',border:'1px solid whitesmoke',width:'100%' }}>
+          <Link to="/signin" style={{width:'50%'}}>
             <p
               onClick={() => setActive("signin")}
               style={{
+                display:'flex',
+                justifyContent:'center',
                 fontSize: "1rem",
                 border: "1px solid rgb(218, 219, 209)",
                 padding: "2px 24px 0px 30px",
@@ -334,10 +352,12 @@ const SignInForm = () => {
             </p>
           </Link>
 
-          <Link to="/signup">
+          <Link to="/signup"  style={{width:'50%'}}>
             <p
               onClick={() => setActive("signup")}
               style={{
+                display:'flex',
+                justifyContent:'center',
                 fontSize: "1rem",
                 border: "1px solid rgb(202, 198, 198)",
                 padding: "2px 24px 0px 30px",
@@ -354,9 +374,9 @@ const SignInForm = () => {
 
         <div
           className="w-100 p-4 rounded shadow-sm"
-          style={{ maxWidth: "400px", backgroundColor: "#fff" }}
+          style={{ maxWidth: "760px", backgroundColor: "#fff" }}
         >
-          {!isOtpSent ? (
+     
             <form onSubmit={handleSendOTP}>
               <div className="mb-3">
                 <label htmlFor="phone" className="form-label">Phone</label>
@@ -390,13 +410,13 @@ const SignInForm = () => {
                   }}
                   placeholder="Enter phone number"
                   required
-                  style={{ display: 'flex', outline: "none" }}
+                  style={{ display: 'flex', outline: "none",marginBottom:'160px' }}
                 />
                 {phoneError && <div className="invalid-feedback d-block">{phoneError}</div>}
               </div>
               <button
                 type="submit"
-                className="btn btn-danger w-100 py-2 mb-3"
+                className="btn btn-danger w-100 "
                 disabled={isLoading} // Disable button when loading
               >
                 {isLoading ? (
@@ -408,13 +428,28 @@ const SignInForm = () => {
                 )}
               </button>
             </form>
-          ) : (
+
+          <p className="text-muted mt-3 d-flex justify-content-center" >
+            New on TIWIL?{" "}
+            <Link
+              to="/signup"
+              className="text-primary fw-semibold text-decoration-none"
+            >
+                 &nbsp; Create an account
+            </Link>
+          </p>
+        </div>
+      </div>
+    ) : (
             <div>
+            <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "50px",height:'80%x',width:'100%',marginBottom:'20px' }}>
+              <img src={`${process.env.PUBLIC_URL}/img/Otps.webp`} alt="logo" height="100%" width="80%" style={{marginTop: "50px"}} />
+            </div>
               <div className="mb-3">
-                <label htmlFor="otp" className="form-label">
-                  OTP
+                <label htmlFor="otp" className="form-label" style={{fontSize:'20px',fontWeight:'600',color:'#ff3366' ,display:'flex',justifyContent:'center',alignItems:'center'}}>
+                  Please Enter Otp
                 </label>
-                <input
+                {/* <input
                   type="text"
                   className={`form-control ${phoneError ? 'is-invalid' : ''}`}
                   id="otp"
@@ -431,11 +466,41 @@ const SignInForm = () => {
                   maxLength="6" // Limit input to 6 characters
                  />
                  {phoneError.hasError && <div className="invalid-feedback d-block">{phoneError.message}</div>}
-         
+                  */}
+                  <div className="d-flex justify-content-center align-items-center w-70" >
+                  <OtpInput
+  className={`${styles.inputotp} form-control ${phoneError ? 'is-invalid' : ''}`}
+  id="otp"
+  name="otp"
+  value={formData.otp}
+  onChange={(otpValue) => {
+    const cleanedOtp = otpValue.replace(/\D/g, "");
+    if (cleanedOtp.length <= 6) {
+      setFormData({ ...formData, otp: cleanedOtp });
+    }
+  }}
+  numInputs={6}
+  renderSeparator={<span>-</span>}
+  renderInput={(props) => <input {...props} />}
+  inputStyle={{
+    width: '40px',
+    height: '50px',
+    margin: '0 6px',
+    fontSize: '20px',
+    borderRadius: '8px',
+    border: '1px solid #ff3366',
+    color: '#ff3366',
+    textAlign: 'center',
+  }}
+/>
+ </div> {phoneError.hasError && <div className="invalid-feedback d-block">{phoneError.message}</div>}
               </div>
+              <br/>
+              <br/>
+              <div className="d-flex justify-content-center align-items-center">
               <button
-                className="btn btn-primary w-100 py-2 mb-3"
-                style={{ background: "#ff3366" }}
+                className=" btn-primary w-80 py-2 mb-3 d-flex justify-content-center align-items-center"
+                style={{ background: "#ff3366", border: "none", color: "#fff", width: "70%", height: "50px", fontSize: "16px", fontWeight: "600", }}
                 onClick={handleVerifyOTP}
                 disabled={isLoading} // Disable button when loading
               >
@@ -447,19 +512,9 @@ const SignInForm = () => {
                   "Verify OTP"
                 )}
               </button>
+              </div>
             </div>
           )}
-          <p className="text-muted mt-3">
-            New on TIWIL?{" "}
-            <Link
-              to="/signup"
-              className="text-primary fw-semibold text-decoration-none"
-            >
-              Create an account
-            </Link>
-          </p>
-        </div>
-      </div>
     </section>
   );
 };
