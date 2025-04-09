@@ -2,9 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import styles from "../wihslistowner/wishlist/WishlistModal.module.css";
 import Swal from "sweetalert2";
-import { Spinner, ProgressBar } from "react-bootstrap"; // Importing ProgressBar
-import imageCompression from "browser-image-compression";
-import CropperModal from "./cropModal"; 
+import { Spinner, ProgressBar } from "react-bootstrap";
+
 const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
   const [giftName, setGiftName] = useState("");
   const [price, setPrice] = useState("");
@@ -14,48 +13,34 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
   const [imageFile, setImageFile] = useState(null);
   const [preview, setPreview] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [uploadProgress, setUploadProgress] = useState(0); // ✅ Upload Progress State
-  const [errors, setErrors] = useState({}); // Store errors
-  const [showCropper, setShowCropper] = useState(false);
-  const [tempImageSrc, setTempImageSrc] = useState(null);
-  // ✅ Handle File Selection
+  const [uploadProgress, setUploadProgress] = useState(0);
+  const [errors, setErrors] = useState({});
+
+  // ✅ Handle File Selection (simple)
   const handleImageUpload = (event) => {
     const file = event.target.files[0];
     if (!file) return;
-  
-    const reader = new FileReader();
-    reader.onloadend = () => {
-      setTempImageSrc(reader.result); // Open cropper with base64 image
-      setShowCropper(true);
-    };
-    reader.readAsDataURL(file);
+
+    setImageFile(file);
+    setPreview(URL.createObjectURL(file));
   };
-  const handleCroppedImage = (croppedBlob) => {
-    setImageFile(croppedBlob);
-    setPreview(URL.createObjectURL(croppedBlob));
-    setShowCropper(false);
-  };
-  
+
   // ✅ Validate Form
   const validateForm = () => {
     let newErrors = {};
 
-    // Gift Name Validation: Ensure not null/undefined and meets requirements
     if (!giftName || giftName.trim() === "") {
       newErrors.giftName = "Gift Name is required.";
     } else if (!/^[a-zA-Z0-9\s]{1,30}$/.test(giftName)) {
-      newErrors.giftName = "Only letters, numbers, and spaces are allowed (max 30 characters).";
+      newErrors.giftName = "Only letters, numbers, and spaces (max 30 characters).";
     }
-    
 
-    // Price Validation: Ensure not null/undefined and meets requirements
     if (!price || price.trim() === "") {
       newErrors.price = "Price is required.";
     } else if (!/^\d{1,8}$/.test(price)) {
       newErrors.price = "Only numbers allowed (max 8 digits).";
     }
 
-    // Description Validation: Ensure not null/undefined and meets word count requirements
     if (!description || description.trim() === "") {
       newErrors.description = "Description is required.";
     } else if (description.trim().split(" ").length > 10) {
@@ -68,7 +53,7 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
 
   // ✅ Handle Save (Upload with Progress)
   const handleSave = async () => {
-    if (!validateForm()) return; // Stop if validation fails
+    if (!validateForm()) return;
 
     const token = localStorage.getItem("token");
 
@@ -78,7 +63,6 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
     }
 
     const formData = new FormData();
-    console.log(formData,"formData")
     formData.append("eventId", eventId);
     formData.append("giftName", giftName);
     formData.append("price", price);
@@ -91,9 +75,7 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
     }
 
     setLoading(true);
-    setUploadProgress(0); // Reset progress bar
-
-    console.log("formDat2222222a",JSON.stringify(formData))
+    setUploadProgress(0);
 
     try {
       const response = await axios.post(`${process.env.REACT_APP_BASE_URL}/wishlist`, formData, {
@@ -117,40 +99,26 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
       Swal.fire("Error", "Failed to add wishlist item.", "error");
     } finally {
       setLoading(false);
-      setUploadProgress(0); // Reset after completion
+      setUploadProgress(0);
     }
   };
 
-  // ✅ Handle Close
-  const handleClose = () => {
-    setShow(false);
-  };
+  const handleClose = () => setShow(false);
 
-  // ✅ Handle Input Change and enforce character limits
   const handleInputChange = (e, field) => {
     let value = e.target.value;
-
-    // Check if value is null or undefined before proceeding
     if (value == null) value = "";
 
-    if (field === "giftName") {
-      if (value.length <= 30) {
-        setGiftName(value);
-      }
-    } else if (field === "price") {
-      if (/^\d{0,8}$/.test(value)) {
-        setPrice(value);
-      }
-    } else if (field === "description") {
-      const words = value.trim().split(" ");
-      if (words.length <= 10) {
-        setDescription(value);
-      }
+    if (field === "giftName" && value.length <= 30) {
+      setGiftName(value);
+    } else if (field === "price" && /^\d{0,8}$/.test(value)) {
+      setPrice(value);
+    } else if (field === "description" && value.trim().split(" ").length <= 10) {
+      setDescription(value);
     }
 
-    // Clear errors when user starts typing
     if (errors[field]) {
-      setErrors((prevErrors) => ({ ...prevErrors, [field]: undefined }));
+      setErrors((prev) => ({ ...prev, [field]: undefined }));
     }
   };
 
@@ -162,7 +130,6 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
         </button>
         <h2>Add Wishlist Item</h2>
 
-        {/* Loader */}
         {loading ? (
           <div style={{ textAlign: "center" }}>
             <Spinner animation="border" style={{ width: "3rem", height: "3rem" }} />
@@ -188,7 +155,6 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
               </label>
             </div>
 
-            {/* ✅ Progress Bar (Visible only when uploading) */}
             {uploadProgress > 0 && (
               <ProgressBar
                 now={uploadProgress}
@@ -244,22 +210,12 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
               {errors.description && <span className={styles.error}>{errors.description}</span>}
 
               <button className={styles.saveButton} onClick={handleSave} disabled={loading}>
-                {loading ? "Saving..." : "Save "}
+                {loading ? "Saving..." : "Save"}
               </button>
-            
-
             </div>
-            
           </>
         )}
       </div>
-      {showCropper && (
-  <CropperModal
-    imageSrc={tempImageSrc}
-    onCropDone={handleCroppedImage}
-    onCancel={() => setShowCropper(false)}
-  />
-)}
     </div>
   );
 };

@@ -149,7 +149,7 @@ const PoolRequests = () => {
     <>
       <div className="mainnotify">
         <div className="d-flex heading-notification">
-          <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate(-1)}  style={{fontSize:"23px"}}/>
+          <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate("/home")}  style={{fontSize:"23px"}}/>
           <h4>Notification</h4>
         </div>
 

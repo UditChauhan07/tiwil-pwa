@@ -291,6 +291,7 @@ import Swal from "sweetalert2";
 import PhoneInput, { isPossiblePhoneNumber } from "react-phone-number-input";
 import "react-phone-number-input/style.css";
 import { Spinner } from "react-bootstrap";
+import OtpInput from "react-otp-input";
 // import { RecaptchaVerifier, signInWithPhoneNumber,getAuth } from "firebase/auth";
 import {auth,RecaptchaVerifier, signInWithPhoneNumber } from "../../firebase/firebase.js"
 import axios from "axios"
@@ -645,20 +646,36 @@ const handleVerifyOTP = async (e) => {
 
   
     return (
-    <section className="page-controls py-5" >
+    <section className="page-controls" style={{marginTop:'1px'}} >
+        {!isOtpSent ? (
       <div className="container d-flex flex-column align-items-center justify-content-center">
        
 
         <div className="text-center">
           <img src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" height="150px" width="200px" />
-          <h2 className="font-weight-bold mt-2 mb-0" style={{ fontSize: "48px" }}>Welcome</h2>
-         <p className="text-muted">Connect with your friends today!</p>
+          <h2 className="font-weight-bold " style={{ fontSize: "48px",fontFamily: "Poppins",
+fontWeight: "500",
+fontSize: "48px",
+lineHeight: "100%",
+letterSpacing: "0%",
+marginBottom:"0px"
+ }}>Welcome</h2>
+         <p style={{fontFamily: "Poppins",
+fontWeight: "500",
+fontSize: "12px",
+lineHeight: "100%",
+letterSpacing: "0%",
+textAlign: "center",
+verticalAlign: "middle",
+}}>Connect with your friends today!</p>
          </div>
-        <div className="d-flex justify-content-center">
-          <Link to="/signin">
+        <div className="d-flex justify-content-center m-2" style={{padding:'6px',border:'1px solid whitesmoke',width:'100%' }}>
+          <Link to="/signin"  style={{width:'50%'}}>
              <p
               onClick={() => setActive("signin")}
               style={{
+                display:'flex',
+                justifyContent:'center',
                 fontSize: "1rem",
                 border: "1px solid rgb(216, 210, 210)",
                 padding: "2px 24px 0px 30px",
@@ -671,10 +688,12 @@ const handleVerifyOTP = async (e) => {
               Sign in
             </p>
           </Link>
-          <Link to="/signup">
+          <Link to="/signup"  style={{width:'50%'}}>
             <p
               onClick={() => setActive("signup")}
               style={{
+                display:'flex',
+                justifyContent:'center',
                 border: "1px solid rgb(238, 234, 234)",
                 padding: "2px 24px 0px 30px",
                 color: active === "signup" ? "#ffffff" : "#ff3366",
@@ -688,7 +707,7 @@ const handleVerifyOTP = async (e) => {
           </Link>
         </div>
         <div className="w-100 p-4 rounded shadow-sm" style={{ maxWidth: "400px", backgroundColor: "#fff" }}>
-          {!isOtpSent ? (
+        
             <form onSubmit={handleSendOTP} noValidate>
               <div className="mb-3">
                 <label htmlFor="fullName" className="form-label">Full Name</label>
@@ -718,16 +737,28 @@ const handleVerifyOTP = async (e) => {
                 {phoneError && <div className="invalid-feedback d-block">{phoneError}</div>}
               </div>
 
-       
+       <div style={{marginTop:'12px',marginBottom:'12px'}}>
+    <span >By creating an account, I accept the <strong>Terms & Conditions & Privacy Policy</strong></span>
+         </div>
 
               <button type="submit" className="btn btn-danger w-100" disabled={loading}>
                 {loading ? <Spinner size="sm" animation="border" className="me-2" /> : "Send OTP"}
               </button>
             </form>
-          ) : (
+          
+
+          <p className="text-center text-muted mt-3">
+            Already registered? <Link to="/signin" className="text-primary fw-bold">Sign In</Link>
+          </p>
+        </div>
+      </div>
+    ) : (
             <form onSubmit={handleVerifyOTP} noValidate>
+            <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "50px",height:'80%x',width:'100%',marginBottom:'20px' }}>
+              <img src={`${process.env.PUBLIC_URL}/img/Otps.webp`} alt="logo" height="100%" width="80%" style={{marginTop: "50px"}} />
+            </div>
               <div className="mb-3">
-                <label htmlFor="otp" className="form-label">Enter OTP</label>
+                {/* <label htmlFor="otp" className="form-label">Enter OTP</label>
                 <input
                   type="text"
                   inputMode="numeric"
@@ -740,19 +771,43 @@ const handleVerifyOTP = async (e) => {
                   placeholder="6-digit OTP"
                   required
                 />
-                  {phoneError.hasError && <div className="invalid-feedback d-block">{phoneError.message}</div>}
+                  {phoneError.hasError && <div className="invalid-feedback d-block">{phoneError.message}</div>} */}
+                  <div className="d-flex justify-content-center align-items-center w-70" >
+                  <OtpInput
+  className=" form-control "
+  id="otp"
+  name="otp"
+  value={formData.otp}
+  onChange={(otpValue) => {
+    const cleanedOtp = otpValue.replace(/\D/g, "");
+    if (cleanedOtp.length <= 6) {
+      setFormData({ ...formData, otp: cleanedOtp });
+    }
+  }}
+  numInputs={6}
+  renderSeparator={<span>-</span>}
+  renderInput={(props) => <input {...props} />}
+  inputStyle={{
+    width: '40px',
+    height: '50px',
+    margin: '0 6px',
+    fontSize: '20px',
+    borderRadius: '8px',
+    border: '1px solid #ff3366',
+    color: '#ff3366',
+    textAlign: 'center',
+  }}
+/>
+ </div> {phoneError.hasError && <div className="invalid-feedback d-block">{phoneError.message}</div>}
               </div>
-              <button type="submit" className="btn btn-danger w-100" disabled={loading}>
+              <div className="d-flex justify-content-center align-items-center">
+              <button type="submit" className=" btn-primary w-80 py-2 mb-3 d-flex justify-content-center align-items-center"
+                style={{ background: "#ff3366", border: "none", color: "#fff", width: "70%", height: "50px", fontSize: "16px", fontWeight: "600", }} disabled={loading}>
                 {loading ? <Spinner size="sm" animation="border" className="me-2" /> : "Verify OTP"}
               </button>
+              </div>
             </form>
           )}
-
-          <p className="text-center text-muted mt-3">
-            Already registered? <Link to="/signin" className="text-primary fw-bold">Sign In</Link>
-          </p>
-        </div>
-      </div>
     </section>
   );
 };
