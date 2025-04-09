@@ -2,7 +2,12 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Button, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faHeart as solidHeart } from '@fortawesome/free-solid-svg-icons';
+import { faHeart as regularHeart } from '@fortawesome/free-regular-svg-icons';
+
 import "../home/Home.css";
+
 
 const Eventlst = ({ searchQuery }) => {
   const [events, setEvents] = useState([]);
@@ -89,7 +94,7 @@ const abc=localStorage.getItem("filters");
 
     // Apply favorites filter
     if (filterData.favoritesOnly) {
-      filtered = filtered.filter((event) => event.favorites === true);
+      filtered = filtered.filter((event) => event.isfavourite === true);
     }
 
     setFilteredEvents(filtered);
@@ -151,10 +156,30 @@ const abc=localStorage.getItem("filters");
       </div>
     );
   }
-  const handlefavourite=async()=>{
-    const response=await axios.put()
 
-  }
+  const handlefavourite = async (eventId) => {
+    try {
+      const response = await axios.put(
+        `${process.env.REACT_APP_BASE_URL}/favouriteevent/${eventId}`,
+        {},
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+  
+      if (response.data.success) {
+        // Update local state
+        const updatedEvents = events.map((event) =>
+          event.eventId === eventId
+            ? { ...event, isfavourite: !event.isfavourite }
+            : event
+        );
+        setEvents(updatedEvents);
+        applyFilters(updatedEvents); // Reapply filters in case favoritesOnly is active
+      }
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+    }
+  };
+  
   const calculateAgeAndBirthdayText = (eventDate) => {
     if (!eventDate) return "N/A";
 
@@ -299,25 +324,33 @@ const abc=localStorage.getItem("filters");
                       Plan And Celebrate
                     </Button>
                     <div
-                      className="heartimage"
-                      style={{
-                        backgroundColor: "#FF3366",
-                        padding: "5px",
-                        width: "40px",
-                        height: "34px",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        borderBottomRightRadius: "5px",
-                        borderTopLeftRadius: "0px",
-                        borderTopRightRadius: "5px",
-                      }} onClick={handlefavourite}
-                    >
-                      <img
-                        src={`${process.env.PUBLIC_URL}/img/Hearticon.svg`}
-                   
-                        style={{ width: "26px", height: "20px" }}
-                      />
+  className="heartimage"
+  style={{
+    backgroundColor: event.isfavourite ? "white" : "#FF3366", // background based on favorite
+    padding: "5px",
+    width: "40px",
+    height: "34px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderBottomRightRadius: "5px",
+    borderTopLeftRadius: "0px",
+    borderTopRightRadius: "5px",
+    cursor: "pointer",
+    border: event.isfavourite ? "1px solid white" : "1px solid #FF3366", // Optional: add border for visual clarity on white bg
+  }}
+  onClick={() => handlefavourite(event.eventId)}
+>
+  <FontAwesomeIcon
+    icon={event.isfavourite ? solidHeart : regularHeart}
+    style={{
+      color: event.isfavourite ? "#FF3366" : "white", // filled heart red, outline white
+      fontSize:event.isfavourite ? "26px" : "26px"
+    }}
+  />
+
+
+
                     </div>
                   </div>
               </Card.Body>

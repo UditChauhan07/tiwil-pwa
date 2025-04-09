@@ -9,13 +9,13 @@ const SplashScreen4 = () => (
     <div className="d-flex flex-column  align-items-center vw-20 text-center">
     
  
-      <img      src={`${process.env.PUBLIC_URL}/img/logomain.svg`}alt="logo"  style={{maxHeight:"300px",width:'45%'}} />
+      <img      src={`${process.env.PUBLIC_URL}/img/logomain.svg`}alt="logo"  style={{maxHeight:"350px",width:'55%'}} />
      
       <img
              src={`${process.env.PUBLIC_URL}/img/SplashScreen4.webp`}
         alt="Plan"
         className="img-fluid  imagefirstsplash"
-        style={{ height:"300px",width:"88%" }} // Ensuring height matches other screens
+        style={{ height:"350px",width:"88%" }} // Ensuring height matches other screens
       />
       {/* Text */}
       <p className="fw-semibold " style={{color:"#ff3366",height:'92px'}}>

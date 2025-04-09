@@ -152,7 +152,7 @@ const SignInForm = () => {
          if (error.code === "auth/invalid-phone-number") {
              msg = "The phone number format is invalid.";
          } else if (error.code === "auth/too-many-requests") {
-             msg = "We have blocked all requests from this device due to unusual activity. Try again later.";
+             msg = "We have blocked all requests from this device due to unusual activity for some time. Try again later.";
          } else if (error.message.includes("reCAPTCHA")) {
              msg = "reCAPTCHA check failed. Please try again.";
          } // Add more specific Firebase codes if needed
@@ -163,7 +163,7 @@ const SignInForm = () => {
   
       // Fallback for any other unexpected errors
       if (!errorHandled) {
-         Swal.fire("Error", "An unexpected error occurred during login. Please try again.", "error");
+         Swal.fire("Error", "Please refresh to and try again .", "error");
       }
   
       // Clean up reCAPTCHA instance if it exists
@@ -412,11 +412,11 @@ verticalAlign: "middle",
                   required
                   style={{ display: 'flex', outline: "none",marginBottom:'160px' }}
                 />
-                {phoneError && <div className="invalid-feedback d-block">{phoneError}</div>}
+                {phoneError && <div className="invalid-feedback d-block " style={{textAlign:'center'}}>{phoneError}</div>}
               </div>
               <button
                 type="submit"
-                className="btn btn-danger w-100 "
+                className="btn btn-danger w-100 " style={{backgroundColor:'#EE4266',borderRadius:'15px'}}
                 disabled={isLoading} // Disable button when loading
               >
                 {isLoading ? (
@@ -424,7 +424,7 @@ verticalAlign: "middle",
                     <i className="fas fa-spinner fa-spin"></i> Sending...
                   </span>
                 ) : (
-                  "Send OTP"
+                  "Continue"
                 )}
               </button>
             </form>
@@ -472,6 +472,7 @@ verticalAlign: "middle",
   className={`${styles.inputotp} form-control ${phoneError ? 'is-invalid' : ''}`}
   id="otp"
   name="otp"
+  type="number"
   value={formData.otp}
   onChange={(otpValue) => {
     const cleanedOtp = otpValue.replace(/\D/g, "");
@@ -493,7 +494,7 @@ verticalAlign: "middle",
     textAlign: 'center',
   }}
 />
- </div> {phoneError.hasError && <div className="invalid-feedback d-block">{phoneError.message}</div>}
+ </div> {phoneError.hasError && <div className="invalid-feedback d-block " style={{textAlign:'center'}}>{phoneError.message}</div>}
               </div>
               <br/>
               <br/>

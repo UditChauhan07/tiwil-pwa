@@ -22,19 +22,30 @@ export default function EventsFilter({ closeFilter, isOpen, onApplyFilters, filt
 
   const handleChange = (e) => {
     const { name, value, type, checked } = e.target;
-
+  
+    // Special case for favoritesOnly, which is a boolean
+    if (name === "favoritesOnly") {
+      setLocalFilterValues({
+        ...localFilterValues,
+        [name]: checked,
+      });
+      return;
+    }
+  
+    // Handle checkbox fields with array values
     if (type === "checkbox") {
-      if (checked) {
-        setLocalFilterValues({
-          ...localFilterValues,
-          [name]: [...localFilterValues[name], value],
-        });
-      } else {
-        setLocalFilterValues({
-          ...localFilterValues,
-          [name]: localFilterValues[name].filter((item) => item !== value),
-        });
-      }
+      const currentValues = Array.isArray(localFilterValues[name])
+        ? [...localFilterValues[name]]
+        : [];
+  
+      const updatedValues = checked
+        ? [...currentValues, value]
+        : currentValues.filter((item) => item !== value);
+  
+      setLocalFilterValues({
+        ...localFilterValues,
+        [name]: updatedValues,
+      });
     } else {
       setLocalFilterValues({
         ...localFilterValues,
@@ -42,6 +53,7 @@ export default function EventsFilter({ closeFilter, isOpen, onApplyFilters, filt
       });
     }
   };
+  
 
   const getSelectedFilterCount = () => {
     const { months, relations, eventTypes, favoritesOnly } = localFilterValues;
@@ -165,7 +177,7 @@ export default function EventsFilter({ closeFilter, isOpen, onApplyFilters, filt
         </div>
 
         {/* Favorites Section */}
-        {/* <div className="favorites-section">
+        <div className="favorites-section">
           <label className="checkbox-label favorites-label d-flex align-items-normal">
             <input
               type="checkbox"
@@ -175,7 +187,7 @@ export default function EventsFilter({ closeFilter, isOpen, onApplyFilters, filt
             />
             <span>Favorites Only</span>
           </label>
-        </div> */}
+        </div>
 
         <button className="apply-filter-button" onClick={handleApplyFilters}>
           Apply
