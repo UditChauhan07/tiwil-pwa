@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    height: 100vh;
+ 
+    height: 90vh;
     text-align: center;
     padding: 20px;
     background: #fff;
@@ -11,31 +11,40 @@
   
   .slider {
     width: 100%;
-    max-width: 400px;
+    max-width: 768px;
   }
   
   .onboarding-footer {
     display: flex;
     justify-content: space-between;
     width: 90%;
+    position: fixed !important;
+    bottom: 30px !important;
   }
   
   .next-btn {
-    background: #ffff;
-    color: #ff3366;
-    border: 1px solid #ff3366;
-    padding: 6px 20px;
     
-    border-radius: 20px;
+    color: #ff3366;
+    padding: 0px 0px;
+    
     font-size: 16px;
     cursor: pointer;
-    height: 27px;
-    width: 160px;
-    display: flex;
-    justify-content:flex-start;
-    align-items: center;
-    padding-left: 57px;
+    border: none;
+    background: transparent;
+    
   }
+  .mainBtnStart{
+    align-items: center;
+    justify-content:flex-start;
+    display: flex;
+    border: 1px solid #ff3366;
+    width: 160px;
+    border-radius: 20px;
+    height: 27px;
+    justify-content: end;
+
+  }
+
   
   .skip-btn {
     background: transparent;
@@ -56,18 +65,16 @@
   }
   
   .dot {
-    height: 8px;
-    width: 8px;
-    background-color: lightgray;
-    border-radius: 50%;
+    height: 4px;
+    width: 29px;
+    background-color: #F3F3F3;
   }
-  
   .dot.active {
-    background-color: #ff4d6d;
-    width: 8px;
-    height: 8px;
+    background-color: #EE4266;
+  
   }
   .onboarding-footer{
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    padding: 0 30px
   }

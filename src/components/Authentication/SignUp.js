@@ -741,7 +741,7 @@ verticalAlign: "middle",
     <span >By creating an account, I accept the <strong>Terms & Conditions & Privacy Policy</strong></span>
          </div>
 
-              <button type="submit" className="btn btn-danger w-100" disabled={loading}>
+              <button type="submit" className="btn w-100" style={{backgroundColor:'#EE4266',borderRadius:'15px',color:'white'}} disabled={loading}>
                 {loading ? <Spinner size="sm" animation="border" className="me-2" /> : "Send OTP"}
               </button>
             </form>
@@ -777,6 +777,7 @@ verticalAlign: "middle",
   className=" form-control "
   id="otp"
   name="otp"
+  type="number"
   value={formData.otp}
   onChange={(otpValue) => {
     const cleanedOtp = otpValue.replace(/\D/g, "");
@@ -798,7 +799,7 @@ verticalAlign: "middle",
     textAlign: 'center',
   }}
 />
- </div> {phoneError.hasError && <div className="invalid-feedback d-block">{phoneError.message}</div>}
+ </div> {phoneError.hasError && <div className="invalid-feedback d-block "  style={{textAlign:'center'}}>{phoneError.message}</div>}
               </div>
               <div className="d-flex justify-content-center align-items-center">
               <button type="submit" className=" btn-primary w-80 py-2 mb-3 d-flex justify-content-center align-items-center"

@@ -3,6 +3,10 @@ import axios from "axios";
 import { Card, Button, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import "./Home.css";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
+
 
 function Invitationlst({ searchQuery }) {
   const [invitations, setInvitations] = useState([]);
@@ -262,7 +266,44 @@ function Invitationlst({ searchQuery }) {
     return `${nextDiffDays} Days Left`;
   };
 
-  const handlefavourite = () => {};
+  const handlefavourite = async (eventId) => {
+    try {
+      const token = localStorage.getItem("token");
+  
+      const response = await axios.put(
+        `${process.env.REACT_APP_BASE_URL}/favourite/${eventId}`,
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+  
+      if (response.data.success) {
+        const updatedInvitations = invitations.map((inv) => {
+          if (inv.event.eventId === eventId) {
+            return {
+              ...inv,
+              invitations: inv.invitations.map((guest) => ({
+                ...guest,
+                isFavourite: !guest.isFavourite,
+              })),
+            };
+          }
+          return inv;
+        });
+  
+        setInvitations(updatedInvitations);
+      }
+    } catch (error) {
+      console.error("Error toggling favorite:", error);
+    }
+  };
+  
+  
+
+
   return (
     <div className="containers1 mt-4">
       {/* Search Bar */}
@@ -327,7 +368,8 @@ function Invitationlst({ searchQuery }) {
               </div>
               <Card.Body>
                 <Card.Title>
-                  {invitation.event?.name}{""}&nbsp;
+                  {invitation.event?.name}
+                  {""}&nbsp;
                   {invitation.event?.relation &&
                     invitation.event?.date &&
                     getUpcomingBirthdayNumber(invitation.event.date)}
@@ -389,26 +431,35 @@ function Invitationlst({ searchQuery }) {
                     View Detail
                   </Button>
                   <div
-                    className="heartimage"
-                    style={{
-                      backgroundColor: "#FF3366",
-                      padding: "5px",
-                      width: "40px",
-                      height: "34px",
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "center",
-                      borderBottomRightRadius: "5px",
-                      borderTopLeftRadius: "0px",
-                      borderTopRightRadius: "5px",
-                    }}
-                    onClick={handlefavourite}
-                  >
-                    <img
-                      src={`${process.env.PUBLIC_URL}/img/Hearticon.svg`}
-                      style={{ width: "26px", height: "20px" }}
-                    />
-                  </div>
+  className="heartimage"
+  style={{
+backgroundColor: invitation.invitations[0].isFavourite ? "white" : "#FF3366",
+
+    padding: "5px",
+    width: "40px",
+    height: "34px",
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    borderBottomRightRadius: "5px",
+    borderTopLeftRadius: "0px",
+    borderTopRightRadius: "5px",
+    border: "1px solid #FF3366",
+    cursor: "pointer",
+  }}
+  onClick={() => handlefavourite(invitation.event.eventId)}
+>
+  <FontAwesomeIcon
+   icon={invitation.invitations[0].isFavourite ? solidHeart : regularHeart}
+
+    style={{
+color: invitation.invitations[0].isFavourite ? "#FF3366" : "white",
+
+      fontSize: "22px",
+    }}
+  />
+</div>
+
                 </div>
               </Card.Body>
             </Card>
