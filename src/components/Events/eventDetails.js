@@ -534,25 +534,27 @@ const EventDetails = () => {
                           <>
                             <ul className="guestlist" style={{padding:'0px '}}>
                               {guest.map((g) => (
-                                <li key={g._id}>
-                                <div key={g.id} className="d-flex gap-3 align-items-center">
-  <div style={{ height: '40px', width: '40px', borderRadius: '50%'}}>
+                                <li key={g._id} style={{marginBottom:'3px'}}>
+                                <div key={g.id} className=" d-flex gap-3 align-items-center">
+                                
+  <div style={{display:'flex',gap:'8px',width:'50%'}}>
+  
     <img
       src={g.profileImage ? `${process.env.REACT_APP_BASE_URL}/${g.profileImage}` : `${process.env.PUBLIC_URL}/img/defaultUser.png`}
       height="40px"
       width="40px"
       style={{ border:'2px solid',borderRadius:'50%' }}
-      alt={g.name ? `${g.name}'s profile` : "Default User Profile"} // Added meaningful alt text
+       // Added meaningful alt text
     />
+
+  <p style={{fontSize:'22px',marginBottom:'0px',fontWeight:'500'}}>{g.name}</p> 
   </div>
-  <p style={{fontSize:'22px',marginBottom:'0px'}}>{g.name}</p>
-  <div style={{display:'flex',justifyContent:'end',width:'30%'}}>
- <span style={{ width: "100%",
-    display: "flex",
-    justifyContent: "end",
-    alignItems: "end"}}> {g.status}</span>
+
+  <div style={{display:'flex',justifyContent:'end',width:'50%'}}>
+ <span style={{}}> {g.status}</span>
  </div>
 </div>
+
 
                                    
                                   
@@ -569,6 +571,8 @@ const EventDetails = () => {
                                 </li>
                               ))}
                             </ul>
+
+  
 <br/>
 <br/>
 <br/>

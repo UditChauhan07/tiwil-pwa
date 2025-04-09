@@ -326,7 +326,8 @@ const abc=localStorage.getItem("filters");
                     <div
   className="heartimage"
   style={{
-    backgroundColor: event.isfavourite ? "white" : "#FF3366", // background based on favorite
+    backgroundColor: event.isfavourite ? "white" : "#FF3366",
+ 
     padding: "5px",
     width: "40px",
     height: "34px",
@@ -342,7 +343,7 @@ const abc=localStorage.getItem("filters");
   onClick={() => handlefavourite(event.eventId)}
 >
   <FontAwesomeIcon
-    icon={event.isfavourite ? solidHeart : regularHeart}
+    icon={solidHeart }
     style={{
       color: event.isfavourite ? "#FF3366" : "white", // filled heart red, outline white
       fontSize:event.isfavourite ? "26px" : "26px"
