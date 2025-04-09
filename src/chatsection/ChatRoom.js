@@ -104,90 +104,68 @@ const ChatRoom = () => {
         fetchMessages(1);
     }, [fetchMessages]);
 
-    // Add this modified function inside the ChatRoom component
+    
+    useEffect(() => {
+        if (!token || !groupId) return;
 
-const handleNewMessage = useCallback((message) => {
-    // If the message is from the current user, ignore it in the socket handler.
-    if (message.senderId?._id === currentUserId.current) {
-        // Rely on the optimistic update + API confirmation in handleSendMessage.
-        return;
-    }
+        socketRef.current = io(SOCKET_SERVER_URL, {
+            query: { token },
+            transports: ["websocket", "polling"],
+            withCredentials: true,
+        });
 
-    // Add message from another user if it doesn't exist
-    setMessages((prevMessages) => {
-        if (!prevMessages.some(msg => msg._id === message._id)) {
-            return [...prevMessages, message].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-        }
-        return prevMessages; // Already exists, do nothing
-    });
+        const socket = socketRef.current;
 
-    // Only scroll if a message from *another* user was actually added
-    if (message.senderId?._id !== currentUserId.current) {
-         scrollToBottom();
-    }
-}, [currentUserId, scrollToBottom]); // Dependencies for useCallback
-   // Replace your existing socket useEffect with this one
+        const handleNewMessage = (message) => {
+            console.log("📩 Received new message via socket:", message);
+            
+            setMessages((prevMessages) => {
+                // Check if the message already exists by checking both _id and timestamp
+                if (!prevMessages.some(msg => msg._id === message._id && msg.timestamp === message.timestamp)) {
+                    return [...prevMessages, message].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+                }
+                return prevMessages;
+            });
+            
+            scrollToBottom();
+        };
+       
 
-useEffect(() => {
-    if (!token || !groupId) return;
+        socket.on("connect", () => {
+            console.log("✅ Socket connected:", socket.id);
+            socket.emit("joinGroup", groupId);
+        });
 
-    // Socket connection setup (io(...) part remains the same)
-    socketRef.current = io(SOCKET_SERVER_URL, {
-        query: { token },
-        transports: ["websocket", "polling"],
-        withCredentials: true,
-    });
+        socket.on("disconnect", (reason) => {
+            console.log("❌ Socket disconnected:", reason);
+        });
 
-    const socket = socketRef.current;
+        socket.on("connect_error", (err) => {
+            console.error("❌ Socket connection error:", err.message, err.data);
+        });
 
-    // Event listeners setup (connect, disconnect, etc. remain the same)
-    socket.on("connect", () => {
-        console.log("✅ Socket connected:", socket.id);
-        socket.emit("joinGroup", groupId);
-    });
+        socket.on("socketError", (error) => {
+            console.error("❌ Socket Server Error:", error.message);
+        });
 
-    socket.on("disconnect", (reason) => {
-        console.log("❌ Socket disconnected:", reason);
-    });
+        socket.on("newMessage", handleNewMessage);
+        socket.on("userJoined", (data) => console.log("👤 User joined:", data.userId));
+        socket.on("userLeft", (data) => console.log("👤 User left:", data.userId));
+        socket.onAny((event, ...args) => console.log(`📡 Received event: ${event}`, args));
 
-    socket.on("connect_error", (err) => {
-        console.error("❌ Socket connection error:", err.message, err.data);
-    });
-
-    socket.on("socketError", (error) => {
-        console.error("❌ Socket Server Error:", error.message);
-    });
-
-    // *** Attach the modified handler ***
-    socket.on("newMessage", handleNewMessage);
-
-    // Other listeners (userJoined, userLeft, etc.) remain the same
-    socket.on("userJoined", (data) => console.log("👤 User joined:", data.userId));
-    socket.on("userLeft", (data) => console.log("👤 User left:", data.userId));
-    socket.onAny((event, ...args) => console.log(`📡 Received event: ${event}`, args));
-
-
-    // Cleanup function
-    return () => {
-        console.log("Cleaning up socket connection...");
-        if (socket) {
+        return () => {
+            console.log("Cleaning up socket connection...");
             socket.emit("leaveGroup", groupId);
             socket.off("connect");
             socket.off("disconnect");
             socket.off("connect_error");
             socket.off("socketError");
-             // *** Ensure the correct handler instance is removed ***
-            socket.off("newMessage", handleNewMessage);
+            socket.off("newMessage"); // ✅ FIXED LINE
             socket.off("userJoined");
             socket.off("userLeft");
-            socket.disconnect();
             socketRef.current = null;
-        }
-    };
-    // *** Add handleNewMessage to the dependency array ***
-}, [groupId, token, handleNewMessage]); // Ensure handleNewMessage is included
-
-
+        };
+    }, [groupId, token, scrollToBottom]);
 
     const handleScroll = () => {
         if (chatContainerRef.current?.scrollTop === 0 && hasMore && !loading) {
