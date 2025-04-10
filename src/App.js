@@ -28,7 +28,7 @@ import { restoreAuthFromCookie } from "./components/Authentication/auth";
 function App() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallDialog, setShowInstallDialog] = useState(false);
-  const navigate = useNavigate();
+ 
   useEffect(() => {
     const handler = (event) => {
       event.preventDefault();
@@ -45,25 +45,23 @@ function App() {
 
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
-    if (token) {
-      navigate('/home');
-    } else {
-      navigate('/signup'); // or whatever your signup route is
-    }
-  }, []); // empty dependency array: runs once on initial render
-
- 
-  useEffect(() => {
-    const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
-    console.log("Is standalone:", isStandalone);
-
-    if (isStandalone) {
-      alert("standalone runnig")
-    } else {
-    alert("standalone not running")
+    const hasRedirected = sessionStorage.getItem('hasRedirected');
+    if (!hasRedirected) {
+      const token = localStorage.getItem('token');
+      sessionStorage.setItem('hasRedirected', 'true');
+  
+      if (token) {
+        window.location.href = '/home';
+      } else {
+        window.location.href = '/signup';
+      }
     }
   }, []);
+  
+   // empty dependency array: runs once on initial render
+
+ 
+
   useEffect(() => {
     requestNotificationPermission().then((token) => {
       console.log("Notification Token:", token);
