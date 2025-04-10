@@ -1,29 +1,32 @@
 // utils/authStorage.js
 
-const TOKEN_KEY = "authToken";
-const COOKIE_KEY = "authToken";
+
 
 // ✅ Set token in localStorage and cookie
 export const setAuth = (token) => {
-  if (!token) return;
+    console.log("jai baba ki")
+    console.log(token)
 
-  localStorage.setItem(TOKEN_KEY, token);
-
-  document.cookie = `${COOKIE_KEY}=${token}; path=/; max-age=31536000`; // 1 year
-};
+  
+    localStorage.setItem("token", token);
+  console.log("token",token)
+    document.cookie = `token=${token}; path=/; max-age=31536000`; // 1 year
+    console.log("token")
+  };
+  
 
 // ✅ Get token (tries localStorage first, then cookie)
 export const getAuth = () => {
-  const localToken = localStorage.getItem(TOKEN_KEY);
+  const localToken = localStorage.getItem("token");
   if (localToken) return localToken;
 
   // fallback from cookie
-  const match = document.cookie.match(new RegExp("(^| )" + COOKIE_KEY + "=([^;]+)"));
+  const match = document.cookie.match(new RegExp("(^| )" + "token" + "=([^;]+)"));
   const cookieToken = match ? match[2] : null;
 
   if (cookieToken) {
     // Restore to localStorage if needed
-    localStorage.setItem(TOKEN_KEY, cookieToken);
+    localStorage.setItem("token", cookieToken);
   }
 
   return cookieToken;
@@ -31,9 +34,9 @@ export const getAuth = () => {
 
 // ✅ Clear both localStorage and cookie
 export const clearAuth = () => {
-  localStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem("token");
 
-  document.cookie = `${COOKIE_KEY}=; path=/; max-age=0`; // expire cookie
+  document.cookie = `${"token"}=; path=/; max-age=0`; // expire cookie
 };
 // 🍪 Get value from cookies
 export const getCookie = (name) => {
