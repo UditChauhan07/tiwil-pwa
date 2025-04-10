@@ -288,7 +288,7 @@ console.log('pool',poolCreator)
   }
   alt={pool?.wishName || "Default Gift"}
   className="img-fluid rounded"
-  style={{ width: "100%", maxHeight: "258px" }}
+  style={{ width: "100%", maxHeight: "308px" }}
   onError={(e) => {
     e.target.onerror = null; // Prevent infinite loop
     e.target.src = `${process.env.PUBLIC_URL}/img/defaultproduct.jpg`;

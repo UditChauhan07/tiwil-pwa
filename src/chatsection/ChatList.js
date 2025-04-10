@@ -9,6 +9,8 @@ const Chatlist = () => {
   const [groups, setGroups] = useState([]);
   const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState("all");
+  const [loading, setLoading] = useState(true); // new
+
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
@@ -16,24 +18,27 @@ const Chatlist = () => {
   useEffect(() => {
     const fetchGroups = async () => {
       try {
+        setLoading(true); // start loading
         const response = await axios.get(
           `${process.env.REACT_APP_BASE_URL}/chats`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-
+  
         if (response.data.success) {
           setGroups(response.data.data);
         }
       } catch (error) {
         console.error("❌ Error fetching groups:", error);
+      } finally {
+        setLoading(false); // stop loading
       }
     };
-
+  
     fetchGroups();
   }, [token]);
-
+  
   // ✅ Filter groups based on search input
   const filteredGroups = groups.filter((group) =>
     group.eventName?.toLowerCase().includes(search.toLowerCase())
@@ -87,41 +92,38 @@ const Chatlist = () => {
         </button>
       </div>
 
-      {/* 💬 Dynamic Group List */}
+ 
       <div className={styles.groupList}>
-        {filteredGroups.length === 0 ? (
-          <p className={styles.noDataText}>No chat Found</p>
-        ) : (
-          filteredGroups.map((group) => (
-            <div
-              key={group._id}
-              className={styles.groupItem}
-              onClick={() => handleGroupClick(group.groupId)} // ✅ Navigate on click
-            >
-              <img
-                src={
-                  group.eventImage
-                    ? `${process.env.REACT_APP_BASE_URL}/${group.eventImage}`
-                    :`${process.env.PUBLIC_URL}/defaultUser.png`
-                }
-         
-                className={styles.profileImage}
-              />
-              <div className={styles.groupInfo}>
-                {/* ✅ Event Name */}
-                <h4 className={styles.groupName}>{group.eventName}</h4>
-
-                {/* ✅ Total participants */}
-                <p className={styles.lastMessage}>
-                  Participants: {group.participants.length}
-                </p>
-              </div>
-              {/* 🕒 Static time placeholder */}
-              {/* <span className={styles.time}>12:08 PM</span> */}
-            </div>
-          ))
-        )}
+  {loading ? (
+    <p className={styles.noDataText}>Loading chats...</p> // You can style this or use a spinner
+  ) : filteredGroups.length === 0 ? (
+    <p className={styles.noDataText}>No chat Found</p>
+  ) : (
+    filteredGroups.map((group) => (
+      <div
+        key={group._id}
+        className={styles.groupItem}
+        onClick={() => handleGroupClick(group.groupId)}
+      >
+        <img
+          src={
+            group.eventImage
+              ? `${process.env.REACT_APP_BASE_URL}/${group.eventImage}`
+              : `${process.env.PUBLIC_URL}/defaultUser.png`
+          }
+          className={styles.profileImage}
+        />
+        <div className={styles.groupInfo}>
+          <h4 className={styles.groupName}>{group.eventName}</h4>
+          <p className={styles.lastMessage}>
+            Participants: {group.participants.length}
+          </p>
+        </div>
       </div>
+    ))
+  )}
+</div>
+
     </div>
   );
 };

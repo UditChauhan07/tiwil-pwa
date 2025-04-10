@@ -79,7 +79,18 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0; // Return true if no errors
   };
-
+  const resetForm = () => {
+    setFormData({
+      fullName: "",
+      location: "",
+      eventDate: "",
+      description: "",
+      image: "",
+    });
+    setImage(null);
+    setErrors({});
+  };
+  
   const handleSave = async () => {
     if (!validateForm()) return; // Stop if validation fails
 
@@ -104,10 +115,13 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
         formDataToSend,
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setShow(false); // Close modal
-      console.log(response.data)
-      console.log(formDataToSend)
-      Swal.fire("Success", "Event added successfully!", "success");
+      if (response.data.success) {
+        Swal.fire("Success", "Event added successfully!", "success");
+        resetForm(); 
+        setShow(false); 
+      } else {
+        Swal.fire("Error", "Something went wrong.", "error");
+      }
     } catch (error) {
       console.error("Error saving event:", error);
       Swal.fire("Error", "Failed to add event.", "error");
