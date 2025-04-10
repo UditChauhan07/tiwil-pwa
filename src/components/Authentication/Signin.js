@@ -11,6 +11,9 @@ import {auth,RecaptchaVerifier, signInWithPhoneNumber } from "../../firebase/fir
 import styles from './signin.module.css'
 import OtpInput from 'react-otp-input'; // Import the OtpInput component
 import { setAuth, getAuth, clearAuth } from "./auth";
+
+
+
 const SignInForm = () => {
   const [formData, setFormData] = useState({
     phoneNumber: "",
@@ -253,14 +256,18 @@ const SignInForm = () => {
         } else {
           console.log("ℹ️ No FCM token found. Skipping FCM token save.");
         }
-  
+  console.log("jai baba ki 1st")
         // Set other localStorage items
         const profileImagePath = response.data.user.profileImage;
         localStorage.setItem("profileImage", profileImagePath);
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("profileStatus", JSON.stringify(response.data.profileStatus));
         localStorage.setItem("onboardingStatus", JSON.stringify(response.data.onboardingStatus));
+        const token=response.data.token;
+        console.log("jai baba ki")
+        console.log(token)
         setAuth(token);
+        console.log("jai baba ki")
         // Navigate based on profile status
         if (!response.data.profileStatus) {
           navigate("/profile");
