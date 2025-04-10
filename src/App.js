@@ -23,11 +23,12 @@ import HomePage from "./components/home/Home";
 import SurpriseReveal from "./components/surpriseReveal/surpriseScreen";
 import EventsFilter from "./components/home/filterModal";
 import './App.css'
+import { useNavigate } from 'react-router-dom';
 import { restoreAuthFromCookie } from "./components/Authentication/auth";
 function App() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallDialog, setShowInstallDialog] = useState(false);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const handler = (event) => {
       event.preventDefault();
@@ -42,6 +43,27 @@ function App() {
     };
   }, []);
 
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (token) {
+      navigate('/home');
+    } else {
+      navigate('/signup'); // or whatever your signup route is
+    }
+  }, []); // empty dependency array: runs once on initial render
+
+ 
+  useEffect(() => {
+    const isStandalone = window.matchMedia("(display-mode: standalone)").matches;
+    console.log("Is standalone:", isStandalone);
+
+    if (isStandalone) {
+      alert("standalone runnig")
+    } else {
+    alert("standalone not running")
+    }
+  }, []);
   useEffect(() => {
     requestNotificationPermission().then((token) => {
       console.log("Notification Token:", token);
