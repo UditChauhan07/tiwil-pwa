@@ -5,10 +5,11 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../Wishlist/addtowish.css";
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
+import { getAuth } from "../Authentication/auth"; // path adjust kar lena as per structure
 
 
 const AddEvents = ({ show, setShow, setActiveTab }) => {
-  const token = localStorage.getItem("token");
+  const token = getAuth();
 
   const [formData, setFormData] = useState({
     fullName: "",

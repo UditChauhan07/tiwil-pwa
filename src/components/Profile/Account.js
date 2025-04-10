@@ -10,7 +10,7 @@ import { FontAwesomeIcon ,icon} from "@fortawesome/react-fontawesome";
 import { faPencilAlt } from '@fortawesome/free-solid-svg-icons';
 import { faArrowLeft,faGift } from '@fortawesome/free-solid-svg-icons';
 import { Card, Button, Spinner } from "react-bootstrap";
-
+import { setAuth, getAuth, clearAuth } from "../Authentication/auth";
 import {useFetcher, useNavigate} from 'react-router-dom'
 import Swal from "sweetalert2";
 
@@ -108,8 +108,9 @@ const profileImage=localStorage.getItem('profileImage')
         localStorage.removeItem("token");
         localStorage.removeItem("fullname");
         localStorage.clear();
+        clearAuth();
         navigate("/signin");
-        window.dispatchEvent(new Event("storage"));
+        // window.dispatchEvent(new Event("storage"));
      
       }
     });
@@ -144,6 +145,7 @@ const profileImage=localStorage.getItem('profileImage')
         });
   
         localStorage.clear();
+        clearAuth();
         navigate("/signin");
       } else {
         Swal.fire({

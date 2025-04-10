@@ -295,6 +295,7 @@ import OtpInput from "react-otp-input";
 // import { RecaptchaVerifier, signInWithPhoneNumber,getAuth } from "firebase/auth";
 import {auth,RecaptchaVerifier, signInWithPhoneNumber } from "../../firebase/firebase.js"
 import axios from "axios"
+import { setAuth, getAuth, clearAuth } from "./auth";
 
   const logo = `${process.env.PUBLIC_URL}/img/letsgo2.svg`;
 const SignUpForm = () => {
@@ -616,14 +617,14 @@ const handleVerifyOTP = async (e) => {
       localStorage.setItem("onboardingStatus", false);
   
       // Optional: Save to IndexedDB
-     
+      setAuth(token);
   
       navigate("/profile");
     } else {
       Swal.fire("Error", response.data?.message || "Verification failed", "error");
     }
   } catch (error) {
-    let msg = "Failed to verify OTP.";
+    let msg = "Failed to verify OTP.Please try after some time";
     if (error.code === "auth/invalid-verification-code") {
       msg = "Invalid OTP.";
     } else if (error.code === "auth/code-expired") {

@@ -13,7 +13,7 @@ const [showmemberModal, setShowmemberModal] = useState(false);
       {/* Options - Show when button is clicked */}
       {isOpen && (
         <div style={styles.optionsContainer}>
-          <button style={styles.optionButton} onClick={() => setShoweventModal(true)}>
+          <button style={styles.optionButton}  onClick={() => setShoweventModal(true)}>
             <FaCalendarAlt style={styles.icon} /> Add Event
           </button>
           <button style={styles.optionButton} onClick={() => setShowmemberModal(true)}>
@@ -28,7 +28,7 @@ const [showmemberModal, setShowmemberModal] = useState(false);
 <rect width="60" height="60" rx="30" fill="#EE4266"/>
 <rect x="8" y="8" width="44.1176" height="44.1176" rx="22.0588" fill="white" />
 </svg>
-<div ><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{position:'relative',right:'38px'}}>
+<div ><svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg" style={{position:'relative',right:'39px'}}>
 <path d="M8.17308 19.8333V11.3333H0V8.5H8.17308V0H10.8974V8.5H19.0705V11.3333H10.8974V19.8333H8.17308Z" fill="#EE4266"  />
 </svg>
 </div>
@@ -76,7 +76,7 @@ const styles = {
   optionsContainer: {
     position: "absolute",
     bottom: "70px",
-    right: "5px",
+    right: "8px",
     display: "flex",
     flexDirection: "column",
     gap: "10px",
@@ -85,7 +85,7 @@ const styles = {
     backgroundColor: "#FF3366",
     color: "white",
     border: "none",
-    padding: "10px 15px",
+    padding: "5px 10px",
     borderRadius: "10px",
     display: "flex",
     alignItems: "center",
