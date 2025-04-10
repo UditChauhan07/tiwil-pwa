@@ -21,7 +21,7 @@ function PoolingWish() {
   const [userStatus, setUserStatus] = useState(null);
   const [poolCreator,setpoolCreator]=useState(null) 
   const userId = localStorage.getItem("userId");
-  const [eventId,seteventId]=useState(pool.eventId)
+  const [eventId,seteventId]=useState("")
 
 
 
@@ -196,7 +196,7 @@ console.log('pool',poolCreator)
       const token = localStorage.getItem("token");
       try {
         const response = await axios.post(
-          `${process.env.REACT_APP_BASE_URL}/chats/pool`,
+          `${process.env.REACT_APP_BASE_URL}/chats/poolgroup`,
           { eventId },
           { headers: { Authorization: `Bearer ${token}` } }
         );
@@ -220,6 +220,7 @@ console.log('pool',poolCreator)
           setPool(response.data.data);
           setPoolId(response.data.data._id);
           setpoolCreator(response.data.data.userId)
+          seteventId(response.data.data.eventId)
         }
       } catch (err) {
         console.error("Error fetching pool data:", err);
