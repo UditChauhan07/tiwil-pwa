@@ -40,25 +40,47 @@ const abc=localStorage.getItem("filters");
   }, [abc]);
 
   useEffect(() => {
-    const fetchEvents = async () => {
-      setLoading(true);
+    let isMounted = true;
+  
+    const fetchEvents = async (isSilent = false) => {
+      if (!token || !isMounted) return;
+  
+      if (!isSilent) setLoading(true); // show loading only on first load
+  
       try {
         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/events`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.data.success) {
-          const sortedEvents = response.data.data.sort((a, b) => new Date(a.displayDate) - new Date(b.displayDate));
-          setEvents(sortedEvents);
-          applyFilters(sortedEvents); // Apply filters immediately after fetching events
+          const sortedEvents = response.data.data.sort(
+            (a, b) => new Date(a.displayDate) - new Date(b.displayDate)
+          );
+          if (isMounted) {
+            setEvents(sortedEvents);
+            applyFilters(sortedEvents);
+          }
         }
       } catch (error) {
         console.error("Error fetching events:", error);
       } finally {
-        setLoading(false);
+        if (isMounted && !isSilent) {
+          setLoading(false); // only set loading for visible spinner
+        }
       }
     };
-    fetchEvents();
+  
+    fetchEvents(false); // First load shows loader
+  
+    const interval = setInterval(() => {
+      fetchEvents(true); // Silent background fetch every 5s
+    }, 5000);
+  
+    return () => {
+      isMounted = false;
+      clearInterval(interval);
+    };
   }, [token]);
+  
 
   // Reapply filters when the search query or filterData changes
   useEffect(() => {
