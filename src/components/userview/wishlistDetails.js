@@ -110,7 +110,7 @@ boxShadow:'   0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
   <img 
     src={wishlistItem.imageUrl ? `${process.env.REACT_APP_BASE_URL}/${wishlistItem.imageUrl}` : `${process.env.PUBLIC_URL}/img/image.png`} 
     alt="image" 
-    style={{ width: "100%",maxHeight:'240px' ,border:"1px solid #ffffff,border-radius:'5px"}} 
+    style={{ width: "100%",maxHeight:'300px' ,border:"1px solid #ffffff,border-radius:'5px"}} 
   />
 </div>
 
