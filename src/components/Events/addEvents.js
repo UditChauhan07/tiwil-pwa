@@ -6,6 +6,7 @@ import "../Wishlist/addtowish.css";
 import { useState, useEffect } from "react";
 import Swal from 'sweetalert2';
 
+
 const AddEvents = ({ show, setShow, setActiveTab }) => {
   const token = localStorage.getItem("token");
 
@@ -125,7 +126,7 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
   return (
     <>
       {/* Full screen loader */}
-      {loading && (
+      {/* {loading && (
         <div style={{
           position: "fixed",
           top: 0,
@@ -140,7 +141,7 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
         }}>
           <Spinner animation="border" role="status" style={{ width: "5rem", height: "5rem" }} />
         </div>
-      )}
+      )} */}
 
       <Modal show={show} onHide={() => setShow(false)} centered size="md">
         <Modal.Header closeButton>
@@ -231,7 +232,8 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
 
         <Modal.Footer>
           <Button variant="danger" onClick={handleSave}>
-            Save
+        
+            {loading ? <Spinner animation="border" role="status" style={{ width: "1rem", height: "1rem" }} />: "Save"}
           </Button>
         </Modal.Footer>
       </Modal>

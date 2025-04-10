@@ -116,20 +116,30 @@ const ChatRoom = () => {
 
         const socket = socketRef.current;
 
-        const handleNewMessage = (message) => {
-            console.log("📩 Received new message via socket:", message);
+      
             
-            setMessages((prevMessages) => {
-                // Check if the message already exists by checking both _id and timestamp
-                if (!prevMessages.some(msg => msg._id === message._id && msg.timestamp === message.timestamp)) {
-                    return [...prevMessages, message].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
-                }
-                return prevMessages;
-            });
+            const handleNewMessage = (message) => {
+                console.log("📩 Received new message via socket:", message);
             
-            scrollToBottom();
-        };
-       
+                setMessages((prevMessages) => {
+                    // Prevent duplicate by checking real _id match OR optimistic match (same user + content + timestamp)
+                    const isDuplicate = prevMessages.some(msg =>
+                        msg._id === message._id ||
+                        (msg.isOptimistic &&
+                         msg.senderId._id === message.senderId._id &&
+                         msg.content === message.content &&
+                         Math.abs(new Date(msg.timestamp) - new Date(message.timestamp)) < 2000)
+                    );
+            
+                    if (!isDuplicate) {
+                        return [...prevMessages, message].sort((a, b) => new Date(a.timestamp) - new Date(b.timestamp));
+                    }
+                    return prevMessages;
+                });
+            
+                scrollToBottom();
+            };
+            
 
         socket.on("connect", () => {
             console.log("✅ Socket connected:", socket.id);

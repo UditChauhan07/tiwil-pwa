@@ -386,7 +386,7 @@ function Invitationlst({ searchQuery }) {
                   style={{ gap: "10px" }}
                 >
                   <div
-                    style={{ display: "flex", justifyContent: "space-between" }}
+                    style={{ display: "flex", justifyContent: "space-between",gap: "5px" }}
                   >
                     <img
                       className="m-0.5"
