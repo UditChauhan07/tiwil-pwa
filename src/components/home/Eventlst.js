@@ -13,7 +13,6 @@ const Eventlst = ({ searchQuery }) => {
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
   const [loading, setLoading] = useState(true);
-  localStorage.setItem('filteredEvents',JSON.stringify(filteredEvents))
   const [filterData, setFilterData] = useState({
     months: [],
     relations: [],
@@ -23,17 +22,14 @@ const Eventlst = ({ searchQuery }) => {
   const [favoriteStatus, setFavoriteStatus] = useState(false); 
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
-const abc=localStorage.getItem("filters");
-  // Load filters from localStorage
+  const abc = localStorage.getItem("filters");
+
   const loadFiltersFromLocalStorage = () => {
     const savedFilters = localStorage.getItem("filters");
-    if (savedFilters) {
-      return JSON.parse(savedFilters);
-    }
-    return { months: [], relations: [], eventTypes: [], favoritesOnly: false }; // Default filters if none are saved
+    if (savedFilters) return JSON.parse(savedFilters);
+    return { months: [], relations: [], eventTypes: [], favoritesOnly: false };
   };
 
-  // Initial load of filters from localStorage
   useEffect(() => {
     const savedFilters = loadFiltersFromLocalStorage();
     setFilterData(savedFilters);
@@ -41,86 +37,96 @@ const abc=localStorage.getItem("filters");
 
   useEffect(() => {
     let isMounted = true;
-  
+
     const fetchEvents = async (isSilent = false) => {
       if (!token || !isMounted) return;
-  
-      if (!isSilent) setLoading(true); // show loading only on first load
-  
+      if (!isSilent) setLoading(true);
+
       try {
         const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/events`, {
           headers: { Authorization: `Bearer ${token}` },
         });
         if (response.data.success) {
-          const sortedEvents = response.data.data.sort(
-            (a, b) => new Date(a.displayDate) - new Date(b.displayDate)
-          );
           if (isMounted) {
-            setEvents(sortedEvents);
-            applyFilters(sortedEvents);
+            setEvents(response.data.data);
+            applyFilters(response.data.data);
           }
         }
       } catch (error) {
         console.error("Error fetching events:", error);
       } finally {
-        if (isMounted && !isSilent) {
-          setLoading(false); // only set loading for visible spinner
-        }
+        if (isMounted && !isSilent) setLoading(false);
       }
     };
-  
-    fetchEvents(false); // First load shows loader
-  
-    const interval = setInterval(() => {
-      fetchEvents(true); // Silent background fetch every 5s
-    }, 5000);
-  
+
+    fetchEvents(false);
+    const interval = setInterval(() => fetchEvents(true), 5000);
+
     return () => {
       isMounted = false;
       clearInterval(interval);
     };
   }, [token]);
-  
 
-  // Reapply filters when the search query or filterData changes
   useEffect(() => {
     applyFilters(events);
-  }, [searchQuery, filterData, events,abc]);
+  }, [searchQuery, filterData, events, abc]);
+
+  const normalizeEventDateForSorting = (eventDate) => {
+    const today = new Date();
+    const event = new Date(eventDate);
+    if (isNaN(event.getTime())) return null;
+
+    event.setFullYear(today.getFullYear());
+    if (
+      event.getMonth() < today.getMonth() ||
+      (event.getMonth() === today.getMonth() && event.getDate() < today.getDate())
+    ) {
+      event.setFullYear(today.getFullYear() + 1);
+    }
+    return event;
+  };
 
   const applyFilters = (eventsList) => {
-    let filtered = eventsList;
+    let filtered = [...eventsList];
 
-    // Apply search query filter
+    // Apply search query
     if (searchQuery.trim()) {
       filtered = filtered.filter((event) =>
-        event.name.toLowerCase().includes(searchQuery.toLowerCase()) || event.date.includes(searchQuery)
+        event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        event.date.includes(searchQuery)
       );
     }
 
-    // Apply month filter
+    // Apply basic filters
     if (filterData.months.length > 0) {
       filtered = filtered.filter((event) =>
         filterData.months.includes(new Date(event.date).toLocaleString("en-us", { month: "long" }))
       );
     }
-
-    // Apply event type filter
     if (filterData.eventTypes.length > 0) {
       filtered = filtered.filter((event) => filterData.eventTypes.includes(event.eventType));
     }
-
-    // Apply relation filter
     if (filterData.relations.length > 0) {
       filtered = filtered.filter((event) => filterData.relations.includes(event.relation));
     }
-
-    // Apply favorites filter
     if (filterData.favoritesOnly) {
       filtered = filtered.filter((event) => event.isfavourite === true);
     }
 
+    // Filter only events from today onward (after adjusting year logic)
+    const today = new Date();
+    filtered = filtered
+      .map((event) => ({
+        ...event,
+        normalizedDate: normalizeEventDateForSorting(event.date || event.displayDate),
+      }))
+      .filter((event) => event.normalizedDate && event.normalizedDate >= today)
+      .sort((a, b) => a.normalizedDate - b.normalizedDate);
+
     setFilteredEvents(filtered);
   };
+
 
   const handleApplyFilters = (filters) => {
     setFilterData(filters);

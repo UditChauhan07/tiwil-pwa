@@ -46,31 +46,25 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
     // Add validation for other fields here if needed
   };
 
-
-  const handleImageChange = (e) => {
+  const handleImageChange = async (e) => {
     const file = e.target.files[0];
     if (file) {
-      // Set the selected image file object in state for preview and later upload
       setSelectedImage(file);
       const formData = new FormData();
       const token = localStorage.getItem('token');
   
-      // Append all profile fields EXCEPT potentially the old profileImage path
       Object.keys(profileData).forEach((key) => {
-          // Avoid sending the old image path if a new image is selected or if it shouldn't be sent
-          if (key !== 'profileImage') {
-              formData.append(key, profileData[key] ?? ''); // Send empty string for null/undefined values
-          }
+        if (key !== 'profileImage') {
+          formData.append(key, profileData[key] ?? '');
+        }
       });
   
-      // Append the NEW profile image file if one was selected
-      if (selectedImage) {
-        formData.append("profileImage", selectedImage, selectedImage.name); // Include filename
-      }
-
+      formData.append("profileImage", file, file.name); // Use `file` instead of `selectedImage` here
   
       try {
-        const response =  axios.post(
+        setLoading(true); // Optional: show spinner
+  
+        const response = await axios.post(
           `${process.env.REACT_APP_BASE_URL}/user-profile`,
           formData,
           {
@@ -82,33 +76,27 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
         );
   
         if (response.data.success) {
-         
-          // Update localStorage if the image path changed
-          if (response.data.data?.profileImage) {
-              const profileImagePath = response.data.data.profileImage;
-              localStorage.setItem("profileImage", profileImagePath);
+          const profileImagePath = response.data.data?.profileImage;
+          if (profileImagePath) {
+            localStorage.setItem("profileImage", profileImagePath);
           }
-          // Crucially, call the onSave callback passed from the parent (Account component)
-          // This updates the state in the Account component to reflect the changes.
-          onSave(response.data.data);
+          onSave(response.data.data); // Update parent component
         } else {
-          // Use error message from backend if available
           console.log(response.data.message || "Failed to update profile.");
         }
       } catch (error) {
         console.error("Error updating profile:", error);
-        // Provide more specific error feedback if possible (e.g., check error.response)
-  
       } finally {
-        setLoading(false); // Hide spinner regardless of success/failure
+        setLoading(false);
       }
-    };
-    
+    }
+  };
+  
       // Optionally update profileData state if you want to track the image name/info there too
       // setProfileData((prev) => ({ ...prev, profileImage: file.name })); // Example
-    }
+    
     // REMOVED THE API CALL FROM HERE
-  ;
+  
 
   // --- 5. Modify handleSave to include final validation ---
   const handleSave = async (e) => {
