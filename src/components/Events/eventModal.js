@@ -5,6 +5,8 @@ import './eventModal.css';
 import Swal from "sweetalert2";
 import { useParams } from "react-router-dom";
 import { FaCloudUploadAlt } from "react-icons/fa";
+import { getAuth } from "../Authentication/auth"; // path adjust kar lena as per structure
+
 
 const EditEventModal = ({ show, setShow, event, fetchevent }) => {
   if (!event) {
@@ -92,7 +94,7 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
     }
   
     try {
-      const token = localStorage.getItem("token");
+      const token = getAuth();
       const formData = new FormData();
       formData.append("description", description);
       formData.append("location", location);

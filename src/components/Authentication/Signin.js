@@ -10,6 +10,7 @@ import { genToken } from '../../firebase/firebase';
 import {auth,RecaptchaVerifier, signInWithPhoneNumber } from "../../firebase/firebase"
 import styles from './signin.module.css'
 import OtpInput from 'react-otp-input'; // Import the OtpInput component
+import { setAuth, getAuth, clearAuth } from "./auth";
 const SignInForm = () => {
   const [formData, setFormData] = useState({
     phoneNumber: "",
@@ -152,9 +153,9 @@ const SignInForm = () => {
          if (error.code === "auth/invalid-phone-number") {
              msg = "The phone number format is invalid.";
          } else if (error.code === "auth/too-many-requests") {
-             msg = "We have blocked all requests from this device due to unusual activity for some time. Try again later.";
+             msg = "We have blocked your requests from this device due to unusual activity for some time. Try again later.";
          } else if (error.message.includes("reCAPTCHA")) {
-             msg = "reCAPTCHA check failed. Please try again.";
+             msg = "Failed to send otp. Please refresh and then try again.";
          } // Add more specific Firebase codes if needed
   
          Swal.fire("Error", msg, "error");
@@ -163,7 +164,7 @@ const SignInForm = () => {
   
       // Fallback for any other unexpected errors
       if (!errorHandled) {
-         Swal.fire("Error", "Please refresh to and try again .", "error");
+         Swal.fire("Error", "Please refresh  and then try again .", "error");
       }
   
       // Clean up reCAPTCHA instance if it exists
@@ -259,7 +260,7 @@ const SignInForm = () => {
         localStorage.setItem("token", response.data.token);
         localStorage.setItem("profileStatus", JSON.stringify(response.data.profileStatus));
         localStorage.setItem("onboardingStatus", JSON.stringify(response.data.onboardingStatus));
-  
+        setAuth(token);
         // Navigate based on profile status
         if (!response.data.profileStatus) {
           navigate("/profile");

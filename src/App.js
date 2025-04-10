@@ -23,6 +23,7 @@ import HomePage from "./components/home/Home";
 import SurpriseReveal from "./components/surpriseReveal/surpriseScreen";
 import EventsFilter from "./components/home/filterModal";
 import './App.css'
+import { restoreAuthFromCookie } from "./components/Authentication/auth";
 function App() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallDialog, setShowInstallDialog] = useState(false);
@@ -51,7 +52,9 @@ function App() {
       alert(payload.notification.title + ": " + payload.notification.body);
     });
   }, []);
-
+  useEffect(() => {
+    restoreAuthFromCookie(); // ✅ restore token if needed
+  }, []);
   const handleInstallClick = () => {
     if (deferredPrompt) {
       deferredPrompt.prompt();

@@ -306,7 +306,7 @@ const Eventlst = ({ searchQuery }) => {
     color: "white",
     fontSize: "15px",
     fontWeight: "bold",
-    backgroundColor: "#ff3366",
+    backgroundColor: "#EE4266",
     padding: "5px",
   }}
 >

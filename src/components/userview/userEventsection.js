@@ -88,7 +88,7 @@ const EventDetails = () => {
         const wishlistData = response.data.data || [];
         setWishlistItems(wishlistData);
         console.log("main");
-        // Check if there's at least one item in the wishlist
+        // Check if there's at least one item in the wishlista
         const markedItem = wishlistData.find((item) => item.markedBy?.userId);
 
         if (markedItem) {
@@ -661,7 +661,7 @@ const EventDetails = () => {
                       </div>
                     ) : invitationStatus === "Accepted" ? (
                       <div className="text-center mt-4">
-                        <button
+                        <button style={{marginTop: '30px'}}
                           className="btn btn-danger w-30"
                           onClick={handleStartChat}
                         >

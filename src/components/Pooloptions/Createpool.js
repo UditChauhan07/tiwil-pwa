@@ -454,9 +454,10 @@ console.log('pool',poolCreator)
           </>
         ) : (
           isOwner  &&(
+            <div className='d-flex justify-content-center '>
             <button variant="danger"
-              style={{ padding: "9px", background: "#dc3545", borderRadius: "20px",color: "white"
-  
+              style={{ padding: "9px", background: "#dc3545", borderRadius: "20px",color: "white",
+  marginBottom:'22px'
     ,right: "46px",
     width: '78%',
     border: "none" ,
@@ -465,6 +466,7 @@ console.log('pool',poolCreator)
             >
               Invite Member
             </button>
+            </div>
           )
         )}
         <InviteModal wishId={wishId} show={showInviteModal} poolId={poolId} setShow={setShowInviteModal} />

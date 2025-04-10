@@ -8,6 +8,7 @@ const InviteModal = ({ show, setShow, wishId, poolId }) => {
   const [selectedInvites, setSelectedInvites] = useState([]);
   const [users, setUsers] = useState([]);
   const [searchQuery, setSearchQuery] = useState("");
+  const [error, setError] = useState("");
 
   const token = localStorage.getItem("token");
   const currentUserId = localStorage.getItem("userId"); // Assuming userId is stored in localStorage
@@ -63,27 +64,14 @@ const InviteModal = ({ show, setShow, wishId, poolId }) => {
   // Handle sending invites
   const handleSendInvite = async () => {
     console.log("📌 Current selectedInvites before sending:", selectedInvites);
-
+  
     if (selectedInvites.length === 0) {
-      Swal.fire({
-        title: "Error",
-        text: "Please select at least one valid guest.",
-        icon: "error",
-        customClass: {
-          popup: 'custom-swal-popup' // Use a class name for the popup
-        },
-        willOpen: () => {
-          // Access the popup and set z-index directly
-          const swalPopup = document.querySelector('.swal2-popup');
-          if (swalPopup) {
-            swalPopup.style.zIndex = 2000;  // Set z-index higher than the modal
-          }
-        }
-      });
-      
+      setError("Please select at least one guest to invite or no user avaible to invite ");
       return;
     }
-
+  
+    setError(""); // clear error if proceeding
+  
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BASE_URL}/pool/invite`,
@@ -96,13 +84,13 @@ const InviteModal = ({ show, setShow, wishId, poolId }) => {
           headers: { Authorization: `Bearer ${token}` },
         }
       );
-
+  
       Swal.fire({
         title: "Invites sent successfully",
         text: response.data.message,
         icon: "success",
       });
-
+  
       console.log("✅ Invite sent successfully:", response.data);
       setShow(false);
       setSelectedInvites([]);
@@ -115,13 +103,22 @@ const InviteModal = ({ show, setShow, wishId, poolId }) => {
       });
     }
   };
-
+  
   const filteredUsers = users.filter((user) =>
     user.fullName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   return (
-    <Modal show={show} onHide={() => setShow(false)} centered size="md">
+    <Modal
+    show={show}
+    onHide={() => {
+      setShow(false);
+      setError(""); // Clear error on close
+    }}
+    centered
+    size="md"
+  >
+  
       <Modal.Header closeButton>
         <Modal.Title>Invite Guests</Modal.Title>
       </Modal.Header>
@@ -167,12 +164,21 @@ const InviteModal = ({ show, setShow, wishId, poolId }) => {
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="secondary" onClick={() => setShow(false)}>
-          Close
-        </Button>
+      {error && <div className="text-danger w-100 text-start">{error}</div>}
+
+      <Button
+  variant="secondary"
+  onClick={() => {
+    setError(""); // Clear the error state
+    setShow(false); // Close the modal
+  }}
+>
+  Close
+</Button>
+
         <Button
           variant="primary"
-          style={{ backgroundColor: "#ff3366" }}
+          style={{ backgroundColor: "#EE4266" }}
           onClick={handleSendInvite}
         >
           Send Invite
