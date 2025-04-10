@@ -6,7 +6,8 @@ import "../Wishlist/addtowish.css";
 import { useState, useEffect } from "react";
 import { FaChevronDown } from "react-icons/fa"; // Chevron icon for dropdown
 import { FaCloudUploadAlt } from "react-icons/fa"; 
-
+import {Spinner} from "react-bootstrap"
+import Swal from "sweetalert2"
 const Memberform = ({ show, setShow }) => {
   const token = localStorage.getItem("token");
   
@@ -20,6 +21,7 @@ const Memberform = ({ show, setShow }) => {
 
   const [today, setToday] = useState('');
   const [errors, setErrors] = useState({}); // State to store errors
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const todayDate = new Date().toISOString().split('T')[0];
@@ -75,8 +77,9 @@ const Memberform = ({ show, setShow }) => {
 
   // Handle save event (for both normal and modal form data)
   const handleSave = async () => {
+    
     if (!validateForm()) return; // Stop if validation fails
-
+    setLoading(true); 
     try {
       const eventData = formData; // Use formData to save
 
@@ -97,6 +100,7 @@ const Memberform = ({ show, setShow }) => {
 
       if (response.data.success) {
         console.log(response.data);
+    Swal.fire("Suceess", "Member added successfully", "success")
         setFormData({
           fullName: '',
           relation: '',
@@ -108,10 +112,19 @@ const Memberform = ({ show, setShow }) => {
     } catch (error) {
       console.error("Error creating event:", error);
     } finally {
+      setLoading(false);
       setShow(false);
+
     }
   };
-
+  if (loading) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center", marginTop: "250px" }}>
+        <Spinner animation="border" role="status" style={{ width: "10rem", height: "10rem" }} />
+      </div>
+    );
+  }
+  
   return (
     <Modal show={show} onHide={() => setShow(false)} centered size="md">
       <Modal.Header closeButton>
@@ -211,14 +224,19 @@ const Memberform = ({ show, setShow }) => {
         
           <Form.Group className="mb-3">
   <div className="upload-container" onClick={() => document.getElementById("fileInput").click()}>
-    {formData.image ? (
-      <img src={formData.image} alt="Preview" className="uploaded-image" />
-    ) : (
-      <div className="upload-icon">
-        <FaCloudUploadAlt size={50} color="#E11531" />
-        <p>Upload Image</p>
-      </div>
-    )}
+  {formData.image ? (
+  <img
+    src={URL.createObjectURL(formData.image)}  // 👈 generates temporary preview URL
+    alt="Preview"
+    className="uploaded-image"
+  />
+) : (
+  <div className="upload-icon">
+    <FaCloudUploadAlt size={50} color="#E11531" />
+    <p>Upload Image</p>
+  </div>
+)}
+
     <input type="file" id="fileInput" accept="image/*" onChange={handleImageUpload} hidden />
   </div>
 </Form.Group>

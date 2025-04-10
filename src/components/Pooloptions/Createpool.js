@@ -398,7 +398,7 @@ console.log('pool',poolCreator)
               onClick={handleSaveContribution}
               // disabled={userStatus === "pending" || userStatus === "declined"} // Disable button if status is pending or declined
             >
-              {loading ? "Processing..." : "Contribute"} <FaArrowRight className="ms-2" />
+              {loading ? "Processing..." : "Save Amount"} <FaArrowRight className="ms-2" />
             </Button>
           </div>
           </>
