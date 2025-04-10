@@ -230,42 +230,38 @@ function Invitationlst({ searchQuery }) {
     }
     return number + "th";
   };
-  const calculateAgeAndBirthdayText = (eventDate) => {
+  const calculateAgeAndBirthdayText = (eventDate, isCancelled) => {
+    if (isCancelled) return "Cancelled"; // Show "Cancelled" if the event is cancelled
+  
     if (!eventDate) return "N/A";
-
+  
     const today = new Date();
-    const targetDate = new Date(eventDate); // The person's birthday date
+    const targetDate = new Date(eventDate);
     const currentYear = today.getFullYear();
-
-    // Ensure targetDate is set to the current year
+  
+    // Set target year
     targetDate.setFullYear(currentYear);
-
-    // Calculate age based on the birthdate year
+  
     const birthDate = new Date(eventDate);
     const age = today.getFullYear() - birthDate.getFullYear();
-
-    // Calculate the difference in days between today and the birthday
+  
     const diffTime = targetDate - today;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    // If the birthday is today
+  
     if (diffDays === 0) {
       return "Today!";
     }
-
-    // If the birthday has passed this year, set the target date to next year
+  
     if (diffDays < 0) {
       targetDate.setFullYear(currentYear + 1);
     }
-
-    // Calculate days left for the next birthday (if already passed this year)
+  
     const nextDiffTime = targetDate - today;
     const nextDiffDays = Math.ceil(nextDiffTime / (1000 * 60 * 60 * 24));
-
-    // If the birthday is in the future
+  
     return `${nextDiffDays} Days Left`;
   };
-
+  
   const handlefavourite = async (eventId) => {
     try {
       const token = localStorage.getItem("token");
@@ -311,7 +307,15 @@ function Invitationlst({ searchQuery }) {
       {/* Display Invitations */}
       {filteredInvitations.length > 0 ? (
         filteredInvitations.map((invitation, index) => (
-          <div key={index} className="d-flex justify-content-center mb-3">
+          <div
+  key={index}
+  className="d-flex justify-content-center mb-3"
+  style={{
+    pointerEvents: invitation.event.isCanceled ? "none" : "auto",
+    opacity: invitation.event.isCancelled ? 0.5 : 1,
+  }}
+>
+
             <Card
               style={{
                 width: "100%",
@@ -341,7 +345,7 @@ function Invitationlst({ searchQuery }) {
                         : invitation.event?.image &&
                           invitation.event.image !== "null"
                         ? `${process.env.REACT_APP_BASE_URL}/${invitation.event.image}`
-                        : `${process.env.PUBLIC_URL}/img/eventdefault.png`
+                        : `${process.env.PUBLIC_URL}/img/eventdefault1.png`
                     }
                     alt="Event"
                     style={{ width: "100%", height: "162px", padding: "5px" }}
@@ -360,9 +364,11 @@ function Invitationlst({ searchQuery }) {
                       padding: "5px",
                     }}
                   >
-                    {calculateAgeAndBirthdayText(
-                      invitation.event?.date ?? "Default Date"
-                    )}
+                 {calculateAgeAndBirthdayText(
+  invitation.event?.date ?? "Default Date",
+  invitation.event?.isCancelled
+)}
+
                   </div>
                 </Card>
               </div>
@@ -421,20 +427,22 @@ function Invitationlst({ searchQuery }) {
                   Plan and Celebrate
                 </Button> */}
                 <div style={{ display: "flex", gap: "8px" }}>
-                  <Button
-                    className="planbtn"
-                    variant="danger"
-                    onClick={() =>
-                      handleInvitation(invitation.event.eventId, invitation._id)
-                    }
-                  >
-                    View Detail
-                  </Button>
-                  <div
+                <Button
+  className="planbtn"
+  variant="danger"
+  onClick={() =>
+    !invitation.event.isCanceled &&
+    handleInvitation(invitation.event.eventId, invitation._id)
+  }
+  disabled={invitation.event.isCancelled}
+>
+  View Detail
+</Button>
+
+<div
   className="heartimage"
   style={{
-backgroundColor: invitation.invitations[0].isFavourite ? "white" : "#FF3366",
-
+    backgroundColor: invitation.invitations[0].isFavourite ? "white" : "#FF3366",
     padding: "5px",
     width: "40px",
     height: "34px",
@@ -445,20 +453,25 @@ backgroundColor: invitation.invitations[0].isFavourite ? "white" : "#FF3366",
     borderTopLeftRadius: "0px",
     borderTopRightRadius: "5px",
     border: "1px solid #FF3366",
-    cursor: "pointer",
+    cursor: invitation.event.isCancelled ? "not-allowed" : "pointer",
+    opacity: invitation.event.isCancelled ? 0.5 : 1,
   }}
-  onClick={() => handlefavourite(invitation.event.eventId)}
+  onClick={() =>
+    !invitation.event.isCancelled &&
+    handlefavourite(invitation.event.eventId)
+  }
 >
   <FontAwesomeIcon
-   icon={invitation.invitations[0].isFavourite ? solidHeart : regularHeart}
-
+    icon={
+      invitation.invitations[0].isFavourite ? solidHeart : regularHeart
+    }
     style={{
-color: invitation.invitations[0].isFavourite ? "#FF3366" : "white",
-
+      color: invitation.invitations[0].isFavourite ? "#FF3366" : "white",
       fontSize: "22px",
     }}
   />
 </div>
+
 
                 </div>
               </Card.Body>

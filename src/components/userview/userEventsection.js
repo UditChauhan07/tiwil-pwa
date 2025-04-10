@@ -568,7 +568,7 @@ const EventDetails = () => {
                     events.image !== "null" &&
                     events.image !== `${process.env.REACT_APP_BASE_URL}/null`
                   ? `${process.env.REACT_APP_BASE_URL}/${events.image}` // Fallback to image
-                  : `${process.env.PUBLIC_URL}/img/eventdefault.png` // Default image
+                  : `${process.env.PUBLIC_URL}/img/eventdefault1.png` // Default image
               }
               alt="event"
               className="img-fluid"

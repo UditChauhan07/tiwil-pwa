@@ -354,7 +354,7 @@ const EventDetails = () => {
       ? `${process.env.REACT_APP_BASE_URL}/${event.newimage}` // Priority to newimage
       : event.image && event.image !== "null" && event.image !== `${process.env.REACT_APP_BASE_URL}/null`
       ? `${process.env.REACT_APP_BASE_URL}/${event.image}` // Fallback to image
-      : `${process.env.PUBLIC_URL}/img/eventdefault.png` // Default image
+      : `${process.env.PUBLIC_URL}/img/eventdefault1.png` // Default image
   }
   className="img-fluid event-img1"
   style={{ width: "550px", height: "174px", borderRadius: "10px",    objectFit: "contain" }}

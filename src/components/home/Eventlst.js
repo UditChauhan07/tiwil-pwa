@@ -180,41 +180,29 @@ const abc=localStorage.getItem("filters");
     }
   };
   
-  const calculateAgeAndBirthdayText = (eventDate) => {
+  const calculateAgeAndBirthdayText = (eventDate, isCancelled) => {
+    if (isCancelled) return "Cancelled"; // <-- Add this check
     if (!eventDate) return "N/A";
-
+  
     const today = new Date();
-    const targetDate = new Date(eventDate); // The person's birthday date
+    const targetDate = new Date(eventDate);
     const currentYear = today.getFullYear();
-
-    // Ensure targetDate is set to the current year
     targetDate.setFullYear(currentYear);
-
-    // Calculate age based on the birthdate year
+  
     const birthDate = new Date(eventDate);
     const age = today.getFullYear() - birthDate.getFullYear();
-
-    // Calculate the difference in days between today and the birthday
+  
     const diffTime = targetDate - today;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-
-    // If the birthday is today
-    if (diffDays === 0) {
-      return "Today!";
-    }
-
-    // If the birthday has passed this year, set the target date to next year
-    if (diffDays < 0) {
-      targetDate.setFullYear(currentYear + 1);
-    }
-
-    // Calculate days left for the next birthday (if already passed this year)
+  
+    if (diffDays === 0) return "Today!";
+    if (diffDays < 0) targetDate.setFullYear(currentYear + 1);
+  
     const nextDiffTime = targetDate - today;
     const nextDiffDays = Math.ceil(nextDiffTime / (1000 * 60 * 60 * 24));
-
-    // If the birthday is in the future
-    return `${nextDiffDays} Days Left` ;
+    return `${nextDiffDays} Days Left`;
   };
+  
   const getUpcomingBirthdayNumber = (eventDate) => {
     if (!eventDate) return null; // Handle invalid dates
 
@@ -259,19 +247,44 @@ const abc=localStorage.getItem("filters");
 
       {filteredEvents.length > 0 ? (
         filteredEvents.map((event, index) => (
-          <div key={index} style={{ gap: "30px", display: "flex", justifyContent: "center" }}>
+          <div
+  key={index}
+  style={{
+    gap: "30px",
+    display: "flex",
+    justifyContent: "center",
+    opacity: event.isCanceled ? 0.4 : 1,
+    pointerEvents: event.isCancelled ? "none" : "auto",
+    cursor: event.isCancelled ? "not-allowed" : "default",
+  }}
+>
+
+
             <Card style={{ width: "100%", minWidth: "310px", border: "0.5px solid rgb(229 229 229)", borderRadius: "10px", marginBottom: index === filteredEvents.length - 1 ? "80px" : "10px" }}>
               <div style={{ height: "150px" }}>
                 <Card variant="top" style={{ position: "relative", width: "100%", height: "162px" ,borderBottom:'unset'}}>
                   <img
-                    src={event.newimage && event.newimage !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.newimage}` : event.image && event.image !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.image}` : `${process.env.PUBLIC_URL}/img/eventdefault.png`}
+                    src={event.newimage && event.newimage !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.newimage}` : event.image && event.image !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.image}` : `${process.env.PUBLIC_URL}/img/eventdefault1.png`}
                     alt="Event"
                     style={{ width: '100%', height: '162px' ,padding:'5px'}}
                     className="imgEvent"
                   />
-                  <div style={{ borderRadius: "0px 4px 0px 0px", position: "absolute", top: "5px", right: "5px", color: "white", fontSize: "15px", fontWeight: "bold", backgroundColor: "#ff3366", padding: "5px" }}>
-                    {event.date && calculateAgeAndBirthdayText(event.displayDate, event.date, event.eventDate)}
-                  </div>
+                <div
+  style={{
+    borderRadius: "0px 4px 0px 0px",
+    position: "absolute",
+    top: "5px",
+    right: "5px",
+    color: "white",
+    fontSize: "15px",
+    fontWeight: "bold",
+    backgroundColor: "#ff3366",
+    padding: "5px",
+  }}
+>
+  {calculateAgeAndBirthdayText(event.displayDate, event.isCancelled)}
+</div>
+
                 </Card>
               </div>
               <Card.Body>
@@ -316,13 +329,15 @@ const abc=localStorage.getItem("filters");
                 </Card.Text>
                 
                   <div style={{ display: "flex", gap: "8px" }}>
-                    <Button
-                      className="planbtn"
-                      variant="danger"
-                      onClick={() => handlePlans(event.eventId)}
-                    >
-                      Plan And Celebrate
-                    </Button>
+                  <Button
+  className="planbtn"
+  variant="danger"
+  onClick={() => !event.isCancelled && handlePlans(event.eventId)}
+  disabled={event.isCancelled} // Disables the button
+>
+  Plan And Celebrate
+</Button>
+
                     <div
   className="heartimage"
   style={{
@@ -338,9 +353,15 @@ const abc=localStorage.getItem("filters");
     borderTopLeftRadius: "0px",
     borderTopRightRadius: "5px",
     cursor: "pointer",
-    border: event.isfavourite ? "1px solid white" : "1px solid #FF3366", // Optional: add border for visual clarity on white bg
+    border: event.isfavourite ? "1px solid white" : "1px solid #FF3366",
+    cursor: event.isCancelled ? "not-allowed" : "pointer",
+    opacity: event.isCancelled ? 0.5 : 1, // Optional: add border for visual clarity on white bg
   }}
-  onClick={() => handlefavourite(event.eventId)}
+ 
+  onClick={() =>
+    !event.isCancelled &&
+    handlefavourite(event.eventId)
+  }
 >
   <FontAwesomeIcon
     icon={solidHeart }
