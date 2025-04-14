@@ -498,10 +498,10 @@ const EventDetails = () => {
                                             </h6>
                                             <p className="card-text" style={{ color: "#ff3366", fontWeight: "600" }}>
                                               ${item.price}
-                                            </p> <div style={{ display: 'flex', justifyContent: 'end' }} onClick={() => {
+                                            </p> <div style={{ display: 'flex',fontWeight:'500', justifyContent: 'end' }} onClick={() => {
                                               setSelectedWishlist(item); // Pass the selected wishlist item
                                               setshoweditWishlistModal(true);
-                                            }}>edit</div>
+                                            }}>Edit</div>
                                           </div>
                                           <div className="d-flex justify-content-between">
                                             <p className="card-text text-secondary m-1 p-main"

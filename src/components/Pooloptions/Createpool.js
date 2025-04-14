@@ -541,11 +541,11 @@ console.log('pool',poolCreator)
         )}
         <InviteModal wishId={wishId} show={showInviteModal} poolId={poolId} setShow={setShowInviteModal} />
       </div>
-      <button variant="danger"
+      {/* <button variant="danger"
                   style={{ padding: "6px", background: "#dc3545", borderRadius: "8px", color: "#ffffff" ,border:'none',padding:'15px'}}
              onClick={handleStartChat}   >
                   Start Chat
-                </button>
+                </button> */}
     </div>
     </div>
   );

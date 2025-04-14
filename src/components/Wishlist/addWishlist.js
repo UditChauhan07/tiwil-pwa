@@ -149,6 +149,7 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
                 onChange={handleImageUpload}
                 className={styles.fileInput}
                 id="fileUpload"
+                capture="environment"
               />
               <label htmlFor="fileUpload" className={styles.cameraButton}>
                 📷
