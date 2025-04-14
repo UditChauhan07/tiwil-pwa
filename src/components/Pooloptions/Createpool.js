@@ -192,29 +192,92 @@ console.log('pool',poolCreator)
   //   }
   // };
   
-    const handleStartChat = async () => {
-      const token = localStorage.getItem("token");
-      try {
-        console.log(poolId,"pooolid")
-        const eventId=poolId;
-        console.log(eventId,"eventId")
-        const response = await axios.post(
-          `${process.env.REACT_APP_BASE_URL}/chats/group`,
-          
-          { eventId },
-          { headers: { Authorization: `Bearer ${token}` } }
-        );
-        if (response.data.success) {
-          navigate(`/chats/${response.data.chat.groupId}`);
-        }
-      } catch (error) {
-        console.error(
-          "❌ Error starting chat:",
-          error.response?.data || error.message
-        );
-      }
-    };
 
+
+  const handleStartChat = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const eventId = poolId;
+      console.log(eventId, "eventId");
+  
+      const response = await axios.post(
+        `${process.env.REACT_APP_BASE_URL}/chats/group`,
+        { eventId },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+  
+      // Success path
+      if (response.data.success) {
+        navigate(`/chats/${response.data.chat.groupId}`);
+      }
+    } catch (error) {
+      const message = error.response?.data?.message;
+  
+      // Handle known backend message
+      if (message === "Guest not found for this pool") {
+        Swal.fire({
+          icon: 'info',
+          title: 'No one invited yet',
+          text: 'Invite someone to this pool to start a chat.',
+          confirmButtonText: 'Invite Now',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            setShowInviteModal(true); // Or navigate to your invite screen
+          }
+        });
+      } else {
+        // Handle other unexpected errors
+        Swal.fire({
+          icon: 'error',
+          title: 'Oops!',
+          text: message || 'Something went wrong while starting the chat.',
+        });
+      }
+  
+      console.error("❌ Error starting chat:", message || error.message);
+    }
+  };
+
+  
+    // const handleStartChat = async () => {
+    //   try {
+    //     constr token=localStorage.getitem('token')
+    //     const response = await axios.post(`/chat/pool-chat`, {
+    //       wishId,
+    //       guestId,
+    //     });
+    
+    //     if (response.data.success) {
+    //       navigate(`/chat/${response.data.chatId}`);
+    //     } else {
+    //       if (response.data.message === "Guest not found for this pool") {
+    //         Swal.fire({
+    //           icon: 'info',
+    //           title: 'No one invited yet',
+    //           text: 'Invite someone to this pool to start a chat.',
+    //           confirmButtonText: 'Invite Now'
+    //         }).then((result) => {
+    //           if (result.isConfirmed) {
+    //             setShowInviteModal(true); // Open the invite modal
+    //           }
+    //         });
+    //       } else {
+    //         Swal.fire({
+    //           icon: 'error',
+    //           title: 'Error',
+    //           text: response.data.message || 'Failed to start chat.',
+    //         });
+    //       }
+    //     }
+    //   } catch (error) {
+    //     Swal.fire({
+    //       icon: 'error',
+    //       title: 'Error',
+    //       text: 'Something went wrong while starting the chat.',
+    //     });
+    //   }
+    // };
+    
 
     ``
   useEffect(() => {
@@ -305,7 +368,7 @@ console.log('pool',poolCreator)
    
  
 
-      <div className="d-flex align-items-center mt-4" style={{position:'absolute', top:'180px',backgroundColor:'#fff',borderRadius:'20px', opacity:'0.8',gap:'10px',margin:'12px',width:'90%',height:'14%'}}>
+      <div className="d-flex align-items-center mt-4" style={{position:'absolute', top:'210px',backgroundColor:'#fff',borderRadius:'20px', opacity:'0.8',gap:'10px',margin:'12px',width:'90%',height:'14%'}}>
         {/* Circular Progress Bar */}
         <div className="d-flex justify-content-center my-4">
           
@@ -449,13 +512,13 @@ console.log('pool',poolCreator)
                   style={{ padding: "6px", background: "#dc3545", borderRadius: "8px",color:'#ffffff' , border:"none",padding:'15px'}}
                   onClick={() => setShowInviteModal(true)}
                 >
-                  Add More
+                  invite more member
                 </button>
-                {/* <button variant="danger"
+                <button variant="danger"
                   style={{ padding: "6px", background: "#dc3545", borderRadius: "8px", color: "#ffffff" ,border:'none',padding:'15px'}}
              onClick={handleStartChat}   >
                   Start Chat
-                </button> */}
+                </button>
               </div>
             )}
           </>
