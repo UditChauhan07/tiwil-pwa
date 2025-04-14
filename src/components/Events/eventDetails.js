@@ -16,7 +16,7 @@ import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { Spinner } from "react-bootstrap";
-
+import Swal from 'sweetalert2'
 
 const EventDetails = () => {
   const [activeTab, setActiveTab] = useState("details");
@@ -273,19 +273,46 @@ const EventDetails = () => {
   };
 
 
-  const handledeletevent=async()=>{
-    try {
-      const response = await axios.delete(`${process.env.REACT_APP_BASE_URL}/delete-event/${eventId}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      if (response.status) {
-       navigate('/home')
-
-        console.log("deleted event ");
+  const handleDeleteEvent = async () => {
+    const confirm = await Swal.fire({
+      title: 'Are you sure?',
+      text: 'You won’t be able to revert this!',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Yes, delete it!',
+      cancelButtonText: 'Cancel',
+      reverseButtons: true,
+      confirmButtonColor: '#ff3366', // your custom color inline
+      cancelButtonColor: '#d3d3d3'   // optional: grey cancel button
+    });
+  
+    if (confirm.isConfirmed) {
+      try {
+        const response = await axios.delete(
+          `${process.env.REACT_APP_BASE_URL}/delete-event/${eventId}`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+  
+        if (response.status === 200) {
+          Swal.fire({
+            title: 'Deleted!',
+            text: 'The event has been deleted.',
+            icon: 'success',
+            confirmButtonColor: '#ff3366',
+          });
+          navigate('/home');
+        }
+      } catch (error) {
+        console.error('Error deleting event:', error);
+        Swal.fire({
+          title: 'Error!',
+          text: 'Failed to delete the event.',
+          icon: 'error',
+          confirmButtonColor: '#ff3366',
+        });
       }
-    } catch (error) {
-      console.error("Error fetching users:", error);
     }
   };
 

@@ -195,13 +195,17 @@ console.log('pool',poolCreator)
     const handleStartChat = async () => {
       const token = localStorage.getItem("token");
       try {
+        console.log(poolId,"pooolid")
+        const eventId=poolId;
+        console.log(eventId,"eventId")
         const response = await axios.post(
-          `${process.env.REACT_APP_BASE_URL}/chats/poolgroup`,
+          `${process.env.REACT_APP_BASE_URL}/chats/group`,
+          
           { eventId },
           { headers: { Authorization: `Bearer ${token}` } }
         );
         if (response.data.success) {
-          navigate(`/chats/${response.data.chat._id}`);
+          navigate(`/chats/${response.data.chat.groupId}`);
         }
       } catch (error) {
         console.error(
@@ -210,6 +214,9 @@ console.log('pool',poolCreator)
         );
       }
     };
+
+
+    ``
   useEffect(() => {
     const fetchPoolData = async () => {
       try {
@@ -434,7 +441,7 @@ console.log('pool',poolCreator)
                   <span>{contributor.name}</span>: <span>&#8377;{contributor.amount}</span>
                 </li>
               ))}
-            </ul>
+            </ul>      
             {/* Buttons for contributors */}
             {isOwner && (
               <div className="d-flex gap-2 mt-3">
@@ -444,11 +451,11 @@ console.log('pool',poolCreator)
                 >
                   Add More
                 </button>
-                <button variant="danger"
+                {/* <button variant="danger"
                   style={{ padding: "6px", background: "#dc3545", borderRadius: "8px", color: "#ffffff" ,border:'none',padding:'15px'}}
              onClick={handleStartChat}   >
                   Start Chat
-                </button>
+                </button> */}
               </div>
             )}
           </>
@@ -471,6 +478,11 @@ console.log('pool',poolCreator)
         )}
         <InviteModal wishId={wishId} show={showInviteModal} poolId={poolId} setShow={setShowInviteModal} />
       </div>
+      <button variant="danger"
+                  style={{ padding: "6px", background: "#dc3545", borderRadius: "8px", color: "#ffffff" ,border:'none',padding:'15px'}}
+             onClick={handleStartChat}   >
+                  Start Chat
+                </button>
     </div>
     </div>
   );
