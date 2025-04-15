@@ -109,7 +109,7 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
     let value = e.target.value;
     if (value == null) value = "";
 
-    if (field === "giftName" && value.length <= 30) {
+    if (field === "giftName" && value.length <= 20) {
       setGiftName(value);
     } else if (field === "price" && /^\d{0,8}$/.test(value)) {
       setPrice(value);
@@ -167,23 +167,25 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
             )}
 
             <div className={styles.form}>
+            <label className={styles.labelss}>Gift Name</label>
               <input
                 type="text"
-                placeholder="Gift Name"
+                placeholder="The name of stuff you wish to have"
                 value={giftName}
                 onChange={(e) => handleInputChange(e, "giftName")}
               />
               {errors.giftName && <span className={styles.error}>{errors.giftName}</span>}
-
+              <label className={styles.labelss}>Price</label>
               <input
                 type="number"
-                placeholder="Price"
+                placeholder="The price of stuff"
                 value={price}
                 onChange={(e) => handleInputChange(e, "price")}
               />
               {errors.price && <span className={styles.error}>{errors.price}</span>}
-
+              <label className={styles.labelss}>Product Link</label>
               <div className={styles.productLink}>
+            
                 <input
                   type="text"
                   placeholder="Product link"
@@ -202,9 +204,9 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
                 onChange={(e) => setDesireRate(e.target.value)}
                 className={styles.slider}
               />
-
+<label className={styles.labelss}>Describe it</label>
               <textarea
-                placeholder="Describe it..."
+                placeholder="To persuade others to buy it for you, describe how you love it "
                 value={description}
                 onChange={(e) => handleInputChange(e, "description")}
               ></textarea>

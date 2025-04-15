@@ -311,7 +311,7 @@ const SignInForm = () => {
       <div className="container d-flex flex-column align-items-center justify-content-center ">
         
 
-      <div className="text-center m-1">
+      <div className="text-center ">
           <img src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" height="100px" width="200px" />
           <h2 className="font-weight-bold mt-4 mb-0" style={{ fontSize: "48px",fontFamily: "Poppins",
 fontWeight: "500",
@@ -340,7 +340,7 @@ verticalAlign: "middle",
         {/* Apply blur effect to the background */}
         {isLoading && <div className="blur-background"></div>}
 
-        <div className="d-flex justify-content-center m-2" style={{padding:'6px',border:'1px solid whitesmoke',width:'100%' }}>
+        <div className="d-flex justify-content-center mt-2" style={{padding:'6px',border:'1px solid whitesmoke',width:'100%',height:'40px' }}>
           <Link to="/signin" style={{width:'50%'}}>
             <p
               onClick={() => setActive("signin")}
@@ -348,8 +348,8 @@ verticalAlign: "middle",
                 display:'flex',
                 justifyContent:'center',
                 fontSize: "1rem",
-                border: "1px solid rgb(218, 219, 209)",
-                padding: "2px 24px 0px 30px",
+               
+              
                 backgroundColor: active === "signin" ? "#ff3366" : "transparent",
                 color: active === "signin" ? "#ffffff" : "#ff3366",
                 fontWeight: "600",
@@ -367,8 +367,8 @@ verticalAlign: "middle",
                 display:'flex',
                 justifyContent:'center',
                 fontSize: "1rem",
-                border: "1px solid rgb(202, 198, 198)",
-                padding: "2px 24px 0px 30px",
+              
+         
                 backgroundColor: active === "signup" ? "#ddd" : "transparent",
                 fontWeight: active === "signup" ? "bold" : "600",
                 cursor: "pointer",
@@ -381,11 +381,11 @@ verticalAlign: "middle",
         </div>
 
         <div
-          className="w-100 p-4 rounded shadow-sm"
-          style={{ maxWidth: "760px", backgroundColor: "#fff" }}
+          className="w-100 p-4 "
+          style={{ maxWidth: "760px", backgroundColor: "#fff",    margin: '0 0 40px 0' }}
         >
      
-            <form onSubmit={handleSendOTP}>
+            <form >
               <div className="mb-3">
                 <label htmlFor="phone" className="form-label">Phone</label>
                 <PhoneInput
@@ -422,11 +422,13 @@ verticalAlign: "middle",
                 />
                 {phoneError && <div className="invalid-feedback d-block " style={{textAlign:'center'}}>{phoneError}</div>}
               </div>
+              </form>
+              <div className='Submit-button' style={{position:'fixed', bottom:'10px' ,width: '100%', margin: 'auto',left: '0',    padding: '0 20px' ,backgroundColor:'#fff' }}>
               <button
                 type="submit"
                 className="btn btn-danger w-100 " style={{backgroundColor:'#EE4266',borderRadius:'15px'}}
                 disabled={isLoading} // Disable button when loading
-              >
+             onClick={handleSendOTP} >
                 {isLoading ? (
                   <span>
                     <i className="fas fa-spinner fa-spin"></i> Sending...
@@ -435,7 +437,7 @@ verticalAlign: "middle",
                   "Continue"
                 )}
               </button>
-            </form>
+        
 
           <p className="text-muted mt-3 d-flex justify-content-center" >
             <u>New on TIWIL?{" "}</u>
@@ -446,6 +448,7 @@ verticalAlign: "middle",
                  &nbsp; Create an account
             </Link>
           </p>
+          </div>
         </div>
       </div>
     ) : (

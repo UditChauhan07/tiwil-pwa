@@ -210,7 +210,7 @@ const profileImage=localStorage.getItem('profileImage')
 
           <div className={styles.profileSection}>
 <div className={styles.icons}>
-          <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)}/></div>
+          <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)} style={{fontSize:'27px'}}/></div>
           <div style={{height:'50px',width:'50px' ,border:"3px solid #ff3366" ,borderRadius:'100px',margin:'auto'}}>
             <img
               src={

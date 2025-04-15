@@ -48,6 +48,7 @@ const FamilyInformation = () => {
     handleCloseEditModal();
   };
 
+  
   return (
     <div className={styles.container} >
     <div className="d-flex align-items-center" style={{gap:"69px"}}>
@@ -76,14 +77,39 @@ const FamilyInformation = () => {
 };
 
 const FamilyCard = ({ relation, detail, onEdit }) => {
+  const formatDateWithCurrentYear = (dob) => {
+    const eventDate = new Date(dob);
+    if (isNaN(eventDate.getTime())) return "Invalid Date";
+  
+    const today = new Date();
+    const currentYear = today.getFullYear();
+  
+    // Set eventDate's year to the current year
+    eventDate.setFullYear(currentYear);
+  
+    // If today's date has already passed the eventDate, move it to next year
+    if (today > eventDate) {
+      eventDate.setFullYear(currentYear + 1);
+    }
+  
+    return eventDate.toLocaleDateString("en-GB", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    });
+  };
+  
   return (
+    <>
     <div className={`${styles.card} ${relation.includes("Anniversary") ? styles.anniversaryCard : ""}`}>
+
       <div className={styles.cardHeader}>
         <h2>{relation.toUpperCase()}</h2>
         <div className={styles.menuContainer}>
           {/* <button className={styles.menuButton} onClick={onEdit}>⋮</button> */}
           <div className={styles.menuOptions}>
-            <button onClick={onEdit} style={{color:'#ff3366',border:'1px solid #ff3366', background:'cornsilk',borderRadius:'5px',padding:'2px',top:'-20px'}}>Edit Details</button>
+            <button onClick={onEdit} style={{color:'#fff', border:'none',padding:'2px',top:'-20px',  fontSize:'20px',
+    fontWeight:'800',background:'none'}}>...</button>
           </div>
         </div>
       </div>
@@ -99,16 +125,37 @@ const FamilyCard = ({ relation, detail, onEdit }) => {
 />
 
         <div className={styles.info}>
-          <p><strong>Name:</strong> {detail.fullName}</p>
+          <p ><span style={{color:'#ff3366'}}><strong>Name:</strong></span> {detail.fullName}</p>
           {relation.includes("Anniversary") ? (
-            <p><strong>Anniversary Date:</strong> {new Date(detail.anniversaryDate).toLocaleDateString()}</p>
+            <p><span style={{color:'#ff3366'}}><strong>Anniversary Date:</strong></span> {new Date(detail.anniversaryDate).toLocaleDateString()}</p>
           ) : (
             <p><strong>Date of Birth:</strong> {new Date(detail.dob).toLocaleDateString() || "Not Provided"}</p>
           )}
+          <p ><span style={{color:'#ff3366'}}><strong>Birthday</strong></span> {formatDateWithCurrentYear(detail.dob)}</p>
         </div>
+     
+
       </div>
+      
     </div>
-  );
-};
+    <button
+  style={{
+    color: '#fff',
+    background: 'none',
+    width: '100%',
+  
+    padding: '10px',
+    margin: '10px',
+    border: 'none',
+    borderRadius: '6px',
+    cursor: 'pointer'
+  }}
+  onClick={() => navigate('/home')}
+>
+  Let's Go
+</button>
+
+    </>
+  )};
 
 export default FamilyInformation;

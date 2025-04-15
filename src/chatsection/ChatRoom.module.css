@@ -47,6 +47,7 @@
   display: flex;
   align-items: flex-end;
   gap: 10px;
+
 }
 
 /* Profile Image */
@@ -192,7 +193,7 @@
   background-color: #fff;
   border-radius: 10px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  justify-content: space-between;
+
 }
 
 /* Back Icon */
@@ -412,12 +413,12 @@
   display: flex;
   align-items: center;
   margin-bottom: 0px;
-  background-color: #f7f7f7;
+  /* background-color: #f7f7f7; */
   padding: 8px;
   border-radius: 10px;
   width: 44px !important;
   max-width: 250px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  /* box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); */
   position: relative;
 }
 
@@ -450,7 +451,7 @@
 .removeMedia {
   position: absolute;
   top: -8px;
-  right: -8px;
+  right: -18px;
   background-color: #ff4d4f;
   color: white;
   border: none;
@@ -490,5 +491,55 @@
     font-size: 10px;
     font-weight: bold;
     margin: 5px !important;
+}
+
+.previewMedia {
+  max-width: 100px;
+  max-height: 100px;
+  border-radius: 10px;
+  margin-top: 10px;
+  margin-left: 40px;
+}
+
+.previewImage {
+  width: 100px;
+  height: auto;
+  margin-left: 40px;
+  border-radius: 8px;
+}
+
+.previewVideo,
+.previewAudio {
+  width: 100%;
+  max-width: 300px;
+  margin-top: 10px;
+}
+.mediaPreview {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 8px;
+  position: relative;
+  max-width: 100%;
+}
+
+.previewImage,
+.previewVideo,
+.previewAudio {
+  max-height: 100px;
+  border-radius: 8px;
+  object-fit: contain;
+  background-color: #eee;
+}
+
+.cancelPreview {
+  background: none;
+  border: none;
+  font-size: 18px;
+  cursor: pointer;
+  color: red;
+  position: absolute;
+  top: -8px;
+  right: -8px;
 }
 

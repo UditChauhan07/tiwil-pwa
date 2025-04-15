@@ -299,10 +299,10 @@ const Eventlst = ({ searchQuery }) => {
                   />
                 <div
   style={{
-    borderRadius: "0px 4px 0px 0px",
+    borderRadius: "2px 13px 2px 15px",
     position: "absolute",
-    top: "5px",
-    right: "5px",
+    top: "0px",
+    right: "0px",
     color: "white",
     fontSize: "15px",
     fontWeight: "bold",

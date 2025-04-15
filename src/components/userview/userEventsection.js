@@ -539,8 +539,8 @@ const EventDetails = () => {
       <section className="page-controls">
         <div className="container mt-4">
           <div className="d-flex justify-content-between align-items-center">
-            <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate("/home")} />
-            <h4 className="fw-bold" style={{ marginBottom: "0px" }}>
+            <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate("/home")} style={{fontSize:'23px'}}/>
+            <h4  style={{ marginBottom: "0px" }}>
               Event Details
             </h4>
             <div className="d-flex align-items-center">
@@ -583,10 +583,10 @@ const EventDetails = () => {
 
           {events && (
             <div>
-              <h2 className="mt-3 fw-bold">
+              <h2 className="mt-3 ">
                 {events.name} {events.eventType}
               </h2>
-              <ul className="nav nav-tabs mt-3">
+              <ul className="nav nav-tabs mt-3 ulmain">
                 {[
                   "details",
                   invitationStatus === "Accepted" || "accepted"
@@ -705,12 +705,21 @@ const EventDetails = () => {
                                     style={{ height: "161px" }}
                                   >
                                     <div className="d-flex justify-content-end m-2">
-                                      <p
-                                        className="card-text status d-flex justify-content-center"
-                                        style={{ background: "cornsilk" }}
-                                      >
-                                        {item.status}
-                                      </p>
+                                    
+                                    {item.status !== "Unmark" && (
+  <p className="card-text status d-flex justify-content-center" style={{ background: "cornsilk" }}>
+    {item.status === "Mark"
+      ? "Marked"
+      : item.status === "Purchase"
+      ? "Purchased"
+      : item.status === "Pooling"
+      ? "Pool"
+      : item.status}
+  </p>
+)}
+
+
+                                     
                                     </div>
                                   </div>
                                   <div
@@ -720,7 +729,7 @@ const EventDetails = () => {
                                     <div className="card-body cards11">
                                       <div
                                         className="d-flex justify-content-between"
-                                        style={{ paddingTop: "11px" }}
+                                        style={{ paddingTop: "1px" }}
                                       >
                                         <h6
                                           className="card-title"
@@ -740,7 +749,12 @@ const EventDetails = () => {
                                       </div>
                                       <div className="d-flex justify-content-between">
                                         <p className="card-text text-secondary m-1">
-                                          {item.description}
+                                         <div> 
+                                         {events.name}
+                                         
+                                         {item.description}
+                                        
+                                         </div>
                                         </p>
                                         <img
                                           src={`${process.env.PUBLIC_URL}/img/Group 33582.svg`}
