@@ -551,6 +551,7 @@ const EventDetails = () => {
                                         position: "relative",
                                         backgroundRepeat: "no-repeat",
                                         backgroundSize: "cover",
+                                        borderadius:'20px'
                                       }}
                                     >
                                       <div
@@ -588,8 +589,8 @@ const EventDetails = () => {
                                                     ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
                                                     : `${process.env.PUBLIC_URL}/img/defaultUser1.png`
                                                 }
-                                                className="img-fluid rounded"
-                                                
+                                        
+                                                style={{height:'43px',width:'43px',borderRadius:'50%',objectFit:'cover'}}
                                               />
                                             </div>
 

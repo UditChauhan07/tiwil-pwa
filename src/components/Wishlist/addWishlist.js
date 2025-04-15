@@ -139,7 +139,7 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
           <>
             <div className={styles.imageContainer}>
               <img
-                src={preview || `${process.env.PUBLIC_URL}/img/defaultproduct.jpg`}
+                src={preview || `${process.env.PUBLIC_URL}/img/image-upload.svg`}
                 alt="Wishlist Item"
                 className={styles.wishlistImage}
               />
