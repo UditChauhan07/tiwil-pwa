@@ -63,7 +63,8 @@ const Navbar = () => {
     localStorage.removeItem("user.id");
     localStorage.clear();
     setIsLoggedIn(false);
-    navigate("/signin");
+    
+    window.location.href="/signin"; // Redirect to sign-in page
     
   };
 
