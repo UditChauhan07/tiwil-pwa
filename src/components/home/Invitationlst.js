@@ -463,7 +463,7 @@ function Invitationlst({ searchQuery }) {
 >
   <FontAwesomeIcon
     icon={
-      invitation.invitations[0].isFavourite ? solidHeart : regularHeart
+      solidHeart 
     }
     style={{
       color: invitation.invitations[0].isFavourite ? "#FF3366" : "white",

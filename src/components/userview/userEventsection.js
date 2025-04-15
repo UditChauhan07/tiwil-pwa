@@ -539,10 +539,12 @@ const EventDetails = () => {
       <section className="page-controls">
         <div className="container mt-4">
           <div className="d-flex justify-content-between align-items-center">
-            <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate("/home")} style={{fontSize:'23px'}}/>
-            <h4  style={{ marginBottom: "0px" }}>
-              Event Details
-            </h4>
+            <FontAwesomeIcon
+              icon={faArrowLeft}
+              onClick={() => navigate("/home")}
+              style={{ fontSize: "23px" }}
+            />
+            <h4 style={{ marginBottom: "0px" }}>Event Details</h4>
             <div className="d-flex align-items-center">
               <FaShareAlt className="me-3 fs-5" />
             </div>
@@ -614,7 +616,10 @@ const EventDetails = () => {
               <div className="tab-content  mt-3   bg-white">
                 {activeTab === "details" && (
                   <>
-                    <p className="d-flex align-items-center pdate " style={{marginBottom:'4px'}}>
+                    <p
+                      className="d-flex align-items-center pdate "
+                      style={{ marginBottom: "4px" }}
+                    >
                       <span className="bg-danger text-white p-2 rounded me-2">
                         📅
                       </span>
@@ -630,10 +635,10 @@ const EventDetails = () => {
                     {/* <p className="d-flex align-items-center">
                       {events.description}
                     </p> */}
-<br/>
-<br/>
+                    <br />
+                    <br />
                     <div className="about-event">
-                    <br/>
+                      <br />
 
                       <div className="headersevent">
                         <h5>About event</h5>
@@ -661,7 +666,8 @@ const EventDetails = () => {
                       </div>
                     ) : invitationStatus === "Accepted" ? (
                       <div className="text-center mt-4">
-                        <button style={{marginTop: '30px'}}
+                        <button
+                          style={{ marginTop: "30px" }}
                           className="btn btn-danger w-30"
                           onClick={handleStartChat}
                         >
@@ -681,11 +687,10 @@ const EventDetails = () => {
                       }}
                     ></div>
                     <div className="wishlist-items">
-                    <h5> Wishlist</h5>
+                      <h5> Wishlist</h5>
                       {wishlistItems.length > 0 ? (
                         wishlistItems.map((item) => (
                           <div key={item._id}>
-                           
                             <div className="row">
                               <div
                                 className="col-lg-4 col-md-6 col-sm-12"
@@ -705,21 +710,20 @@ const EventDetails = () => {
                                     style={{ height: "161px" }}
                                   >
                                     <div className="d-flex justify-content-end m-2">
-                                    
-                                    {item.status !== "Unmark" && (
-  <p className="card-text status d-flex justify-content-center" style={{ background: "cornsilk" }}>
-    {item.status === "Mark"
-      ? "Marked"
-      : item.status === "Purchase"
-      ? "Purchased"
-      : item.status === "Pooling"
-      ? "Pool"
-      : item.status}
-  </p>
-)}
-
-
-                                     
+                                      {item.status !== "Unmark" && (
+                                        <p
+                                          className="card-text status d-flex justify-content-center"
+                                          style={{ background: "cornsilk" }}
+                                        >
+                                          {item.status === "Mark"
+                                            ? "Marked"
+                                            : item.status === "Purchase"
+                                            ? "Purchased"
+                                            : item.status === "Pooling"
+                                            ? "Pool"
+                                            : item.status}
+                                        </p>
+                                      )}
                                     </div>
                                   </div>
                                   <div
@@ -727,39 +731,88 @@ const EventDetails = () => {
                                     style={{ cursor: "pointer" }}
                                   >
                                     <div className="card-body cards11">
-                                      <div
-                                        className="d-flex justify-content-between"
-                                        style={{ paddingTop: "1px" }}
-                                      >
-                                        <h6
-                                          className="card-title"
-                                          style={{ color: "black" }}
-                                        >
-                                          {item.giftName}
-                                        </h6>
-                                        <p
-                                          className="card-text"
-                                          style={{
-                                            color: "#ff3366",
-                                            fontWeight: "600",
-                                          }}
-                                        >
-                                          ${item.price}
-                                        </p>
-                                      </div>
-                                      <div className="d-flex justify-content-between">
-                                        <p className="card-text text-secondary m-1">
-                                         <div> 
-                                         {events.name}
-                                         
-                                         {item.description}
+                                      <div className="row align-items-center">
+                                        {/* Left Side: Image */}
+                                        <div className="col-2">
+                                              <img
+                                                src={
+                                                  events.image &&
+                                                  events.image !== "null" &&
+                                                  events.image !==
+                                                    `${process.env.REACT_APP_BASE_URL}/null`
+                                                    ? `${process.env.REACT_APP_BASE_URL}/${events.image}`
+                                                    : events.image &&
+                                                      events.image !== "null" &&
+                                                      events.image !==
+                                                        `${process.env.REACT_APP_BASE_URL}/null`
+                                                    ? `${process.env.REACT_APP_BASE_URL}/${events.image}`
+                                                    : `${process.env.PUBLIC_URL}/img/defaultUser1.png`
+                                                }
                                         
-                                         </div>
-                                        </p>
-                                        <img
-                                          src={`${process.env.PUBLIC_URL}/img/Group 33582.svg`}
-                                          alt="svg"
-                                        />
+                                                style={{height:'43px',width:'43px',borderRadius:'50%',objectFit:'cover'}}
+                                              />
+                                            </div>
+
+                                        {/* Middle: Content */}
+                                        <div className="col-7">
+                                          <h6
+                                            className="card-title mb-0"
+                                            style={{
+                                              color: "black",
+                                              fontSize: "15px",
+                                              margin: "0",
+                                            }}
+                                          >
+                                            {item.giftName}
+                                          </h6>
+                                          <p
+                                            className="card-text text-secondary"
+                                            style={{ margin: 0, padding: 0 }}
+                                          >
+                                            <span
+                                              style={{
+                                                fontSize: "11px",
+                                                display: "block",
+                                                lineHeight: "1.9",
+                                              }}
+                                            >
+                                              {events.name}
+                                            </span>
+                                            <span
+                                              style={{
+                                                fontSize: "10px",
+                                                display: "block",
+                                                lineHeight: "1.9",
+                                              }}
+                                            >
+                                              {item.description}
+                                            </span>
+                                          </p>
+                                        </div>
+
+                                        {/* Right Side: Price and Button */}
+                                        <div className="col-3 d-flex flex-column justify-content-between align-items-end h-100">
+                                          {/* Price */}
+                                          <p
+                                            className="card-text"
+                                            style={{
+                                              color: "#ff3366",
+                                              fontWeight: "600",
+                                              marginBottom: "0.5rem",
+                                            }}
+                                          >
+                                            ${item.price}
+                                          </p>
+                                          {/* Button */}
+                                          <img
+                                            src={`${process.env.PUBLIC_URL}/img/Group 33582.svg`}
+                                            alt="svg"
+                                            style={{
+                                              maxWidth: "100%",
+                                              height: "auto",
+                                            }}
+                                          />
+                                        </div>
                                       </div>
                                     </div>
                                   </div>

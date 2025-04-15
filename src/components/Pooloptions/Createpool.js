@@ -20,7 +20,7 @@ function PoolingWish() {
   const [isEditing, setIsEditing] = useState(false);
 
 
-  const [contributionAmount, setContributionAmount] = useState(""); 
+  const [contributionAmount, setContributionAmount] = useState(pool?.contributors?.amount || 0); 
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [poolId, setPoolId] = useState(null);
   const [userStatus, setUserStatus] = useState(null);
@@ -468,35 +468,58 @@ fetchPoolData();
     </div>
 
       {/* If pool is completed, show message and don't allow further contributions */}
-      {myContribution && !isPoolCompleted && (
-  <div className="mt-4">
-    <Form.Group className="d-flex align-items-center justify-content-between" style={{ width: '100%' }}>
-      <Form.Label className="fw-bold mb-0" style={{ marginRight: '10px' }}>
-        My Contribution
-      </Form.Label>
-<div className="d-flex align-items-center" style={{gap:'1px'}}>
-      <Form.Control
-        type="number"
-        style={{ width: '120px', marginRight: '10px' }}
-        value={contributionAmount || myContribution.amount}
-        disabled={!isEditing}
-        onChange={(e) => {
-          let value = parseFloat(e.target.value);
-          const maxValue = totalAmount - collectedAmount + myContribution.amount;
+      {!isPoolCompleted && (
+        <div className="mt-4">
+  <Form.Group
+    className="d-flex align-items-center justify-content-between"
+    style={{ width: '100%' }}
+  >
+    <Form.Label className="fw-bold mb-0" style={{ marginRight: '10px' }}>
+      My Contribution
+    </Form.Label>
 
-          if (value > maxValue) {
-            Swal.fire("Error", `Max you can contribute is ₹${maxValue}`, "error");
-            value = maxValue;
-          }
-          setContributionAmount(value);
-        }}
-      />
+    <div className="d-flex align-items-center" style={{ gap: '5px' }}>
+      {isEditing ? (
+        <Form.Control
+          type="number"
+          style={{ width: '120px', marginRight: '10px' }}
+          value={contributionAmount}
+          onChange={(e) => {
+            let value = parseFloat(e.target.value) || 0;
+            const maxValue =
+              totalAmount - collectedAmount + (myContribution?.amount || 0);
+            if (value > maxValue) {
+              Swal.fire(
+                'Error',
+                `Max you can contribute is ₹${maxValue}`,
+                'error'
+              );
+              value = maxValue;
+            }
+            setContributionAmount(value);
+          }}
+        />
+      ) : (
+        <div
+          style={{
+            width: '120px',
+            marginRight: '10px',
+            padding: '6px 12px',
+            border: '1px solid #ced4da',
+            borderRadius: '4px',
+            backgroundColor: '#e9ecef',
+            fontWeight: '500',
+          }}
+        >
+          ₹{myContribution?.amount || 0}
+        </div>
+      )}
 
       {!isEditing ? (
         <FaPencilAlt
-          style={{ cursor: "pointer", color: "#dc3545" }}
+          style={{ cursor: 'pointer', color: '#dc3545' }}
           onClick={() => {
-            setContributionAmount(myContribution.amount); // preload
+            setContributionAmount(myContribution?.amount || '');
             setIsEditing(true);
           }}
         />
@@ -504,20 +527,19 @@ fetchPoolData();
         <Button
           size="sm"
           variant="danger"
-          onClick={async () => {
-            await handleSaveContribution();
-            setIsEditing(false);
-          }}
+          onClick={handleSaveContribution}
           disabled={loading}
-          style={{ width:'30%',fontSize: '13px', padding: '4px 10px' }}
+          style={{ width: '30%', fontSize: '13px', padding: '4px 10px' }}
         >
-          {loading ? "Saving..." : "Save"}
+          {loading ? 'Saving...' : 'Save'}
         </Button>
       )}
-      </div>
-    </Form.Group>
-  </div>
+    </div>
+  </Form.Group>
+</div>
 )}
+
+  
 
   
   
