@@ -53,7 +53,7 @@ function App() {
       if (token) {
         window.location.href = '/home';
       } else {
-        window.location.href = '/signup';
+        window.location.href = '/';
       }
     }
   }, []);
