@@ -11,29 +11,29 @@ import { useParams } from "react-router-dom";
 import InviteButton from "../userview/Invitetest";
 import { useNavigate } from "react-router-dom";
 import WishlistEditModal from "../Wishlist/wishlistModal";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { Spinner } from "react-bootstrap";
-import Swal from 'sweetalert2'
+import Swal from "sweetalert2";
 
 const EventDetails = () => {
   const [activeTab, setActiveTab] = useState("details");
   const [showWishlistModal, setShowWishlistModal] = useState(false);
-  const [guest, setGuest] = useState([])
+  const [guest, setGuest] = useState([]);
   console.log("showWishlistModal", showWishlistModal);
   const [showGuestModal, setGuestModal] = useState(false);
-  const [showeditWishlistModal, setshoweditWishlistModal] = useState(false)
+  const [showeditWishlistModal, setshoweditWishlistModal] = useState(false);
   const [wishlist, setWishlist] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
   const [events, setEvents] = useState([]);
   const [selectedWishlist, setSelectedWishlist] = useState(null);
-  const [pastevents,setPastEvents]=useState([])
+  const [pastevents, setPastEvents] = useState([]);
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem("token");
   const { eventId } = useParams(); // Get eventId from URL parameters
-  console.log(eventId)
+  console.log(eventId);
   const navigate = useNavigate();
   const [surpriseData, setSurpriseData] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -59,7 +59,10 @@ const EventDetails = () => {
           // Group data by unique eventId to avoid duplicates
           const uniqueEvents = Object.values(
             response.data.data.reduce((acc, item) => {
-              acc[item.eventId] = acc[item.eventId] || { ...item, wishlistItems: [] };
+              acc[item.eventId] = acc[item.eventId] || {
+                ...item,
+                wishlistItems: [],
+              };
               acc[item.eventId].wishlistItems.push(item.wishlistItem);
               return acc;
             }, {})
@@ -68,7 +71,9 @@ const EventDetails = () => {
           setErrorMessage("");
         } else {
           setSurpriseData([]);
-          setErrorMessage(response.data.message || "No surprise reveal for tomorrow.");
+          setErrorMessage(
+            response.data.message || "No surprise reveal for tomorrow."
+          );
         }
       } catch (error) {
         setSurpriseData([]);
@@ -104,23 +109,23 @@ const EventDetails = () => {
   //   fetchWishlist();
   // }, [eventId]);
 
-  useEffect(()=>{
-    const fetchHistory=async()=>{
-    try{
-      const response=await axios.get(`${process.env.REACT_APP_BASE_URL}/history`,
-        {
-          headers: { Authorization: `Bearer ${token}` },
+  useEffect(() => {
+    const fetchHistory = async () => {
+      try {
+        const response = await axios.get(
+          `${process.env.REACT_APP_BASE_URL}/history`,
+          {
+            headers: { Authorization: `Bearer ${token}` },
           }
-          );
-          setPastEvents(response.data.data);
-          console.log(response.data.data);
-          }
-          catch(error){
-            console.error("❌ Error while fetching history:", error);
-            }
-            }
-            fetchHistory();
-          },[eventId])
+        );
+        setPastEvents(response.data.data);
+        console.log(response.data.data);
+      } catch (error) {
+        console.error("❌ Error while fetching history:", error);
+      }
+    };
+    fetchHistory();
+  }, [eventId]);
 
   useEffect(() => {
     fetchWishlist();
@@ -139,24 +144,23 @@ const EventDetails = () => {
     }
   };
 
-
   const formatDateWithCurrentYear = (originalDate) => {
     const eventDate = new Date(originalDate);
     if (isNaN(eventDate.getTime())) return "Invalid Date";
-  
+
     const today = new Date();
     const currentYear = today.getFullYear();
-  
+
     // Set the event year to the current year
     eventDate.setFullYear(currentYear);
-  
-    return eventDate.toLocaleDateString("en-GB", {
-      day: "numeric",
-      month: "long",
-    }) + ` ${currentYear}`; // Append the current year at the end
+
+    return (
+      eventDate.toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "long",
+      }) + ` ${currentYear}`
+    ); // Append the current year at the end
   };
-
-
 
   // Fetch event details using eventId
   // useEffect(() => {
@@ -180,34 +184,34 @@ const EventDetails = () => {
 
   //   getEvent();
   // }, [eventId]); // Dependency array ensures this effect runs when eventId changes
-  const inviteguest=localStorage.getItem('invited')
-  
-    
-    
-    const fetchGuest = async () => {
-      const token = localStorage.getItem("token");
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_BASE_URL}/guests/${eventId}`, {
+  const inviteguest = localStorage.getItem("invited");
+
+  const fetchGuest = async () => {
+    const token = localStorage.getItem("token");
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BASE_URL}/guests/${eventId}`,
+        {
           headers: { Authorization: `Bearer ${token}` },
-        });
-
-        if (response.data && response.data.data) {
-          setGuest(response.data.data);
-
-          console.log(response.data);
         }
-      } catch (error) {
-        console.error("Error fetching users:", error);
-      }
-    };
+      );
 
-    
+      if (response.data && response.data.data) {
+        setGuest(response.data.data);
+
+        console.log(response.data);
+      }
+    } catch (error) {
+      console.error("Error fetching users:", error);
+    }
+  };
+
   useEffect(() => {
     fetchGuest();
   }, [inviteguest]);
 
   const getEvent = async () => {
-    setLoading(true); 
+    setLoading(true);
     try {
       const response = await axios.get(
         `${process.env.REACT_APP_BASE_URL}/events/${eventId}`,
@@ -220,8 +224,8 @@ const EventDetails = () => {
       setEvents([
         {
           ...data,
-          formattedDate: data.formattedDate // ✅ Convert year dynamically
-        }
+          formattedDate: data.formattedDate, // ✅ Convert year dynamically
+        },
       ]);
       // Store single event in array
     } catch (error) {
@@ -230,10 +234,8 @@ const EventDetails = () => {
     setLoading(false);
   };
   useEffect(() => {
-    getEvent()
-  }, [eventId])
-
-
+    getEvent();
+  }, [eventId]);
 
   const handleStartChat = async () => {
     try {
@@ -249,22 +251,25 @@ const EventDetails = () => {
         navigate(`/chats/${response.data.chat.groupId}`);
       }
     } catch (error) {
-      console.error("❌ Error starting chat:", error.response?.data || error.message);
+      console.error(
+        "❌ Error starting chat:",
+        error.response?.data || error.message
+      );
     }
   };
 
   //   getEvent();
   const handleShare = () => {
     const shareData = {
-      
       text: `Check out this event i am celeberating`,
-      url: window.location.href,  // Share the current event page URL
+      url: window.location.href, // Share the current event page URL
     };
 
     if (navigator.share) {
-      navigator.share(shareData)
-        .then(() => console.log('Event shared successfully!'))
-        .catch((error) => console.error('Error sharing:', error));
+      navigator
+        .share(shareData)
+        .then(() => console.log("Event shared successfully!"))
+        .catch((error) => console.error("Error sharing:", error));
     } else {
       // Fallback for unsupported browsers: Copy link to clipboard
       navigator.clipboard.writeText(shareData.url);
@@ -272,20 +277,19 @@ const EventDetails = () => {
     }
   };
 
-
   const handledeletevent = async () => {
     const confirm = await Swal.fire({
-      title: 'Are you sure?',
-      text: 'You won’t be able to revert this!',
-      icon: 'warning',
+      title: "Are you sure?",
+      text: "You won’t be able to revert this!",
+      icon: "warning",
       showCancelButton: true,
-      confirmButtonText: 'Yes, delete it!',
-      cancelButtonText: 'Cancel',
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
       reverseButtons: true,
-      confirmButtonColor: '#ff3366', // your custom color inline
-      cancelButtonColor: '#d3d3d3'   // optional: grey cancel button
+      confirmButtonColor: "#ff3366", // your custom color inline
+      cancelButtonColor: "#d3d3d3", // optional: grey cancel button
     });
-  
+
     if (confirm.isConfirmed) {
       try {
         const response = await axios.delete(
@@ -294,51 +298,97 @@ const EventDetails = () => {
             headers: { Authorization: `Bearer ${token}` },
           }
         );
-  
+
         if (response.status === 200) {
           Swal.fire({
-            title: 'Deleted!',
-            text: 'The event has been deleted.',
-            icon: 'success',
-            confirmButtonColor: '#ff3366',
+            title: "Deleted!",
+            text: "The event has been deleted.",
+            icon: "success",
+            confirmButtonColor: "#ff3366",
           });
-          navigate('/home');
+          navigate("/home");
         }
       } catch (error) {
-        console.error('Error deleting event:', error);
+        console.error("Error deleting event:", error);
         Swal.fire({
-          title: 'Error!',
-          text: 'Failed to delete the event.',
-          icon: 'error',
-          confirmButtonColor: '#ff3366',
+          title: "Error!",
+          text: "Failed to delete the event.",
+          icon: "error",
+          confirmButtonColor: "#ff3366",
         });
       }
     }
   };
+  const getUpcomingBirthdayNumber = (eventDate) => {
+    if (!eventDate) return null; // Handle invalid dates
 
-  if(loading) {
-        return (
-          <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "150px" }}>
-            <Spinner animation="border" role="status" style={{ width: "10rem", height: "10rem" }} />
-          </div>
-        );
-      }
-  
-  
+    const today = new Date();
+    const birthDate = new Date(eventDate); // The person's birthday date
+
+    // Calculate the initial age (number of birthdays already passed)
+    let upcomingBirthday = today.getFullYear() - birthDate.getFullYear();
+
+    // Check if their birthday hasn't occurred yet this year
+    const thisYearBirthday = new Date(birthDate);
+    thisYearBirthday.setFullYear(today.getFullYear());
+
+    if (today < thisYearBirthday) {
+      upcomingBirthday--; // Subtract 1 if the birthday hasn't occurred yet
+    }
+
+    // Determine the ordinal suffix (1st, 2nd, 3rd, nth)
+    return getOrdinalSuffix(upcomingBirthday + 1); // +1 since we start counting from the 1st birthday
+  };
+
+  // Determine the ordinal suffix (1st, 2nd, 3rd, nth)
+  const getOrdinalSuffix = (number) => {
+    const j = number % 10,
+      k = number % 100;
+    if (j === 1 && k !== 11) {
+      return number + "st";
+    }
+    if (j === 2 && k !== 12) {
+      return number + "nd";
+    }
+    if (j === 3 && k !== 13) {
+      return number + "rd";
+    }
+    return number + "th";
+  };
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "150px",
+        }}
+      >
+        <Spinner
+          animation="border"
+          role="status"
+          style={{ width: "10rem", height: "10rem" }}
+        />
+      </div>
+    );
+  }
+
   return (
     <>
       <section className="page-controls" style={{ padding: "0" }}>
-       
-     
         <div>
           <div className="container mt-4">
             {/* Header Section */}
-            <div className="d-flex justify-content-between align-items-baseline">
-      <div className="d-flex gap-2 align-items-baseline" >
-            <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)}/>
+            <div className="d-flex justify-content-between align-items-flex-start">
+              <div className="d-flex gap-2 align-items-flex-start">
+                <FontAwesomeIcon
+                  icon={faArrowLeft}
+                  onClick={() => navigate(-1)} style={{fontSize:'23px'}}
+                />
 
-              <h4 className="fw-bold">Event Details</h4>
-</div>
+                <h4>Event Details</h4>
+              </div>
               <div className="d-flex align-items-center">
                 <FaShareAlt className="me-3 fs-5" onClick={handleShare} />
                 <Dropdown>
@@ -352,7 +402,10 @@ const EventDetails = () => {
                     <Dropdown.Item onClick={() => setShowEditModal(true)}>
                       Edit Event
                     </Dropdown.Item>
-                    <Dropdown.Item className="text-danger" onClick={handledeletevent}>
+                    <Dropdown.Item
+                      className="text-danger"
+                      onClick={handledeletevent}
+                    >
                       Cancel Event
                     </Dropdown.Item>
                   </Dropdown.Menu>
@@ -361,9 +414,9 @@ const EventDetails = () => {
             </div>
             {events.length > 0 ? (
               events.map((event) => (
-                <div key={event._id} style={{marginTop:'17px'}}>
+                <div key={event._id} style={{ marginTop: "17px" }}>
                   {/* Event Image */}
-                   {/* <Card variant="top" style={{ position: "relative", width: "100%", height: "162px" ,borderBottom:'unset'}}>
+                  {/* <Card variant="top" style={{ position: "relative", width: "100%", height: "162px" ,borderBottom:'unset'}}>
                                     <img
                                       src={event.newimage && event.newimage !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.newimage}` : event.image && event.image !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.image}` : `${process.env.PUBLIC_URL}/img/eventdefault.png`}
                                       alt="Event"
@@ -374,39 +427,58 @@ const EventDetails = () => {
                                       {event.date && calculateAgeAndBirthdayText(event.displayDate, event.date, event.eventDate)}
                                     </div>
                                   </Card> */}
-                  <div   style={{ width: "100%", height: "174px", borderRadius: "10px" }}  >
-                  <img
-  src={
-    event.newimage && event.newimage !== "null" && event.newimage !== `${process.env.REACT_APP_BASE_URL}/null`
-      ? `${process.env.REACT_APP_BASE_URL}/${event.newimage}` // Priority to newimage
-      : event.image && event.image !== "null" && event.image !== `${process.env.REACT_APP_BASE_URL}/null`
-      ? `${process.env.REACT_APP_BASE_URL}/${event.image}` // Fallback to image
-      : `${process.env.PUBLIC_URL}/img/eventdefault1.png` // Default image
-  }
-  className="img-fluid event-img1"
-  style={{ width: "550px", height: "174px", borderRadius: "10px",    objectFit: "contain" }}
-  alt="Event"
-/>
-
-
+                  <div
+                    style={{
+                      width: "100%",
+                      height: "174px",
+                      borderRadius: "10px",
+                    }}
+                  >
+                    <img
+                      src={
+                        event.newimage &&
+                        event.newimage !== "null" &&
+                        event.newimage !==
+                          `${process.env.REACT_APP_BASE_URL}/null`
+                          ? `${process.env.REACT_APP_BASE_URL}/${event.newimage}` // Priority to newimage
+                          : event.image &&
+                            event.image !== "null" &&
+                            event.image !==
+                              `${process.env.REACT_APP_BASE_URL}/null`
+                          ? `${process.env.REACT_APP_BASE_URL}/${event.image}` // Fallback to image
+                          : `${process.env.PUBLIC_URL}/img/eventdefault1.png` // Default image
+                      }
+                      className="img-fluid event-img1"
+                      style={{
+                        width: "550px",
+                        height: "174px",
+                        borderRadius: "10px",
+                        objectFit: "contain",
+                      }}
+                      alt="Event"
+                    />
                   </div>
-
 
                   {/* Map over events to display them dynamically */}
 
-                  <h2 className="mt-3 fw-bold">
-                    {event.name}
-                  </h2>
+                  <h4 className="mt-3 " style={{ color: "black" }}>
+                    {event.name}{" "}
+                    {event.relation &&
+                      event.date &&
+                      getUpcomingBirthdayNumber(event.date)}{" "}
+                    {event.eventType}
+                  </h4>
 
                   {/* Tabs */}
-                  <ul className="nav nav-tabs mt-3">
+                  <ul className="nav nav-tabs mt-3 ulmain">
                     {["details", "wishlist", "guests", "history"].map((tab) => (
                       <li className="nav-item" key={tab}>
                         <button
-                          className={`nav-link ${activeTab === tab
-                            ? "active text-danger fw-bold"
-                            : ""
-                            }`}
+                          className={`nav-link ${
+                            activeTab === tab
+                              ? "active text-danger fw-bold"
+                              : ""
+                          }`}
                           onClick={() => setActiveTab(tab)}
                         >
                           {tab.charAt(0).toUpperCase() + tab.slice(1)}
@@ -420,52 +492,58 @@ const EventDetails = () => {
                     {activeTab === "details" && (
                       <>
                         <p className="d-flex align-items-center gap-2 mb-2">
-                        <div className='calender-icon'>
-                        <FontAwesomeIcon icon={faCalendarAlt} style={{ color: "#ff3366", fontSize: "20px" }} />
-</div>
-                      {event.displayDate
-  ? formatDateWithCurrentYear(event.displayDate, event.date,event.eventDate)
-  : "Date not available"}
+                          <div className="calender-icon">
+                            <FontAwesomeIcon
+                              icon={faCalendarAlt}
+                              style={{ color: "#ff3366", fontSize: "20px" }}
+                            />
+                          </div>
+                          {event.displayDate
+                            ? formatDateWithCurrentYear(
+                                event.displayDate,
+                                event.date,
+                                event.eventDate
+                              )
+                            : "Date not available"}
                         </p>
-
 
                         <p className="d-flex align-items-center">
                           <span className=" text-white p-2 rounded me-2 location-icon">
-                          <FontAwesomeIcon icon={faLocationDot} style={{ color: "#ff3366" }} />
-
+                            <FontAwesomeIcon
+                              icon={faLocationDot}
+                              style={{ color: "#ff3366" }}
+                            />
                           </span>
                           {event.location || "Location not available"}
                         </p>
-                    <br/>
-                    
-                    <div className='about-event'>
-<div className='headersevent'>
-                    <h5>About event</h5>
-     </div>
-                    <div className='aboutevent2'>
-                    {event.description}
-                    </div>
+                        <br />
 
-                    </div>
-
+                        <div className="about-event">
+                          <div className="headersevent">
+                            <h5>About event</h5>
+                          </div>
+                          <div className="aboutevent2">{event.description}</div>
+                        </div>
                       </>
                     )}
 
                     {activeTab === "wishlist" && (
-                      <div >
-                        <div style={{ display: "flex", justifyContent: "space-between" }}>
-               
-                       
-                        </div>
+                      <div>
+                        <div
+                          style={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                          }}
+                        ></div>
                         <div>
                           <div className="wishlist-items">
-                          
                             {wishlist.length > 0 ? (
                               wishlist.map((item) => (
-                                
                                 <div key={item._id} className="row">
-                                <h5> Wishlist</h5>
-                                  <div className="col-lg-4 col-md-6 col-sm-12" style={{ marginBottom: "8px" }}>
+                                  <div
+                                    className="col-lg-4 col-md-6 col-sm-12"
+                                    style={{ marginBottom: "8px" }}
+                                  >
                                     <div
                                       className="card"
                                       style={{
@@ -475,7 +553,10 @@ const EventDetails = () => {
                                         backgroundSize: "cover",
                                       }}
                                     >
-                                      <div className="card-img-top" style={{ height: "161px" }}>
+                                      <div
+                                        className="card-img-top"
+                                        style={{ height: "161px" }}
+                                      >
                                         {/* ✅ Dynamically Display Image */}
                                         {/* <img
                             src={`${process.env.REACT_APP_BASE_URL}/${item.imageUrl}`}
@@ -489,52 +570,116 @@ const EventDetails = () => {
                             </p>
                           </div> */}
 
-
                                         <div className="card-body cards11">
+                                          <div className="row align-items-center">
+                                            {/* Left - Image */}
+                                            <div className="col-2">
+                                              <img
+                                                src={
+                                                  event.newimage &&
+                                                  event.newimage !== "null" &&
+                                                  event.newimage !==
+                                                    `${process.env.REACT_APP_BASE_URL}/null`
+                                                    ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
+                                                    : event.image &&
+                                                      event.image !== "null" &&
+                                                      event.image !==
+                                                        `${process.env.REACT_APP_BASE_URL}/null`
+                                                    ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
+                                                    : `${process.env.PUBLIC_URL}/img/defaultUser1.png`
+                                                }
+                                                className="img-fluid rounded"
+                                                
+                                              />
+                                            </div>
 
-                                          <div className="d-flex justify-content-between" style={{ paddingTop: "11px" }}>
-                                            <h6 className="card-title" style={{ color: "black" }}>
-                                              {item.giftName}
-                                            </h6>
-                                            <p className="card-text" style={{ color: "#ff3366", fontWeight: "600" }}>
-                                              ${item.price}
-                                            </p> <div style={{ display: 'flex',fontWeight:'500', justifyContent: 'end' }} onClick={() => {
-                                              setSelectedWishlist(item); // Pass the selected wishlist item
-                                              setshoweditWishlistModal(true);
-                                            }}>Edit</div>
-                                          </div>
-                                          <div className="d-flex justify-content-between">
-                                            <p className="card-text text-secondary m-1 p-main"
-                                              style={{ fontSize: '12px' }}
+                                            {/* Middle - Info */}
+                                            <div className="col-7">
+                                              <h6
+                                                className="card-title "
+                                                style={{ color: "black", marginBottom:'0px' }}
+                                              >
+                                                {item.giftName}
+                                              </h6>
+                                              <p className="">
+                                                {event.name}
+                                              </p>
+                                              <p
+                                                className="card-text text-secondary"
+                                                style={{ fontSize: "12px" }}
+                                              >
+                                                {item.description}
+                                              </p>
+                                            </div>
+
+                                            {/* Right - Price and Edit */}
+                                            <div
+                                              className="col-3 d-flex flex-column align-items-end justify-content-between"
+                                              style={{ height: "100%" }}
                                             >
-                                              {item.description}
-                                            </p>
-                                            <img src={`${process.env.PUBLIC_URL}/img/Group 33582.svg`} alt="svg" />
+                                              <p
+                                                className="card-text "
+                                                style={{
+                                                  color: "#ff3366",
+                                                  fontWeight: "600",
+                                                }}
+                                              >
+                                                ${item.price}
+                                              </p>
+
+                                              <div
+                                                style={{
+                                                  fontWeight: "500",
+                                                  cursor: "pointer",
+                                                }}
+                                                onClick={() => {
+                                                  setSelectedWishlist(item);
+                                                  setshoweditWishlistModal(
+                                                    true
+                                                  );
+                                                }}
+                                              >
+                                                Edit
+                                              </div>
+                                             
+                                              {/* <div
+                                                style={{
+                                                  display: "flex",
+                                                  justifyContent: "end",
+                                                
+                                                }}
+                                                
+                                              >
+                                                <img
+                                                  src={`${process.env.PUBLIC_URL}/img/Group 33582.svg`}
+                                                 
+                                                />
+                                              </div> */}
+                                            </div>
+
                                           </div>
                                         </div>
-
                                       </div>
                                     </div>
                                   </div>
                                 </div>
                               ))
                             ) : (
-                              
                               <div className="no-wishlist">
-                              <br/>
-                              <br/>
-                              <br/>
-                              <br/>
-                              <br/>
-                              <br/>
-                              <p>No wishlist found.</p>
-                              <br/>
-                              <br/>
-                              <br/>
-                              <br/>
-                              <br/>
-                              <br/>
-                           </div>
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <p>No wishlist </p>
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                                <br />
+                              </div>
                             )}
                           </div>
                         </div>
@@ -542,12 +687,27 @@ const EventDetails = () => {
                           <button
                             className="btn  w-30 d-flex "
                             onClick={() => setShowWishlistModal(true)}
-                            style={{ background:'#EE4266',
-                              alignItems: 'center', justifyContent: 'center', 
-                              margin: "auto",borderRadius:'15px',width:'75%'
-                          ,color:'white'}}
+                            style={{
+                              background: "#EE4266",
+                              alignItems: "center",
+                              justifyContent: "center",
+                              margin: "auto",
+                              borderRadius: "15px",
+                              width: "75%",
+                              color: "white",
+                            }}
                           >
-                            ADD WISHLIST <FaArrowRight className="ms-2" />
+                            ADD WISHLIST{" "}
+                            <FaArrowRight
+                              className="ms-2"
+                              style={{
+                                color: "#ff3366",
+                                background: "white",
+                                fontSize: "24px",
+                                borderRadius: "50%",
+                                padding: "3px",
+                              }}
+                            />
                           </button>
                         </div>
                       </div>
@@ -555,36 +715,62 @@ const EventDetails = () => {
 
                     {activeTab === "guests" && (
                       <div>
-                
-
                         {guest && guest.length > 0 ? (
                           <>
-                            <ul className="guestlist" style={{padding:'0px '}}>
+                            <ul
+                              className="guestlist"
+                              style={{ padding: "0px " }}
+                            >
                               {guest.map((g) => (
-                                <li key={g._id} style={{marginBottom:'3px'}}>
-                                <div key={g.id} className=" d-flex gap-3 align-items-center">
-                                
-  <div style={{display:'flex',gap:'8px',width:'70%'}}>
-  
-    <img
-      src={g.profileImage ? `${process.env.REACT_APP_BASE_URL}/${g.profileImage}` : `${process.env.PUBLIC_URL}/img/defaultUser.png`}
-      height="40px"
-      width="40px"
-      style={{ border:'2px solid',borderRadius:'50%' }}
-       // Added meaningful alt text
-    />
+                                <li key={g._id} style={{ marginBottom: "3px" }}>
+                                  <div
+                                    key={g.id}
+                                    className=" d-flex gap-3 align-items-center"
+                                  >
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        gap: "8px",
+                                        width: "70%",
+                                      }}
+                                    >
+                                      <img
+                                        src={
+                                          g.profileImage
+                                            ? `${process.env.REACT_APP_BASE_URL}/${g.profileImage}`
+                                            : `${process.env.PUBLIC_URL}/img/defaultUser.png`
+                                        }
+                                        height="40px"
+                                        width="40px"
+                                        style={{
+                                          border: "2px solid",
+                                          borderRadius: "50%",
+                                        }}
+                                        // Added meaningful alt text
+                                      />
 
-  <p style={{fontSize:'22px',marginBottom:'0px',fontWeight:'500'}}>{g.name}</p> 
-  </div>
+                                      <p
+                                        style={{
+                                          fontSize: "22px",
+                                          marginBottom: "0px",
+                                          fontWeight: "500",
+                                        }}
+                                      >
+                                        {g.name}
+                                      </p>
+                                    </div>
 
-  <div style={{display:'flex',justifyContent:'end',width:'30%'}}>
- <span style={{}}> {g.status}</span>
- </div>
-</div>
+                                    <div
+                                      style={{
+                                        display: "flex",
+                                        justifyContent: "end",
+                                        width: "30%",
+                                      }}
+                                    >
+                                      <span style={{}}> {g.status}</span>
+                                    </div>
+                                  </div>
 
-
-                                   
-                                  
                                   {/* <p
               style={{
                 border: "1px solid #ff3366",
@@ -599,134 +785,173 @@ const EventDetails = () => {
                               ))}
                             </ul>
 
-  
-<br/>
-<br/>
-<br/>
+                            <br />
+                            <br />
+                            <br />
                             {/* ADD MORE and START CHAT buttons when guests are available */}
-                            <div className="text-center mt-4 d-flex " style={{justifyContent:'space-evenly'}}>
-                            <InviteButton onInviteSuccess={fetchGuest}
-  style={{ 
-    borderRadius: '5px', 
-    width: '50%', 
-    color:'white',
-    fontSize:'12px',
-    padding: "12px 0px" // Custom background color
-  }}
->
-  ADD MORE
-</InviteButton>
+                            <div
+                              className="text-center mt-4 d-flex "
+                              style={{ justifyContent: "space-evenly" }}
+                            >
+                              <InviteButton
+                                onInviteSuccess={fetchGuest}
+                                style={{
+                                  borderRadius: "5px",
+                                  width: "38%",
 
-
+                                  color: "white",
+                                  fontSize: "12px",
+                                  padding: "12px 0px", // Custom background color
+                                }}
+                              >
+                                ADD MORE
+                              </InviteButton>
 
                               <button
                                 className="btn   d-flex align-items-center justify-content-center"
-                                style={{ fontSize: "12px" ,background:'#EE4266',width:'35%',color:'white'}}
+                                style={{
+                                  fontSize: "12px",
+                                  background: "#EE4266",
+                                  width: "35%",
+                                  color: "white",
+                                  gap: "10px",
+                                }}
                                 onClick={handleStartChat} // Define this function to start chat
                               >
-                                START CHAT
+                                START CHAT{" "}
+                                <FaArrowRight
+                                  style={{
+                                    color: "#ff3366",
+                                    background: "white",
+                                    fontSize: "24px",
+                                    borderRadius: "50%",
+                                    padding: "3px",
+                                  }}
+                                />
                               </button>
                             </div>
                           </>
                         ) : (
-                          
                           // Invite button only when there are no guests
                           <div className=" mt-4">
-                         
-                          <div className="notinvited">
-                          <br/>
-                          <br/>
-                       
-              
-                         
-                            No Guest Invited
-                          </div>
-                      
-                          <br/>
-                  
-                          <br/>
-                          <br/>
-                          <br/>
-                         
-                          
-                          <div className="invtebtn">
-                            <InviteButton onInviteSuccess={fetchGuest}> Invite  
-                            </InviteButton>
-</div>
+                            <div className="notinvited">
+                              <br />
+                              <br />
+                              No Guest Invited
+                            </div>
+
+                            <br />
+
+                            <br />
+                            <br />
+                            <br />
+
+                            <div className="invtebtn">
+                              <InviteButton onInviteSuccess={fetchGuest}>
+                                {" "}
+                                Invite{" "}
+                                <FaArrowRight
+                                  style={{
+                                    color: "#ff3366",
+                                    background: "white",
+                                    fontSize: "24px",
+                                    borderRadius: "50%",
+                                    padding: "3px",
+                                  }}
+                                />
+                              </InviteButton>
+                            </div>
                           </div>
                         )}
                       </div>
                     )}
                     {activeTab === "history" && (
-  <div className="container mt-5">
-    {surpriseData.length === 0 ? (
-      <div>
-      <br/>
-      <br/>
-      <p className=" p-history" >No History </p>
-      <br/>
-    </div>
-    ) : (
-      surpriseData.map((event, index) => (
-        <div key={index} className="card mb-3 history-card">
-          <div className="row g-0">
-            {/* Event Image */}
-            <div className="col-md-3">
-              <img
-                src={event.imageUrl || "/img/placeholder.jpg"}
-                className="img-fluid event-image"
-                alt={event.name}
-              />
-            </div>
-            {/* Event Details */}
-            <div className="col-md-9">
-              <div className="card-body">
-                <h5 className="card-title">{event.name}</h5>
-                <p className="event-date">📅 {new Date(event.eventDate).toLocaleDateString()}</p>
-                {/* Wishlist Preview */}
-                <div className="wishlist-preview">
-                  {(event.wishlist || []).slice(0, 3).map((item, i) => (
-                    <img key={i} src={item.image} alt="wishlist" />
-                  ))}
-                  {(event.wishlist || []).length > 3 && (
-                    <button className="btn btn-outline-danger btn-sm">
-                      View Full Wishlist
-                    </button>
-                  )}
-                </div>
+                      <div className="container mt-5">
+                        {surpriseData.length === 0 ? (
+                          <div>
+                            <br />
+                            <br />
+                            <p className=" p-history">No History </p>
+                            <br />
+                          </div>
+                        ) : (
+                          surpriseData.map((event, index) => (
+                            <div key={index} className="card mb-3 history-card">
+                              <div className="row g-0">
+                                {/* Event Image */}
+                                <div className="col-md-3">
+                                  <img
+                                    src={
+                                      event.imageUrl || "/img/placeholder.jpg"
+                                    }
+                                    className="img-fluid event-image"
+                                    alt={event.name}
+                                  />
+                                </div>
+                                {/* Event Details */}
+                                <div className="col-md-9">
+                                  <div className="card-body">
+                                    <h5 className="card-title" style={{marginBottom:'0px'}}>{event.name}</h5>
+                                    <p className="event-date">
+                                      📅{" "}
+                                      {new Date(
+                                        event.eventDate
+                                      ).toLocaleDateString()}
+                                    </p>
+                                    {/* Wishlist Preview */}
+                                    <div className="wishlist-preview">
+                                      {(event.wishlist || [])
+                                        .slice(0, 3)
+                                        .map((item, i) => (
+                                          <img
+                                            key={i}
+                                            src={item.image}
+                                            alt="wishlist"
+                                          />
+                                        ))}
+                                      {(event.wishlist || []).length > 3 && (
+                                        <button className="btn btn-outline-danger btn-sm">
+                                          View Full Wishlist
+                                        </button>
+                                      )}
+                                    </div>
 
-                <div className="guest-section">
-                  {(event.guests || []).slice(0, 3).map((guest, i) => (
-                    <img key={i} src={guest.profileImage} className="guest-img" alt="guest" />
-                  ))}
-                  <span className="guest-count">{(event.guests || []).length} guests</span>
-                </div>
-
-              </div>
-            </div>
-          </div>
-        </div>
-      ))
-    )}
-  </div>
-)}
-
+                                    <div className="guest-section">
+                                      {(event.guests || [])
+                                        .slice(0, 3)
+                                        .map((guest, i) => (
+                                          <img
+                                            key={i}
+                                            src={guest.profileImage}
+                                            className="guest-img"
+                                            alt="guest"
+                                          />
+                                        ))}
+                                      <span className="guest-count">
+                                        {(event.guests || []).length} guests
+                                      </span>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                          ))
+                        )}
+                      </div>
+                    )}
                   </div>
                 </div>
               ))
             ) : (
               <p>Loading event details...</p>
             )}
-
-
-            
           </div>
 
           {/* Wishlist Modal */}
           {showWishlistModal && (
             <WishlistModal
               eventId={eventId}
-              setShow={setShowWishlistModal}  // ✅ Make sure this is correctly passed
+              setShow={setShowWishlistModal} // ✅ Make sure this is correctly passed
               fetchWishlist={fetchWishlist}
             />
           )}
@@ -751,8 +976,6 @@ const EventDetails = () => {
             fetchWishlist={fetchWishlist}
           />
         </div>
-
-
       </section>
     </>
   );

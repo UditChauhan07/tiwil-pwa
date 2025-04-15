@@ -89,23 +89,25 @@ function WishlistCard() {
   return (
     <section className="page-controls">
   <div className='d-flex align-items-baseline gap-4' style={{marginTop:'20px'}}>
-  <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)} style={{marginLeft:'6px'}}/>
+  <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)} style={{marginLeft:'6px',fontSize:'27px'}}/>
   <h2>Wishlist</h2>
   </div>
-      
+     
       <div className="container " style={{borderColor:'white',padding:"7px"}}>
+      
         {!wishlistItem ? (
           <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "200px" }}>
             <Spinner animation="border" role="status" style={{ width: "7rem", height: "7rem" }} />
           </div>
         ) : (
+          <div>
           <div className="card mb-3 mx-auto m-2" style={{ maxWidth: "720px",borderColor:'white' }}>
           <div style={{width: "100%",
-height: 240,
+height: "300px",
 top: "20px",
 left: "15px",
 borderRadius: "5px",
-boxShadow:'   0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
+
 }} className="imagediv">
   <img 
     src={wishlistItem.imageUrl ? `${process.env.REACT_APP_BASE_URL}/${wishlistItem.imageUrl}` : `${process.env.PUBLIC_URL}/img/image.png`} 
@@ -135,7 +137,30 @@ boxShadow:'   0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
               
               </div>
               <div className="d-flex justify-content-between align-items-center mb-3">
-                     <h5 className="card-title mb-0">{wishlistItem.giftName || "No Gift Name"}</h5>
+                  <div className="d-flex align-items-center gap-3">
+                  <div>
+                  <img
+  src={`${process.env.REACT_APP_BASE_URL}/${wishlistItem.eventImage}`} 
+  alt="Event"
+  style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '10px' }}
+  onError={(e) => {
+    e.target.onerror = null;
+    e.target.src = `${process.env.PUBLIC_URL}/img/defaultproduct.jpg`; 
+  }}
+/>
+
+                  </div>
+                  <div>
+                  <p style={{fontFamily: 'Poppins',
+fontWeight: "400",
+fontSize: '15px',
+lineHeight: '25px',
+letterSpacing: '0px',
+verticalAlign: 'middle'
+}}>{wishlistItem.eventName}</p>
+                  <p className="text-muted">Owner</p>
+                  </div>
+                  </div>
                      <div className="dropdown">
                   <select
                     style={{ borderColor: "#ff3366", color: "#ff3366" }}
@@ -147,7 +172,7 @@ boxShadow:'   0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
                     <option value="Mark"><FontAwesomeIcon icon={faCircleCheck} size="lg" color="#28a745" />
                       Mark</option>
                     <option value="Purchased"><FontAwesomeIcon icon={faCircleCheck} size="lg" color="#28a745" />
-                    Purchased</option>
+                    Purchase</option>
                     <option value="CreatePool"><FontAwesomeIcon icon={faCircleCheck} size="lg"  />
                     Create Pool</option>
                   </select>
@@ -163,9 +188,12 @@ boxShadow:'   0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
                                   />
                 </div>
               </div>
+              <div>
+              <h5 className="card-title mb-0">{wishlistItem.giftName || "No Gift Name"}</h5>
               <p className="mb-3" style={{ color: "#EE4266" }}>
                 {wishlistItem.createdAt ? new Date(wishlistItem.createdAt).toLocaleString() : "Date not available"}
               </p>
+              </div>
               {wishlistItem.status === "CreatePool" && (
                 <button
                   className="btn mb-4 createpoolbtn"
@@ -196,9 +224,9 @@ boxShadow:'   0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)'
                 <h6 className="fs-1">About</h6>
                 <p className="card-text text-muted">{wishlistItem.description || "No description available"}</p>
               </div>
-              
-              <div className="d-flex justify-content-center">
-                <button className="btn w-30 m-2 p-1" style={{ backgroundColor: "#EE4266", width: "180px" }}>
+              </div>
+              <div className="d-flex justify-content-center" style={{margintop:'40px'}}>
+                <button className="btn w-30 m-2 p-1" style={{ backgroundColor: "#EE4266", width: "180px",color:'#fff' }}>
                   SEE ALL WISHES
                 </button>
               </div>

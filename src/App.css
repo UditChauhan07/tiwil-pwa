@@ -116,9 +116,9 @@ button#mui-p-82252-T-1 {
   display:none !important;
 }
 
-.nav-tabs  {
+/* .nav-tabs  {
   border:none !important;
-}
+} */
 .nav-link.active {
   /* your styles here */
  border: none !important;
@@ -145,4 +145,10 @@ top: 0% !important;
 
 .grecaptcha-badge {
    visibility: hidden; 
+  }
+
+
+
+  .swal2-modal{
+    position:relative;
   }

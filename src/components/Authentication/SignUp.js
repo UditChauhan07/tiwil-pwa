@@ -599,11 +599,12 @@ const handleVerifyOTP = async (e) => {
       }
   
       Swal.fire({
-        title: `<div style="font-size: 2rem; color: #FF3366; font-weight: bold;">Dear ${user.fullName}</div>`,
+        title: `<div  style="font-size: 2rem; color: #FF3366; font-weight: bold;">Dear ${user.fullName}</div>`,
         text: "Account Created Successfully",
         confirmButtonText: "Let's Go",
         confirmButtonColor: "#FF3366",
         imageUrl: logo,
+     
         imageWidth: 80,
         imageHeight: 80,
       
@@ -647,14 +648,14 @@ const handleVerifyOTP = async (e) => {
 
   
     return (
-    <section className="page-controls" style={{marginTop:'1px'}} >
+    <section className="page-controls py-4"   >
         {!isOtpSent ? (
       <div className="container d-flex flex-column align-items-center justify-content-center">
        
 
         <div className="text-center">
-          <img src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" height="150px" width="200px" />
-          <h2 className="font-weight-bold " style={{ fontSize: "48px",fontFamily: "Poppins",
+          <img src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" height="100px" width="200px" />
+          <h2 className="font-weight-bold mt-4" style={{ fontSize: "48px",fontFamily: "Poppins",
 fontWeight: "500",
 fontSize: "48px",
 lineHeight: "100%",
@@ -670,7 +671,7 @@ textAlign: "center",
 verticalAlign: "middle",
 }}>Connect with your friends today!</p>
          </div>
-        <div className="d-flex justify-content-center m-2" style={{padding:'6px',border:'1px solid whitesmoke',width:'100%' }}>
+        <div className="d-flex justify-content-center mt-2" style={{padding:'6px',border:'1px solid whitesmoke',width:'100%',height:'40px' }}>
           <Link to="/signin"  style={{width:'50%'}}>
              <p
               onClick={() => setActive("signin")}
@@ -678,8 +679,8 @@ verticalAlign: "middle",
                 display:'flex',
                 justifyContent:'center',
                 fontSize: "1rem",
-                border: "1px solid rgb(216, 210, 210)",
-                padding: "2px 24px 0px 30px",
+            
+               
                 backgroundColor: active === "signin" ? "#ddd" : "transparent",
                 fontWeight: active === "signin" ? "bold" : "600",
                 cursor: "pointer",
@@ -695,8 +696,7 @@ verticalAlign: "middle",
               style={{
                 display:'flex',
                 justifyContent:'center',
-                border: "1px solid rgb(238, 234, 234)",
-                padding: "2px 24px 0px 30px",
+            
                 color: active === "signup" ? "#ffffff" : "#ff3366",
                 backgroundColor: active === "signup" ? "#ff3366" : "transparent",
                 fontWeight: "600",
@@ -707,9 +707,9 @@ verticalAlign: "middle",
             </p>
           </Link>
         </div>
-        <div className="w-100 p-4 rounded shadow-sm" style={{ maxWidth: "400px", backgroundColor: "#fff" }}>
+        <div className="w-100 p-4 " style={{ maxWidth: "400px", backgroundColor: "#fff",    margin: '0 0 40px 0' }}>
         
-            <form onSubmit={handleSendOTP} noValidate>
+            <form  noValidate>
               <div className="mb-3">
                 <label htmlFor="fullName" className="form-label">Full Name</label>
                 <input
@@ -740,17 +740,18 @@ verticalAlign: "middle",
 
        <div style={{marginTop:'12px',marginBottom:'12px'}}>
     <span >By creating an account, I accept the <strong>Terms & Conditions & Privacy Policy</strong></span>
-         </div>
-
-              <button type="submit" className="btn w-100" style={{backgroundColor:'#EE4266',borderRadius:'15px',color:'white'}} disabled={loading}>
+         </div> </form>
+<div className='Submit-button' style={{position:'fixed', bottom:'10px' ,width: '100%', margin: 'auto',left: '0',    padding: '0 20px',backgroundColor:'#fff'}}>
+              <button type="submit" className="btn w-100" style={{backgroundColor:'#EE4266',borderRadius:'15px',color:'white'}} disabled={loading} onClick={handleSendOTP}>
                 {loading ? <Spinner size="sm" animation="border" className="me-2" /> : "Send OTP"}
               </button>
-            </form>
+           
           
 
           <p className="text-center text-muted mt-3">
            <u> Already registered?</u> <Link to="/signin" className="text-primary fw-bold">Sign In</Link>
           </p>
+          </div>
         </div>
       </div>
     ) : (

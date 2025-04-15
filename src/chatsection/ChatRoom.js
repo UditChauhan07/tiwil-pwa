@@ -264,7 +264,7 @@ const ChatRoom = () => {
                     <div className={styles.eventText}  onClick={() => navigate(`/group/${groupId}/details`)}>
                         <h2 style={{ fontSize: "15px", margin: "5px" }}>{eventDetails.eventName}</h2>
                         <p style={{ marginTop: "10px" }}>
-                            {eventDetails.totalMembers ? `Members: ${eventDetails.totalMembers}` : 'Loading...'}
+                            {eventDetails.totalMembers ? ` ${eventDetails.totalMembers} members` : 'Loading...'}
                         </p>
                     </div>
                 </div>
@@ -346,16 +346,40 @@ const ChatRoom = () => {
                     className={styles.fileInput}
                 />
 
-                {mediaFile && (
-                    <div className={styles.mediaPreview}>
-                        <button
-                            className={styles.removeMedia}
-                            onClick={() => setMediaFile(null)}
-                        >
-                            ❌
-                        </button>
-                    </div>
-                )}
+{mediaFile && (
+  <div className={styles.mediaPreview}>
+    <button
+      className={styles.removeMedia}
+      onClick={() => setMediaFile(null)}
+    >
+      ❌
+    </button>
+    
+    {/* Media preview rendering */}
+    {mediaFile.type.startsWith('image/') && (
+      <img
+        src={URL.createObjectURL(mediaFile)}
+        alt="Preview"
+        className={styles.previewImage}
+      />
+    )}
+    
+    {mediaFile.type.startsWith('video/') && (
+      <video controls className={styles.previewVideo}>
+        <source src={URL.createObjectURL(mediaFile)} />
+        Your browser does not support the video tag.
+      </video>
+    )}
+
+    {mediaFile.type.startsWith('audio/') && (
+      <audio controls className={styles.previewAudio}>
+        <source src={URL.createObjectURL(mediaFile)} />
+        Your browser does not support the audio tag.
+      </audio>
+    )}
+  </div>
+)}
+
 
                 <input
                     type="text"

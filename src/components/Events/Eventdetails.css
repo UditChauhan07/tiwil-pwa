@@ -37,6 +37,10 @@ opacity: 0.84;
   }
   .nav-tabs .nav-link.active {
     border-bottom: 2px solid red !important;
+    
+    /* text-decoration: underline red !important;
+    text-underline-offset: 9px;
+    text-decoration-thickness: 2px !important; */
   }
   .planbtn {
     padding: 5px 0px !important ;
@@ -135,7 +139,7 @@ opacity: 0.84;
       background-color: #ffffff;
       opacity: 87%;
       width: 95%;
-      height: 82px;
+      height: 60px;
       bottom: 18px;
       /* padding: 20px; */
       left: 0;
@@ -194,7 +198,7 @@ opacity: 0.84;
     font-weight: bold;
   }
 .nav-item{
-  padding: 5px !important;
+  padding: 5px 5px 0px !important;
   font-weight: 800 !important;
 }
 .calender-icon{
@@ -236,4 +240,21 @@ opacity: 0.84;
 
 .pdate{
   margin-bottom: 4px !important;
+}
+
+.nav-tabs.ulmain{
+  position: relative;
+  z-index: 2;
+  border-radius: 0px !important;
+
+}
+
+.tab-content{
+  border-top:2px solid #F2F2F2 !important;
+  border-radius:0px !important;
+  margin: 0 !important;
+  padding: 20px 0 0 0;
+  position: relative;
+  top: -1px;
+
 }

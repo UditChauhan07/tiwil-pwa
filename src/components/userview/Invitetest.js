@@ -2,13 +2,16 @@ import React from "react";
 import Swal from 'sweetalert2';
 import { useParams } from "react-router-dom";
 import { FaArrowRight } from "react-icons/fa";
-
+import { useState } from "react";
+import { Spinner } from "react-bootstrap";
 const InviteButton = ({ style, children ,onInviteSuccess }) => {
   const { eventId } = useParams();
+  const [loading,setLoading]=useState(false)
   const token = localStorage.getItem('token');
 
   const handleInvite = async () => {
     if ("contacts" in navigator && "select" in navigator.contacts) {
+      setLoading(true);
       try {
         // Ask user to select contacts
         const contacts = await navigator.contacts.select(["name", "email", "tel"], { multiple: true });
@@ -28,6 +31,7 @@ const InviteButton = ({ style, children ,onInviteSuccess }) => {
 
           const data = await response.json();
           localStorage.setItem("invited",data.data)
+          setLoading(false);
           Swal.fire({
             title:'Your guest has invited!'
             ,
@@ -61,9 +65,19 @@ const InviteButton = ({ style, children ,onInviteSuccess }) => {
     }
   };
 
+
+  if(loading) {
+    return (
+      <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "250px" }}>
+        <Spinner animation="border" role="status" style={{ width: "7rem", height: "7rem" }} />
+      </div>
+    );
+  }
+
+
   return (
     <button onClick={handleInvite} style={{ ...styles.button, ...style }}>
-      {children} <FaArrowRight />
+      {children}
     </button>
   );
 };
@@ -73,6 +87,7 @@ const styles = {
   button: {
     width: '75%',
     padding: "10px 20px",
+    gap:'10px',
     backgroundColor: "#EE4266",
     color: "white",
     border: "none",

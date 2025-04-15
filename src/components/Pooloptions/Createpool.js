@@ -9,12 +9,17 @@ import "react-circular-progressbar/dist/styles.css";
 import InviteModal from "../GuestInvite/PoolguestModal";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
+import { FaPencilAlt } from "react-icons/fa";
+
 
 function PoolingWish() {
   const { wishId } = useParams();
   const navigate = useNavigate();
   const [pool, setPool] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+
+
   const [contributionAmount, setContributionAmount] = useState(""); 
   const [showInviteModal, setShowInviteModal] = useState(false);
   const [poolId, setPoolId] = useState(null);
@@ -108,6 +113,8 @@ console.log('pool',poolCreator)
             );
       
             if (response.data.success) {
+              setIsEditing(false); // Close the edit mode
+              setContributionAmount(contributionAmount); // Reset the contribution amount
               Swal.fire({
                 title: "Request Sent!",
                 text: "Your request has been sent to the pool admin.",
@@ -154,6 +161,11 @@ console.log('pool',poolCreator)
 
       if (response.data.success) {
         Swal.fire("Success!", "Your contribution has been saved.", "success");
+        setIsEditing(false); // Close the edit mode
+    
+        setContributionAmount(contributionAmount);
+fetchPoolData();
+
         navigate(`/createpool/${wishId}`);
       }
     } catch (error) {
@@ -342,7 +354,7 @@ console.log('pool',poolCreator)
           &larr;
         </span> */}
 
-         <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(`/invitation-detail/${pool.eventId}`)}/>
+         <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(`/invitation-detail/${pool.eventId}`)} style={{fontSize:'23px'}}/>
         <h5 className="mb-0">Pooling Wish</h5>
       </div>
 
@@ -368,7 +380,7 @@ console.log('pool',poolCreator)
    
  
 
-      <div className="d-flex align-items-center mt-4" style={{position:'absolute', top:'210px',backgroundColor:'#fff',borderRadius:'20px', opacity:'0.8',gap:'10px',margin:'12px',width:'90%',height:'14%'}}>
+      <div className="d-flex align-items-center mt-4" style={{position:'absolute', top:'230px',backgroundColor:'#FFFFFF',borderRadius:'20px', opacity:'0.8',gap:'10px',margin:'12px',width:'90%',height:'14%'}}>
         {/* Circular Progress Bar */}
         <div className="d-flex justify-content-center my-4">
           
@@ -407,85 +419,123 @@ console.log('pool',poolCreator)
    
       </div>
 
-      <div className="d-flex justify-content-between align-items-center mt-2" style={{width:'100%'}}>
-    <img
-      />
-      <div className="d-flex " style={{width:'100%' }}>
+      <div className="d-flex justify-content-between align-items-center mt-2 gap-3" style={{width:'100%',height:'60px',border:'0.5px solid #00000040',padding:'15px'}}>
+      <img 
+  src={pool.eventOwner.profileImage 
+    ? `${process.env.REACT_APP_BASE_URL}/${pool.eventOwner.profileImage}` 
+    : `${process.env.PUBLIC_URL}/img/defaultproduct.jpg`} style={{width:'40px',height:'40px',borderRadius:'50%'}}
+
+/>
+
+      <div className="d-flex " style={{width:'100%' ,height:'60px'}}>
         <div className="d-flex align-items-center" style={{gap:'10px'}}>
-         <div><h6>{pool.giftName}</h6></div>
-         <div></div>
+         <div><h5 style={{fontFamily:'Poppins'}}>{pool.description}</h5>
+         <h6 className="text-muted mb-1">{pool.eventOwner.fullName}</h6>
+       </div>
+       
 
       </div>
      </div> 
-    
+ {pool.status === "Completed" && (
+  <div
+    className="d-flex justify-content-between align-items-center mt-2 gap-3"
+    style={{
+      width: "100%",
+      height: "60px",
+      border: "none",
+      padding: "15px",
+    }}
+  >
+    <h5 style={{ fontFamily: "Poppins",fontSize:'14px' }}>Pool Completed</h5>
+    {/* <h6 style={{ marginLeft: "10px" }}>&#8377;{pool.collectedAmount}</h6> */}
+  </div>
+)}
+
    
+    </div>
+    <div className="d-flex justify-content-between align-items-center mt-2" style={{width:'100%'}}>
+      <h5 >Total Amount</h5>
+      <h6  style={{marginLeft:'10px'}}>{totalAmount}</h6>
+</div>
+     
+     <div> {
+        pool.status==="Completed" && (
+          <div  className="d-flex justify-content-between align-items-center mt-2" style={{width:'100%'}}>
+          <h5 >Collected Amount</h5>
+          <h6 style={{ marginLeft: "10px" }}>&#8377;{pool.collectedAmount}</h6>
+        </div>)
+      }
     </div>
 
       {/* If pool is completed, show message and don't allow further contributions */}
-      {isPoolCompleted ? (
-        <div className="text-center my-4">
-          <h4>Pool is Completed</h4>
-          {myContribution && (
-            <div>
-              <h6>My Contribution: &#8377;{myContribution.amount}</h6>
-            </div>
-          )}
-        </div>
-      ) : (
-        <>
-          {/* Contribution Input */}
-          <div
-            style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
-          >
-            <h6>My Contribution</h6>
-            <Form.Group className="mt-3" style={{ width: "70px" }}>
-              <Form.Control
-                type="number"
-                placeholder="&#8377;"
-                value={contributionAmount}
-                onChange={(e) => {
-                  let value = parseFloat(e.target.value);
-                  if (value > totalAmount - collectedAmount) {
-                    Swal.fire(
-                      "Error",
-                      `You cannot contribute more than &#8377;${totalAmount - collectedAmount}`,
-                      "error"
-                    );
-                    value = totalAmount - collectedAmount;
-                  }
-                  setContributionAmount(value);
-                }}
-                // disabled={userStatus === "pending" || userStatus === "declined"} // Disable input if status is pending or declined
-              />
-            </Form.Group>
-          </div>
+      {myContribution && !isPoolCompleted && (
+  <div className="mt-4">
+    <Form.Group className="d-flex align-items-center justify-content-between" style={{ width: '100%' }}>
+      <Form.Label className="fw-bold mb-0" style={{ marginRight: '10px' }}>
+        My Contribution
+      </Form.Label>
+<div className="d-flex align-items-center" style={{gap:'1px'}}>
+      <Form.Control
+        type="number"
+        style={{ width: '120px', marginRight: '10px' }}
+        value={contributionAmount || myContribution.amount}
+        disabled={!isEditing}
+        onChange={(e) => {
+          let value = parseFloat(e.target.value);
+          const maxValue = totalAmount - collectedAmount + myContribution.amount;
 
-          {/* Save Contribution Button */}
-          <div className="mt-4 text-center">
-            <Button
-              variant="danger"
-              className="w-100 py-2 d-flex align-items-center justify-content-center"
-              onClick={handleSaveContribution}
-              // disabled={userStatus === "pending" || userStatus === "declined"} // Disable button if status is pending or declined
-            >
-              {loading ? "Processing..." : "Save Amount"} <FaArrowRight className="ms-2" />
-            </Button>
-          </div>
-          </>
-        )}
+          if (value > maxValue) {
+            Swal.fire("Error", `Max you can contribute is ₹${maxValue}`, "error");
+            value = maxValue;
+          }
+          setContributionAmount(value);
+        }}
+      />
+
+      {!isEditing ? (
+        <FaPencilAlt
+          style={{ cursor: "pointer", color: "#dc3545" }}
+          onClick={() => {
+            setContributionAmount(myContribution.amount); // preload
+            setIsEditing(true);
+          }}
+        />
+      ) : (
+        <Button
+          size="sm"
+          variant="danger"
+          onClick={async () => {
+            await handleSaveContribution();
+            setIsEditing(false);
+          }}
+          disabled={loading}
+          style={{ width:'30%',fontSize: '13px', padding: '4px 10px' }}
+        >
+          {loading ? "Saving..." : "Save"}
+        </Button>
+      )}
+      </div>
+    </Form.Group>
+  </div>
+)}
+
+  
+  
+
 
       {/* Show My Contribution separately */}
-      {myContribution && !isPoolCompleted && (
+      {/* {myContribution && !isPoolCompleted && (
         <div className="mt-4">
           <h6 className="fw-bold d-flex justify-content-between" >My Contribution: &#8377;{myContribution.amount}</h6>
         </div>
-      )}
+      )} */}
 
       {/* Contributors List */}
       <div className="mt-4">
-        <h2 style={{textAlign:'left'}}>Contributors</h2>
+       
         {otherContributors.length > 0 ? (
           <>
+          <h2 style={{textAlign:'left'}}>Contributors</h2>
             <ul>
               {otherContributors.map((contributor) => (
                 <li key={contributor.userId}>
@@ -512,7 +562,7 @@ console.log('pool',poolCreator)
                   style={{ padding: "6px", background: "#dc3545", borderRadius: "8px",color:'#ffffff' , border:"none",padding:'15px'}}
                   onClick={() => setShowInviteModal(true)}
                 >
-                  invite more member
+                  Invite more member
                 </button>
                 <button variant="danger"
                   style={{ padding: "6px", background: "#dc3545", borderRadius: "8px", color: "#ffffff" ,border:'none',padding:'15px'}}
@@ -524,17 +574,18 @@ console.log('pool',poolCreator)
           </>
         ) : (
           isOwner  &&(
-            <div className='d-flex justify-content-center '>
+            <div className='d-flex justify-content-center ' style={{position:'relative',bottom:'-40px'}}>
             <button variant="danger"
               style={{ padding: "9px", background: "#dc3545", borderRadius: "20px",color: "white",
-  marginBottom:'22px'
+  marginTop:'50px'
     ,right: "46px",
     width: '78%',
     border: "none" ,
-    bottom:'50px'}}
+   
+    bottom:'5px'}}
               onClick={() => setShowInviteModal(true)}
             >
-              Invite Member
+              Pool Invites
             </button>
             </div>
           )
