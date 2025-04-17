@@ -9,7 +9,8 @@ import Swal from "sweetalert2";
 import { Spinner } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
-
+import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
+import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 const EventDetails = () => {
   const [activeTab, setActiveTab] = useState("details");
   const [wishlistItems, setWishlistItems] = useState([]);
