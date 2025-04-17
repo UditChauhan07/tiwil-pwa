@@ -18,7 +18,7 @@ const SplashScreen4 = () => (
         style={{ height:"350px",width:"88%" }} // Ensuring height matches other screens
       />
       {/* Text */}
-      <p className=" " style={{color:"#ff3366",height:'86px',
+      <p className="" style={{color:"#ff3366",
       fontFmily: 'Poppins',
 fontWeight: '400',
 fontSize: '26px',

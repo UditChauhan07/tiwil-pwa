@@ -58,6 +58,8 @@
     display: flex;
     gap: 5px;
     margin-top: 10px;
+    position: absolute;
+    bottom: 90px;
   }
   .image{
     margin-left: 44px;
