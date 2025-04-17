@@ -28,6 +28,7 @@ textAlign: 'center',
 }}>
         Join forces with friends to pool money for expensive gifts 
         and make someone's day even more special.
+        <br/>
       </p>
     </div>
     
