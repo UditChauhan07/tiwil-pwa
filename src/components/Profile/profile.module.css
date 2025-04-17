@@ -51,7 +51,7 @@ body {
     font-size: 16px;
     font-weight: 700;
 
-    margin-bottom: 8px;
+    margin-bottom: 0px;
   }
   
   .formGroup input,
@@ -109,7 +109,7 @@ body {
   
   .profileSection {
     /* text-align: center; */
-    margin-bottom: 20px;
+    margin-bottom: 25px;
     display: flex;
     width: 100% !important;
     gap: 10px;
@@ -128,19 +128,21 @@ body {
     height: 67px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid #ddd;
+    /* border: 2px solid #ddd; */
   }
   
   .cameraIcon {
-    display: none;
+    
     position: absolute;
-    bottom: 5px;
-    right: 5px;
-    background-color: #ff3366;
-    color: #fff;
+    bottom: -29px;
+    right: 13px;
+    color: #ff3366;
+    /* background-color: #ff3366; */
     border-radius: 50%;
     padding: 5px;
     cursor: pointer;
+    font-size: 16px;
+    font-weight: 500;
   }
   
   /* Add & Remove Buttons */
@@ -281,7 +283,7 @@ select {
   @media (max-width: 768px) {
     .container {
       max-width: 100%;
-      padding: 10px;
+      padding: 16px;
     }
   
     h2 {
