@@ -250,9 +250,9 @@ function Profile() {
             <div className={styles.formGroup}>
               <label>Date of Birth</label>
               <input
+                placeholder="YYYY-MM-DD"
                 type="date"
                 value={userData.dob}
-                placeholder="YYYY-MM-DD"
                 min="1900-12-01"
                 max={today}
                 onChange={(e) => {
