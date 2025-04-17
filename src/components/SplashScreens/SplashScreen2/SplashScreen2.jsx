@@ -18,7 +18,14 @@ const SplashScreen2 = () => (
       style={{ maxHeight:"350px",width:'88%' }}
     />
     </div>
-    <p className="fw-semibold "style={{color:"#ff3366",height:'88px'}}>
+    <p className=" " style={{color:"#ff3366",height:'88px',
+    fontFamily: "Poppins",
+fontWeight: "400",
+fontSize: "26px",
+lineHeight: "100%",
+letterSpacing: "0%",
+textAlign: "center",
+}}>
     Send invites to friends and family, making <br/>every celebration more meaningful.
     </p>
   </div>

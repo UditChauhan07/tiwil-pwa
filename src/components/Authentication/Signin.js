@@ -131,46 +131,34 @@ const SignInForm = () => {
          });
          
   
-    } catch (error) {
+    }catch (error) {
       console.error("❌ Error sending OTP (Login Flow):", error);
-  
       let errorHandled = false;
-  
-      // Check for specific API errors first (e.g., 404 User Not Found)
+    
       if (error.response) {
-          console.error("API Response Error - Status:", error.response.status);
-          console.error("API Response Error - Data:", error.response.data);
-  
-          // Example: Handle User Not Found (assuming API uses 404)
-          if (error.response.status === 404) {
-              Swal.fire("Login Failed", error.response.data?.message || "This phone number is not registered.", "error");
-              errorHandled = true;
-          }
-          // Add other API status checks if needed (e.g., 403 Forbidden, 500 Server Error)
-          // else if (error.response.status === 500) { ... }
+        if (error.response.status === 404) {
+          setPhoneError("This phone number is not registered.");
+          errorHandled = true;
+        }
       }
-  
-      // Handle Firebase specific errors if not handled above
+    
       if (!errorHandled && error.code) {
-         let msg = "Failed to send OTP."; // Default message
-         if (error.code === "auth/invalid-phone-number") {
-             msg = "The phone number format is invalid.";
-         } else if (error.code === "auth/too-many-requests") {
-             msg = "We have blocked your requests from this device due to unusual activity for some time. Try again later.";
-         } else if (error.message.includes("reCAPTCHA")) {
-             msg = "Failed to send otp. Please refresh and then try again.";
-         } // Add more specific Firebase codes if needed
-  
-         Swal.fire("Error", msg, "error");
-         errorHandled = true;
+        let msg = "Failed to send OTP.";
+        if (error.code === "auth/invalid-phone-number") {
+          msg = "The phone number format is invalid.";
+        } else if (error.code === "auth/too-many-requests") {
+          msg = "Too many attempts. Try again later.";
+        } else if (error.message.includes("reCAPTCHA")) {
+          msg = "Failed reCAPTCHA check. Please refresh and try again.";
+        }
+        setPhoneError(msg);
+        errorHandled = true;
       }
-  
-      // Fallback for any other unexpected errors
+    
       if (!errorHandled) {
-         Swal.fire("Error", "Please refresh  and then try again .", "error");
+        setPhoneError("Unexpected error occurred. Please refresh and try again.");
       }
-  
-      // Clean up reCAPTCHA instance if it exists
+    
       if (window.recaptchaVerifier) {
         try {
           window.recaptchaVerifier.clear();
@@ -179,7 +167,8 @@ const SignInForm = () => {
           console.error("Error clearing reCAPTCHA:", clearError);
         }
       }
-    } finally {
+    }
+     finally {
       setIsLoading(false); // Ensure loading state is always reset
     }
   };
@@ -284,14 +273,13 @@ const SignInForm = () => {
         });
       }
     } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Error",
-        text: error?.response?.data?.message || "Error verifying OTP.",
-        timer: 3000,
-        showConfirmButton: false,
-      });
-    } finally {
+      console.error("❌ OTP verification error:", error);
+    
+      const errorMsg = error?.response?.data?.message || "Error verifying OTP.";
+      setPhoneError({ hasError: true, message: errorMsg });
+    }
+    
+    finally {
       setIsLoading(false);
       console.log("🔚 OTP verification process completed.");
     }
@@ -300,7 +288,10 @@ const SignInForm = () => {
   if(isLoading) {
       return (
         <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "250px" }}>
-          <Spinner animation="border" role="status" style={{ width: "7rem", height: "7rem" }} />
+          {/* <Spinner animation="border" role="status" style={{ width: "7rem", height: "7rem" }} /> */}
+          <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '5rem', height: '5rem',color:'#ff3366'}}>
+  <span class="visually-hidden">Loading...</span>
+</div>
         </div>
       );
     }
@@ -326,6 +317,7 @@ lineHeight: "100%",
 letterSpacing: "0%",
 textAlign: "center",
 verticalAlign: "middle",
+marginBottom:'5px'
 }}>To continue, enter your phone number</p>
          </div>
         {/* Loader Overlay */}
@@ -340,7 +332,7 @@ verticalAlign: "middle",
         {/* Apply blur effect to the background */}
         {isLoading && <div className="blur-background"></div>}
 
-        <div className="d-flex justify-content-center mt-2" style={{padding:'6px',border:'1px solid whitesmoke',width:'100%',height:'40px' }}>
+        <div className="d-flex justify-content-center mt-3" style={{padding:'4px',border:'1px solid whitesmoke',width:'100%',height:'35px' }}>
           <Link to="/signin" style={{width:'50%'}}>
             <p
               onClick={() => setActive("signin")}
@@ -350,8 +342,8 @@ verticalAlign: "middle",
                 fontSize: "1rem",
                
               
-                backgroundColor: active === "signin" ? "#ff3366" : "transparent",
-                color: active === "signin" ? "#ffffff" : "#ff3366",
+                backgroundColor: active === "signin" ? "#EE4266" : "transparent",
+                color: active === "signin" ? "#ffffff" : "#EE4266",
                 fontWeight: "600",
                 cursor: "pointer",
               }}
@@ -369,7 +361,7 @@ verticalAlign: "middle",
                 fontSize: "1rem",
               
          
-                backgroundColor: active === "signup" ? "#ddd" : "transparent",
+                backgroundColor: active === "signup" ? "#EE4266" : "transparent",
                 fontWeight: active === "signup" ? "bold" : "600",
                 cursor: "pointer",
                 color: '#ff3366'
@@ -381,17 +373,17 @@ verticalAlign: "middle",
         </div>
 
         <div
-          className="w-100 p-4 "
-          style={{ maxWidth: "760px", backgroundColor: "#fff",    margin: '0 0 40px 0' }}
+          className="w-100  "
+          style={{ maxWidth: "760px", backgroundColor: "#fff",    margin: '0 0 40px 0',padding: '1.5rem 0rem 1.5rem 0rem' }}
         >
      
-            <form >
+            <form style={{border:'none'}} >
               <div className="mb-3">
                 <label htmlFor="phone" className="form-label">Phone</label>
                 <PhoneInput
                   international
                   defaultCountry="IN"
-                  className={`form-control ${phoneError ? 'is-invalid' : ''}`}
+                  className={`form-contrl ${phoneError ? 'is-invalid' : ''}`}
                   value={formData.phoneNumber}
                   onChange={(value) => {
                     const digits = value?.replace(/\D/g, "") || "";
@@ -418,15 +410,15 @@ verticalAlign: "middle",
                   }}
                   placeholder="Enter phone number"
                   required
-                  style={{ display: 'flex', outline: "none",marginBottom:'160px' }}
+                  style={{ display: 'flex', outline: "none",border:'none' }}
                 />
-                {phoneError && <div className="invalid-feedback d-block " style={{textAlign:'center'}}>{phoneError}</div>}
+                {phoneError && <div className="invalid-feedback d-block " style={{textAlign:'left'}}>{phoneError}</div>}
               </div>
               </form>
               <div className='Submit-button' style={{position:'fixed', bottom:'10px' ,width: '100%', margin: 'auto',left: '0',    padding: '0 20px' ,backgroundColor:'#fff' }}>
               <button
                 type="submit"
-                className="btn btn-danger w-100 " style={{backgroundColor:'#EE4266',borderRadius:'15px'}}
+                className="btn  w-100 " style={{backgroundColor:'#EE4266',borderRadius:'15px',color:'#fff',fontSize:'16px',fontWeight:'600',height:'50px'}}
                 disabled={isLoading} // Disable button when loading
              onClick={handleSendOTP} >
                 {isLoading ? (
@@ -440,13 +432,14 @@ verticalAlign: "middle",
         
 
           <p className="text-muted mt-3 d-flex justify-content-center" >
-            <u>New on TIWIL?{" "}</u>
-            <Link
+            <u>New on TIWIL?{" "}</u>&nbsp;
+          <u> <Link
               to="/signup"
               className="text-primary fw-semibold text-decoration-none"
             >
-                 &nbsp; Create an account
+                 Create an account
             </Link>
+            </u> 
           </p>
           </div>
         </div>

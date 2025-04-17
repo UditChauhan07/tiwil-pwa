@@ -15,7 +15,7 @@ import { Filter } from "lucide-react";
 import EventsFilter from "./filterModal";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faDotCircle } from "@fortawesome/free-solid-svg-icons";
-
+import { faCircle } from '@fortawesome/free-solid-svg-icons';
 const HomePage = () => {
   const [searchQuery, setSearchQuery] = useState("");
   const [results, setResults] = useState([]);
@@ -106,27 +106,29 @@ const HomePage = () => {
           <div className="d-flex">
             <div className="SearLast p-1" style={{ width: "100%" }}>
               <div className="d-flex searchbarw justify-content-between">
-                <input
+                <input   
                   type="text"
                   value={searchQuery}
                   placeholder="Find amazing events"
                   className="text-mute inputhome"
+                  
                   style={{
                     width: "100%",
                     height: "42%",
                     padding: "10px",
                     borderRadius: "31px",
                     border: "2px solid #ff3366",
+                    
                   }}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                />
+                 />
                 <div className="filter-contain d-flex">
                   <button className="filter-button" onClick={handleFilter} >
-                    <Filter size={18} />
-                    <span className="d-flex">Filters{selectedFilterCount > 0 && (
+                    <Filter size={32} />
+                    <span className="d-flex">{selectedFilterCount > 0 && (
         <div className="active-filters-count" style={{marginBottom:'2px'}}>
           {/* <button onClick={() => setFilterData({ months: [], relations: [], eventTypes: [], favoritesOnly: false })}> */}
-          <FontAwesomeIcon icon={faDotCircle} />
+          <FontAwesomeIcon icon={faCircle} style={{fill:'#000',color:'#000',accentColor:'fill', height:'10px',width:'10px'}} />
           {/* </button> */}
         </div>
       )}</span>

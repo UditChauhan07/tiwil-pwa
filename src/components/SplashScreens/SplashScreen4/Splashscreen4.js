@@ -18,7 +18,14 @@ const SplashScreen4 = () => (
         style={{ height:"350px",width:"88%" }} // Ensuring height matches other screens
       />
       {/* Text */}
-      <p className="fw-semibold " style={{color:"#ff3366",height:'92px'}}>
+      <p className=" " style={{color:"#ff3366",height:'92px',
+      fontFmily: 'Poppins',
+fontWeight: '400',
+fontSize: '26px',
+lineHeight: '100%',
+letterSpacing: '0%',
+textAlign: 'center',
+}}>
         Join forces with friends to pool money for expensive gifts 
         and make someone's day even more special.
       </p>

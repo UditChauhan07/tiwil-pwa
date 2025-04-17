@@ -71,22 +71,58 @@ const Eventlst = ({ searchQuery }) => {
   useEffect(() => {
     applyFilters(events);
   }, [searchQuery, filterData, events, abc]);
-
+  
+  const isSameOrAfterToday = (eventDate, today) => {
+    const event = new Date(eventDate);
+    return (
+      event.getFullYear() > today.getFullYear() ||
+      (event.getFullYear() === today.getFullYear() &&
+        (event.getMonth() > today.getMonth() ||
+          (event.getMonth() === today.getMonth() && event.getDate() >= today.getDate())))
+    );
+  };
+  
   const normalizeEventDateForSorting = (eventDate) => {
     const today = new Date();
     const event = new Date(eventDate);
     if (isNaN(event.getTime())) return null;
-
+ 
     event.setFullYear(today.getFullYear());
+  
     if (
       event.getMonth() < today.getMonth() ||
-      (event.getMonth() === today.getMonth() && event.getDate() < today.getDate())
+      (event.getMonth() === today.getMonth() && event.getDate() < today.getDate() )
     ) {
       event.setFullYear(today.getFullYear() + 1);
     }
     return event;
   };
 
+  // const normalizeEventDateForSorting = (eventDate) => {
+  //   const today = new Date();
+  //   const event = new Date(eventDate);
+  //   if (isNaN(event.getTime())) return null;
+  
+  //   // Force event to current year
+  //   event.setFullYear(today.getFullYear());
+  
+  //   const isSameDay =
+  //     event.getDate() === today.getDate() &&
+  //     event.getMonth() === today.getMonth() &&
+  //     event.getFullYear() === today.getFullYear();
+  
+  //   const isBeforeToday =
+  //     event.getMonth() < today.getMonth() ||
+  //     (event.getMonth() === today.getMonth() && event.getDate() < today.getDate());
+  
+  //   // 🔁 If event is before today (but not today), push to next year
+  //   if (!isSameDay && isBeforeToday) {
+  //     event.setFullYear(today.getFullYear() + 1);
+  //   }
+  
+  //   return event;
+  // };
+  
   const applyFilters = (eventsList) => {
     let filtered = [...eventsList];
 
@@ -121,7 +157,8 @@ const Eventlst = ({ searchQuery }) => {
         ...event,
         normalizedDate: normalizeEventDateForSorting(event.date || event.displayDate),
       }))
-      .filter((event) => event.normalizedDate && event.normalizedDate >= today)
+      .filter((event) => event.normalizedDate && isSameOrAfterToday(event.normalizedDate, today))
+
       .sort((a, b) => a.normalizedDate - b.normalizedDate);
 
     setFilteredEvents(filtered);
@@ -161,11 +198,15 @@ const Eventlst = ({ searchQuery }) => {
     const today = new Date();
     const currentYear = today.getFullYear();
   
-    // Set the event year to the current year
+    // Set the year to current year first
     eventDate.setFullYear(currentYear);
   
-    // If today's date is later than the event date, set the event year to the next year
-    if (today > eventDate) {
+    // Remove time part from both dates for accurate comparison
+    const todayOnly = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+    const eventOnly = new Date(eventDate.getFullYear(), eventDate.getMonth(), eventDate.getDate());
+  
+    // If event already passed (excluding today), shift to next year
+    if (eventOnly < todayOnly) {
       eventDate.setFullYear(currentYear + 1);
     }
   
@@ -180,7 +221,10 @@ const Eventlst = ({ searchQuery }) => {
   if (loading) {
     return (
       <div style={{ display: "flex", justifyContent: "center", marginTop: "50px" }}>
-        <Spinner animation="border" role="status" style={{ width: "5rem", height: "5rem" }} />
+        {/* <Spinner animation="border" role="status" style={{ width: "5rem", height: "5rem" }} /> */}
+        <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '5rem', height: '5rem',color:'#ff3366'}}>
+  <span class="visually-hidden">Loading...</span>
+</div>
       </div>
     );
   }
@@ -289,20 +333,20 @@ const Eventlst = ({ searchQuery }) => {
 
 
             <Card style={{ width: "100%", minWidth: "310px", border: "0.5px solid rgb(229 229 229)", borderRadius: "10px", marginBottom: index === filteredEvents.length - 1 ? "80px" : "10px" }}>
-              <div style={{ height: "150px" }}>
-                <Card variant="top" style={{ position: "relative", width: "100%", height: "162px" ,borderBottom:'unset'}}>
+              <div style={{ maxHeight: "500px" }}>
+                <Card variant="top" style={{ position: "relative", width: "100%" ,borderBottom:'unset'}}>
                   <img
                     src={event.newimage && event.newimage !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.newimage}` : event.image && event.image !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.image}` : `${process.env.PUBLIC_URL}/img/eventdefault1.png`}
                     alt="Event"
-                    style={{ width: '100%', height: '162px' ,padding:'5px'}}
+                    style={{ width: '100%', maxHeight: '302px' ,padding:'5px'}}
                     className="imgEvent"
                   />
                 <div
   style={{
-    borderRadius: "2px 13px 2px 15px",
+    borderRadius: "2px 5px 2px 10px",
     position: "absolute",
-    top: "0px",
-    right: "0px",
+    top: "5px",
+    right: "5px",
     color: "white",
     fontSize: "15px",
     fontWeight: "bold",
@@ -314,10 +358,21 @@ const Eventlst = ({ searchQuery }) => {
 </div>
 
                 </Card>
-              </div>
-              <Card.Body>
+             
+              <Card.Body style={{    paddingTop: '3px',
+    paddingLeft: '6px',
+    paddingBottom: '12px',
+    paddingRight: '6px',}}>
                 <div className="d-flex">
-                <Card.Title>
+                <Card.Title style={{fontFamily: 'Poppins',
+fontWeight: '500',
+fontSize: '14px',
+leadingTrim: 'Cap height',
+lineHeight: '100%',
+letterSpacing: '0%',
+color:'#000000',
+marginBottom:'0px',
+                }}>
   {event.name}{" "}
   {event.relation &&
     
@@ -329,9 +384,17 @@ const Eventlst = ({ searchQuery }) => {
 
                 </div>
                 <Card.Text className="d-flex justify-content-between" style={{ gap: "10px" }}>
-                  <div style={{ display: "flex", justifyContent: "space-between" }}>
+                  <div style={{ display: "flex", justifyContent: "space-between" ,alignItems: "center" }}>
                     <img className="m-0.5" src={`${process.env.PUBLIC_URL}/img/calender.svg`} height="17px" alt="calendar" />
-                    <h6 style={{ marginRight: "3px", marginBottom: "5px", fontWeight: "600", marginLeft: "5px",fontSize:'13px' }}>
+                    <h6 style={{ marginRight: "3px", marginBottom: "5px", fontWeight: "600", marginLeft: "5px",fontSize:'13px' ,fontFamily: 'Poppins',
+fontWeight:' 600',
+
+leadingTrim: 'Cap height',
+lineHeight: '100%',
+letterSpacing: '0%',
+color:'#000000',
+marginBottom:'0px'
+}}>
                       {event.displayDate ? formatDateWithCurrentYear(event.displayDate, event.date) : "Date not available"}
                     </h6>
                   </div>
@@ -404,6 +467,7 @@ const Eventlst = ({ searchQuery }) => {
                     </div>
                   </div>
               </Card.Body>
+              </div>
             </Card>
           </div>
         ))

@@ -14,6 +14,7 @@
     margin-top: 11px;
     margin-bottom: 11px;
 width: 100%;
+gap: 10px;
 align-items: center;
 }
 /* .inputhome{
@@ -26,6 +27,16 @@ align-items: center;
     accent-color: #ff3366;
 
   } */
+
+  .filter-contain{
+    position: relative;
+  } 
+
+  .active-filters-count{
+    position: absolute;
+    top: -14px;
+    right: 1px;
+  }
 
 .css-1usuzwp-MuiButtonBase-root-MuiTab-root.Mui-selected{
 color: white !important;
@@ -113,7 +124,7 @@ padding: 0px !important;
     /* border: 2px solid rgb(255, 51, 102);
     border-radius: 15px; */
     border: none !important;
-    padding: 6px 12px;
+    padding: 0px 0px !important;
     font-size: 14px;
     cursor: pointer;
     color:#ff3366 !important;
@@ -121,6 +132,12 @@ padding: 0px !important;
     align-items: center;
     justify-content: center;
   }
+
+  .active-filters-count{
+    position: absolute;
+  }
+
+  
   
   .filters-panel {
     padding: 16px 20px;
@@ -166,10 +183,10 @@ padding: 0px !important;
 
 
 
-@media all and (min-width: 450px) {
+/* @media all and (min-width: 450px) {
     .imgEvent  {
         object-fit: contain !important;
         
     }
     
-}
+} */

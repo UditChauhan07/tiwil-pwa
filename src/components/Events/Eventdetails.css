@@ -202,13 +202,17 @@ opacity: 0.84;
   font-weight: 800 !important;
 }
 .calender-icon{
-  padding: 9px !important;
-  border-radius: 7px !important;
+  height: 48px !important;
+  width: 48px !important;
+  padding: 15px !important;
+  border-radius: 12px !important;
   background: #FFEFF3 !important;
 }
 .location-icon{
-  padding: 11px !important;
-  border-radius: 7px !important;
+  padding: 15px !important;
+  height: 48px !important;
+  width: 48px !important;
+  border-radius: 12px !important;
   background: #FFEFF3 !important;
 }
 .notinvited{

@@ -158,7 +158,7 @@ const PoolRequests = () => {
   <button className={activeTab === "general" ? "active" : ""} onClick={() => setActiveTab("general")}>
     General
   </button>
-  <button  className={activeTab === "requests" ? "active" : ""} onClick={() => setActiveTab("requests")}>
+  <button  className={activeTab === "requests" ? "active" : ""} onClick={() => setActiveTab("requests")} >
   <span>Requests  ({getRequestsCount()})</span>
   </button>
 </div>

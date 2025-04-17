@@ -118,7 +118,7 @@ function Profile() {
           icon: "success",
           showCancelButton: true,
           confirmButtonColor: "#FF3366",
-          cancelButtonColor: "#d33",
+          cancelButtonColor: "#000",
           confirmButtonText: "Yes, Proceed!",
           cancelButtonText: "No, Thanks",
         }).then((result) => {
@@ -146,12 +146,18 @@ function Profile() {
     <>
       {loading ? (
         <div style={{ display: "flex", justifyContent: "center", marginTop: "200px" }}>
-          <Spinner animation="border" role="status" style={{ width: "5rem", height: "5rem" }} />
+          {/* <Spinner animation="border" role="status" style={{ width: "5rem", height: "5rem" }} /> */}
+          <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '5rem', height: '5rem',color:'#ff3366'}}>
+  <span class="visually-hidden">Loading...</span>
+</div>
         </div>
       ) : (
         <div className={styles.container}>
           <h2>Profile Setup</h2>
 
+          
+
+          <div className={styles.form}>
           <div className={styles.profileSection}>
             <div className={styles.profileImageWrapper}>
               <img
@@ -175,32 +181,47 @@ function Profile() {
                 <input type="file" style={{ display: "none" }} onChange={handleImageChange} />
               </label>
             </div>
-          </div>
-
-          <div className={styles.form}>
             <div className={styles.formGroup}>
               <label>Full Name</label>
               <input
                 type="text"
                 value={userData.fullName}
-                onChange={(e) => setUserData({ ...userData, fullName: e.target.value })}
+                onChange={(e) => {
+    const value = e.target.value;
+    setUserData({ ...userData, fullName: value });
+
+    // Clear error if value becomes valid
+    if (/^[A-Za-z\s]{3,25}$/.test(value)) {
+      setErrors((prev) => ({ ...prev, fullName: "" }));
+    }
+  }}
               />
               {errors.fullName && <span className={styles.error}>{errors.fullName}</span>}
             </div>
+          </div>
 
             <div className={styles.formGroup}>
               <label>Email</label>
               <input
                 type="email"
                 value={userData.email}
-                onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+                placeholder="tiwil@gmail.com"
+                onChange={(e) => {
+    const value = e.target.value;
+    setUserData({ ...userData, email: value });
+
+    if (/^[\w-.]+@([\w-]+\.)+[\w-]{2,}$/.test(value)) {
+      setErrors((prev) => ({ ...prev, email: "" }));
+    }
+  }}
               />
               {errors.email && <span className={styles.error}>{errors.email}</span>}
             </div>
 
-            <div className={styles.formGroup}>
+            <div className={`${styles.formGroup} ${styles.phoneIcon}`}>
               <label>Phone Number</label>
-              <input type="tel" value={userData.phoneNumber} disabled />
+              <input className={styles.inputphone} type="tel" value={userData.phoneNumber} disabled />
+              <img src="img/PhoneIcon.svg" alt="Phone"  />
             </div>
 
             <div className={styles.formGroup}>
@@ -208,7 +229,12 @@ function Profile() {
               <div className={styles.selectWrapper}>
                 <select
                   value={userData.gender}
-                  onChange={(e) => setUserData({ ...userData, gender: e.target.value })}
+                  onChange={(e) => {
+    setUserData({ ...userData, gender: e.target.value });
+    if (e.target.value) {
+      setErrors((prev) => ({ ...prev, gender: "" }));
+    }
+  }}
                 >
                   <option value="">Select</option>
                   <option value="Male">Male</option>
@@ -227,7 +253,12 @@ function Profile() {
                 value={userData.dob}
                 min="1900-12-01"
                 max={today}
-                onChange={(e) => setUserData({ ...userData, dob: e.target.value })}
+                onChange={(e) => {
+    setUserData({ ...userData, dob: e.target.value });
+    if (e.target.value) {
+      setErrors((prev) => ({ ...prev, dob: "" }));
+    }
+  }}
               />
               {errors.dob && <span className={styles.error}>{errors.dob}</span>}
             </div>
@@ -237,7 +268,12 @@ function Profile() {
               <div className={styles.selectWrapper}>
                 <select
                   value={userData.maritalStatus}
-                  onChange={(e) => setUserData({ ...userData, maritalStatus: e.target.value })}
+                  onChange={(e) => {
+    setUserData({ ...userData, maritalStatus: e.target.value });
+    if (e.target.value) {
+      setErrors((prev) => ({ ...prev, maritalStatus: "" }));
+    }
+  }}
                 >
                   <option value="">Select</option>
                   <option value="Unmarried">Unmarried</option>
