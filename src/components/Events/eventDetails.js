@@ -648,21 +648,7 @@ const EventDetails = () => {
                                                 style={{height:'43px',width:'43px',borderRadius:'50%',objectFit:'cover'}}
                                               />
 
-<div
-  style={{
-    borderRadius: "2px 5px 2px 10px",
-    position: "absolute",
-    top: "5px",
-    right: "5px",
-    color: "white",
-    fontSize: "15px",
-    fontWeight: "bold",
-    backgroundColor: "#EE4266",
-    padding: "5px",
-  }}
->
-  {calculateAgeAndBirthdayText(events.displayDate)}
-</div>
+
                                             </div>
 
                                             {/* Middle - Info */}
