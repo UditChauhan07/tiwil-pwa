@@ -172,13 +172,14 @@ function Profile() {
                 alt="Profile"
               />
               <label className={styles.cameraIcon}>
-                <img
+                {/* <img
                   src={`${process.env.PUBLIC_URL}/img/uplodbutton.svg`}
                   height={"20px"}
                   width={"20px"}
                   alt="Upload"
-                />
+                /> */}
                 <input type="file" style={{ display: "none" }} onChange={handleImageChange} />
+                Edit
               </label>
             </div>
             <div className={styles.formGroup}>
