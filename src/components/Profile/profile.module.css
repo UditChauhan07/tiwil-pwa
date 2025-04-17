@@ -65,6 +65,7 @@ body {
     transition: all 0.3s ease-in-out;
     box-sizing: border-box; /* Prevent padding from affecting width */
     appearance: none;
+    background-color: #fff !important;
   }
   
   .formGroup input:focus,
@@ -72,6 +73,7 @@ body {
     border-color: #f48fb1; /* Darker pink border on focus */
     box-shadow: 0px 0px 6px rgba(236, 64, 122, 0.4);
     outline: none;
+    background-color: #fff;
   }
   
   .error{
