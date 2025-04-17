@@ -18,7 +18,13 @@ const SplashScreen1 = () => (
       style={{width:"100%",height:'350px' }} // Ensuring height matches other screens
     />
     </div>
-    <p className="fw-semibold " style={{color:"#ff3366",height:'88px'}} >
+    <p  style={{color:"#ff3366",height:'88px',fontFamily: 'Poppins',
+fontWeight: "400",
+fontSize: "26px",
+lineHeight: "100%",
+letterSpacing:" 0%",
+textAlign: 'center'
+}} >
       Add & Organize Events and Celebrate<br/> Moments, gather.
     </p>
   </div>

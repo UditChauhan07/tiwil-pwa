@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
-import { FaEllipsisV, FaShareAlt, FaArrowRight } from "react-icons/fa";
+import { FaEllipsisV,  FaArrowRight } from "react-icons/fa";
 import "./Eventdetails.css";
 
+import { faShareNodes } from '@fortawesome/free-solid-svg-icons';
 import WishlistModal from "../Wishlist/addWishlist";
 import InviteModal from "../GuestInvite/GuestModal";
 import EditEventModal from "./eventModal";
@@ -17,6 +18,8 @@ import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { Spinner } from "react-bootstrap";
 import Swal from "sweetalert2";
+import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'; 
+
 
 const EventDetails = () => {
   const [activeTab, setActiveTab] = useState("details");
@@ -319,6 +322,28 @@ const EventDetails = () => {
       }
     }
   };
+  const calculateAgeAndBirthdayText = (eventDate) => {
+   // <-- Add this check
+    if (!eventDate) return "N/A";
+  
+    const today = new Date();
+    const targetDate = new Date(eventDate);
+    const currentYear = today.getFullYear();
+    targetDate.setFullYear(currentYear);
+  
+    const birthDate = new Date(eventDate);
+    const age = today.getFullYear() - birthDate.getFullYear();
+  
+    const diffTime = targetDate - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+  
+    if (diffDays === 0) return "Today!";
+    if (diffDays < 0) targetDate.setFullYear(currentYear + 1);
+  
+    const nextDiffTime = targetDate - today;
+    const nextDiffDays = Math.ceil(nextDiffTime / (1000 * 60 * 60 * 24));
+    return `${nextDiffDays} Days Left`;
+  };
   const getUpcomingBirthdayNumber = (eventDate) => {
     if (!eventDate) return null; // Handle invalid dates
 
@@ -365,11 +390,14 @@ const EventDetails = () => {
           marginTop: "150px",
         }}
       >
-        <Spinner
+        {/* <Spinner
           animation="border"
           role="status"
           style={{ width: "10rem", height: "10rem" }}
-        />
+        /> */}
+        <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '5rem', height: '5rem',color:'#ff3366'}}>
+  <span class="visually-hidden">Loading...</span>
+</div>
       </div>
     );
   }
@@ -378,9 +406,9 @@ const EventDetails = () => {
     <>
       <section className="page-controls" style={{ padding: "0" }}>
         <div>
-          <div className="container mt-4">
+          <div className="container mt-2">
             {/* Header Section */}
-            <div className="d-flex justify-content-between align-items-flex-start">
+            <div className="d-flex justify-content-between align-items-center">
               <div className="d-flex gap-2 align-items-flex-start">
                 <FontAwesomeIcon
                   icon={faArrowLeft}
@@ -389,14 +417,23 @@ const EventDetails = () => {
 
                 <h4>Event Details</h4>
               </div>
-              <div className="d-flex align-items-center">
-                <FaShareAlt className="me-3 fs-5" onClick={handleShare} />
+              <div className="d-flex align-items-center gap-2" >
+                {/* <FontAwesomeIcon icon={faShareNodes} style={{ color: '#ff3366', fontSize: '24px' }} 
+                 */}
+                
+                  <div onClick={handleShare}>
+                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" style={{marginBottom:'6px'}}>
+<path d="M3.26923 11.7692C4.30885 11.7692 5.23077 11.2723 5.82577 10.5073L10.5858 12.8873C10.5138 13.1619 10.4615 13.4365 10.4615 13.7308C10.4615 15.5354 11.9262 17 13.7308 17C15.5354 17 17 15.5354 17 13.7308C17 11.9262 15.5354 10.4615 13.7308 10.4615C12.6912 10.4615 11.7692 10.9585 11.1742 11.7235L6.41423 9.34346C6.48615 9.06885 6.53846 8.79423 6.53846 8.5C6.53846 8.20577 6.48615 7.93115 6.41423 7.65654L11.1742 5.27654C11.7692 6.04154 12.6912 6.53846 13.7308 6.53846C15.5354 6.53846 17 5.07385 17 3.26923C17 1.46462 15.5354 0 13.7308 0C11.9262 0 10.4615 1.46462 10.4615 3.26923C10.4615 3.56346 10.5138 3.83808 10.5858 4.11269L5.82577 6.49269C5.23077 5.72769 4.30885 5.23077 3.26923 5.23077C1.46462 5.23077 0 6.69538 0 8.5C0 10.3046 1.46462 11.7692 3.26923 11.7692ZM13.7308 11.7692C14.8096 11.7692 15.6923 12.6519 15.6923 13.7308C15.6923 14.8096 14.8096 15.6923 13.7308 15.6923C12.6519 15.6923 11.7692 14.8096 11.7692 13.7308C11.7692 12.6519 12.6519 11.7692 13.7308 11.7692ZM13.7308 1.30769C14.8096 1.30769 15.6923 2.19038 15.6923 3.26923C15.6923 4.34808 14.8096 5.23077 13.7308 5.23077C12.6519 5.23077 11.7692 4.34808 11.7692 3.26923C11.7692 2.19038 12.6519 1.30769 13.7308 1.30769ZM3.26923 6.53846C4.34808 6.53846 5.23077 7.42115 5.23077 8.5C5.23077 9.57885 4.34808 10.4615 3.26923 10.4615C2.19038 10.4615 1.30769 9.57885 1.30769 8.5C1.30769 7.42115 2.19038 6.53846 3.26923 6.53846Z" fill="black"/>
+</svg>
+
+                </div>
                 <Dropdown>
                   <Dropdown.Toggle
                     as="button"
-                    className="btn btn-light border-0 p-2"
-                  >
-                    <FaEllipsisV />
+                    className="btn  border-0 "
+                >
+              <FontAwesomeIcon icon={faEllipsisVertical} style={{ height:'23px',width:'23px'  }} />
+
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.Item onClick={() => setShowEditModal(true)}>
@@ -429,9 +466,11 @@ const EventDetails = () => {
                                   </Card> */}
                   <div
                     style={{
-                      width: "100%",
-                      height: "174px",
+                      maxWidth: "760px",
+                      width:'100%',
+                      maxHeight: "320px",
                       borderRadius: "10px",
+                      position:'relative'
                     }}
                   >
                     <img
@@ -450,13 +489,29 @@ const EventDetails = () => {
                       }
                       className="img-fluid event-img1"
                       style={{
-                        width: "550px",
-                        height: "174px",
+                        maxWidth:'760px',
+                        width: "100%",
+                        maxHeight: "300px",
                         borderRadius: "10px",
-                        objectFit: "contain",
+                     
                       }}
                       alt="Event"
                     />
+                         <div
+  style={{
+    borderRadius: "6px 7px 2px 4px",
+    position: "absolute",
+    top: "0px",
+    right: "0px",
+    color: "white",
+    fontSize: "15px",
+    fontWeight: "bold",
+    backgroundColor: "#EE4266",
+    padding: "5px",
+  }}
+>
+  {calculateAgeAndBirthdayText(event.displayDate, event.isCancelled)}
+</div>
                   </div>
 
                   {/* Map over events to display them dynamically */}
@@ -495,7 +550,7 @@ const EventDetails = () => {
                           <div className="calender-icon">
                             <FontAwesomeIcon
                               icon={faCalendarAlt}
-                              style={{ color: "#ff3366", fontSize: "20px" }}
+                              style={{ color: "#ff3366", fontSize: "20px"  }}
                             />
                           </div>
                           {event.displayDate
@@ -507,11 +562,11 @@ const EventDetails = () => {
                             : "Date not available"}
                         </p>
 
-                        <p className="d-flex align-items-center">
-                          <span className=" text-white p-2 rounded me-2 location-icon">
+                        <p className="d-flex align-items-center gap-2">
+                          <span className=" text-white   location-icon">
                             <FontAwesomeIcon
                               icon={faLocationDot}
-                              style={{ color: "#ff3366" }}
+                              style={{ color: "#ff3366",margin:'3px' }}
                             />
                           </span>
                           {event.location || "Location not available"}
@@ -592,6 +647,22 @@ const EventDetails = () => {
                                         
                                                 style={{height:'43px',width:'43px',borderRadius:'50%',objectFit:'cover'}}
                                               />
+
+<div
+  style={{
+    borderRadius: "2px 5px 2px 10px",
+    position: "absolute",
+    top: "5px",
+    right: "5px",
+    color: "white",
+    fontSize: "15px",
+    fontWeight: "bold",
+    backgroundColor: "#EE4266",
+    padding: "5px",
+  }}
+>
+  {calculateAgeAndBirthdayText(events.displayDate)}
+</div>
                                             </div>
 
                                             {/* Middle - Info */}

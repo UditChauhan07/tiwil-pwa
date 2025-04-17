@@ -70,3 +70,12 @@ a {
 /* .mains121 .card:last-child {
   margin-bottom: 4rem !important;
 } */
+
+
+.page-controls .dropdown-menu.show {
+  transform: unset !important;
+  left: -128px !important;
+  top: 40px !important;
+  /* inset: unset !important; */
+  box-shadow: unset !important;
+}

@@ -159,11 +159,14 @@ function Invitationlst({ searchQuery }) {
       <div
         style={{ display: "flex", justifyContent: "center", marginTop: "50px" }}
       >
-        <Spinner
+        {/* <Spinner
           animation="border"
           role="status"
           style={{ width: "5rem", height: "5rem" }}
-        />
+        /> */}
+        <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '5rem', height: '5rem',color:'#ff3366'}}>
+  <span class="visually-hidden">Loading...</span>
+</div>
       </div>
     );
   }

@@ -49,8 +49,8 @@ const Starting = () => {
 
           {/* Navigation Buttons */}
           <div className="onboarding-footer">
-          <div className="mainBtnStart">
-            <button onClick={handleNext} className="next-btn">
+          <div className="mainBtnStart" onClick={handleNext}>
+            <button  className="next-btn">
               {currentSlide === slides.length - 1 ? "Start" : "Next"}
             </button>
               <img  src={`${process.env.PUBLIC_URL}/img/Arrow.svg`} alt="arrow" className="image" />

@@ -8,7 +8,7 @@
     }
     100% {
       opacity: 1;
-      transform: scale(1.7); /* End at normal size */
+      transform: scale(2); /* End at normal size */
     }
   }
   

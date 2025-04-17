@@ -152,3 +152,25 @@ top: 0% !important;
   .swal2-modal{
     position:relative;
   }
+
+
+  div.PhoneInputCountry{
+    border-radius: 5px!important;
+    border: 1px solid #00000066 !important;
+    padding: 6px !important;
+    height: 38px!important;
+  }
+  .PhoneInputInput{
+    margin-top: 0px !important;
+     border-color: #00000066 !important;
+     border: 1px solid #00000066 !important;
+     outline: none !important;
+  }
+  .PhoneInput{
+    border:none !important
+  }
+  
+
+  .dropdown-toggle::after {
+    display: none !important; /* Hide the default arrow icon */
+  }

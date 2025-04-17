@@ -51,48 +51,66 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
 
   const [name, setName] = useState(event.name || "");
   const [eventDate, setDate] = useState(""); // leave blank initially
+  const [errors, setErrors] = useState({});
 
 
   const { eventId } = useParams();
 
   // Validation for null, undefined, and character limits
-  const validateForm = () => {
-    let newErrors = {};
+  // const validateForm = () => {
+  //   let newErrors = {};
 
-    // Validate Name: Only allow up to 30 characters, no more than that
-    if (!name || name.trim() === "") {
+  //   // Validate Name: Only allow up to 30 characters, no more than that
+  //   if (!name || name.trim() === "") {
+  //     newErrors.name = "Event Name is required.";
+  //   } else if (name.length > 30) {
+  //     newErrors.name = "Event Name cannot be more than 30 characters.";
+  //   }
+
+  //   // Validate Location: Only allow up to 30 characters, no more than that
+  //   if (!location || location.trim() === "") {
+  //     newErrors.location = "Location is required.";
+  //   } else if (location.length > 30) {
+  //     newErrors.location = "Location cannot be more than 30 characters.";
+  //   }
+
+  //   // Validate Description: Optional, but add a max length if required
+  //   if (description && description.length > 200) {
+  //     newErrors.description = "Description cannot be more than 200 characters.";
+  //   }
+
+  //   return newErrors;
+  // };
+
+  const validateForm = () => {
+    const newErrors = {};
+  
+    if (!name.trim()) {
       newErrors.name = "Event Name is required.";
     } else if (name.length > 30) {
       newErrors.name = "Event Name cannot be more than 30 characters.";
     }
-
-    // Validate Location: Only allow up to 30 characters, no more than that
-    if (!location || location.trim() === "") {
+  
+    if (!location.trim()) {
       newErrors.location = "Location is required.";
     } else if (location.length > 30) {
       newErrors.location = "Location cannot be more than 30 characters.";
     }
-
-    // Validate Description: Optional, but add a max length if required
-    if (description && description.length > 200) {
-      newErrors.description = "Description cannot be more than 200 characters.";
-    }
-
-    return newErrors;
-  };
-
-  // Handle form submission
-  const handleSave = async () => {
-    const newErrors = validateForm();
-    if (Object.keys(newErrors).length > 0) {
-      Swal.fire({
-        icon: "error",
-        title: "Form validation failed",
-        text: Object.values(newErrors).join(", "),
-      });
-      return;
+  
+    if (description.length > 100) {
+      newErrors.description = "Description cannot be more than 100 characters.";
     }
   
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // ✅ true = no errors
+  };
+  
+  // Handle form submission
+  const handleSave = async () => {
+
+    const isValid = validateForm();
+    if (!isValid) return;
+ 
     try {
       const token = getAuth();
       const formData = new FormData();
@@ -184,16 +202,24 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
 
       <Modal.Body>
         <Form className="mt-4">
-          <Form.Group className="mb-3">
-            <Form.Label className="fw-bold">Event Name</Form.Label>
-            <Form.Control
-              type="text"
-              name="name"
-              value={name}
-              onChange={handleNameChange}
-              placeholder="Enter event name"
-            />
-          </Form.Group>
+        <Form.Group className="mb-3">
+  <Form.Label className="fw-bold">Event Name</Form.Label>
+  <Form.Control
+    type="text"
+    name="name"
+    value={name}
+    onChange={(e) => {
+      handleNameChange(e);
+      if (errors.name) setErrors({ ...errors, name: "" });
+    }}
+    placeholder="Enter event name"
+    isInvalid={!!errors.name}
+  />
+  <Form.Control.Feedback type="invalid">
+    {errors.name}
+  </Form.Control.Feedback>
+</Form.Group>
+
 
           <Form.Group className="mb-3">
             <Form.Label className="fw-bold">Event Date</Form.Label>
@@ -206,28 +232,44 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label className="fw-bold">Location</Form.Label>
-            <InputGroup>
-              <Form.Control
-                type="text"
-                name="location"
-                value={location}
-                onChange={handleLocationChange}
-                placeholder="Enter event location"
-              />
-            </InputGroup>
-          </Form.Group>
+  <Form.Label className="fw-bold">Location</Form.Label>
+  <InputGroup>
+    <Form.Control
+      type="text"
+      name="location"
+      value={location}
+      onChange={(e) => {
+        handleLocationChange(e);
+        if (errors.location) setErrors({ ...errors, location: "" });
+      }}
+      placeholder="Enter event location"
+      isInvalid={!!errors.location}
+    />
+    <Form.Control.Feedback type="invalid">
+      {errors.location}
+    </Form.Control.Feedback>
+  </InputGroup>
+</Form.Group>
 
           <Form.Group className="mb-3">
   <Form.Label className="fw-bold">About Event</Form.Label>
   <Form.Control
-    type="text"
+    as="textarea"
+    rows={3}
     name="aboutEvent"
     value={description}
-    onChange={handledescriptionchange}
+    onChange={(e) => {
+      handledescriptionchange(e);
+      if (errors.description) setErrors({ ...errors, description: "" });
+    }}
     placeholder="Enter event description (max 100 characters)"
+    isInvalid={!!errors.description}
   />
+  <Form.Control.Feedback type="invalid">
+    {errors.description}
+  </Form.Control.Feedback>
 </Form.Group>
+
 
 
           {/* Image Section */}

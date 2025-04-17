@@ -525,11 +525,14 @@ const EventDetails = () => {
           marginTop: "200px",
         }}
       >
-        <Spinner
+        {/* <Spinner
           animation="border"
           role="status"
           style={{ width: "7rem", height: "7rem" }}
-        />
+        /> */}
+        <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '5rem', height: '5rem',color:'#ff3366'}}>
+  <span class="visually-hidden">Loading...</span>
+</div>
       </div>
     );
   }
@@ -616,22 +619,31 @@ const EventDetails = () => {
               <div className="tab-content  mt-3   bg-white">
                 {activeTab === "details" && (
                   <>
-                    <p
-                      className="d-flex align-items-center pdate "
-                      style={{ marginBottom: "4px" }}
-                    >
-                      <span className="bg-danger text-white p-2 rounded me-2">
-                        📅
-                      </span>
-                      {formatDateWithCurrentYear(events.displayDate) ||
-                        "Date not available"}
-                    </p>
-                    <p className="d-flex align-items-center">
-                      <span className="bg-danger text-white p-2 rounded me-2">
-                        📍
-                      </span>
-                      {events.location || "Location not available"}
-                    </p>
+                   <p className="d-flex align-items-center gap-2 mb-2">
+                                             <div className="calender-icon">
+                                               <FontAwesomeIcon
+                                                 icon={faCalendarAlt}
+                                                 style={{ color: "#ff3366", fontSize: "20px"  }}
+                                               />
+                                             </div>
+                                             {events.displayDate
+                                               ? formatDateWithCurrentYear(
+                                                   events.displayDate,
+                                                 
+                                                 
+                                                 )
+                                               : "Date not available"}
+                                           </p>
+                   
+                                           <p className="d-flex align-items-center gap-2">
+                                             <span className=" text-white   location-icon">
+                                               <FontAwesomeIcon
+                                                 icon={faLocationDot}
+                                                 style={{ color: "#ff3366",margin:'3px' }}
+                                               />
+                                             </span>
+                                             {events.location || "Location not available"}
+                                           </p>
                     {/* <p className="d-flex align-items-center">
                       {events.description}
                     </p> */}

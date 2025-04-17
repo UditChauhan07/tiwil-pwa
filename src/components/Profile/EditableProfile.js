@@ -187,7 +187,10 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
   if (loading) {
     return (
       <div style={{ display: "flex", justifyContent: "center", alignItems: 'center', height: '100vh' }}> {/* Center spinner */}
-        <Spinner animation="border" role="status" style={{ width: "5rem", height: "5rem" }} />
+        {/* <Spinner animation="border" role="status" style={{ width: "5rem", height: "5rem" }} /> */}
+        <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '5rem', height: '5rem',color:'#ff3366'}}>
+  <span class="visually-hidden">Loading...</span>
+</div>
       </div>
     );
   }
