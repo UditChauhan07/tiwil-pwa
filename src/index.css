@@ -80,3 +80,7 @@ a {
   /* inset: unset !important; */
   box-shadow: unset !important;
 }
+
+.mainapp{
+  padding: 0px 10px;
+}

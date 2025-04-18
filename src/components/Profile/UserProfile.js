@@ -83,18 +83,18 @@ function Profile() {
 
   const handleSave = async () => {
     if (!validateForm()) return;
-
+  
     const token = localStorage.getItem("token");
     const formData = new FormData();
-
+  
     Object.entries(userData).forEach(([key, value]) => {
       formData.append(key, value);
     });
-
+  
     if (selectedProfileImage) {
       formData.append("profileImage", selectedProfileImage);
     }
-
+  
     setLoading(true);
     try {
       const response = await axios.post(
@@ -107,11 +107,12 @@ function Profile() {
           },
         }
       );
-
+  
       if (response.data.success) {
         localStorage.setItem("profileStatus", true);
         localStorage.setItem("profileImage", response.data.data.profileImage);
-
+  
+        // Show SweetAlert and wait for user input
         Swal.fire({
           title: "Profile Added",
           text: "Would you like to add family info?",
@@ -121,8 +122,36 @@ function Profile() {
           cancelButtonColor: "#000",
           confirmButtonText: "Yes, Proceed!",
           cancelButtonText: "No, Thanks",
-        }).then((result) => {
+        }).then(async (result) => {
+          // Navigate based on user choice
           navigate(result.isConfirmed ? "/additionalinfo" : "/home");
+  
+          // ✅ Always call family-info API regardless of confirmation
+          try {
+            const token = localStorage.getItem("token");
+            const emptyFormData = new FormData(); // Empty FormData
+  
+            const familyResponse = await axios.post(
+              `${process.env.REACT_APP_BASE_URL}/family-info`,
+              emptyFormData,
+              {
+                headers: {
+                  Authorization: `Bearer ${token}`,
+                  "Content-Type": "multipart/form-data",
+                },
+              }
+            );
+  
+            if (familyResponse.data.success) {
+              console.log("✅ Family information saved successfully.");
+              localStorage.setItem("onboardingStatus", true);
+              // No need to navigate again — already done
+            } else {
+              console.error("❌ Error saving family information:", familyResponse.data.message);
+            }
+          } catch (err) {
+            console.error("❌ Error in family-info API:", err.message);
+          }
         });
       } else {
         setErrors({
@@ -141,6 +170,7 @@ function Profile() {
       setLoading(false);
     }
   };
+  
 
   return (
     <>

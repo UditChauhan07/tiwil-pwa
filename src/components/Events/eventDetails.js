@@ -116,7 +116,7 @@ const EventDetails = () => {
     const fetchHistory = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BASE_URL}/history`,
+          `${process.env.REACT_APP_BASE_URL}/getsurprisedata`,
           {
             headers: { Authorization: `Bearer ${token}` },
           }
@@ -515,7 +515,7 @@ const EventDetails = () => {
                   </div>
 
                   {/* Map over events to display them dynamically */}
-
+cook
                   <h4 className="mt-3 " style={{ color: "black" }}>
                     {event.name}{" "}
                     {event.relation &&
@@ -924,79 +924,94 @@ const EventDetails = () => {
                       </div>
                     )}
                     {activeTab === "history" && (
-                      <div className="container mt-5">
-                        {surpriseData.length === 0 ? (
-                          <div>
-                            <br />
-                            <br />
-                            <p className=" p-history">No History </p>
-                            <br />
-                          </div>
-                        ) : (
-                          surpriseData.map((event, index) => (
-                            <div key={index} className="card mb-3 history-card">
-                              <div className="row g-0">
-                                {/* Event Image */}
-                                <div className="col-md-3">
-                                  <img
-                                    src={
-                                      event.imageUrl || "/img/placeholder.jpg"
-                                    }
-                                    className="img-fluid event-image"
-                                    alt={event.name}
-                                  />
-                                </div>
-                                {/* Event Details */}
-                                <div className="col-md-9">
-                                  <div className="card-body">
-                                    <h5 className="card-title" style={{marginBottom:'0px'}}>{event.name}</h5>
-                                    <p className="event-date">
-                                      📅{" "}
-                                      {new Date(
-                                        event.eventDate
-                                      ).toLocaleDateString()}
-                                    </p>
-                                    {/* Wishlist Preview */}
-                                    <div className="wishlist-preview">
-                                      {(event.wishlist || [])
-                                        .slice(0, 3)
-                                        .map((item, i) => (
-                                          <img
-                                            key={i}
-                                            src={item.image}
-                                            alt="wishlist"
-                                          />
-                                        ))}
-                                      {(event.wishlist || []).length > 3 && (
-                                        <button className="btn btn-outline-danger btn-sm">
-                                          View Full Wishlist
-                                        </button>
-                                      )}
-                                    </div>
+  <div className="container mt-5">
+    {surpriseData.length === 0 ? (
+      <div>
+        <br />
+        <p className="p-history">No History</p>
+        <br />
+      </div>
+    ) : (
+      surpriseData.map((event, index) => {
+        const name = event.eventName || "Untitled Event";
+        const date = new Date(event.eventDate).toLocaleDateString();
+        const wishlist = [
+          {
+            image: event.wishlistItem?.imageUrl || "/img/placeholder.jpg",
+            giftName: event.wishlistItem?.giftName,
+          },
+        ];
+        const guests = event.wishlistItem?.guestsWithDetails || [];
+        const imageUrl = event.wishlistItem?.imageUrl || "/img/placeholder.jpg";
 
-                                    <div className="guest-section">
-                                      {(event.guests || [])
-                                        .slice(0, 3)
-                                        .map((guest, i) => (
-                                          <img
-                                            key={i}
-                                            src={guest.profileImage}
-                                            className="guest-img"
-                                            alt="guest"
-                                          />
-                                        ))}
-                                      <span className="guest-count">
-                                        {(event.guests || []).length} guests
-                                      </span>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          ))
-                        )}
-                      </div>
+        return (
+          <div key={index} className="card mb-3 history-card">
+            <div className="row g-0">
+              {/* Event Image */}
+              <div className="col-md-3">
+                <img
+                  // src={imageUrl} 
+                  
+                  
+                   src={`${process.env.REACT_APP_BASE_URL}/${imageUrl}` }
+                  className="img-fluid event-image"
+                  alt={name}
+                />
+              </div>
+
+              {/* Event Details */}
+              <div className="col-md-9">
+                <div className="card-body">
+                  <h5 className="card-title" style={{ marginBottom: "0px" }}>
+                    {name}
+                  </h5>
+                  <p className="event-date">📅 {date}</p>
+
+                  {/* Wishlist Preview */}
+                  <div className="wishlist-preview">
+                    {wishlist.slice(0, 3).map((item, i) => (
+                      <img
+                        key={i}
+              
+              // src={item.image} 
+                           src={`${process.env.REACT_APP_BASE_URL}/${item.image}` }
+                        alt={item.giftName || "wishlist"}
+                      />
+                    ))}
+                    {wishlist.length > 3 && (
+                      <button className="btn btn-outline-danger btn-sm">
+                        View Full Wishlist
+                      </button>
                     )}
+                  </div>
+
+                  {/* Guest Section */}
+                  <div className="guest-section">
+                    {guests.slice(0, 3).map((guest, i) => (
+                      <img
+                        key={i}
+                        // src={
+                        //   guest.profileImage || "/img/user-placeholder.png"
+                        // }
+                        src={`${process.env.REACT_APP_BASE_URL}/${guest.profileImage}` }
+                        className="guest-img"
+                        alt={guest.name || "Guest"}
+                      />
+                    ))}
+                    <span className="guest-count">
+                      {guests.length} guests
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+      })
+    )}
+  </div>
+)}
+
                   </div>
                 </div>
               ))
