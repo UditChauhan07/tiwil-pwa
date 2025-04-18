@@ -1,6 +1,3 @@
-// utils/authStorage.js
-
-
 
 // ✅ Set token in localStorage and cookie
 export const setAuth = (token) => {

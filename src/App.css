@@ -156,19 +156,66 @@ top: 0% !important;
 
   div.PhoneInputCountry{
     border-radius: 5px!important;
-    border: 1px solid #00000066 !important;
+    /* border: 1px solid #00000066 !important; */
     padding: 6px !important;
     height: 38px!important;
   }
   .PhoneInputInput{
     margin-top: 0px !important;
      border-color: #00000066 !important;
-     border: 1px solid #00000066 !important;
+     border: 1px solid #00000000 !important;
      outline: none !important;
+     padding: 0px 6px 0px 0 !important;  ;
   }
   .PhoneInput{
-    border:none !important
-  }
+    /* border: 1px solid #b3b3b3 !important;  */
+  
+    position: relative;
+    top: -9px;
+      }
+
+  .phoneBorder{
+    border: 1px solid #00000066 !important; 
+    border-radius: 5px !important;
+    height: 60px !important;
+    padding: 5px 5px;
+}
+
+.phoneBorder .form-label{
+  margin-bottom: 0px !important;
+  padding: 0 0 0 5px !important;
+  color: #818181 !important;
+  font-size: 12px;
+  height: 16px !important;
+
+}
+
+.fullnameb{
+  border: 1px solid #00000066 !important; 
+  border-radius: 5px !important;
+  /* height: 40px !important; */
+  padding: 5px 5px;
+}
+ 
+.fullnameb .form-label{
+  margin-bottom: 0px !important;
+  padding: 0 0 0 5px !important;
+  color: #818181 !important;
+  font-size: 12px;
+  height: 16px !important;
+
+}
+
+.fullnameb input{
+  height: 20px !important;
+  border: none !important;
+  margin: 0;
+  padding: 0 0 0 5px;
+  outline: none !important;
+  box-shadow: unset !important;
+  background-color: none !important;
+}
+
   
 
   .dropdown-toggle::after {

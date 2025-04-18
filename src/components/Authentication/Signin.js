@@ -332,40 +332,43 @@ marginBottom:'5px'
         {/* Apply blur effect to the background */}
         {isLoading && <div className="blur-background"></div>}
 
-        <div className="d-flex justify-content-center mt-3" style={{padding:'4px',border:'1px solid whitesmoke',width:'100%',height:'35px' }}>
-          <Link to="/signin" style={{width:'50%'}}>
-            <p
-              onClick={() => setActive("signin")}
+        <div className="d-flex justify-content-center mt-3" style={{padding:'4px',border:'1px solid whitesmoke',width:'100%',height:'40px',    borderRadius: '7px' }}>
+          <Link to="/signin"   onClick={() => setActive("signin")}
               style={{
+                width:'50%',
                 display:'flex',
                 justifyContent:'center',
-                fontSize: "1rem",
+                fontSize: "18px",
+                borderRadius:'5px',
                
               
                 backgroundColor: active === "signin" ? "#EE4266" : "transparent",
                 color: active === "signin" ? "#ffffff" : "#EE4266",
-                fontWeight: "600",
+                fontWeight: "500",
                 cursor: "pointer",
-              }}
+              }}>
+            <p
+             
             >
               Sign in
             </p>
           </Link>
 
-          <Link to="/signup"  style={{width:'50%'}}>
-            <p
-              onClick={() => setActive("signup")}
+          <Link to="/signup"    onClick={() => setActive("signup")}
               style={{
+                width:'50%',
                 display:'flex',
                 justifyContent:'center',
-                fontSize: "1rem",
-              
+                fontSize: "18px",
+              borderRadius:'5px',
          
                 backgroundColor: active === "signup" ? "#EE4266" : "transparent",
-                fontWeight: active === "signup" ? "bold" : "600",
+                fontWeight: active === "signup" ? "bold" : "500",
                 cursor: "pointer",
                 color: '#ff3366'
-              }}
+              }}>
+            <p
+             
             >
               Sign up
             </p>
@@ -378,8 +381,8 @@ marginBottom:'5px'
         >
      
             <form style={{border:'none'}} >
-              <div className="mb-3">
-                <label htmlFor="phone" className="form-label">Phone</label>
+              <div className="mb-3 phoneBorder" >
+                <label htmlFor="phone" className="form-label" >Phone Number</label>
                 <PhoneInput
                   international
                   defaultCountry="IN"

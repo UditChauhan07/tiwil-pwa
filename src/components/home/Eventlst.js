@@ -399,24 +399,24 @@ marginBottom:'0px'
                     </h6>
                   </div>
                   <div>
-                      {event.relation &&
-                      event.relation.toLowerCase() !== "parent anniversary" &&
-                      event.relation.toLowerCase() !==
-                        "marriage anniversary" ? (
-                        <h4
-                          style={{
-                            background: "white",
-                            color: "#ff3366",
-                            border: "1px solid #ff3366",
-                            paddingLeft: "10px",
-                            padding: "3px 27px 0px 26px",
-                            borderRadius: "10px",
-                          }}
-                        >
-                          {event.relation}
-                        </h4>
-                      ) : null}
-                    </div>
+  <h4
+    style={{
+      background: "white",
+      color: "#ff3366",
+      border: "1px solid #ff3366",
+      paddingLeft: "10px",
+      padding: "3px 27px 0px 26px",
+      borderRadius: "10px",
+    }}
+  >
+    {event.relation &&
+    event.relation.toLowerCase() !== "parent anniversary" &&
+    event.relation.toLowerCase() !== "marriage anniversary"
+      ? event.relation
+      : "Event"}
+  </h4>
+</div>
+
                 </Card.Text>
                 
                   <div style={{ display: "flex", gap: "8px" }}>

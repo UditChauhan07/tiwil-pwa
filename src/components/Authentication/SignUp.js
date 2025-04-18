@@ -738,40 +738,45 @@ const SignUpForm = () => {
               padding: "4px",
               border: "1px solid whitesmoke",
               width: "100%",
-              height: "35px",
+              height: "40px",
+              borderRadius: "5px",
             }}
           >
-            <Link to="/signin" style={{ width: "50%" }}>
-              <p
-                onClick={() => setActive("signin")}
+            <Link to="/signin"  onClick={() => setActive("signin")}
                 style={{
+                  width: "50%",
                   display: "flex",
                   justifyContent: "center",
-                  fontSize: "1rem",
+                  fontSize: "18px",
+                  borderRadius:'5px',
 
                   backgroundColor:
                     active === "signin" ? "#EE4266" : "transparent",
-                  fontWeight: active === "signin" ? "bold" : "600",
+                  fontWeight: active === "signin" ? "bold" : "500",
                   cursor: "pointer",
                   color: "#ff3366",
-                }}
+                }}>
+              <p
+               
               >
                 Sign in
               </p>
             </Link>
-            <Link to="/signup" style={{ width: "50%" }}>
-              <p
-                onClick={() => setActive("signup")}
+            <Link to="/signup"  onClick={() => setActive("signup")}
                 style={{
+                  width: "50%",
                   display: "flex",
                   justifyContent: "center",
-
+                  fontSize: "18px",
+                  borderRadius:'5px',
                   color: active === "signup" ? "#ffffff" : "#ff3366",
                   backgroundColor:
                     active === "signup" ? "#EE4266" : "transparent",
-                  fontWeight: "600",
+                  fontWeight: "500",
                   cursor: "pointer",
-                }}
+                }}>
+              <p
+               
               >
                 Sign up
               </p>
@@ -787,7 +792,7 @@ const SignUpForm = () => {
             }}
           >
             <form noValidate>
-              <div className="mb-3">
+              <div className="mb-3 fullnameb ">
                 <label htmlFor="fullName" className="form-label">
                   Full Name
                 </label>
@@ -796,6 +801,7 @@ const SignUpForm = () => {
                   className={`form-control ${nameError ? "is-invalid" : ""}`}
                   id="fullName"
                   name="fullName"
+                  placeholder="Enter full name"
                   value={formData.fullName}
                   onChange={handleChange}
                   required
@@ -805,7 +811,7 @@ const SignUpForm = () => {
                 )}
               </div>
               <div id="recaptcha-container"></div>
-              <div className="mb-3" style={{ border: "none" }}>
+              <div className="mb-3 phoneBorder" style={{ border: "none" }}>
                 <label htmlFor="phoneNumber" className="form-label">
                   Phone Number
                 </label>
@@ -814,6 +820,7 @@ const SignUpForm = () => {
                   defaultCountry="IN"
                   value={formData.phoneNumber}
                   onChange={handlePhoneChange}
+                  placeholder="Enter phone number"
                   className={`form-contrl ${phoneError ? "is-invalid" : ""}`}
                   style={{
                     display: "flex",
@@ -823,10 +830,11 @@ const SignUpForm = () => {
                     height: "45px!important",
                   }}
                 />
-                {phoneError && (
-                  <div className="invalid-feedback d-block">{phoneError}</div>
-                )}
+                
               </div>
+              {phoneError && (
+                  <div className="invalid-feedback d-block"  style={{height:'20px'}}>{phoneError}</div>
+                )}
               <div style={{ marginTop: "12px", marginBottom: "12px" }}>
                 <span>
                   By creating an account, I accept the{" "}
@@ -941,7 +949,7 @@ const SignUpForm = () => {
                 }}
                 numInputs={6}
                 renderSeparator={<span>-</span>}
-                renderInput={(props) => <input {...props} />}
+               renderInput={(props) => <input {...props} type="tel" />}
                 inputStyle={{
                   width: "40px",
                   height: "50px",
