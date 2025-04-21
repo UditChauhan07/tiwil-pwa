@@ -119,7 +119,13 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
       });
 
       if (response.data.success) {
-        Swal.fire("Success", "Wishlist item added successfully!", "success");
+       Swal.fire({
+                      title: "Success",
+                      text: "Wishlist added successfully!",
+                      icon: "success",
+                      confirmButtonColor: "#ff3366" // Custom confirm button color
+                    });
+                    
         setShow(false);
         refreshWishlist(); // Refresh the wishlist after adding
       }

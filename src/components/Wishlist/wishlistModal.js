@@ -3,6 +3,7 @@ import { Modal, Button, Form } from "react-bootstrap";
 import axios from "axios";
 import Swal from "sweetalert2";
 
+
 const WishlistEditModal = ({ show, setShow, wishlist, fetchWishlist }) => {
   if (!wishlist) return null; // Ensure modal doesn't render if wishlist is undefined
 

@@ -144,22 +144,27 @@ h3 {
 }
 
 .addButton {
-  background-color: #81c784; /* Green for adding siblings/children */
-  color: white;
+  background-color: none !important; /* Green for adding siblings/children */
+  color: #EE4266;
+  border: 1px solid #EE4266;
 }
 
 .addButton:hover {
-  background-color: #66bb6a; /* Darker green on hover */
+ 
+ color:white;
+  background-color: #EE4266; /* Darker green on hover */
 }
 
 .removeButton {
-  background-color: #e57373; 
-  color: white;
+  background-color:none !important;
+  border: 0.5px solid #EE4266; 
+  color:#EE4266;
   margin-left: 5px;
 }
 
 .removeButton:hover {
-  background-color: #ef5350; /* Darker red on hover */
+  color:white;
+  background-color: #EE4266;/* Darker red on hover */
 }
 .saveBtnBox {
   display: flex;
@@ -169,18 +174,30 @@ h3 {
 
 /* Save Button */
 .saveButton {
-  width: 50%;
-  padding: 14px;
+  width: 80%;
+
    /* Gradient pink */
-  background: #EE4266;
-  color: white;
-  border: none;
-  border-radius: 10px;
-  font-size: 18px;
-  font-weight: 700;
+
+  color: #EE4266;
+  border: 0.5px solid #EE4266;
+  font-family: Poppins;
+font-weight: 400;
+font-size: 16px;
+line-height: 100%;
+letter-spacing: 0%;
+
+background:none !important;
+
   cursor: pointer;
   transition: all 0.3s ease-in-out;
   margin-top: 20px;
+
+height: 40px;
+top: 921px;
+left: 71px;
+border-radius: 40px;
+border-width: 1px;
+
 }
 .skipps{
   display: flex;

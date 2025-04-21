@@ -404,14 +404,14 @@ const SignUpForm = () => {
 
   const handleSendOTP = async (e) => {
     e.preventDefault();
-    if (window.recaptchaVerifier) {
-      window.recaptchaVerifier.clear(); // This will clear the old CAPTCHA state
-    }
+    // if (window.recaptchaVerifier) {
+    //   window.recaptchaVerifier.clear(); // This will clear the old CAPTCHA state
+    // }
 
     // Set new state to indicate OTP is being sent
     setIsOtpSent(false);
     setCanResend(false);
-    setResendCooldown(30);
+    setResendCooldown(60);
 
     const isNameValid = validateName(formData.fullName);
     const isPhoneValid = validatePhoneNumber(formData.phoneNumber);
@@ -524,7 +524,7 @@ const SignUpForm = () => {
       setConfirmationResult(confirmation);
       setIsOtpSent(true);
       setCanResend(false);
-      setResendCooldown(30);
+      setResendCooldown(60);
       setResendAttempts((prev) => prev + 1);
 
       Swal.fire({
@@ -862,7 +862,7 @@ const SignUpForm = () => {
                   borderRadius: "15px",
                   color: "white",
                 }}
-                disabled={loading}
+              
                 onClick={handleSendOTP}
               >
                 {loading ? (

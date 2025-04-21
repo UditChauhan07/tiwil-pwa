@@ -12,7 +12,7 @@ import styles from './signin.module.css'
 import OtpInput from 'react-otp-input'; // Import the OtpInput component
 import { setAuth, getAuth, clearAuth } from "./auth";
 
-
+import {useEffect} from 'react'
 
 const SignInForm = () => {
   const [formData, setFormData] = useState({
@@ -28,12 +28,27 @@ const SignInForm = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [confirmationResult, setConfirmationResult] = useState(null);
   const [otp, setOtp] = useState("");
+    const [resendCooldown, setResendCooldown] = useState(30);
+    const [canResend, setCanResend] = useState(false);
+    const [resendAttempts, setResendAttempts] = useState(0);
   const navigate = useNavigate();
 
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+   useEffect(() => {
+      let timer;
+      if (isOtpSent && resendCooldown > 0) {
+        timer = setTimeout(() => {
+          setResendCooldown((prev) => prev - 1);
+        }, 1000);
+      } else if (resendCooldown === 0) {
+        setCanResend(true);
+      }
+      return () => clearTimeout(timer);
+    }, [isOtpSent, resendCooldown]);
+  
   // Handle Send OTP
   const isPhoneValid = (phone) => {
     const cleanedPhone = phone?.replace(/\D/g, ""); // remove non-digits
@@ -45,7 +60,8 @@ const SignInForm = () => {
     e.preventDefault();
     setIsLoading(true); // Start loading
     setPhoneError(""); // Clear error initially
-  
+    setCanResend(false);
+    setResendCooldown(60);
     if (!isPhoneValid(formData.phoneNumber)) {
       setPhoneError("Phone number must be between 9 to 15 digits.");
       setIsLoading(false); // Stop loading if validation fails
@@ -123,6 +139,7 @@ const SignInForm = () => {
       setConfirmationResult(confirmation);
       localStorage.setItem('setIsOtpSent', true); 
       setIsOtpSent(true);
+      setResendCooldown(60);
       Swal.fire({
            title: "Success",
            text: "OTP sent successfully!",
@@ -503,9 +520,35 @@ marginBottom:'5px'
   }}
 />
  </div> {phoneError.hasError && <div className="invalid-feedback d-block " style={{textAlign:'center'}}>{phoneError.message}</div>}
+              
               </div>
+              
               <br/>
               <br/>
+              
+              {canResend ? (
+            <div style={{ textAlign: "center", marginTop: "10px" }}>
+              <button
+                type="button"
+                onClick={handleSendOTP}
+                className="btn  text-primary"
+                style={{
+                  textDecoration: "underline",
+                  fontWeight: "600",
+                  color: "#EE4266",
+                }}
+              >
+                Resend OTP
+              </button>
+            </div>
+          ) : (
+            <div style={{ textAlign: "center", marginTop: "1px" }}>
+              <span className="text-muted"> 
+                Resend OTP in {resendCooldown}
+              </span>
+            </div>
+          )}
+
               <div className="d-flex justify-content-center align-items-center">
               <button
                 className=" btn-primary w-80 py-2 mb-3 d-flex justify-content-center align-items-center"

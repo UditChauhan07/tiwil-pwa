@@ -169,7 +169,13 @@ const EventDetails = () => {
       );
       if (response.data.success) {
         setInvitationStatus("Accepted");
-        Swal.fire("Success", "You have accepted the invitation!", "success");
+         Swal.fire({
+                        title: "Success",
+                        text: "Accepted  successfully!",
+                        icon: "success",
+                        confirmButtonColor: "#ff3366" // Custom confirm button color
+                      });
+                      
       }
     } catch (error) {
       Swal.fire(
@@ -656,7 +662,7 @@ const EventDetails = () => {
                       <div className="headersevent">
                         <h5>About event</h5>
                       </div>
-                      <div className="aboutevent2">{events.description}</div>
+                      <div className="aboutevent2">{events.description || 'Not provided by owner'}</div>
                     </div>
                     {invitationStatus === "Pending" ||
                     invitationStatus === "invited" ||

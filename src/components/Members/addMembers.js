@@ -90,7 +90,14 @@ const Memberform = ({ show, setShow }) => {
       });
 
       if (response.data.success) {
-        Swal.fire("Success", "Member added successfully", "success");
+       Swal.fire({
+                title: "Success",
+                text: "Member added  successfully!",
+                icon: "success",
+                confirmButtonColor: "#ff3366" // Custom confirm button color
+              });
+              
+       
         setFormData({
           fullName: '',
           relation: '',

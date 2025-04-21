@@ -199,6 +199,7 @@ const HomePage = () => {
                       backgroundColor: "#FFEFF3",
                       borderRadius: "40px",
                       display: "flex",
+                      height: "33px",
                       justifyContent: "space-between",
                       marginBottom: "10px",
                     }}

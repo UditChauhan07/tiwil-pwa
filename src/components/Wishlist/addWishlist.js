@@ -128,7 +128,7 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
         <button className={styles.closeButton} onClick={handleClose}>
           ×
         </button>
-        <h2>Add Wishlist Item</h2>
+        <h4 className={styles.heading}>Add Wishlist </h4>
 
         {loading ? (
           <div style={{ textAlign: "center" }}>
@@ -139,7 +139,7 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
           <>
             <div className={styles.imageContainer}>
               <img
-                src={preview || `${process.env.PUBLIC_URL}/img/image-upload.svg`}
+                src={preview || `${process.env.PUBLIC_URL}/img/ps5.webp`}
                 alt="Wishlist Item"
                 className={styles.wishlistImage}
               />
@@ -152,7 +152,10 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
             
               />
               <label htmlFor="fileUpload" className={styles.cameraButton}>
-                📷
+              <svg width="21" height="16" viewBox="0 0 21 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M20.4198 3.93809V14.0646C20.4198 14.9964 19.5898 15.7524 18.5667 15.7524H2.50621C1.48313 15.7524 0.653076 14.9964 0.653076 14.0646V3.93809C0.653076 3.00631 1.48313 2.25034 2.50621 2.25034H5.90362L6.37849 1.09352C6.64874 0.436003 7.3398 0 8.11194 0H12.9571C13.7293 0 14.4203 0.436003 14.6906 1.09352L15.1693 2.25034H18.5667C19.5898 2.25034 20.4198 3.00631 20.4198 3.93809ZM15.1693 9.00135C15.1693 6.67366 13.0922 4.78197 10.5365 4.78197C7.98068 4.78197 5.90362 6.67366 5.90362 9.00135C5.90362 11.329 7.98068 13.2207 10.5365 13.2207C13.0922 13.2207 15.1693 11.329 15.1693 9.00135ZM13.9339 9.00135C13.9339 10.7067 12.4089 12.0956 10.5365 12.0956C8.66402 12.0956 7.13905 10.7067 7.13905 9.00135C7.13905 7.29602 8.66402 5.90714 10.5365 5.90714C12.4089 5.90714 13.9339 7.29602 13.9339 9.00135Z" fill="white"/>
+</svg>
+
               </label>
             </div>
 
@@ -170,6 +173,7 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
             <label className={styles.labelss}>Gift Name</label>
               <input
                 type="text"
+                className={styles.placedesign}
                 placeholder="The name of stuff you wish to have"
                 value={giftName}
                 onChange={(e) => handleInputChange(e, "giftName")}
@@ -177,6 +181,7 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
               {errors.giftName && <span className={styles.error}>{errors.giftName}</span>}
               <label className={styles.labelss}>Price</label>
               <input
+              className={styles.placedesign}
                 type="number"
                 placeholder="The price of stuff"
                 value={price}
@@ -188,6 +193,7 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
             
                 <input
                   type="text"
+                  className={styles.placedesign}
                   placeholder="Product link"
                   value={productLink}
                   onChange={(e) => setProductLink(e.target.value)}
@@ -195,17 +201,20 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
                 <button className={styles.addLinkButton}>ADD</button>
               </div>
 
-              <label className={styles.sliderLabel}>Desire Rate: {desireRate}%</label>
-              <input
+              <label className={styles.labelss}>Desire Rate </label>
+              <div className="d-flex align-items-center"><input
                 type="range"
                 min="0"
                 max="100"
+                style={{width:'90%'}}
                 value={desireRate}
                 onChange={(e) => setDesireRate(e.target.value)}
                 className={styles.slider}
-              />
+              />{desireRate}%
+              </div>
 <label className={styles.labelss}>Describe it</label>
               <textarea
+                className={styles.placedesignn}
                 placeholder="To persuade others to buy it for you, describe how you love it "
                 value={description}
                 onChange={(e) => handleInputChange(e, "description")}
