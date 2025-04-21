@@ -810,7 +810,7 @@ textAlign: "center",
                                     <div  style={{ height:'45px',
                                         width:'45px',
                                         borderRadius: "50%",
-                              overflow: "hidden",}}></div>
+                              overflow: "hidden",}}>
                                       <img
                                         src={
                                           g.profileImage
@@ -825,7 +825,7 @@ textAlign: "center",
                                         }}
                                         // Added meaningful alt text
                                       />
-
+</div>
                                       <p
                                         style={{
                                           fontSize: "16px",
