@@ -411,7 +411,7 @@ marginBottom:'0px'
       color: "#ff3366",
       border: "1px solid #EE4266",
       paddingLeft: "10px",
-      padding: "3px 27px 0px 26px",
+      padding: "3px 27px 3px 26px",
       borderRadius: "5px",
       fontFamily: 'Poppins',
 fontWeight: '500',

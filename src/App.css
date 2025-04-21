@@ -104,6 +104,7 @@ button#mui-p-82252-T-1 {
   color: white !important;
   background-color: #EE4266 !important;
   border-radius: 26px !important;
+  box-shadow: 0px 2px 3px 1px #00000040 !important;
 }
 .MuiTabs-flexContainer .span.MuiTabs-indicator.css-jkmkwa {
   background-color:unset!important;
@@ -225,3 +226,14 @@ top: 0% !important;
   .nav-tabs {
     border: none !important;
   } */
+
+
+  .MuiBox-root .css-1gsv261 .css-jhczcq-MuiTabs-root{
+    min-height: 40px !important;
+  }
+
+
+  .MuiTabs-flexContainer  .css-1usuzwp-MuiButtonBase-root-MuiTab-root{
+    min-height: 40px !important;
+    text-transform: none;
+  }
