@@ -805,6 +805,7 @@ textAlign: "center",
                                         display: "flex",
                                         gap: "8px",
                                         width: "70%",
+                                        alignItems:'center'
                                       }}
                                     >
                                     <div  style={{ height:'45px',
