@@ -110,7 +110,14 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
       );
 
       if (response.data.success) {
-        Swal.fire("Success", "Event added successfully!", "success");
+       Swal.fire({
+                title: "Success",
+                text: "Event added successfully!",
+                icon: "success",
+                confirmButtonColor: "#ff3366" // Custom confirm button color
+              });
+              
+       
         resetForm();
         setShow(false);
       } else {

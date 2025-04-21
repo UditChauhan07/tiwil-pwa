@@ -489,28 +489,30 @@ const handleSkips=()=>{
         >
           ➕ Add Sibling
         </button>
+        <br/>
+        <br/>
 
         {formData.siblings.map((sibling, index) => (
           <div key={index} className={styles.siblingForm}>
-            <label>Sibling's Name</label>
+            <label>Sibling's Name</label><br/>
             <input
               type="text"
               placeholder="Sibling's Name"
               value={sibling.name}
               onChange={(e) => handleInputChange("name", e.target.value, "siblings", index)}
             />
-
-            <label>Date of Birth</label>
+<br/>
+            <label>Date of Birth</label><br/>
             <input
               type="date"
               value={sibling.dob}   min="1900-01-01" // Minimum date is fixed to 1900-01-01
               max={today} 
               onChange={(e) => handleInputChange("dob", e.target.value, "siblings", index)}
             />
+<br/>
 
 
-
-            <label>Gender</label>
+            <label>Gender</label><br/>
             <select
               value={sibling.gender}
               onChange={(e) => handleInputChange("gender", e.target.value, "siblings", index)}
@@ -520,8 +522,11 @@ const handleSkips=()=>{
               <option value="Female">Female</option>
               <option value="Other">Other</option>
             </select><br/>
+            <br/>
             <label>Image</label>
+            <br/>
             <input type="file" name="siblingImages" accept="image/*" multiple onChange={(e) => handleImageChange(e, "siblingImages")} />
+     <br/><br/>
             <button
               onClick={() =>
                 setFormData({

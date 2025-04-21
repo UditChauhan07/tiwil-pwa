@@ -96,10 +96,12 @@ const InviteModal = ({ show, setShow, activeTab }) => {
         }
       );
       setShow(false);
+      
 Swal.fire({
   title: "Invites sent successfully",
   text: "Your guests have been invited to the event.",
   icon: "success",
+  confirmButtonColor: "#ff3366", // Custom confirm button color
 
 })
       console.log("✅ Invite sent successfully:", response.data);

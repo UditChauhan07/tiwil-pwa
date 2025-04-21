@@ -283,7 +283,7 @@ const EventDetails = () => {
   const handledeletevent = async () => {
     const confirm = await Swal.fire({
       title: "Are you sure?",
-      text: "You won’t be able to revert this!",
+      text: "May be there are some guest and wishlist! Would not able to revert it",
       icon: "warning",
       showCancelButton: true,
       confirmButtonText: "Yes, delete it!",
@@ -515,7 +515,7 @@ const EventDetails = () => {
                   </div>
 
                   {/* Map over events to display them dynamically */}
-cook
+
                   <h4 className="mt-3 " style={{ color: "black" }}>
                     {event.name}{" "}
                     {event.relation &&
@@ -577,7 +577,7 @@ cook
                           <div className="headersevent">
                             <h5>About event</h5>
                           </div>
-                          <div className="aboutevent2">{event.description}</div>
+                          <div className="aboutevent2">{event.description|| 'Please provide some description'}</div>
                         </div>
                       </>
                     )}

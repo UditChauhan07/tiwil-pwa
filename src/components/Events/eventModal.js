@@ -46,7 +46,7 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
   
 
   const [location, setLocation] = useState(event.location || "");
-  const [description, setDescription] = useState(event.aboutEvent || "");
+  const [description, setDescription] = useState(event.description || "");
   const [image, setImage] = useState(event.newimage || event.image || "");
 
   const [name, setName] = useState(event.name || "");
@@ -137,12 +137,14 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
       );
   
       if (response.data.success) {
-        Swal.fire({
-          icon: "success",
-          title: "Event details updated successfully!",
-          timer: 1000,
-          showConfirmButton: false,
-        });
+         Swal.fire({
+                  title: "Success",
+                  text: "Event updated successfully!",
+                  icon: "success",
+                  confirmButtonColor: "#ff3366" // Custom confirm button color
+                });
+                
+         
         setShow(false);
         fetchevent(); // Refresh event data
       } else {
@@ -195,7 +197,7 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
   };
 
   return (
-    <Modal show={show} onHide={() => setShow(false)} centered size="md">
+    <Modal show={show} onHide={() => setShow(false)} centered size="md" className="wishlist-modal">
       <Modal.Header closeButton>
         <Modal.Title>Edit Event Details</Modal.Title>
       </Modal.Header>

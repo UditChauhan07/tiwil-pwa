@@ -88,7 +88,13 @@ const InviteModal = ({ eventId, onInvite, onClose }) => {
   
       if (response.data.success) {
         onInvite(response.data.guests);
-        Swal.fire("Invites Sent!", "Your guests have been invited successfully.", "success");
+        Swal.fire({
+          title: "Success",
+          text: "Invitation sent successfully!",
+          icon: "success",
+          confirmButtonColor: "#ff3366" // Custom confirm button color
+        });
+        
       } else {
         Swal.fire("Error!", "Guests were not saved properly.", "error");
       }

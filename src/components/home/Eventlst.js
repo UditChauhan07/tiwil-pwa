@@ -348,10 +348,16 @@ const Eventlst = ({ searchQuery }) => {
     top: "5px",
     right: "5px",
     color: "white",
-    fontSize: "15px",
+
     fontWeight: "bold",
     backgroundColor: "#EE4266",
     padding: "5px",
+    fontFamily: 'Poppins',
+fontWeight: '700',
+fontSize: '15px',
+
+letterSpacing: '0%',
+
   }}
 >
   {calculateAgeAndBirthdayText(event.displayDate, event.isCancelled)}
@@ -403,10 +409,18 @@ marginBottom:'0px'
     style={{
       background: "white",
       color: "#ff3366",
-      border: "1px solid #ff3366",
+      border: "1px solid #EE4266",
       paddingLeft: "10px",
       padding: "3px 27px 0px 26px",
-      borderRadius: "10px",
+      borderRadius: "5px",
+      fontFamily: 'Poppins',
+fontWeight: '500',
+fontSize: '12px',
+leadingTrim: 'Cap height',
+
+letterSpacing: '0%',
+verticalAlign: 'middle'
+
     }}
   >
     {event.relation &&
@@ -419,15 +433,20 @@ marginBottom:'0px'
 
                 </Card.Text>
                 
-                  <div style={{ display: "flex", gap: "8px" }}>
-                  <Button
+                  <div style={{ display: "flex", gap: "8px",
+height: '34px',
+
+
+
+ }}>
+                  <button
   className="planbtn"
-  variant="danger"
+
   onClick={() => !event.isCancelled && handlePlans(event.eventId)}
   disabled={event.isCancelled} // Disables the button
 >
   Plan And Celebrate
-</Button>
+</button>
 
                     <div
   className="heartimage"
@@ -444,7 +463,7 @@ marginBottom:'0px'
     borderTopLeftRadius: "0px",
     borderTopRightRadius: "5px",
     cursor: "pointer",
-    border: event.isfavourite ? "1px solid white" : "1px solid #FF3366",
+    border: event.isfavourite ? "1px solid white" : "1px solid #EE4266",
     cursor: event.isCancelled ? "not-allowed" : "pointer",
     opacity: event.isCancelled ? 0.5 : 1, // Optional: add border for visual clarity on white bg
   }}
@@ -457,7 +476,7 @@ marginBottom:'0px'
   <FontAwesomeIcon
     icon={solidHeart }
     style={{
-      color: event.isfavourite ? "#FF3366" : "white", // filled heart red, outline white
+      color: event.isfavourite ? "#EE4266" : "white", // filled heart red, outline white
       fontSize:event.isfavourite ? "26px" : "26px"
     }}
   />
@@ -472,7 +491,7 @@ marginBottom:'0px'
           </div>
         ))
       ) : (
-        <div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'50vh' ,fontSize:'x-large',fontWeight:'700',color:'rgba(238, 66, 102, 0.80)'}}>No events found</div>
+        <div style={{display:'flex',justifyContent:'center',alignItems:'center',height:'50vh' ,fontSize:'x-large',fontWeight:'700',color:'#EE4266'}}>No events found</div>
       )}
     </div>
   );

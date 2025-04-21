@@ -107,7 +107,7 @@ const PoolRequests = () => {
         headers: { Authorization: `Bearer ${token}` },
       });
   
-      Swal.fire("Success!", `Notification ${action}ed successfully.`, "success");
+      // Swal.fire("Success!", `Notification ${action}ed successfully.`, "success");
   
       // Remove the notification from the list
       setNotifications((prev) => prev.filter((notif) => notif._id !== notification._id));
@@ -150,7 +150,7 @@ const PoolRequests = () => {
       <div className="mainnotify">
         <div className="d-flex heading-notification">
           <FontAwesomeIcon icon={faArrowLeft} onClick={() => navigate("/home")}  style={{fontSize:"23px"}}/>
-          <h4>Notification</h4>
+          <h4 className='headingnotify'>Notification</h4>
         </div>
 
         {/* ✅ Tabs for Switching */}

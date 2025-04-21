@@ -52,7 +52,21 @@
     border-radius: 5px;
   } */
   
+  .placedesign::placeholder {
+
+    color: #000000 !important;
+    font-size: 12px !important;
+    font-weight: 400 !important;
   
+  }
+ .placedesignn{
+  color: #000000 !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+
+ }
+
+
   @media (max-width: 576px) {
     .wishlist-image {
       max-height: 180px;

@@ -89,6 +89,7 @@ const InviteModal = ({ show, setShow, wishId, poolId }) => {
         title: "Invites sent successfully",
         text: response.data.message,
         icon: "success",
+        confirmButtonColor: "#EE4266",
       });
   
       console.log("✅ Invite sent successfully:", response.data);
