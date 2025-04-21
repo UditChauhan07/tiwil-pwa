@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button, Form } from "react-bootstrap";
+import { Modal, Button, Form,Spinner } from "react-bootstrap";
 import axios from "axios";
 import Swal from "sweetalert2";
 
@@ -16,6 +16,7 @@ const WishlistEditModal = ({ show, setShow, wishlist, fetchWishlist }) => {
   const [previewImage, setPreviewImage] = useState(
     wishlist.imageUrl ? `${process.env.REACT_APP_BASE_URL}/${wishlist.imageUrl}` : null
   );
+    const [loading, setLoading] = useState(false);
 
   const [errors, setErrors] = useState({});
 
@@ -74,7 +75,7 @@ const WishlistEditModal = ({ show, setShow, wishlist, fetchWishlist }) => {
   const handleSave = async () => {
     const isValid = validateForm();
     if (!isValid) return;
-
+    setLoading(true);
     try {
       const token = localStorage.getItem("token");
       const formData = new FormData();
@@ -117,6 +118,9 @@ const WishlistEditModal = ({ show, setShow, wishlist, fetchWishlist }) => {
       }
     } catch (error) {
       console.error("Error updating wishlist:", error);
+    }
+    finally{
+      setLoading(false);
     }
   };
 
@@ -183,7 +187,7 @@ const WishlistEditModal = ({ show, setShow, wishlist, fetchWishlist }) => {
 
       <Modal.Footer>
         <Button variant="danger" onClick={handleSave}>
-          Save
+        {loading ? <Spinner animation="border" role="status" style={{ width: "1rem", height: "1rem" }} />: "Save"}
         </Button>
       </Modal.Footer>
     </Modal>

@@ -602,13 +602,17 @@ const EventDetails = () => {
                                     <div
                                       className="card"
                                       style={{
-                                        backgroundImage: `url(${process.env.REACT_APP_BASE_URL}/${item.imageUrl})`,
-                                        position: "relative",
-                                        backgroundRepeat: "no-repeat",
-                                        backgroundSize: "cover",
-                                        borderadius:'20px'
-                                      }}
-                                    >
+    backgroundImage: `url(${
+      item?.imageUrl
+        ? `${process.env.REACT_APP_BASE_URL}/${item.imageUrl}`
+        : `${process.env.PUBLIC_URL}/img/image.png`
+    })`,
+    position: "relative",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "cover",
+    borderRadius: "20px",
+  }}
+>
                                       <div
                                         className="card-img-top"
                                         style={{ height: "161px" }}

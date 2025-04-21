@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Modal, Button, Form, InputGroup } from "react-bootstrap";
+import { Modal, Button, Form, InputGroup,Spinner } from "react-bootstrap";
 import axios from "axios";
 import './eventModal.css';
 import Swal from "sweetalert2";
@@ -52,7 +52,7 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
   const [name, setName] = useState(event.name || "");
   const [eventDate, setDate] = useState(""); // leave blank initially
   const [errors, setErrors] = useState({});
-
+  const [loading, setLoading] = useState(false);
 
   const { eventId } = useParams();
 
@@ -110,7 +110,7 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
 
     const isValid = validateForm();
     if (!isValid) return;
- 
+ setLoading(true)
     try {
       const token = getAuth();
       const formData = new FormData();
@@ -165,6 +165,9 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
         timer: 1000,
         showConfirmButton: false,
       });
+    }
+    finally{
+      setLoading(false);
     }
   };
   
@@ -296,7 +299,7 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
       <Modal.Footer>
        
         <Button variant="danger" onClick={handleSave}>
-          Save
+        {loading ? <Spinner animation="border" role="status" style={{ width: "1rem", height: "1rem" }} />: "Save"}
         </Button>
       </Modal.Footer>
     </Modal>

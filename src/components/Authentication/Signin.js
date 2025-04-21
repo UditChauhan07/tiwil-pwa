@@ -467,7 +467,7 @@ marginBottom:'5px'
     ) : (
             <div>
             <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "50px",height:'80%x',width:'100%',marginBottom:'20px' }}>
-              <img src={`${process.env.PUBLIC_URL}/img/Otps.webp`} alt="logo" height="100%" width="80%" style={{marginTop: "50px"}} />
+              <img src={`${process.env.PUBLIC_URL}/img/Otps.webp`} alt="logo" height="100%" width="80%"  />
             </div>
               <div className="mb-3">
                 <label htmlFor="otp" className="form-label" style={{fontSize:'20px',fontWeight:'600',color:'#ff3366' ,display:'flex',justifyContent:'center',alignItems:'center'}}>

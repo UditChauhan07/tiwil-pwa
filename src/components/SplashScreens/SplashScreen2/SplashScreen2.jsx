@@ -15,7 +15,7 @@ const SplashScreen2 = () => (
      src={`${process.env.PUBLIC_URL}/img/SplashScreen2img.webp`}
       alt="Plan"
       className="img-fluid my-3 imagefirstsplash"
-      style={{ maxHeight:"350px",width:'88%' }}
+      style={{ maxHeight:"350px",width:'100%' }}
     />
     </div>
     <p className=" " style={{color:"#ff3366",height:'88px',
