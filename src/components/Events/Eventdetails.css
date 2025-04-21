@@ -14,6 +14,7 @@ height: 112;
 top: 592px;
 left: 20px;
 
+
   }
   .headersevent{
     width: 108;
@@ -259,6 +260,40 @@ opacity: 0.84;
   margin: 0 !important;
   padding: 20px 0 0 0;
   position: relative;
+  
   top: -1px;
+  
+
+  
+}
+
+
+.detailspan{font-family: Poppins;
+font-weight: 400;
+font-size: 16px;
+line-height: 34px;
+letter-spacing: 0px;
+vertical-align: middle;
+}
+
+
+.locspan{
+  font-family: Poppins;
+font-weight: 400;
+font-size: 16px;
+line-height: 34px;
+letter-spacing: 0px;
+vertical-align: middle;
+
+}
+
+.eventdesc{
+  font-family: Poppins;
+font-weight: 400;
+font-size: 16px;
+line-height: 28px;
+letter-spacing: 0px;
+color: #120D26;
+
 
 }

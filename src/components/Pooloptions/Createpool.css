@@ -1,0 +1,54 @@
+.mybar {
+    top: 230px;
+  }
+  
+  @media (max-width: 400px) {
+    .mybar {
+      top: 200px;
+    }
+  }
+  
+  @media (max-width: 350px) {
+    .mybar {
+      top: 170px;
+    }
+  }
+  
+
+  .giftpoolheading{
+    font-family: Poppins;
+font-weight: 500;
+font-size: 15px;
+leading-trim: Cap height;
+line-height: 100%;
+letter-spacing: 0%;
+
+  }
+
+  .pooltotal{
+    font-family: Poppins;
+font-weight: 500;
+font-size: 18px;
+line-height: 39px;
+letter-spacing: 0px;
+vertical-align: middle;
+
+  }
+
+
+
+ .poolcontribute{ font-family: Poppins;
+font-weight: 500;
+font-size: 17px;
+line-height: 88%;
+letter-spacing: 0%;
+}
+
+.amountpool{font-family: Poppins;
+font-weight: 500;
+font-size: 18px;
+line-height: 34px;
+letter-spacing: 0px;
+text-align: right;
+vertical-align: middle;
+}

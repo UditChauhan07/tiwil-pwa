@@ -122,6 +122,7 @@ padding: 4px;
     color: white !important;
     background-color: #EE4266 !important;
     border-radius: 26px !important;
+    box-shadow: 0px 2px 3px 1px #00000040;
     }
 /* .mainns121{
     width: 100% !important;

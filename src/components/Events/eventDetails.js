@@ -525,9 +525,16 @@ const EventDetails = () => {
                   </h4>
 
                   {/* Tabs */}
-                  <ul className="nav nav-tabs mt-3 ulmain">
+                  <ul className="nav nav-tabs mt-3 ulmain" >
                     {["details", "wishlist", "guests", "history"].map((tab) => (
-                      <li className="nav-item" key={tab}>
+                      <li className="nav-item"  style={{
+                        fontFamily: "Poppins",
+fontWeight: "500",
+fontSize: "14px",
+lineHeight: "100%",
+letterSpacing: "0%",
+textAlign: "center",
+}}key={tab}>
                         <button
                           className={`nav-link ${
                             activeTab === tab
@@ -553,14 +560,14 @@ const EventDetails = () => {
                               style={{ color: "#ff3366", fontSize: "20px"  }}
                             />
                           </div>
-                          {event.displayDate
+                        <span className="detailspan">  {event.displayDate
                             ? formatDateWithCurrentYear(
                                 event.displayDate,
                                 event.date,
                                 event.eventDate
                               )
                             : "Date not available"}
-                        </p>
+                        </span></p>
 
                         <p className="d-flex align-items-center gap-2">
                           <span className=" text-white   location-icon">
@@ -569,7 +576,9 @@ const EventDetails = () => {
                               style={{ color: "#ff3366",margin:'3px' }}
                             />
                           </span>
+                          <span className='locspan'>
                           {event.location || "Location not available"}
+                        </span>
                         </p>
                         <br />
 
@@ -577,7 +586,8 @@ const EventDetails = () => {
                           <div className="headersevent">
                             <h5>About event</h5>
                           </div>
-                          <div className="aboutevent2">{event.description|| 'Please provide some description'}</div>
+                          <div className="aboutevent2">
+                          <span classname="eventdesc">{event.description|| 'Please provide some description'}</span></div>
                         </div>
                       </>
                     )}
@@ -791,21 +801,26 @@ const EventDetails = () => {
                                   >
                                     <div
                                       style={{
+                                      
                                         display: "flex",
                                         gap: "8px",
                                         width: "70%",
                                       }}
                                     >
+                                    <div  style={{ height:'45px',
+                                        width:'45px',
+                                        borderRadius: "50%",
+                              overflow: "hidden",}}></div>
                                       <img
                                         src={
                                           g.profileImage
                                             ? `${process.env.REACT_APP_BASE_URL}/${g.profileImage}`
                                             : `${process.env.PUBLIC_URL}/img/defaultUser.png`
                                         }
-                                        height="40px"
-                                        width="40px"
+                                        height="45px"
+                                        width="45px"
                                         style={{
-                                          border: "2px solid",
+                                       
                                           borderRadius: "50%",
                                         }}
                                         // Added meaningful alt text
@@ -813,8 +828,14 @@ const EventDetails = () => {
 
                                       <p
                                         style={{
-                                          fontSize: "22px",
-                                          marginBottom: "0px",
+                                          fontSize: "16px",
+                                          fontFamily: 'Poppins',
+
+
+lineHight: "100%",
+letterSpacing: '0px',
+verticalAlign: 'middle',
+
                                           fontWeight: "500",
                                         }}
                                       >
@@ -829,7 +850,14 @@ const EventDetails = () => {
                                         width: "30%",
                                       }}
                                     >
-                                      <span style={{}}> {g.status}</span>
+                                      <span style={{color:' #878787',fontFamily: "Poppins",
+fontWeight: "400",
+fontSize: "14px",
+lineHeight: "100%",
+letterSpacing: "0px",
+textAlign: "right",
+verticalAlign: "middle"
+}}> {g.status}</span>
                                     </div>
                                   </div>
 

@@ -85,7 +85,9 @@ function WishlistCard() {
     }
   };
 
- 
+ const handleClick=()=>{
+  navigate('/invitation-detail/${wishlistItem.eventId}?tab=wishlist')
+ }
   return (
     <section className="page-controls">
   <div className='d-flex align-items-baseline gap-4' style={{marginTop:'20px'}}>
@@ -119,7 +121,7 @@ borderRadius: "5px",
   />
 </div>
 
-            <div className="card-body">
+            <div className="card-body p-0">
             <div>
             {/* <img
   src={wishlistItem.eventImage ? `${process.env.REACT_APP_BASE_URL}/${wishlistItem.eventImage}` : "/path/to/fallback/image.png"}
@@ -193,20 +195,34 @@ verticalAlign: 'middle'
               </div>
               <div>
               <h5 className="card-title mb-0">{wishlistItem.giftName || "No Gift Name"}</h5>
-              <p className="mb-3" style={{ color: "#EE4266" }}>
-                {wishlistItem.createdAt ? new Date(wishlistItem.createdAt).toLocaleString() : "Date not available"}
+              <p className="mb-3" style={{ color: "#EE4266",fontFamily: "Poppins",
+fontWeight: "400",
+fontSize: "12px",
+lineHeight: "100%",
+letterSpacing: "0%"
+}}>{wishlistItem.createdAt
+  ? new Date(wishlistItem.createdAt).toLocaleString("en-US", {
+      weekday: "long",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "2-digit",
+      hour12: true,
+    }).replace(":", ".")
+  : "Date not available"}
+
               </p>
               </div>
               {wishlistItem.status === "CreatePool" && (
                 <button
                   className="btn mb-4 createpoolbtn"
-                  style={{ backgroundColor: "#EE4266", color: "white" }}
+                  style={{ backgroundColor: "#EE4266", color: "white" ,width:'50%'}}
                   onClick={handleCreatePool}
                 >
                   CREATE POOL
                 </button>
               )}
-              <div>
+              {/* <div>
                 <h6 className="fs-2">Desire rate:{wishlistItem.desireRate  || "just description"}%</h6>
                 
               </div>
@@ -221,16 +237,39 @@ verticalAlign: 'middle'
 </a>
 
 
-</div>
+</div> */}
 
               <div>
-                <h6 className="fs-1">About</h6>
-                <p className="card-text text-muted">{wishlistItem.description || "No description available"}</p>
+                <p  style={{fontFamily: "Poppins",
+fontWeight: "400",
+fontSize: "18px",
+lineHeight: "34px",
+letterSpacing: "0px",
+verticalAlign: "middle"
+        }}>About Wishlist</p>
+                <p className="card-text text-muted" style={{fontFamily: "Poppins",
+fontWeight: "300",
+fontSize: "16px",
+lineHeight: "24px",
+letterSpacing: "0px"
+}}>{wishlistItem.description || "No description available"}</p>
               </div>
               </div>
-              <div className="d-flex justify-content-center" style={{margintop:'40px'}}>
-                <button className="btn w-30 m-2 p-1" style={{ backgroundColor: "#EE4266", width: "180px",color:'#fff' }}>
-                  SEE ALL WISHES
+              <br/>
+              <p style={{fontFamily: "Poppins",
+fontWeight: "500",
+fontSize: "17px",
+lineHeight: "100%",
+letterSpacing: "0%",
+color:" #EE4266",
+
+}}> Help To Complete This Wish</p>
+              <div className="d-flex justify-content-center " style={{marginTop:'30px'}} >
+                <button className="btn w-30 m-2 p-1 d-flex align-items-center gap-2 justify-content-center" style={{ backgroundColor: "#EE4266", width: "180px",color:'#fff' }} onClick={() => navigate(`/invitation-detail/${wishlistItem.eventId}?tab=wishlist`)}>
+                  SEE ALL WISHES <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 6.5C0 6.05127 0.363769 5.6875 0.8125 5.6875H9.87179L5.91095 1.72666C5.58722 1.40293 5.59186 0.876646 5.92125 0.558678C6.24252 0.248547 6.75305 0.253051 7.0688 0.568802L12.9356 6.43565C12.9712 6.47119 12.9712 6.52881 12.9356 6.56435L7.07001 12.43C6.75521 12.7448 6.2448 12.7448 5.93001 12.43C5.61623 12.1162 5.61509 11.6078 5.92746 11.2926L9.87179 7.3125H0.8125C0.363769 7.3125 0 6.94873 0 6.5Z" fill="white"/>
+</svg>
+
                 </button>
               </div>
             </div>
