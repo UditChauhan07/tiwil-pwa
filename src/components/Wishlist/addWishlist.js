@@ -90,7 +90,12 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
       });
 
       if (response.data.success) {
-        Swal.fire("Success", "Wishlist item added successfully!", "success");
+         Swal.fire({
+                       title: "Success",
+                       text: "Wishlist added successfully!",
+                       icon: "success",
+                       confirmButtonColor: "#ff3366" // Custom confirm button color
+                     });
         setShow(false);
         fetchWishlist();
       }

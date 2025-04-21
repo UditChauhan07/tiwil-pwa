@@ -902,7 +902,7 @@ const SignUpForm = () => {
               alt="logo"
               height="100%"
               width="80%"
-              style={{ marginTop: "50px" }}
+           
             />
           </div>
           <div className="mb-3">
