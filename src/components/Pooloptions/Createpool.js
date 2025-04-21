@@ -10,7 +10,7 @@ import InviteModal from "../GuestInvite/PoolguestModal";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faArrowLeft } from '@fortawesome/free-solid-svg-icons';
 import { FaPencilAlt } from "react-icons/fa";
-
+import './Createpool.css'
 
 function PoolingWish() {
   const { wishId } = useParams();
@@ -78,7 +78,17 @@ function PoolingWish() {
     fetchUserStatus();
   }, [wishId]);
 console.log('pool',poolCreator)
-  const handleSaveContribution = async () => {
+ 
+
+
+
+
+
+
+
+
+
+const handleSaveContribution = async () => {
     if (!contributionAmount || contributionAmount <= 0) {
       Swal.fire("Error", "Please enter a valid contribution amount.", "error");
       return;
@@ -160,7 +170,7 @@ console.log('pool',poolCreator)
       );
 
       if (response.data.success) {
-        Swal.fire("Success!", "Your contribution has been saved.", "success");
+      
         setIsEditing(false); // Close the edit mode
     
         setContributionAmount(contributionAmount);
@@ -380,7 +390,7 @@ fetchPoolData();
    
  
 
-      <div className="d-flex align-items-center mt-4" style={{position:'absolute', top:'230px',backgroundColor:'#FFFFFF',borderRadius:'20px', opacity:'0.8',gap:'10px',margin:'12px',width:'90%',height:'14%'}}>
+      <div className="d-flex align-items-center mt-4 mybar" style={{position:'absolute', backgroundColor:'#FFFFFF',borderRadius:'20px', opacity:'0.8',gap:'10px',margin:'12px',width:'90%',height:'14%'}}>
         {/* Circular Progress Bar */}
         <div className="d-flex justify-content-center my-4">
           
@@ -429,7 +439,7 @@ fetchPoolData();
 
       <div className="d-flex " style={{width:'100%' ,height:'60px'}}>
         <div className="d-flex align-items-center" style={{gap:'10px'}}>
-         <div><h5 style={{fontFamily:'Poppins'}}>{pool.description}</h5>
+         <div><h5 className="giftpoolheading" style={{fontFamily:'Poppins'}}>{pool.description}</h5>
          <h6 className="text-muted mb-1">{pool.eventOwner.fullName}</h6>
        </div>
        
@@ -454,15 +464,15 @@ fetchPoolData();
    
     </div>
     <div className="d-flex justify-content-between align-items-center mt-2" style={{width:'100%'}}>
-      <h5 >Total Amount</h5>
-      <h6  style={{marginLeft:'10px'}}>{totalAmount}</h6>
+      <p className="pooltotal" >Total Amount</p>
+      <p className="amountpool" style={{marginLeft:'10px'}}>&#8377;{totalAmount}</p>
 </div>
      
      <div> {
         pool.status==="Completed" && (
           <div  className="d-flex justify-content-between align-items-center mt-2" style={{width:'100%'}}>
-          <h5 >Collected Amount</h5>
-          <h6 style={{ marginLeft: "10px" }}>&#8377;{pool.collectedAmount}</h6>
+          <p className="poolcontribute">&#8377;Collected Amount</p>
+          <p style={{ marginLeft: "10px" }}>&#8377;{pool.collectedAmount}</p>
         </div>)
       }
     </div>
@@ -474,15 +484,15 @@ fetchPoolData();
     className="d-flex align-items-center justify-content-between"
     style={{ width: '100%' }}
   >
-    <Form.Label className="fw-bold mb-0" style={{ marginRight: '10px' }}>
+    <Form.Label className="poolcontribute mb-0" style={{ marginRight: '10px' }}>
       My Contribution
     </Form.Label>
 
-    <div className="d-flex align-items-center" style={{ gap: '5px' }}>
+    <div className="d-flex align-items-center" style={{ gap: '1px' }}>
       {isEditing ? (
         <Form.Control
           type="number"
-          style={{ width: '120px', marginRight: '10px' }}
+          style={{ width: '60px', marginRight: '10px' }}
           value={contributionAmount}
           onChange={(e) => {
             let value = parseFloat(e.target.value) || 0;
@@ -502,12 +512,12 @@ fetchPoolData();
       ) : (
         <div
           style={{
-            width: '120px',
+            width: '60px',
             marginRight: '10px',
             padding: '6px 12px',
             border: '1px solid #ced4da',
             borderRadius: '4px',
-            backgroundColor: '#e9ecef',
+            backgroundColor: '#FFE3EA',
             fontWeight: '500',
           }}
         >
@@ -529,7 +539,7 @@ fetchPoolData();
           variant="danger"
           onClick={handleSaveContribution}
           disabled={loading}
-          style={{ width: '30%', fontSize: '13px', padding: '4px 10px' }}
+          style={{ width: '40%', fontSize: '13px', padding: '4px 10px' ,borderRadius:'10px'}}
         >
           {loading ? 'Saving...' : 'Save'}
         </Button>
@@ -598,16 +608,23 @@ fetchPoolData();
           isOwner  &&(
             <div className='d-flex justify-content-center ' style={{position:'relative',bottom:'-40px'}}>
             <button variant="danger"
-              style={{ padding: "9px", background: "#dc3545", borderRadius: "20px",color: "white",
+              style={{ padding: "9px", background: "#dc3545", borderRadius: "15px",color: "white",
   marginTop:'50px'
     ,right: "46px",
     width: '78%',
     border: "none" ,
    
-    bottom:'5px'}}
+    bottom:'5px',
+    display:'flex',
+    justifyContent:'center',
+    alignItems:'center',
+    gap:'5px'}}
               onClick={() => setShowInviteModal(true)}
             >
-              Pool Invites
+              POOL INVITES <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0 6.5C0 6.05127 0.363769 5.6875 0.8125 5.6875H9.87179L5.91095 1.72666C5.58722 1.40293 5.59186 0.876646 5.92125 0.558678C6.24252 0.248547 6.75305 0.253051 7.0688 0.568802L12.9356 6.43565C12.9712 6.47119 12.9712 6.52881 12.9356 6.56435L7.07001 12.43C6.75521 12.7448 6.2448 12.7448 5.93001 12.43C5.61623 12.1162 5.61509 11.6078 5.92746 11.2926L9.87179 7.3125H0.8125C0.363769 7.3125 0 6.94873 0 6.5Z" fill="white"/>
+</svg>
+
             </button>
             </div>
           )

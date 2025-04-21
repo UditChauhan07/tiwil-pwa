@@ -316,6 +316,7 @@ function Invitationlst({ searchQuery }) {
   style={{
     pointerEvents: invitation.event.isCanceled ? "none" : "auto",
     opacity: invitation.event.isCancelled ? 0.5 : 1,
+     cursor: invitation.event.isCancelled ? "not-allowed" : "default",
   }}
 >
 
@@ -365,6 +366,11 @@ function Invitationlst({ searchQuery }) {
                       fontWeight: "bold",
                       backgroundColor: "#EE4266",
                       padding: "5px",
+                      fontFamily: 'Poppins',
+fontWeight: '700',
+fontSize: '15px',
+
+letterSpacing: '0%',
                     }}
                   >
                  {calculateAgeAndBirthdayText(
@@ -376,7 +382,15 @@ function Invitationlst({ searchQuery }) {
                 </Card>
               </div>
               <Card.Body>
-                <Card.Title>
+                <Card.Title style={{fontFamily: 'Poppins',
+fontWeight: '500',
+fontSize: '14px',
+leadingTrim: 'Cap height',
+lineHeight: '100%',
+letterSpacing: '0%',
+color:'#000000',
+marginBottom:'5px',
+                }}>
                   {invitation.event?.name}
                   {""}&nbsp;
                   {invitation.event?.relation &&
@@ -389,7 +403,7 @@ function Invitationlst({ searchQuery }) {
                   style={{ gap: "10px" }}
                 >
                   <div
-                    style={{ display: "flex", justifyContent: "space-between",gap: "5px" }}
+                    style={{ display: "flex", justifyContent: "space-between",gap: "5px",marginBottom:'5px' }}
                   >
                     <img
                       className="m-0.5"
@@ -397,7 +411,16 @@ function Invitationlst({ searchQuery }) {
                       height="17px"
                       alt="calendar"
                     />
-                    <h6>
+                    <h6 style={{
+                      fontSize:'13px' ,fontFamily: 'Poppins',
+fontWeight:' 600',
+
+leadingTrim: 'Cap height',
+lineHeight: '100%',
+letterSpacing: '0%',
+color:'#000000',
+marginBottom:'0px'
+                    }}>
                       {invitation.event?.displayDate
                         ? formatDateWithCurrentYear(
                             invitation.event.displayDate,

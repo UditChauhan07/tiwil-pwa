@@ -11,6 +11,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowLeft } from "@fortawesome/free-solid-svg-icons";
 import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
+import { useLocation } from "react-router-dom";
 const EventDetails = () => {
   const [activeTab, setActiveTab] = useState("details");
   const [wishlistItems, setWishlistItems] = useState([]);
@@ -23,6 +24,7 @@ const EventDetails = () => {
   const [isLoading, setIsLoading] = useState(true);
   const navigate = useNavigate();
   const currentUserId = localStorage.getItem("userId");
+  const location = useLocation();
 
   useEffect(() => {
     console.log("Updated Owner State:", owner);
@@ -50,6 +52,15 @@ const EventDetails = () => {
 
     fetchGuest();
   }, []);
+
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const tabFromUrl = params.get("tab");
+    if (tabFromUrl) {
+      setActiveTab(tabFromUrl);
+    }
+  }, [location.search]);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -564,7 +575,7 @@ const EventDetails = () => {
             className="mt-3"
             style={{
               width: "100%",
-              height: "174px",
+              maxHeight: "300px",
               top: "97px",
               left: "21px",
               borderRadius: "10px",
@@ -586,7 +597,7 @@ const EventDetails = () => {
               className="img-fluid"
               style={{
                 width: "100%",
-                maxHeight: "174px",
+                maxHeight: "300px",
                 objectFit: "cover",
                 borderRadius: "10px",
               }}
@@ -633,14 +644,14 @@ const EventDetails = () => {
                                                  style={{ color: "#ff3366", fontSize: "20px"  }}
                                                />
                                              </div>
-                                             {events.displayDate
+                                          <span className='detailspan'>   {events.displayDate
                                                ? formatDateWithCurrentYear(
                                                    events.displayDate,
                                                  
                                                  
                                                  )
                                                : "Date not available"}
-                                           </p>
+                                           </span></p>
                    
                                            <p className="d-flex align-items-center gap-2">
                                              <span className=" text-white   location-icon">
@@ -649,8 +660,9 @@ const EventDetails = () => {
                                                  style={{ color: "#ff3366",margin:'3px' }}
                                                />
                                              </span>
+                                             <span className='locspan'>
                                              {events.location || "Location not available"}
-                                           </p>
+                                          </span></p>
                     {/* <p className="d-flex align-items-center">
                       {events.description}
                     </p> */}
@@ -662,7 +674,7 @@ const EventDetails = () => {
                       <div className="headersevent">
                         <h5>About event</h5>
                       </div>
-                      <div className="aboutevent2">{events.description || 'Not provided by owner'}</div>
+                      <div className="aboutevent2">  <span classname="eventdesc">{events.description || 'Not provided by owner'}</span></div>
                     </div>
                     {invitationStatus === "Pending" ||
                     invitationStatus === "invited" ||
@@ -869,11 +881,11 @@ const EventDetails = () => {
                   <div>
                     {guest.length > 0 ? (
                       guest.map((guest) => (
-                        <div key={guest.id} className="d-flex gap-3">
+                        <div key={guest.id} className="d-flex gap-3 align-items-center">
                           <div
                             style={{
-                              height: "40px",
-                              width: "40px",
+                              height: "45px",
+                              width: "45px",
                               borderRadius: "50%",
                               overflow: "hidden",
                             }}
@@ -884,10 +896,10 @@ const EventDetails = () => {
                                   ? `${process.env.REACT_APP_BASE_URL}/${guest.profileImage}`
                                   : `${process.env.PUBLIC_URL}/img/defaultUser.png`
                               }
-                              height="40px"
-                              width="40px"
+                              height="45px"
+                              width="45px"
                               style={{
-                                border: "2px solid",
+                             
                                 borderRadius: "50%",
                               }}
                               // alt={
@@ -897,8 +909,16 @@ const EventDetails = () => {
                               // } // Added meaningful alt text
                             />
                           </div>
-                          <p style={{ fontSize: "22px" }}>{guest.name}</p>
-                        </div>
+                         <span style={{ fontFamily: "Poppins",
+fontWeight: "500",
+fontSize: "14px",
+lineHeight: "100%",
+letterSpacing: "0px",
+verticalAlign: "middle",
+color:' #120D26'
+
+}}>{guest.name}</span></div>
+                       
                       ))
                     ) : (
                       <div className=" mt-4">
