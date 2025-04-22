@@ -115,7 +115,7 @@ color: #fff !important;
 } */
 .SearLast{
     width: 100% !important;
-padding: 4px;
+
 
 }
 .css-1usuzwp-MuiButtonBase-root-MuiTab-root.Mui-selected{
@@ -216,3 +216,11 @@ padding: 0px !important;
     }
     
 } */
+
+
+.planbtn:disabled {
+    opacity: 0.5; /* Makes it look faded */
+    filter: blur(0.5px); /* Optional: adds slight blur */
+    cursor: not-allowed;
+  }
+  

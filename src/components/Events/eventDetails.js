@@ -304,18 +304,18 @@ const EventDetails = () => {
 
         if (response.status === 200) {
           Swal.fire({
-            title: "Deleted!",
-            text: "The event has been deleted.",
+            title: "Cancelled!",
+            text: "The event has been cancelled.",
             icon: "success",
             confirmButtonColor: "#ff3366",
           });
           navigate("/home");
         }
       } catch (error) {
-        console.error("Error deleting event:", error);
+        console.error("Error cancelling event:", error);
         Swal.fire({
           title: "Error!",
-          text: "Failed to delete the event.",
+          text: "Failed to cancel the event.",
           icon: "error",
           confirmButtonColor: "#ff3366",
         });
@@ -385,9 +385,15 @@ const EventDetails = () => {
       <div
         style={{
           display: "flex",
+         
           justifyContent: "center",
           alignItems: "center",
-          marginTop: "150px",
+          marginTop: "100px",
+          position:'fixed',
+          top:'0',
+          right:'0',
+          left:'0',
+          bottom:'0'
         }}
       >
         {/* <Spinner
@@ -395,7 +401,7 @@ const EventDetails = () => {
           role="status"
           style={{ width: "10rem", height: "10rem" }}
         /> */}
-        <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '5rem', height: '5rem',color:'#ff3366'}}>
+        <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '7vh', height: '7vh',color:'#ff3366'}}>
   <span class="visually-hidden">Loading...</span>
 </div>
       </div>
@@ -644,20 +650,16 @@ textAlign: "center",
                                           <div className="row align-items-center">
                                             {/* Left - Image */}
                                             <div className="col-2">
-                                              <img
-                                                src={
-                                                  event.newimage &&
-                                                  event.newimage !== "null" &&
-                                                  event.newimage !==
-                                                    `${process.env.REACT_APP_BASE_URL}/null`
-                                                    ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
-                                                    : event.image &&
-                                                      event.image !== "null" &&
-                                                      event.image !==
-                                                        `${process.env.REACT_APP_BASE_URL}/null`
-                                                    ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
-                                                    : `${process.env.PUBLIC_URL}/img/defaultUser1.png`
-                                                }
+                                            <img
+  src={
+    event.newimage && event.newimage !== "null" && event.newimage !== `${process.env.REACT_APP_BASE_URL}/null`
+      ? `${process.env.REACT_APP_BASE_URL}/${event.newimage}`
+      : event.image && event.image !== "null" && event.image !== `${process.env.REACT_APP_BASE_URL}/null`
+      ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
+      : `${process.env.PUBLIC_URL}/img/defaultUser1.png`
+  }
+
+
                                         
                                                 style={{height:'43px',width:'43px',borderRadius:'50%',objectFit:'cover'}}
                                               />

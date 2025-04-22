@@ -39,8 +39,8 @@
   margin: 0 auto;
   height: 120px;
    
-    border: 1px solid #ff3366;
-    border-radius: 69px;
+
+    border-radius: 50%;
 }
 
 .profileImage {
@@ -55,10 +55,10 @@
   position: absolute;
   bottom: 5px;
   right: 5px;
-  background-color: #ff5c5c;
+  background-color: #EE4266;
   color: #fff;
   border-radius: 50%;
-  padding: 5px;
+  padding: 8px;
   cursor: pointer;
 }
 
