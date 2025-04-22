@@ -105,7 +105,7 @@ const HomePage = () => {
         <Navbar />
         <div className="mobileMode">
           <div className="d-flex">
-            <div className="SearLast p-1" style={{ width: "100%" }}>
+            <div className="SearLast " style={{ width: "100%" }}>
               <div className="d-flex searchbarw justify-content-between">
                 <div style={{
                     width: "100%",

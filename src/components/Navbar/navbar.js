@@ -119,8 +119,8 @@ const unreadNotificationCount = Array.isArray(notifications)
       </div>
 
       {/* Navbar for mobile */}
-      <nav className="navbar navbar-light bg-white shadow-sm d-md-none">
-        <div className="container-fluid">
+      <nav className="navbar navbar-light bg-white  d-md-none">
+        <div className="container-fluid" style={{padding:'0px'}}>
           {/* Logo */}
           <Link to="/home" className="navbar-brand">
             <img     src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="Logo" style={{ width: "60px", height:'30px'}} />
@@ -129,7 +129,7 @@ const unreadNotificationCount = Array.isArray(notifications)
     {/* Hamburger Toggle Button */}
     <div className="d-flex">
     
-                <div style={{padding:'5px'}} onClick={handnotify}>
+                <div style={{padding:'5px',paddingRight:'0px'}} onClick={handnotify}>
                 <svg width="30" height="30" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M14.4746 12.4615V7.84615C14.4746 5.01231 12.9787 2.64 10.37 2.01231V1.38462C10.37 0.618462 9.7498 0 8.99274 0C8.23569 0 7.63369 0.618462 7.63369 1.38462V2.01231C5.01591 2.64 3.52916 5.00308 3.52916 7.84615V12.4615L2.34341 13.6523C1.76877 14.2338 2.17011 15.2308 2.98189 15.2308H14.9945C15.8063 15.2308 16.2167 14.2338 15.6421 13.6523L14.4746 12.4615ZM8.99274 18C9.99607 18 10.817 17.1692 10.817 16.1538H7.16851C7.16851 17.1692 7.98029 18 8.99274 18ZM4.23149 2.05846C4.61458 1.70769 4.6237 1.10769 4.25886 0.738461C3.91225 0.387692 3.34674 0.378462 2.99101 0.72C1.43129 2.16 0.354994 4.11692 0.00838901 6.31385C-0.0737015 6.87692 0.354994 7.38462 0.920506 7.38462C1.35832 7.38462 1.74141 7.06154 1.81438 6.61846C2.08802 4.82769 2.96365 3.23077 4.23149 2.05846ZM15.0218 0.72C14.657 0.378462 14.0915 0.387692 13.7449 0.738461C13.38 1.10769 13.3983 1.69846 13.7722 2.04923C15.031 3.22154 15.9157 4.81846 16.1893 6.60923C16.2532 7.05231 16.6363 7.37538 17.0832 7.37538C17.6396 7.37538 18.0774 6.86769 17.9862 6.30462C17.6396 4.11692 16.5724 2.16923 15.0218 0.72Z" fill="#EE4266"/>
 </svg>
@@ -152,10 +152,10 @@ const unreadNotificationCount = Array.isArray(notifications)
                   )}
                 </div>
      
-           <button className="navbar-toggler" type="button" onClick={toggleMobileMenu}> 
+           <button className="navbar-toggler" type="button" style={{paddingRight:'0px'}}onClick={toggleMobileMenu}> 
 
             
-          <div style={{height:'32px',width:'32px'}}>
+          <div style={{height:'32px',width:'32px',paddingRight:'0px'}}>
   {profileImage && profileImage !== "undefined" ? (
     <img
       src={`${process.env.REACT_APP_BASE_URL}/${profileImage}`}

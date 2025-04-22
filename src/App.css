@@ -237,3 +237,10 @@ top: 0% !important;
     min-height: 40px !important;
     text-transform: none;
   }
+
+  .nav-tabs{
+    border:none !important;
+  }
+  button.nav-link{
+    border:none !important;
+  }

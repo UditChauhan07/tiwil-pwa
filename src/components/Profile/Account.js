@@ -175,7 +175,7 @@ const profileImage=localStorage.getItem('profileImage')
 
   if (loading) {
     return (
-      <div style={{ display: "flex", justifyContent: "center", marginTop: "200px" }}>
+      <div style={{ display: "flex", justifyContent: "center", marginTop: "200px", }}>
         {/* <Spinner animation="border" role="status" style={{ width: "5rem", height: "5rem", }} /> */}
         <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '5rem', height: '5rem',color:'#ff3366'}}>
   <span class="visually-hidden">Loading...</span>
@@ -214,7 +214,7 @@ const profileImage=localStorage.getItem('profileImage')
           <div className={styles.profileSection}>
 <div className={styles.icons}>
           <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)} style={{fontSize:'27px'}}/></div>
-          <div style={{height:'50px',width:'50px' ,border:"3px solid #ff3366" ,borderRadius:'100px',margin:'auto'}}>
+          <div style={{height:'60px',width:'60px' ,borderRadius:'50%',margin:'auto'}}>
             <img
               src={
                 profileData.profileImage
@@ -255,7 +255,7 @@ const profileImage=localStorage.getItem('profileImage')
             
         <div className={styles.menuItem} onClick={handleSurprise}>
               {/* <img src={`${process.env.PUBLIC_URL}/img/surprise-box.avif`}  alt="surprise" className={styles.menuIcon} height={'20px'} width={"20px"} /> */}
-              <FontAwesomeIcon icon={faGift} style={{ color: "#ff3366", fontSize: "24px" ,marginRight:'5px' }} />
+              <FontAwesomeIcon icon={faGift} style={{ color: "#ff3366", fontSize: "24px" ,marginRight:'9px' }} />
 
               <span className={styles.menuText}>Surprise Reveal</span>
             </div>
