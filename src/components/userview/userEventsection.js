@@ -606,9 +606,14 @@ const EventDetails = () => {
 
           {events && (
             <div>
-              <h2 className="mt-3 ">
+              <h4 className="mt-3 " style={{fontFamily: 'Poppins',
+fontWeight: "500",
+fontSize: '24px',
+leadingTrim: 'Cap-height',
+lineHeight: '100%',
+letterSpacing: '0%'}}>
                 {events.name} {events.eventType}
-              </h2>
+              </h4>
               <ul className="nav nav-tabs mt-3 ulmain">
                 {[
                   "details",

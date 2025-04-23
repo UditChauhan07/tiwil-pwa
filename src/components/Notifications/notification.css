@@ -68,6 +68,7 @@ top: 169px;
 left: 83px;
 border-radius: 6px;
 border-width: 1px;
+gap: 5px;
 
 left:30px !important;
 margin-left: 80px;
@@ -123,13 +124,14 @@ vertical-align: middle;
 display: flex;
 align-items: center;
 text-align: center;
+
 }
 .timestamp{
-    width: 50px;
+    width: 65%;
 height: 16px;
 top: 121px;
 left: 301px;
-font-family: Airbnb Cereal App;
+
 font-weight: 400;
 font-size: 12px;
 line-height: 100%;

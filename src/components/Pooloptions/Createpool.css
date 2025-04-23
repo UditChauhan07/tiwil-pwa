@@ -5,6 +5,7 @@
   @media (max-width: 400px) {
     .mybar {
       top: 200px;
+      right: 8px;
     }
   }
   
