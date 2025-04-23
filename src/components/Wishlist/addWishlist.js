@@ -3,8 +3,9 @@ import axios from "axios";
 import styles from "../wihslistowner/wishlist/WishlistModal.module.css";
 import Swal from "sweetalert2";
 import { Spinner, ProgressBar } from "react-bootstrap";
+import { useEffect } from "react";
 
-const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
+const WishlistModal = ({ eventId, setShow, fetchWishlist,  }) => {
   const [giftName, setGiftName] = useState("");
   const [price, setPrice] = useState("");
   const [productLink, setProductLink] = useState("");
@@ -50,6 +51,15 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
+
+  useEffect(() => {
+    const slider = document.getElementById('desireSlider');
+    const val = (desireRate / 100) * 100;
+    if (slider) {
+      slider.style.background = `linear-gradient(to right, #EE4266 ${val}%, #f8e8eb ${val}%)`;
+    }
+  }, [desireRate]);
+
 
   // ✅ Handle Save (Upload with Progress)
   const handleSave = async () => {
@@ -201,22 +211,26 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist }) => {
                   className={styles.placedesign}
                   placeholder="Product link"
                   value={productLink}
+                  style={{border:'none',padding:'0px',padddingLeft:'10px',borderRadius:'6px'}}
                   onChange={(e) => setProductLink(e.target.value)}
                 />
                 <button className={styles.addLinkButton}>ADD</button>
               </div>
 
               <label className={styles.labelss}>Desire Rate </label>
-              <div className="d-flex align-items-center"><input
-                type="range"
-                min="0"
-                max="100"
-                style={{width:'90%'}}
-                value={desireRate}
-                onChange={(e) => setDesireRate(e.target.value)}
-                className={styles.slider}
-              />{desireRate}%
-              </div>
+              <div className="d-flex align-items-center">
+      <input
+        type="range"
+        id="desireSlider"
+        min="0"
+        max="100"
+        value={desireRate}
+        onChange={(e) => setDesireRate(e.target.value)}
+        style={{ width: '90%' }}
+        className={styles.slider}
+      />
+      {desireRate}%
+    </div>
 <label className={styles.labelss}>Describe it</label>
               <textarea
                 className={styles.placedesignn}

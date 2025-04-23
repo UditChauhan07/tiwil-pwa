@@ -811,7 +811,7 @@ letterSpacing: '0%'}}>
                                           >
                                             <span
                                               style={{
-                                                fontSize: "11px",
+                                                fontSize: "13px",
                                                 display: "block",
                                                 lineHeight: "1.9",
                                               }}
@@ -820,7 +820,7 @@ letterSpacing: '0%'}}>
                                             </span>
                                             <span
                                               style={{
-                                                fontSize: "10px",
+                                                fontSize: "12px",
                                                 display: "block",
                                                 lineHeight: "1.9",
                                               }}

@@ -246,6 +246,8 @@ const ChatRoom = () => {
         }
     };
 
+
+
     return (
         <div className={styles.chatRoomContainer}>
             {eventDetails && (
@@ -288,17 +290,31 @@ const ChatRoom = () => {
                             key={msg._id}
                             className={`${styles.messageItem} ${isCurrentUser ? styles.sentMessage : styles.receivedMessage}`}
                         >
-                            <div className={styles.messageHeader}>
-                                {!isCurrentUser && (
-                                    <img
+                            <div className={`${styles.messageHeader} ${isCurrentUser ? styles.sentMessage : styles.receivedMessage}`}>
+                           <div>
+                                {/* {!isCurrentUser && (
+                                  <div style={{border:'1px solid black'}}>  <img
                                         src={profileImage}
                                         alt={senderName}
                                         className={styles.profileImage}
-                                        onError={(e) => e.target.src = `${process.env.PUBLIC_URL}/img/defaultUser.png`}
-                                    />
-                                )}
-                                <span className={styles.senderName}>{senderName}</span>
-                            </div>
+                                        onError={(e) => e.target.src = `${process.env.PUBLIC_URL}/img/defaultUser.png`} style={{border:'1px solid black'}}
+                                    /> */}
+                                   
+                                    <div className={styles.profileImageWrapper}>
+  <img
+    src={profileImage}
+    alt={senderName}
+    className={styles.profileImage}
+    onError={(e) => e.target.src = `${process.env.PUBLIC_URL}/img/defaultUser.png`}
+  />
+</div>
+
+                                    
+                                </div> 
+                                <div className={styles.naming}>
+                                <span className= {`${styles.senderName} ${isCurrentUser ? styles.sentMessage : styles.receivedMessage}`}>{senderName}</span>
+                               
+                            
 
                             <div className={`${styles.messageBubble} ${msg.isOptimistic ? styles.optimistic : ''}`}>
                                 {msg.messageType === "text" && <p className={styles.messageText}>{msg.content}</p>}
@@ -323,13 +339,16 @@ const ChatRoom = () => {
                                         className={styles.chatMediaAudio}
                                     />
                                 )}
-                                <span className={styles.messageTime}>
+                               
+                            </div>
+                            <span className={`${styles.messageTime} ${isCurrentUser ? styles.sentMessage : styles.receivedMessage}`} >
                                     {msg.timestamp ? new Date(msg.timestamp).toLocaleTimeString([], {
                                         hour: "2-digit",
                                         minute: "2-digit",
                                     }) : 'Sending...'}
                                 </span>
-                            </div>
+                        </div>
+                        </div>
                         </div>
                     );
                 })}
@@ -337,7 +356,10 @@ const ChatRoom = () => {
             </div>
 
             <div className={styles.inputContainer}>
-                <label htmlFor="mediaUpload" className={styles.mediaButton}>📎</label>
+                <label htmlFor="mediaUpload" className={styles.mediaButton}><svg width="18" height="30" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M10.8791 6.37503L5.39309 11.861C4.56709 12.687 4.56709 14.027 5.39309 14.853V14.853C6.21909 15.679 7.55909 15.679 8.38509 14.853L15.6171 7.62103C17.1321 6.10603 17.1321 3.65003 15.6171 2.13503V2.13503C14.1021 0.620029 11.6461 0.620029 10.1311 2.13503L2.89909 9.36703C0.695094 11.571 0.695094 15.143 2.89909 17.347V17.347C5.10309 19.551 8.67509 19.551 10.8791 17.347L15.2681 12.958" stroke="#000E08" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
+</label>
                 <input
                     id="mediaUpload"
                     type="file"
@@ -396,7 +418,10 @@ const ChatRoom = () => {
                     className={styles.sendButton}
                     disabled={!newMessage.trim() && !mediaFile}
                 >
-                    Send
+                 <svg width="36" height="30" viewBox="0 0 36 30" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M0.237786 10.3769L9.35901 14.7696C9.50263 14.8181 9.64625 14.8181 9.78801 14.7696L24.4955 7.799L13.3229 16.3453C13.2278 16.4404 13.1793 16.5356 13.1327 16.6326L11.7953 24.1775C11.7468 24.3678 11.8438 24.5599 12.0341 24.655C12.1777 24.7502 12.4164 24.7502 12.5601 24.655L17.4788 21.1689L25.8838 29.0964C25.9789 29.1915 26.074 29.24 26.2177 29.24H26.3128C26.4564 29.1915 26.6 29.0964 26.6467 28.9061L35.6242 0.638553C35.6726 0.49493 35.6242 0.304675 35.529 0.161052C35.4339 0.0174292 35.2418 -0.0292032 35.0515 0.0174296L0.333878 9.47051C0.143623 9.51901 0 9.70926 0 9.89952C0 10.0916 0.048495 10.2819 0.23875 10.377L0.237786 10.3769Z" fill="#EE4266"/>
+</svg>
+
                 </button>
             </div>
         </div>

@@ -677,16 +677,16 @@ textAlign: "center",
                                             <div className="col-7">
                                               <h6
                                                 className="card-title "
-                                                style={{ color: "black", marginBottom:'0px' }}
+                                                style={{ color: "black", marginBottom:'0px' ,fontSize:'15px'}}
                                               >
                                                 {item.giftName}
                                               </h6>
-                                              <p className="">
+                                              <p className="" style={{fontSize:'13px'}}>
                                                 {event.name}
                                               </p>
                                               <p
                                                 className="card-text text-secondary"
-                                                style={{ fontSize: "9px" }}
+                                                style={{ fontSize: "12px" }}
                                               >
                                                 {item.description}
                                               </p>
@@ -890,17 +890,17 @@ verticalAlign: "middle"
                             {/* ADD MORE and START CHAT buttons when guests are available */}
                             <div
                               className="text-center mt-4 d-flex "
-                              style={{ justifyContent: "space-evenly" }}
+                              style={{ justifyContent: "space-between", gap:'20px' }}
                             >
                               <InviteButton
                                 onInviteSuccess={fetchGuest}
                                 style={{
                                   borderRadius: "5px",
-                                  width: "38%",
+                                 
 
                                   color: "white",
                                   fontSize: "12px",
-                                  padding: "12px 0px", // Custom background color
+                                  padding: "12px 15px", // Custom background color
                                 }}
                               >
                                 ADD MORE
@@ -911,7 +911,7 @@ verticalAlign: "middle"
                                 style={{
                                   fontSize: "12px",
                                   background: "#EE4266",
-                                  width: "35%",
+                             padding:'12px 15px',
                                   color: "white",
                                   gap: "10px",
                                 }}

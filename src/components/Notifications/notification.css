@@ -11,6 +11,9 @@
 .notification-text{
     align-items: center !important;
     display: flex;
+    position: relative;
+    gap: 10px;
+    margin: 15px 0 20px 0;
 }
 p{
     align-items: center !important;
@@ -69,7 +72,7 @@ left: 83px;
 border-radius: 6px;
 border-width: 1px;
 gap: 5px;
-
+display: flex;
 left:30px !important;
 margin-left: 80px;
 }
@@ -79,9 +82,10 @@ top: 169px;
 left: 83px;
 border-radius: 6px;
 border-width: 1px;
+background-color: unset;
 
 border: 1px solid #EEEEEE;
-font-family: Airbnb Cereal App;
+font-family: Poppins;
 font-weight: 400;
 font-size: 14px;
 line-height: 23px;
@@ -99,7 +103,7 @@ left: 191px;
 border-radius: 6px;
 background: #EE4266;
 border: 1px solid #EEEEEE;
-font-family: Airbnb Cereal App;
+font-family: Poppins;
 font-weight: 400;
 font-size: 14px;
 line-height: 23px;
@@ -110,28 +114,31 @@ color:#fff;
 
 }
 .message{
-width: 193px;
+
 height: 46px;
 top: 115px;
 left: 83px;
 
 font-size: 14px;
-font-family: Airbnb Cereal App;
+
 font-weight: 400;
-line-height: 100%;
+line-height: 20px;
 letter-spacing: 0px;
 vertical-align: middle;
 display: flex;
 align-items: center;
-text-align: center;
+text-align: start;
 
 }
 .timestamp{
-    width: 65%;
+    /* width: 65%; */
 height: 16px;
-top: 121px;
-left: 301px;
-
+/* top: 121px; */
+/* left: 301px; */
+/* position: absolute; */
+right: 0;
+bottom: -11px;
+white-space: nowrap;
 font-weight: 400;
 font-size: 12px;
 line-height: 100%;

@@ -58,11 +58,17 @@ const PoolRequests = () => {
 
     fetchRequests();
   }, []);
-
   const getRelativeTime = (timestamp) => {
-    return formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+    const raw = formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+  
+    return raw
+      .replace(/minutes?/, 'mins')
+      .replace(/hours?/, 'hrs')
+      .replace(/seconds?/, 'secs')
+      .replace(/days?/, 'days')  // optional, keeps as is
+      .replace(/months?/, 'mos')
+      .replace(/years?/, 'yrs');
   };
-
   // ✅ Handle Accept/Reject for Notifications
   const handleAction = async (notification, action) => {
     setLoading(true)
@@ -232,7 +238,7 @@ const PoolRequests = () => {
                 return (
                   <div key={notification._id} className="notification-item">
                     <div className="notification-text d-flex align-items-center justify-content-between">
-                      <img src={userImage} alt="User Profile" height="45px" width="45px" style={{ borderRadius: "20px" }} />
+                      <img src={userImage} alt="User Profile" height="35px" width="35px" style={{border:"1px solid #e6e6e6", borderRadius: "50%" }} />
                       <p className="message">{notification.message}</p>
                       <p className="timestamp">{getRelativeTime(notification.timestamp)}</p>
                     </div>
