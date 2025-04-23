@@ -108,16 +108,16 @@ function WishlistCard() {
           <div>
           <div className="card mb-3 mx-auto m-2" style={{ maxWidth: "720px",borderColor:'white' }}>
           <div style={{width: "100%",
-height: "250px",
+height: "180px",
 top: "20px",
 left: "15px",
 borderRadius: "5px",
 
 }} className="imagediv">
   <img 
-    src={wishlistItem.imageUrl ? `${process.env.REACT_APP_BASE_URL}/${wishlistItem.imageUrl}` : `${process.env.PUBLIC_URL}/img/image.png`} 
+    src={wishlistItem.imageUrl ? `${process.env.REACT_APP_BASE_URL}/${wishlistItem.imageUrl}` : `${process.env.PUBLIC_URL}/img/wishlistdefault.png`} 
     alt="image" 
-    style={{ width: "100%",maxHeight:'250px' ,border:"1px solid #ffffff,border-radius:'5px"}} 
+    style={{ width: "100%",maxHeight:'180px' ,border:"1px solid #ffffff,border-radius:'5px"}} 
   />
 </div>
 
@@ -150,7 +150,7 @@ borderRadius: "5px",
   style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '10px' }}
   onError={(e) => {
     e.target.onerror = null;
-    e.target.src = `${process.env.PUBLIC_URL}/img/defaultproduct.jpg`; 
+    e.target.src = `${process.env.PUBLIC_URL}/img/eventdefault1.png`; 
   }}
 />
 

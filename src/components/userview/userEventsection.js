@@ -738,7 +738,7 @@ letterSpacing: '0%'}}>
                                     backgroundImage: `url(${
       item?.imageUrl
         ? `${process.env.REACT_APP_BASE_URL}/${item.imageUrl}`
-        : `${process.env.PUBLIC_URL}/img/image.png`
+        : `${process.env.PUBLIC_URL}/img/wishlistdefault.png`
     })`,
                                     position: "relative",
                                     backgroundRepeat: "no-repeat",
