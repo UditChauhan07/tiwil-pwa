@@ -738,7 +738,7 @@ letterSpacing: '0%'}}>
                                     backgroundImage: `url(${
       item?.imageUrl
         ? `${process.env.REACT_APP_BASE_URL}/${item.imageUrl}`
-        : `${process.env.PUBLIC_URL}/img/image.png`
+        : `${process.env.PUBLIC_URL}/img/wishlistdefault.png`
     })`,
                                     position: "relative",
                                     backgroundRepeat: "no-repeat",
@@ -811,7 +811,7 @@ letterSpacing: '0%'}}>
                                           >
                                             <span
                                               style={{
-                                                fontSize: "11px",
+                                                fontSize: "13px",
                                                 display: "block",
                                                 lineHeight: "1.9",
                                               }}
@@ -820,7 +820,7 @@ letterSpacing: '0%'}}>
                                             </span>
                                             <span
                                               style={{
-                                                fontSize: "10px",
+                                                fontSize: "12px",
                                                 display: "block",
                                                 lineHeight: "1.9",
                                               }}

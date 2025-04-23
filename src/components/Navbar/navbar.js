@@ -138,13 +138,13 @@ const unreadNotificationCount = Array.isArray(notifications)
                     <span
                       style={{
                         position: "absolute",
-                        top: "15px",
-                        right: "63px",
+                        top: "10px",
+                        right: "50px",
                         backgroundColor: "#EE4266",
                         color: "white",
                         borderRadius: "50%",
                         padding: "1px 7px",
-                        fontSize: "12px",
+                        fontSize: "10px",
                       }}
                     >
                       {unreadNotificationCount}

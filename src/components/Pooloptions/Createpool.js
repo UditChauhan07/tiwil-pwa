@@ -369,21 +369,21 @@ fetchPoolData();
       </div>
 
       {/* Image Section */}
-      <div  style={{ height:'300px',width:'100%'}}>
+      <div  style={{ height:'250x',width:'100%'}}>
  
   
       <img
   src={
     pool?.Image
       ? `${process.env.REACT_APP_BASE_URL}/${pool.Image}`
-      : `${process.env.PUBLIC_URL}/img/defaultproduct.jpg`
+      : `${process.env.PUBLIC_URL}/img/wishlistdefault.png`
   }
   alt={pool?.wishName || "Default Gift"}
   className="img-fluid rounded"
-  style={{ width: "100%", maxHeight: "308px" }}
+  style={{ width: "100%", maxHeight: "250px" }}
   onError={(e) => {
     e.target.onerror = null; // Prevent infinite loop
-    e.target.src = `${process.env.PUBLIC_URL}/img/defaultproduct.jpg`;
+    e.target.src = `${process.env.PUBLIC_URL}/img/wishlistdefault.png`;
   }}
 />
 

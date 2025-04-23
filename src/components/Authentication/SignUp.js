@@ -313,7 +313,14 @@ const SignUpForm = () => {
   const [resendCooldown, setResendCooldown] = useState(30);
   const [canResend, setCanResend] = useState(false);
   const [resendAttempts, setResendAttempts] = useState(0); // Optional: Limit resends
-
+  const [messageIndex, setMessageIndex] = useState(0);
+  const messages = [
+    "Sending your OTP...",
+    "Almost there...",
+    "Securing the connection...",
+    "Hang tight, verifying...",
+    "Just a moment..."
+  ];
   const logo = `${process.env.PUBLIC_URL}/img/letsgo2.svg`;
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
@@ -692,6 +699,28 @@ const SignUpForm = () => {
     }
   };
 
+  useEffect(() => {
+    if (loading) {
+      const interval = setInterval(() => {
+        setMessageIndex((prev) => (prev + 1) % messages.length);
+      }, 1500); // change every 2 seconds
+  
+      return () => clearInterval(interval);
+    }
+  }, [loading]);
+  
+  if (loading) {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", marginTop: "250px" }}>
+        <div className="spinner-border text-danger custom-spinner" role="status" style={{ width: '5rem', height: '5rem', color: '#ff3366' }}>
+          <span className="visually-hidden">Loading...</span>
+        </div>
+        <p style={{ marginTop: '20px', fontWeight: 'bold', fontSize: '1.2rem', color: '#333' }}>
+          {messages[messageIndex]}
+        </p>
+      </div>
+    );
+  }
   return (
     <section className="page-controls py-4">
       {!isOtpSent ? (
