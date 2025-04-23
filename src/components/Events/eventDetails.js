@@ -522,7 +522,13 @@ const EventDetails = () => {
 
                   {/* Map over events to display them dynamically */}
 
-                  <h4 className="mt-3 " style={{ color: "black" }}>
+                  <h4 className="mt-3 " style={{ fontFamily: 'Poppins',
+fontWeight: "500",
+fontSize: '24px',
+leadingTrim: 'Cap-height',
+lineHeight: '100%',
+letterSpacing: '0%'
+ }}>
                     {event.name}{" "}
                     {event.relation &&
                       event.date &&
@@ -680,7 +686,7 @@ textAlign: "center",
                                               </p>
                                               <p
                                                 className="card-text text-secondary"
-                                                style={{ fontSize: "12px" }}
+                                                style={{ fontSize: "9px" }}
                                               >
                                                 {item.description}
                                               </p>

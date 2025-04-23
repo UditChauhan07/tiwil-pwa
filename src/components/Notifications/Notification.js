@@ -12,6 +12,7 @@ const PoolRequests = () => {
   const [requests, setRequests] = useState([]);
   const [notificationCount, setNotificationCount] = useState(0);
   const [activeTab, setActiveTab] = useState("general"); // Default to General tab
+  const [loading,setLoading]=useState(false)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -64,6 +65,7 @@ const PoolRequests = () => {
 
   // ✅ Handle Accept/Reject for Notifications
   const handleAction = async (notification, action) => {
+    setLoading(true)
     if (!notification.type) {
       console.warn("Notification type is missing!");
       return;
@@ -120,6 +122,9 @@ const PoolRequests = () => {
       console.error(`Error on ${action}:`, error);
       Swal.fire("Error", `Failed to ${action} notification.`, "error");
     }
+    finally{
+      setLoading(false)
+    }
   };
   
 
@@ -145,6 +150,33 @@ const PoolRequests = () => {
     ).length;
   };
   
+  if (loading) {
+    return (
+      <div
+        style={{
+          display: "flex",
+         
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "100px",
+          position:'fixed',
+          top:'0',
+          right:'0',
+          left:'0',
+          bottom:'0'
+        }}
+      >
+        {/* <Spinner
+          animation="border"
+          role="status"
+          style={{ width: "10rem", height: "10rem" }}
+        /> */}
+        <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '7vh', height: '7vh',color:'#ff3366'}}>
+  <span class="visually-hidden">Loading...</span>
+</div>
+      </div>
+    );
+  }
   return (
     <>
       <div className="mainnotify">
