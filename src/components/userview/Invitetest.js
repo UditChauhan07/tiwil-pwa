@@ -44,9 +44,9 @@ const InviteButton = ({ style, children ,onInviteSuccess }) => {
           confirmButton: 'swal-confirm-btn',
           text: 'swal-text',
         },
-        imageUrl:   `${process.env.PUBLIC_URL}/img/letsgo.png`, // Optional: Set a custom icon or use the default one
-        imageWidth: 80,
-        imageHeight: 80,
+        imageUrl:   `${process.env.PUBLIC_URL}/img/Guest.svg`, // Optional: Set a custom icon or use the default one
+        imageWidth: 100,
+        imageHeight: 100,
         
         padding: '2rem',
         background: '#fff',
