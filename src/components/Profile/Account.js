@@ -109,7 +109,8 @@ const profileImage=localStorage.getItem('profileImage')
         localStorage.removeItem("fullname");
         localStorage.clear();
         clearAuth();
-        navigate("/signin");
+        // navigate("/signin");
+        window.location.href='/signin'
         // window.dispatchEvent(new Event("storage"));
      
       }

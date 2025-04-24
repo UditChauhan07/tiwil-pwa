@@ -818,7 +818,7 @@ letterSpacing: '0%'}}>
                                             >
                                               {events.name}
                                             </span>
-                                            <span
+                                            <span className="descriptionwish"
                                               style={{
                                                 fontSize: "12px",
                                                 display: "block",

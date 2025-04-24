@@ -153,6 +153,19 @@ opacity: 0.84;
     
   
   }
+  .descriptionwish{
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+  }
+
+  .card-title {
+    display: -webkit-box;
+    -webkit-line-clamp: 1;
+    -webkit-box-orient: vertical;  
+    overflow: hidden;
+  }
 
   .history-card {
     border: 1px solid #ddd;

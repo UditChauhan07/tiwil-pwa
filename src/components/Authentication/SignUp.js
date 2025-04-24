@@ -310,7 +310,7 @@ const SignUpForm = () => {
   const [phoneError, setPhoneError] = useState("");
   const recaptchaVerifierRef = useRef(null);
   const recaptchaSetupComplete = useRef(false);
-  const [resendCooldown, setResendCooldown] = useState(30);
+  const [resendCooldown, setResendCooldown] = useState(60);
   const [canResend, setCanResend] = useState(false);
   const [resendAttempts, setResendAttempts] = useState(0); // Optional: Limit resends
   const [messageIndex, setMessageIndex] = useState(0);
@@ -650,14 +650,14 @@ const SignUpForm = () => {
         }
 
         Swal.fire({
-          title: `<div  style="font-size: 2rem; color: #FF3366; font-weight: bold;">Dear ${user.fullName}</div>`,
-          text: "Account Created Successfully",
+          title: `<div  style="font-size: 20px; color: #EE4266; font-weight: bold;">Dear ${user.fullName}</div>`,
+          text: `Account created successfully`,
           confirmButtonText: "Let's Go",
           confirmButtonColor: "#FF3366",
           imageUrl: logo,
 
-          imageWidth: 80,
-          imageHeight: 80,
+          imageWidth: 120,
+          imageHeight: 120,
         });
 
         localStorage.setItem("fullName", user.fullName || "");
@@ -711,13 +711,15 @@ const SignUpForm = () => {
   
   if (loading) {
     return (
-      <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", marginTop: "250px" }}>
-        <div className="spinner-border text-danger custom-spinner" role="status" style={{ width: '5rem', height: '5rem', color: '#ff3366' }}>
-          <span className="visually-hidden">Loading...</span>
+      <div style={{ display: "flex",width:"100%" ,height:"100vh", justifyContent: "center", alignItems: "center",  }}>
+      <div className="LoaderRooler" style={{position:"relative", }}>
+        <div className="spinner-border text-danger custom-spinner" role="status" style={{  width: '5rem', height: '5rem', color: '#ff3366' }}>
+          <span className="visually-hidden" >Loading...</span>
         </div>
-        <p style={{ marginTop: '20px', fontWeight: 'bold', fontSize: '1.2rem', color: '#333' }}>
+        <p style={{ marginTop: '20px', fontWeight: 'bold', fontSize: '1.2rem', color: '#333', position:"absolute", width:"100%", left:"0", right:"0" }}>
           {messages[messageIndex]}
         </p>
+        </div>
       </div>
     );
   }
@@ -972,6 +974,7 @@ const SignUpForm = () => {
                 value={formData.otp}
                 onChange={(otpValue) => {
                   const cleanedOtp = otpValue.replace(/\D/g, "");
+                  setPhoneError("")
                   if (cleanedOtp.length <= 6) {
                     setFormData({ ...formData, otp: cleanedOtp });
                   }
@@ -980,8 +983,8 @@ const SignUpForm = () => {
                 renderSeparator={<span>-</span>}
                renderInput={(props) => <input {...props} type="tel" />}
                 inputStyle={{
-                  width: "40px",
-                  height: "50px",
+                  width: "33px",
+                  height: "45px",
                   margin: "0 6px",
                   fontSize: "20px",
                   borderRadius: "8px",
@@ -1005,7 +1008,7 @@ const SignUpForm = () => {
               <button
                 type="button"
                 onClick={handleSendOTP}
-                className="btn  text-primary"
+                className="btn "
                 style={{
                   textDecoration: "underline",
                   fontWeight: "600",
@@ -1017,7 +1020,7 @@ const SignUpForm = () => {
             </div>
           ) : (
             <div style={{ textAlign: "center", marginTop: "1px" }}>
-              <span className="text-muted"> 
+              <span className="text-muted" > 
                 Resend OTP in {resendCooldown}
               </span>
             </div>
