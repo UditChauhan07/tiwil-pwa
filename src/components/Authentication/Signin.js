@@ -28,9 +28,17 @@ const SignInForm = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [confirmationResult, setConfirmationResult] = useState(null);
   const [otp, setOtp] = useState("");
-    const [resendCooldown, setResendCooldown] = useState(30);
+    const [resendCooldown, setResendCooldown] = useState(60);
     const [canResend, setCanResend] = useState(false);
     const [resendAttempts, setResendAttempts] = useState(0);
+     const [messageIndex, setMessageIndex] = useState(0);
+      const messages = [
+        "Sending your OTP...",
+        "Almost there...",
+        "Securing the connection...",
+        "Hang tight, verifying...",
+        "Just a moment..."
+      ];
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -162,7 +170,7 @@ const SignInForm = () => {
       if (!errorHandled && error.code) {
         let msg = "Failed to send OTP.";
         if (error.code === "auth/invalid-phone-number") {
-          msg = "The phone number format is invalid.";
+          msg = "The Phone number  is invalid.";
         } else if (error.code === "auth/too-many-requests") {
           msg = "Too many attempts. Try again later.";
         } else if (error.message.includes("reCAPTCHA")) {
@@ -302,16 +310,28 @@ const SignInForm = () => {
     }
   };
   
-  if(isLoading) {
-      return (
-        <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "250px" }}>
-          {/* <Spinner animation="border" role="status" style={{ width: "7rem", height: "7rem" }} /> */}
-          <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '5rem', height: '5rem',color:'#ff3366'}}>
-  <span class="visually-hidden">Loading...</span>
-</div>
-        </div>
-      );
+ useEffect(() => {
+    if (isLoading) {
+      const interval = setInterval(() => {
+        setMessageIndex((prev) => (prev + 1) % messages.length);
+      }, 1500); // change every 2 seconds
+  
+      return () => clearInterval(interval);
     }
+  }, [isLoading]);
+  
+  if (isLoading) {
+    return (
+      <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", marginTop: "250px" }}>
+        <div className="spinner-border text-danger custom-spinner" role="status" style={{ width: '5rem', height: '5rem', color: '#ff3366' }}>
+          <span className="visually-hidden">Loading...</span>
+        </div>
+        <p style={{ marginTop: '20px', fontWeight: 'bold', fontSize: '1.2rem', color: '#333' }}>
+          {messages[messageIndex]}
+        </p>
+      </div>
+    );
+  }
 
   return (
     <section className="page-controls py-4">
@@ -500,6 +520,7 @@ marginBottom:'5px'
   value={formData.otp}
   onChange={(otpValue) => {
     const cleanedOtp = otpValue.replace(/\D/g, "");
+    setPhoneError("")
     if (cleanedOtp.length <= 6) {
       setFormData({ ...formData, otp: cleanedOtp });
     }
@@ -509,8 +530,8 @@ marginBottom:'5px'
   renderInput={(props) => <input {...props} type="tel" />}
 
   inputStyle={{
-    width: '40px',
-    height: '50px',
+    width: '33px',
+    height: '45px',
     margin: '0 6px',
     fontSize: '20px',
     borderRadius: '8px',
@@ -531,7 +552,7 @@ marginBottom:'5px'
               <button
                 type="button"
                 onClick={handleSendOTP}
-                className="btn  text-primary"
+                className="btn  "
                 style={{
                   textDecoration: "underline",
                   fontWeight: "600",

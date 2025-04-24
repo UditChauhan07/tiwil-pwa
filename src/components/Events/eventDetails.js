@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
-import { FaEllipsisV,  FaArrowRight } from "react-icons/fa";
+import { FaEllipsisV, FaArrowRight } from "react-icons/fa";
 import "./Eventdetails.css";
 
-import { faShareNodes } from '@fortawesome/free-solid-svg-icons';
+import { faShareNodes } from "@fortawesome/free-solid-svg-icons";
 import WishlistModal from "../Wishlist/addWishlist";
 import InviteModal from "../GuestInvite/GuestModal";
 import EditEventModal from "./eventModal";
@@ -18,8 +18,7 @@ import { faCalendarAlt } from "@fortawesome/free-solid-svg-icons";
 import { faLocationDot } from "@fortawesome/free-solid-svg-icons";
 import { Spinner } from "react-bootstrap";
 import Swal from "sweetalert2";
-import { faEllipsisVertical } from '@fortawesome/free-solid-svg-icons'; 
-
+import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
 
 const EventDetails = () => {
   const [activeTab, setActiveTab] = useState("details");
@@ -323,23 +322,23 @@ const EventDetails = () => {
     }
   };
   const calculateAgeAndBirthdayText = (eventDate) => {
-   // <-- Add this check
+    // <-- Add this check
     if (!eventDate) return "N/A";
-  
+
     const today = new Date();
     const targetDate = new Date(eventDate);
     const currentYear = today.getFullYear();
     targetDate.setFullYear(currentYear);
-  
+
     const birthDate = new Date(eventDate);
     const age = today.getFullYear() - birthDate.getFullYear();
-  
+
     const diffTime = targetDate - today;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  
+
     if (diffDays === 0) return "Today!";
     if (diffDays < 0) targetDate.setFullYear(currentYear + 1);
-  
+
     const nextDiffTime = targetDate - today;
     const nextDiffDays = Math.ceil(nextDiffTime / (1000 * 60 * 60 * 24));
     return `${nextDiffDays} Days Left`;
@@ -385,15 +384,15 @@ const EventDetails = () => {
       <div
         style={{
           display: "flex",
-         
+
           justifyContent: "center",
           alignItems: "center",
           marginTop: "100px",
-          position:'fixed',
-          top:'0',
-          right:'0',
-          left:'0',
-          bottom:'0'
+          position: "fixed",
+          top: "0",
+          right: "0",
+          left: "0",
+          bottom: "0",
         }}
       >
         {/* <Spinner
@@ -401,9 +400,13 @@ const EventDetails = () => {
           role="status"
           style={{ width: "10rem", height: "10rem" }}
         /> */}
-        <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '7vh', height: '7vh',color:'#ff3366'}}>
-  <span class="visually-hidden">Loading...</span>
-</div>
+        <div
+          class="spinner-border text-danger custom-spinner"
+          role="status"
+          style={{ width: "7vh", height: "7vh", color: "#ff3366" }}
+        >
+          <span class="visually-hidden">Loading...</span>
+        </div>
       </div>
     );
   }
@@ -418,28 +421,37 @@ const EventDetails = () => {
               <div className="d-flex gap-2 align-items-flex-start">
                 <FontAwesomeIcon
                   icon={faArrowLeft}
-                  onClick={() => navigate(-1)} style={{fontSize:'23px'}}
+                  onClick={() => navigate(-1)}
+                  style={{ fontSize: "23px" }}
                 />
 
                 <h4>Event Details</h4>
               </div>
-              <div className="d-flex align-items-center gap-2" >
-                {/* <FontAwesomeIcon icon={faShareNodes} style={{ color: '#ff3366', fontSize: '24px' }} 
+              <div className="d-flex align-items-center gap-2">
+                {/* <FontAwesomeIcon icon={faShareNodes} style={{ color: '#ff3366', fontSize: '24px' }}
                  */}
-                
-                  <div onClick={handleShare}>
-                  <svg width="17" height="17" viewBox="0 0 17 17" fill="none" xmlns="http://www.w3.org/2000/svg" style={{marginBottom:'6px'}}>
-<path d="M3.26923 11.7692C4.30885 11.7692 5.23077 11.2723 5.82577 10.5073L10.5858 12.8873C10.5138 13.1619 10.4615 13.4365 10.4615 13.7308C10.4615 15.5354 11.9262 17 13.7308 17C15.5354 17 17 15.5354 17 13.7308C17 11.9262 15.5354 10.4615 13.7308 10.4615C12.6912 10.4615 11.7692 10.9585 11.1742 11.7235L6.41423 9.34346C6.48615 9.06885 6.53846 8.79423 6.53846 8.5C6.53846 8.20577 6.48615 7.93115 6.41423 7.65654L11.1742 5.27654C11.7692 6.04154 12.6912 6.53846 13.7308 6.53846C15.5354 6.53846 17 5.07385 17 3.26923C17 1.46462 15.5354 0 13.7308 0C11.9262 0 10.4615 1.46462 10.4615 3.26923C10.4615 3.56346 10.5138 3.83808 10.5858 4.11269L5.82577 6.49269C5.23077 5.72769 4.30885 5.23077 3.26923 5.23077C1.46462 5.23077 0 6.69538 0 8.5C0 10.3046 1.46462 11.7692 3.26923 11.7692ZM13.7308 11.7692C14.8096 11.7692 15.6923 12.6519 15.6923 13.7308C15.6923 14.8096 14.8096 15.6923 13.7308 15.6923C12.6519 15.6923 11.7692 14.8096 11.7692 13.7308C11.7692 12.6519 12.6519 11.7692 13.7308 11.7692ZM13.7308 1.30769C14.8096 1.30769 15.6923 2.19038 15.6923 3.26923C15.6923 4.34808 14.8096 5.23077 13.7308 5.23077C12.6519 5.23077 11.7692 4.34808 11.7692 3.26923C11.7692 2.19038 12.6519 1.30769 13.7308 1.30769ZM3.26923 6.53846C4.34808 6.53846 5.23077 7.42115 5.23077 8.5C5.23077 9.57885 4.34808 10.4615 3.26923 10.4615C2.19038 10.4615 1.30769 9.57885 1.30769 8.5C1.30769 7.42115 2.19038 6.53846 3.26923 6.53846Z" fill="black"/>
-</svg>
 
+                <div onClick={handleShare}>
+                  <svg
+                    width="17"
+                    height="17"
+                    viewBox="0 0 17 17"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                    style={{ marginBottom: "6px" }}
+                  >
+                    <path
+                      d="M3.26923 11.7692C4.30885 11.7692 5.23077 11.2723 5.82577 10.5073L10.5858 12.8873C10.5138 13.1619 10.4615 13.4365 10.4615 13.7308C10.4615 15.5354 11.9262 17 13.7308 17C15.5354 17 17 15.5354 17 13.7308C17 11.9262 15.5354 10.4615 13.7308 10.4615C12.6912 10.4615 11.7692 10.9585 11.1742 11.7235L6.41423 9.34346C6.48615 9.06885 6.53846 8.79423 6.53846 8.5C6.53846 8.20577 6.48615 7.93115 6.41423 7.65654L11.1742 5.27654C11.7692 6.04154 12.6912 6.53846 13.7308 6.53846C15.5354 6.53846 17 5.07385 17 3.26923C17 1.46462 15.5354 0 13.7308 0C11.9262 0 10.4615 1.46462 10.4615 3.26923C10.4615 3.56346 10.5138 3.83808 10.5858 4.11269L5.82577 6.49269C5.23077 5.72769 4.30885 5.23077 3.26923 5.23077C1.46462 5.23077 0 6.69538 0 8.5C0 10.3046 1.46462 11.7692 3.26923 11.7692ZM13.7308 11.7692C14.8096 11.7692 15.6923 12.6519 15.6923 13.7308C15.6923 14.8096 14.8096 15.6923 13.7308 15.6923C12.6519 15.6923 11.7692 14.8096 11.7692 13.7308C11.7692 12.6519 12.6519 11.7692 13.7308 11.7692ZM13.7308 1.30769C14.8096 1.30769 15.6923 2.19038 15.6923 3.26923C15.6923 4.34808 14.8096 5.23077 13.7308 5.23077C12.6519 5.23077 11.7692 4.34808 11.7692 3.26923C11.7692 2.19038 12.6519 1.30769 13.7308 1.30769ZM3.26923 6.53846C4.34808 6.53846 5.23077 7.42115 5.23077 8.5C5.23077 9.57885 4.34808 10.4615 3.26923 10.4615C2.19038 10.4615 1.30769 9.57885 1.30769 8.5C1.30769 7.42115 2.19038 6.53846 3.26923 6.53846Z"
+                      fill="black"
+                    />
+                  </svg>
                 </div>
                 <Dropdown>
-                  <Dropdown.Toggle
-                    as="button"
-                    className="btn  border-0 "
-                >
-              <FontAwesomeIcon icon={faEllipsisVertical} style={{ height:'23px',width:'23px'  }} />
-
+                  <Dropdown.Toggle as="button" className="btn  border-0 ">
+                    <FontAwesomeIcon
+                      icon={faEllipsisVertical}
+                      style={{ height: "23px", width: "23px" }}
+                    />
                   </Dropdown.Toggle>
                   <Dropdown.Menu>
                     <Dropdown.Item onClick={() => setShowEditModal(true)}>
@@ -473,10 +485,10 @@ const EventDetails = () => {
                   <div
                     style={{
                       maxWidth: "760px",
-                      width:'100%',
+                      width: "100%",
                       maxHeight: "320px",
                       borderRadius: "10px",
-                      position:'relative'
+                      position: "relative",
                     }}
                   >
                     <img
@@ -495,40 +507,46 @@ const EventDetails = () => {
                       }
                       className="img-fluid event-img1"
                       style={{
-                        maxWidth:'760px',
+                        maxWidth: "760px",
                         width: "100%",
                         maxHeight: "300px",
                         borderRadius: "10px",
-                     
                       }}
                       alt="Event"
                     />
-                         <div
-  style={{
-    borderRadius: "6px 7px 2px 4px",
-    position: "absolute",
-    top: "0px",
-    right: "0px",
-    color: "white",
-    fontSize: "15px",
-    fontWeight: "bold",
-    backgroundColor: "#EE4266",
-    padding: "5px",
-  }}
->
-  {calculateAgeAndBirthdayText(event.displayDate, event.isCancelled)}
-</div>
+                    <div
+                      style={{
+                        borderRadius: "6px 7px 2px 4px",
+                        position: "absolute",
+                        top: "0px",
+                        right: "0px",
+                        color: "white",
+                        fontSize: "15px",
+                        fontWeight: "bold",
+                        backgroundColor: "#EE4266",
+                        padding: "5px",
+                      }}
+                    >
+                      {calculateAgeAndBirthdayText(
+                        event.displayDate,
+                        event.isCancelled
+                      )}
+                    </div>
                   </div>
 
                   {/* Map over events to display them dynamically */}
 
-                  <h4 className="mt-3 " style={{ fontFamily: 'Poppins',
-fontWeight: "500",
-fontSize: '24px',
-leadingTrim: 'Cap-height',
-lineHeight: '100%',
-letterSpacing: '0%'
- }}>
+                  <h4
+                    className="mt-3 "
+                    style={{
+                      fontFamily: "Poppins",
+                      fontWeight: "500",
+                      fontSize: "24px",
+                      leadingTrim: "Cap-height",
+                      lineHeight: "100%",
+                      letterSpacing: "0%",
+                    }}
+                  >
                     {event.name}{" "}
                     {event.relation &&
                       event.date &&
@@ -537,16 +555,20 @@ letterSpacing: '0%'
                   </h4>
 
                   {/* Tabs */}
-                  <ul className="nav nav-tabs mt-3 ulmain" >
+                  <ul className="nav nav-tabs mt-3 ulmain">
                     {["details", "wishlist", "guests", "history"].map((tab) => (
-                      <li className="nav-item"  style={{
-                        fontFamily: "Poppins",
-fontWeight: "500",
-fontSize: "14px",
-lineHeight: "100%",
-letterSpacing: "0%",
-textAlign: "center",
-}}key={tab}>
+                      <li
+                        className="nav-item"
+                        style={{
+                          fontFamily: "Poppins",
+                          fontWeight: "500",
+                          fontSize: "14px",
+                          lineHeight: "100%",
+                          letterSpacing: "0%",
+                          textAlign: "center",
+                        }}
+                        key={tab}
+                      >
                         <button
                           className={`nav-link ${
                             activeTab === tab
@@ -569,28 +591,31 @@ textAlign: "center",
                           <div className="calender-icon">
                             <FontAwesomeIcon
                               icon={faCalendarAlt}
-                              style={{ color: "#ff3366", fontSize: "20px"  }}
+                              style={{ color: "#ff3366", fontSize: "20px" }}
                             />
                           </div>
-                        <span className="detailspan">  {event.displayDate
-                            ? formatDateWithCurrentYear(
-                                event.displayDate,
-                                event.date,
-                                event.eventDate
-                              )
-                            : "Date not available"}
-                        </span></p>
+                          <span className="detailspan">
+                            {" "}
+                            {event.displayDate
+                              ? formatDateWithCurrentYear(
+                                  event.displayDate,
+                                  event.date,
+                                  event.eventDate
+                                )
+                              : "Date not available"}
+                          </span>
+                        </p>
 
                         <p className="d-flex align-items-center gap-2">
                           <span className=" text-white   location-icon">
                             <FontAwesomeIcon
                               icon={faLocationDot}
-                              style={{ color: "#ff3366",margin:'3px' }}
+                              style={{ color: "#ff3366", margin: "3px" }}
                             />
                           </span>
-                          <span className='locspan'>
-                          {event.location || "Location not available"}
-                        </span>
+                          <span className="locspan">
+                            {event.location || "Location not available"}
+                          </span>
                         </p>
                         <br />
 
@@ -599,7 +624,11 @@ textAlign: "center",
                             <h5>About event</h5>
                           </div>
                           <div className="aboutevent2">
-                          <span classname="eventdesc">{event.description|| 'Please provide some description'}</span></div>
+                            <span classname="eventdesc">
+                              {event.description ||
+                                "Please provide some description"}
+                            </span>
+                          </div>
                         </div>
                       </>
                     )}
@@ -624,17 +653,17 @@ textAlign: "center",
                                     <div
                                       className="card"
                                       style={{
-    backgroundImage: `url(${
-      item?.imageUrl
-        ? `${process.env.REACT_APP_BASE_URL}/${item.imageUrl}`
-        : `${process.env.PUBLIC_URL}/img/wishlistdefault.png`
-    })`,
-    position: "relative",
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "cover",
-    borderRadius: "20px",
-  }}
->
+                                        backgroundImage: `url(${
+                                          item?.imageUrl
+                                            ? `${process.env.REACT_APP_BASE_URL}/${item.imageUrl}`
+                                            : `${process.env.PUBLIC_URL}/img/wishlistdefault.png`
+                                        })`,
+                                        position: "relative",
+                                        backgroundRepeat: "no-repeat",
+                                        backgroundSize: "cover",
+                                        borderRadius: "20px",
+                                      }}
+                                    >
                                       <div
                                         className="card-img-top"
                                         style={{ height: "161px" }}
@@ -656,36 +685,49 @@ textAlign: "center",
                                           <div className="row align-items-center">
                                             {/* Left - Image */}
                                             <div className="col-2">
-                                            <img
-  src={
-    event.newimage && event.newimage !== "null" && event.newimage !== `${process.env.REACT_APP_BASE_URL}/null`
-      ? `${process.env.REACT_APP_BASE_URL}/${event.newimage}`
-      : event.image && event.image !== "null" && event.image !== `${process.env.REACT_APP_BASE_URL}/null`
-      ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
-      : `${process.env.PUBLIC_URL}/img/defaultUser1.png`
-  }
-
-
-                                        
-                                                style={{height:'43px',width:'43px',borderRadius:'50%',objectFit:'cover'}}
+                                              <img
+                                                src={
+                                                  event.newimage &&
+                                                  event.newimage !== "null" &&
+                                                  event.newimage !==
+                                                    `${process.env.REACT_APP_BASE_URL}/null`
+                                                    ? `${process.env.REACT_APP_BASE_URL}/${event.newimage}`
+                                                    : event.image &&
+                                                      event.image !== "null" &&
+                                                      event.image !==
+                                                        `${process.env.REACT_APP_BASE_URL}/null`
+                                                    ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
+                                                    : `${process.env.PUBLIC_URL}/img/defaultUser1.png`
+                                                }
+                                                style={{
+                                                  height: "43px",
+                                                  width: "43px",
+                                                  borderRadius: "50%",
+                                                  objectFit: "cover",
+                                                }}
                                               />
-
-
                                             </div>
 
                                             {/* Middle - Info */}
                                             <div className="col-7">
                                               <h6
                                                 className="card-title "
-                                                style={{ color: "black", marginBottom:'0px' ,fontSize:'15px'}}
+                                                style={{
+                                                  color: "black",
+                                                  marginBottom: "0px",
+                                                  fontSize: "15px",
+                                                }}
                                               >
                                                 {item.giftName}
                                               </h6>
-                                              <p className="" style={{fontSize:'13px'}}>
+                                              <p
+                                                className=""
+                                                style={{ fontSize: "13px" }}
+                                              >
                                                 {event.name}
                                               </p>
                                               <p
-                                                className="card-text text-secondary"
+                                                className="card-text text-secondary descriptionwish"
                                                 style={{ fontSize: "12px" }}
                                               >
                                                 {item.description}
@@ -721,7 +763,7 @@ textAlign: "center",
                                               >
                                                 Edit
                                               </div>
-                                             
+
                                               {/* <div
                                                 style={{
                                                   display: "flex",
@@ -736,7 +778,6 @@ textAlign: "center",
                                                 />
                                               </div> */}
                                             </div>
-
                                           </div>
                                         </div>
                                       </div>
@@ -809,41 +850,42 @@ textAlign: "center",
                                   >
                                     <div
                                       style={{
-                                      
                                         display: "flex",
                                         gap: "8px",
                                         width: "70%",
-                                        alignItems:'center'
+                                        alignItems: "center",
                                       }}
                                     >
-                                    <div  style={{ height:'45px',
-                                        width:'45px',
-                                        borderRadius: "50%",
-                              overflow: "hidden",}}>
-                                      <img
-                                        src={
-                                          g.profileImage
-                                            ? `${process.env.REACT_APP_BASE_URL}/${g.profileImage}`
-                                            : `${process.env.PUBLIC_URL}/img/defaultUser.png`
-                                        }
-                                        height="45px"
-                                        width="45px"
+                                      <div
                                         style={{
-                                       
+                                          height: "45px",
+                                          width: "45px",
                                           borderRadius: "50%",
+                                          overflow: "hidden",
                                         }}
-                                        // Added meaningful alt text
-                                      />
-</div>
+                                      >
+                                        <img
+                                          src={
+                                            g.profileImage
+                                              ? `${process.env.REACT_APP_BASE_URL}/${g.profileImage}`
+                                              : `${process.env.PUBLIC_URL}/img/defaultUser.png`
+                                          }
+                                          height="45px"
+                                          width="45px"
+                                          style={{
+                                            borderRadius: "50%",
+                                          }}
+                                          // Added meaningful alt text
+                                        />
+                                      </div>
                                       <p
                                         style={{
                                           fontSize: "16px",
-                                          fontFamily: 'Poppins',
+                                          fontFamily: "Poppins",
 
-
-lineHight: "100%",
-letterSpacing: '0px',
-verticalAlign: 'middle',
+                                          lineHight: "100%",
+                                          letterSpacing: "0px",
+                                          verticalAlign: "middle",
 
                                           fontWeight: "500",
                                         }}
@@ -859,14 +901,21 @@ verticalAlign: 'middle',
                                         width: "30%",
                                       }}
                                     >
-                                      <span style={{color:' #878787',fontFamily: "Poppins",
-fontWeight: "400",
-fontSize: "14px",
-lineHeight: "100%",
-letterSpacing: "0px",
-textAlign: "right",
-verticalAlign: "middle"
-}}> {g.status}</span>
+                                      <span
+                                        style={{
+                                          color: " #878787",
+                                          fontFamily: "Poppins",
+                                          fontWeight: "400",
+                                          fontSize: "14px",
+                                          lineHeight: "100%",
+                                          letterSpacing: "0px",
+                                          textAlign: "right",
+                                          verticalAlign: "middle",
+                                        }}
+                                      >
+                                        {" "}
+                                        {g.status}
+                                      </span>
                                     </div>
                                   </div>
 
@@ -890,13 +939,15 @@ verticalAlign: "middle"
                             {/* ADD MORE and START CHAT buttons when guests are available */}
                             <div
                               className="text-center mt-4 d-flex "
-                              style={{ justifyContent: "space-between", gap:'20px' }}
+                              style={{
+                                justifyContent: "space-between",
+                                gap: "20px",
+                              }}
                             >
                               <InviteButton
                                 onInviteSuccess={fetchGuest}
                                 style={{
                                   borderRadius: "5px",
-                                 
 
                                   color: "white",
                                   fontSize: "12px",
@@ -911,7 +962,7 @@ verticalAlign: "middle"
                                 style={{
                                   fontSize: "12px",
                                   background: "#EE4266",
-                             padding:'12px 15px',
+                                  padding: "12px 15px",
                                   color: "white",
                                   gap: "10px",
                                 }}
@@ -965,94 +1016,104 @@ verticalAlign: "middle"
                       </div>
                     )}
                     {activeTab === "history" && (
-  <div className="container mt-5">
-    {surpriseData.length === 0 ? (
-      <div>
-        <br />
-        <p className="p-history">No History</p>
-        <br />
-      </div>
-    ) : (
-      surpriseData.map((event, index) => {
-        const name = event.eventName || "Untitled Event";
-        const date = new Date(event.eventDate).toLocaleDateString();
-        const wishlist = [
-          {
-            image: event.wishlistItem?.imageUrl || "/img/placeholder.jpg",
-            giftName: event.wishlistItem?.giftName,
-          },
-        ];
-        const guests = event.wishlistItem?.guestsWithDetails || [];
-        const imageUrl = event.wishlistItem?.imageUrl || "/img/placeholder.jpg";
+                      <div className="container mt-5">
+                        {surpriseData.length === 0 ? (
+                          <div>
+                            <br />
+                            <p className="p-history">No History</p>
+                            <br />
+                          </div>
+                        ) : (
+                          surpriseData.map((event, index) => {
+                            const name = event.eventName || "Untitled Event";
+                            const date = new Date(
+                              event.eventDate
+                            ).toLocaleDateString();
+                            const wishlist = [
+                              {
+                                image:
+                                  event.wishlistItem?.imageUrl ||
+                                  "/img/placeholder.jpg",
+                                giftName: event.wishlistItem?.giftName,
+                              },
+                            ];
+                            const guests =
+                              event.wishlistItem?.guestsWithDetails || [];
+                            const imageUrl =
+                              event.wishlistItem?.imageUrl ||
+                              "/img/placeholder.jpg";
 
-        return (
-          <div key={index} className="card mb-3 history-card">
-            <div className="row g-0">
-              {/* Event Image */}
-              <div className="col-md-3">
-                <img
-                  // src={imageUrl} 
-                  
-                  
-                   src={`${process.env.REACT_APP_BASE_URL}/${imageUrl}` }
-                  className="img-fluid event-image"
-                  alt={name}
-                />
-              </div>
+                            return (
+                              <div
+                                key={index}
+                                className="card mb-3 history-card"
+                              >
+                                <div className="row g-0">
+                                  {/* Event Image */}
+                                  <div className="col-md-3">
+                                    <img
+                                      // src={imageUrl}
 
-              {/* Event Details */}
-              <div className="col-md-9">
-                <div className="card-body">
-                  <h5 className="card-title" style={{ marginBottom: "0px" }}>
-                    {name}
-                  </h5>
-                  <p className="event-date">📅 {date}</p>
+                                      src={`${process.env.REACT_APP_BASE_URL}/${imageUrl}`}
+                                      className="img-fluid event-image"
+                                      alt={name}
+                                    />
+                                  </div>
 
-                  {/* Wishlist Preview */}
-                  <div className="wishlist-preview">
-                    {wishlist.slice(0, 3).map((item, i) => (
-                      <img
-                        key={i}
-              
-              // src={item.image} 
-                           src={`${process.env.REACT_APP_BASE_URL}/${item.image}` }
-                        alt={item.giftName || "wishlist"}
-                      />
-                    ))}
-                    {wishlist.length > 3 && (
-                      <button className="btn btn-outline-danger btn-sm">
-                        View Full Wishlist
-                      </button>
+                                  {/* Event Details */}
+                                  <div className="col-md-9">
+                                    <div className="card-body">
+                                      <h5
+                                        className="card-title"
+                                        style={{ marginBottom: "0px" }}
+                                      >
+                                        {name}
+                                      </h5>
+                                      <p className="event-date">📅 {date}</p>
+
+                                      {/* Wishlist Preview */}
+                                      <div className="wishlist-preview">
+                                        {wishlist.slice(0, 3).map((item, i) => (
+                                          <img
+                                            key={i}
+                                            // src={item.image}
+                                            src={`${process.env.REACT_APP_BASE_URL}/${item.image}`}
+                                            alt={item.giftName || "wishlist"}
+                                          />
+                                        ))}
+                                        {wishlist.length > 3 && (
+                                          <button className="btn btn-outline-danger btn-sm">
+                                            View Full Wishlist
+                                          </button>
+                                        )}
+                                      </div>
+
+                                      {/* Guest Section */}
+                                      <div className="guest-section">
+                                        {guests.slice(0, 3).map((guest, i) => (
+                                          <img
+                                            key={i}
+                                            // src={
+                                            //   guest.profileImage || "/img/user-placeholder.png"
+                                            // }
+                                            src={`${process.env.REACT_APP_BASE_URL}/${guest.profileImage}`}
+                                            className="guest-img"
+                                            alt={guest.name || "Guest"}
+                                          />
+                                        ))}
+                                        <span className="guest-count">
+                                          {guests.length} guests
+                                        </span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })
+                        )}
+                      </div>
                     )}
-                  </div>
-
-                  {/* Guest Section */}
-                  <div className="guest-section">
-                    {guests.slice(0, 3).map((guest, i) => (
-                      <img
-                        key={i}
-                        // src={
-                        //   guest.profileImage || "/img/user-placeholder.png"
-                        // }
-                        src={`${process.env.REACT_APP_BASE_URL}/${guest.profileImage}` }
-                        className="guest-img"
-                        alt={guest.name || "Guest"}
-                      />
-                    ))}
-                    <span className="guest-count">
-                      {guests.length} guests
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        );
-      })
-    )}
-  </div>
-)}
-
                   </div>
                 </div>
               ))
