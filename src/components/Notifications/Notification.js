@@ -238,8 +238,10 @@ const PoolRequests = () => {
                 return (
                   <div key={notification._id} className="notification-item">
                     <div className="notification-text d-flex align-items-center justify-content-between">
-                      <img src={userImage} alt="User Profile" height="35px" width="35px" style={{border:"1px solid #e6e6e6", borderRadius: "50%" }} />
-                      <p className="message">{notification.message}</p>
+                    
+                    <div>  
+                    <img src={userImage} alt="User Profile" height="35px" width="35px" style={{border:"1px solid #e6e6e6", borderRadius: "50%" }} />
+                      </div><p className="message">{notification.message}</p>
                       <p className="timestamp">{getRelativeTime(notification.timestamp)}</p>
                     </div>
 

@@ -558,14 +558,16 @@ const EventDetails = () => {
   return (
     <>
       <section className="page-controls">
-        <div className="container mt-4 fixed_Top">
-          <div className="d-flex justify-content-between align-items-center">
+        <div className="container mt-4 ">
+          <div className="d-flex justify-content-between align-items-center fixed_Top">
+          <div className="d-flex align-items-center">
             <FontAwesomeIcon
               icon={faArrowLeft}
               onClick={() => navigate("/home")}
               style={{ fontSize: "23px" }}
             />
             <h4 style={{ marginBottom: "0px" }}>Event Details</h4>
+            </div>
             <div className="d-flex align-items-center">
               <FaShareAlt className="me-3 fs-5" />
             </div>
@@ -672,7 +674,7 @@ letterSpacing: '0%'}}>
                       {events.description}
                     </p> */}
                     <br />
-                    <br />
+                   
                     <div className="about-event">
                       <br />
 
@@ -680,12 +682,11 @@ letterSpacing: '0%'}}>
                         <h5>About event</h5>
                       </div>
                       <div className="aboutevent2">  <span classname="eventdesc">{events.description || 'Not provided by owner'}</span></div>
-                    </div>
-                    {invitationStatus === "Pending" ||
+                      {invitationStatus === "Pending" ||
                     invitationStatus === "invited" ||
                     null ||
                     !invitationStatus ? (
-                      <div className="text-center mt-4 d-flex gap-1">
+                      <div className="text-center mt-4 d-flex gap-1 fixed_bottom" >
                         <button
                           className="btn btn-danger w-30"
                           onClick={handleAccept}
@@ -701,7 +702,7 @@ letterSpacing: '0%'}}>
                         </button>
                       </div>
                     ) : invitationStatus === "Accepted" ? (
-                      <div className="text-center mt-4">
+                      <div className="text-center mt-4 fixed_bottom">
                         <button
                           style={{ marginTop: "30px" }}
                           className="btn btn-danger w-30"
@@ -710,7 +711,8 @@ letterSpacing: '0%'}}>
                           START CHAT
                         </button>
                       </div>
-                    ) : null}
+                    ) : null}    </div>
+                   
                   </>
                 )}
 
