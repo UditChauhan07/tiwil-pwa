@@ -282,5 +282,17 @@ div:where(.swal2-container) div:where(.swal2-html-container) {
 
 .swal2-confirm{
   font-size: 16px !important;
-  width: 100% !important;
+
+}
+
+
+.ChatRoom_chatMediaImage__UFP-v{
+  max-height:200px !important;
+}
+
+
+.ChatRoom_sentMessage__gKtys .ChatRoom_messageBubble__na6jL .ChatRoom_chatMediaImage__UFP-v{
+  background-color: unset !important;
+  background: none !important ;
+  
 }

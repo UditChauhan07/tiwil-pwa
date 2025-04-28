@@ -237,3 +237,42 @@
   color: #ff336664;
   text-align: center;
 }
+
+
+
+.groupItem {
+  position: relative;
+  padding: 10px;
+  margin-bottom: 10px;
+  cursor: pointer;
+}
+
+.groupItem:hover {
+  background-color: #f0f0f0;
+}
+
+.unreadGroup {
+  border-left: 4px solid #ff6347; /* Add a left border to highlight */
+}
+
+.lastMessage {
+  font-size: 14px;
+  color: #888;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.unreadBadge {
+  background-color: #ff6347;
+  color: white;
+  border-radius: 12px;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.messageText {
+  max-width: 250px; /* Limit the length of the message preview */
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
