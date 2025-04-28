@@ -417,7 +417,7 @@ const EventDetails = () => {
         <div>
           <div className="container mt-2">
             {/* Header Section */}
-            <div className="d-flex justify-content-between align-items-center">
+            <div className="d-flex justify-content-between align-items-center fixed_Top">
               <div className="d-flex gap-2 align-items-flex-start">
                 <FontAwesomeIcon
                   icon={faArrowLeft}
@@ -469,7 +469,7 @@ const EventDetails = () => {
             </div>
             {events.length > 0 ? (
               events.map((event) => (
-                <div key={event._id} style={{ marginTop: "17px" }}>
+                <div key={event._id} style={{ marginTop: "60px" }}>
                   {/* Event Image */}
                   {/* <Card variant="top" style={{ position: "relative", width: "100%", height: "162px" ,borderBottom:'unset'}}>
                                     <img
@@ -804,7 +804,7 @@ const EventDetails = () => {
                             )}
                           </div>
                         </div>
-                        <div className="text-center mt-4">
+                        <div className="text-center mt-4 fixed_bottom">
                           <button
                             className="btn  w-30 d-flex "
                             onClick={() => setShowWishlistModal(true)}
@@ -813,6 +813,7 @@ const EventDetails = () => {
                               alignItems: "center",
                               justifyContent: "center",
                               margin: "auto",
+                              fontWeight:'500px',
                               borderRadius: "15px",
                               width: "75%",
                               color: "white",
@@ -938,7 +939,7 @@ const EventDetails = () => {
                             <br />
                             {/* ADD MORE and START CHAT buttons when guests are available */}
                             <div
-                              className="text-center mt-4 d-flex "
+                              className="text-center mt-4 d-flex fixed_bottom"
                               style={{
                                 justifyContent: "space-between",
                                 gap: "20px",
@@ -947,8 +948,9 @@ const EventDetails = () => {
                               <InviteButton
                                 onInviteSuccess={fetchGuest}
                                 style={{
-                                  borderRadius: "5px",
-
+                               
+                                  fontWeight: "500",
+                                  borderRadius: "15px",
                                   color: "white",
                                   fontSize: "12px",
                                   padding: "12px 15px", // Custom background color
@@ -964,6 +966,8 @@ const EventDetails = () => {
                                   background: "#EE4266",
                                   padding: "12px 15px",
                                   color: "white",
+                                  fontWeight: "500",
+                                  borderRadius: "15px",
                                   gap: "10px",
                                 }}
                                 onClick={handleStartChat} // Define this function to start chat
@@ -975,6 +979,7 @@ const EventDetails = () => {
                                     background: "white",
                                     fontSize: "24px",
                                     borderRadius: "50%",
+
                                     padding: "3px",
                                   }}
                                 />

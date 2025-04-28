@@ -294,5 +294,31 @@ div:where(.swal2-container) div:where(.swal2-html-container) {
 .ChatRoom_sentMessage__gKtys .ChatRoom_messageBubble__na6jL .ChatRoom_chatMediaImage__UFP-v{
   background-color: unset !important;
   background: none !important ;
-  
+
+}
+
+.fixed_Top{
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  z-index: 9999 !important;
+  background-color: #fff !important;
+
+  padding: 0px 20px !important;
+}
+
+.fixed_Top h4{
+  margin: 0;
+}
+.fixed_bottom{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  padding: 10px 20px;
+
+  z-index: 1000;
+
 }
