@@ -380,7 +380,7 @@ fetchPoolData();
   }
   alt={pool?.wishName || "Default Gift"}
   className="img-fluid rounded"
-  style={{ width: "100%", maxHeight: "320px" }}
+  style={{ width: "100%", minHeight: "300px" }}
   onError={(e) => {
     e.target.onerror = null; // Prevent infinite loop
     e.target.src = `${process.env.PUBLIC_URL}/img/wishlistdefault.png`;
@@ -394,7 +394,7 @@ fetchPoolData();
         {/* Circular Progress Bar */}
         <div className="d-flex justify-content-center my-4">
           
-          <div style={{ width: "50px", height: "70px",marginLeft: "5px"}}>
+          <div style={{ width: "50px", height: "70px",marginLeft: "5px",marginTop:'20px'}}>
             <CircularProgressbar
               value={percentage}
               text={`${Math.floor(percentage)}%`}
@@ -606,7 +606,7 @@ fetchPoolData();
           </>
         ) : (
           isOwner  &&(
-            <div className='d-flex justify-content-center ' style={{position:'relative',bottom:'-40px'}}>
+            <div className='d-flex justify-content-center ' style={{position:'relative',bottom:'-25px'}}>
             <button variant="danger"
               style={{ padding: "9px", background: "#dc3545", borderRadius: "15px",color: "white",
   marginTop:'50px'

@@ -322,7 +322,7 @@ const SignInForm = () => {
   
   if (isLoading) {
     return (
-      <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", marginTop: "250px" }}>
+      <div style={{ display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", marginTop: "50px",position:'fixed',left:'0',right:'0',bottom:'0',top:'0' }}>
         <div className="spinner-border text-danger custom-spinner" role="status" style={{ width: '5rem', height: '5rem', color: '#ff3366' }}>
           <span className="visually-hidden">Loading...</span>
         </div>

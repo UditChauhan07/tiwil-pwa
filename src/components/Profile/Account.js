@@ -176,14 +176,36 @@ const profileImage=localStorage.getItem('profileImage')
 
   if (loading) {
     return (
-      <div style={{ display: "flex", justifyContent: "center", marginTop: "200px", }}>
-        {/* <Spinner animation="border" role="status" style={{ width: "5rem", height: "5rem", }} /> */}
-        <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '5rem', height: '5rem',color:'#ff3366'}}>
-  <span class="visually-hidden">Loading...</span>
-</div>
+      <div
+        style={{
+          display: "flex",
+
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: "50px",
+          position: "fixed",
+          top: "0",
+          right: "0",
+          left: "0",
+          bottom: "0",
+        }}
+      >
+        {/* <Spinner
+          animation="border"
+          role="status"
+          style={{ width: "10rem", height: "10rem" }}
+        /> */}
+        <div
+          class="spinner-border text-danger custom-spinner"
+          role="status"
+          style={{ width: "10vh", height: "10vh", color: "#ff3366" }}
+        >
+          <span class="visually-hidden">Loading...</span>
+        </div>
       </div>
     );
   }
+
   return (
     <div>
     
