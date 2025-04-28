@@ -305,7 +305,7 @@ div:where(.swal2-container) div:where(.swal2-html-container) {
   z-index: 9999 !important;
   background-color: #fff !important;
 
-  padding: 0px 20px !important;
+  padding: 0px 20px ;
 }
 
 .fixed_Top h4{
