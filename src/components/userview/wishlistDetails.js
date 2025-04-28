@@ -45,15 +45,19 @@ function WishlistCard() {
         { status: value },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      setWishlistItem(response.data.data);
+  
+      setWishlistItem((prev) => ({
+        ...prev,
+        status: value, // just update status, keep other fields like eventName, eventImage
+      }));
+  
       Swal.fire({
         icon: "success",
         title: "Updated!",
         text: `Wishlist item status updated to: ${value}`,
         confirmButtonColor: "#FF3366",
       });
-
-      
+  
     } catch (err) {
       console.error("Error updating wishlist item:", err);
       Swal.fire({
@@ -63,7 +67,7 @@ function WishlistCard() {
       });
     }
   };
-
+  
   const handleCreatePool = async () => {
    
 
@@ -90,7 +94,7 @@ function WishlistCard() {
  }
   return (
     <section className="page-controls">
-  <div className='d-flex align-items-baseline gap-4' style={{marginTop:'20px'}}>
+  <div className='d-flex align-items-flex-start gap-4' style={{marginTop:'20px'}}>
   <FontAwesomeIcon icon={faArrowLeft}  onClick={() => navigate(-1)} style={{marginLeft:'6px',fontSize:'27px'}}/>
   <h2>Wishlist</h2>
   </div>
@@ -264,7 +268,7 @@ letterSpacing: "0%",
 color:" #EE4266",
 
 }}> Help To Complete This Wish</p>
-              <div className="d-flex justify-content-center " style={{marginTop:'30px'}} >
+              <div className="d-flex justify-content-center " style={{marginTop:'30px' ,position:'fixed',bottom:'0',right:'0',left:'0'}} >
                 <button className="btn w-30 m-2 p-1 d-flex align-items-center gap-2 justify-content-center" style={{ backgroundColor: "#EE4266", width: "180px",color:'#fff' }} onClick={() => navigate(`/invitation-detail/${wishlistItem.eventId}?tab=wishlist`)}>
                   SEE ALL WISHES <svg width="13" height="13" viewBox="0 0 13 13" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M0 6.5C0 6.05127 0.363769 5.6875 0.8125 5.6875H9.87179L5.91095 1.72666C5.58722 1.40293 5.59186 0.876646 5.92125 0.558678C6.24252 0.248547 6.75305 0.253051 7.0688 0.568802L12.9356 6.43565C12.9712 6.47119 12.9712 6.52881 12.9356 6.56435L7.07001 12.43C6.75521 12.7448 6.2448 12.7448 5.93001 12.43C5.61623 12.1162 5.61509 11.6078 5.92746 11.2926L9.87179 7.3125H0.8125C0.363769 7.3125 0 6.94873 0 6.5Z" fill="white"/>

@@ -540,7 +540,12 @@ const EventDetails = () => {
           display: "flex",
           justifyContent: "center",
           alignItems: "center",
-          marginTop: "200px",
+          marginTop: "50px",
+          position:'fixed',
+          left:'0',
+          right:'0',
+          bottom:'0',
+          top:'0'
         }}
       >
         {/* <Spinner

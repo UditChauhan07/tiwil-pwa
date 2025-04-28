@@ -6,13 +6,12 @@ import "./Home.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
-
+import { TrendingUpTwoTone } from "@mui/icons-material";
 
 function Invitationlst({ searchQuery }) {
   const [invitations, setInvitations] = useState([]);
   const [filteredInvitations, setFilteredInvitations] = useState([]);
   const [loading, setLoading] = useState(true);
-  console.log("loadinggg", loading);
   const [filterData, setFilterData] = useState({
     months: [],
     relations: [],
@@ -36,7 +35,7 @@ function Invitationlst({ searchQuery }) {
   useEffect(() => {
     const savedFilters = loadFiltersFromLocalStorage();
     setFilterData(savedFilters);
-  }, []);
+  }, [filterData]);
 
   useEffect(() => {
     const fetchInvitations = async () => {
@@ -51,7 +50,7 @@ function Invitationlst({ searchQuery }) {
 
         if (response.data) {
           setInvitations(response.data.data);
-          console.log("Invitations data:", response.data.data); // Add this line
+          // console.log("Invitations data:", response.data.data); // Add this line
         }
       } catch (error) {
         console.error("Error fetching invitations:", error);
@@ -60,12 +59,24 @@ function Invitationlst({ searchQuery }) {
       }
     };
     fetchInvitations();
-  }, [token, localStorage.getItem("filters")]);
+  }, [token]);
+
+  useEffect(() => {
+    // Reapply filters whenever invitations or filter data changes
+    applyFilters(invitations);
+  }, [invitations, filterData,filteredInvitations]);
 
   // Reapply filters whenever searchQuery or filterData changes
   useEffect(() => {
     applyFilters(invitations);
   }, [searchQuery, filterData, invitations, abc]);
+
+
+  useEffect(() => {
+    applyFilters(invitations);
+    // console.log("SSSSS--->",invitations)
+
+  }, [invitations, filterData, searchQuery]); // Add all dependencies here
 
   const applyFilters = (invitationsList) => {
     let filtered = invitationsList;
@@ -81,7 +92,7 @@ function Invitationlst({ searchQuery }) {
             .toLowerCase()
             .includes(searchQuery.toLowerCase())
       );
-      console.log("After search filter:", filtered);
+      // console.log("After search filter:", filtered);
     }
 
     // Apply month filter
@@ -93,7 +104,7 @@ function Invitationlst({ searchQuery }) {
           })
         )
       );
-      console.log("After month filter:", filtered);
+      // console.log("After month filter:", filtered);
     }
 
     // Apply event type filter
@@ -101,7 +112,7 @@ function Invitationlst({ searchQuery }) {
       filtered = filtered.filter((invitation) =>
         filterData.eventTypes.includes(invitation.event.eventType)
       );
-      console.log("After event type filter:", filtered);
+      // console.log("After event type filter:", filtered);
     }
 
     // Apply relation filter
@@ -109,19 +120,19 @@ function Invitationlst({ searchQuery }) {
       filtered = filtered.filter((invitation) =>
         filterData.relations.includes(invitation.event.relation)
       );
-      console.log("After relation filter:", filtered);
+      // console.log("After relation filter:", filtered);
     }
 
     // Apply favorites filter
     if (filterData.favoritesOnly) {
       filtered = filtered.filter(
-        (invitation) => invitation.event.favorites === true
+        (invitation) => invitation.invitations[0]?.isFavourite === true
       );
-      console.log("After favorites filter:", filtered);
+      // console.log("After favorites filter:", filtered);
     }
 
     setFilteredInvitations(filtered);
-    console.log("Final filtered invitations:", filtered);
+    // console.log("Final filtered invitations:", filtered);
   };
 
   const handleInvitation = (eventId, invitationId) => {
@@ -138,7 +149,7 @@ function Invitationlst({ searchQuery }) {
     setFilterData(filters);
     localStorage.setItem("filters", JSON.stringify(filters));
     applyFilters(invitations);
-    console.log("Filter data after apply:", filters); // Add this line
+    // console.log("Filter data after apply:", filters); 
   };
 
   const handleClearFilters = () => {
@@ -151,7 +162,7 @@ function Invitationlst({ searchQuery }) {
     setFilterData(defaultFilters);
     localStorage.setItem("filters", JSON.stringify(defaultFilters));
     applyFilters(invitations);
-    console.log("Filter data after clear:", defaultFilters); // Add this line
+    // console.log("Filter data after clear:", defaultFilters); 
   };
 
   if (loading) {
@@ -159,14 +170,13 @@ function Invitationlst({ searchQuery }) {
       <div
         style={{ display: "flex", justifyContent: "center", marginTop: "50px" }}
       >
-        {/* <Spinner
-          animation="border"
+        <div
+          className="spinner-border text-danger custom-spinner"
           role="status"
-          style={{ width: "5rem", height: "5rem" }}
-        /> */}
-        <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '5rem', height: '5rem',color:'#ff3366'}}>
-  <span class="visually-hidden">Loading...</span>
-</div>
+          style={{ width: "5rem", height: "5rem", color: "#ff3366" }}
+        >
+          <span className="visually-hidden">Loading...</span>
+        </div>
       </div>
     );
   }
@@ -235,65 +245,100 @@ function Invitationlst({ searchQuery }) {
   };
   const calculateAgeAndBirthdayText = (eventDate, isCancelled) => {
     if (isCancelled) return "Cancelled"; // Show "Cancelled" if the event is cancelled
-  
+
     if (!eventDate) return "N/A";
-  
+
     const today = new Date();
     const targetDate = new Date(eventDate);
     const currentYear = today.getFullYear();
-  
+
     // Set target year
     targetDate.setFullYear(currentYear);
-  
+
     const birthDate = new Date(eventDate);
     const age = today.getFullYear() - birthDate.getFullYear();
-  
+
     const diffTime = targetDate - today;
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
-  
+
     if (diffDays === 0) {
       return "Today!";
     }
-  
+
     if (diffDays < 0) {
       targetDate.setFullYear(currentYear + 1);
     }
-  
+
     const nextDiffTime = targetDate - today;
     const nextDiffDays = Math.ceil(nextDiffTime / (1000 * 60 * 60 * 24));
-  
+
     return `${nextDiffDays} Days Left`;
   };
+
+  // const handlefavourite = async (eventId) => {
+  //   try {
+  //     const token = localStorage.getItem("token");
+  //     const response = await axios.put(
+  //       `${process.env.REACT_APP_BASE_URL}/favourite/${eventId}`,
+  //       {},
+  //       { headers: { Authorization: `Bearer ${token}` } }
+  //     );
   
+  //     if (response.data.success) {
+  //       // Update the invitations state
+  //       setInvitations(prevInvitations => 
+  //         prevInvitations.map(inv => {
+  //           if (inv.event.eventId === eventId) {
+  //             return {
+  //               ...inv,
+  //               invitations: inv.invitations.map(guest => ({
+  //                 ...guest,
+  //                 isFavourite: !guest.isFavourite,
+  //               })),
+  //             };
+  //           }
+  //           return inv;
+  //         })
+  //       );
+  //     }
+  //   } catch (error) {
+  //     console.error("Error toggling favorite:", error);
+  //   }
+  // };
   const handlefavourite = async (eventId) => {
     try {
       const token = localStorage.getItem("token");
-  
       const response = await axios.put(
         `${process.env.REACT_APP_BASE_URL}/favourite/${eventId}`,
         {},
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
+        { headers: { Authorization: `Bearer ${token}` } }
       );
+      
+      const data = response.data?.updatedInvitation?.invitations[0]?.isFavourite;
   
-      if (response.data.success) {
-        const updatedInvitations = invitations.map((inv) => {
-          if (inv.event.eventId === eventId) {
-            return {
-              ...inv,
-              invitations: inv.invitations.map((guest) => ({
-                ...guest,
-                isFavourite: !guest.isFavourite,
-              })),
-            };
-          }
-          return inv;
+      // console.log(data, "res---->");
+  
+      if (data !== undefined) {
+        // Log state before and after the update
+        // console.log("Before Update", invitations);
+  
+        setInvitations(prevInvitations => {
+          const updatedInvitations = prevInvitations.map(inv => {
+            if (inv.event.eventId === eventId) {
+              return {
+                ...inv,
+                invitations: inv.invitations.map(guest => ({
+                  ...guest,
+                  isFavourite: data, // Set the new value from the API response
+                })),
+              };
+            }
+            return inv;
+          });
+  
+          // console.log("After Update", updatedInvitations);
+          return updatedInvitations;
         });
-  
-        setInvitations(updatedInvitations);
       }
     } catch (error) {
       console.error("Error toggling favorite:", error);
@@ -301,8 +346,6 @@ function Invitationlst({ searchQuery }) {
   };
   
   
-
-
   return (
     <div className="containers1 mt-4">
       {/* Search Bar */}
@@ -311,15 +354,14 @@ function Invitationlst({ searchQuery }) {
       {filteredInvitations.length > 0 ? (
         filteredInvitations.map((invitation, index) => (
           <div
-  key={index}
-  className="d-flex justify-content-center mb-3"
-  style={{
-    pointerEvents: invitation.event.isCanceled ? "none" : "auto",
-    opacity: invitation.event.isCancelled ? 0.5 : 1,
-     cursor: invitation.event.isCancelled ? "not-allowed" : "default",
-  }}
->
-
+            key={index}
+            className="d-flex justify-content-center mb-3"
+            style={{
+              pointerEvents: invitation.event.isCanceled ? "none" : "auto",
+              opacity: invitation.event.isCancelled ? 0.5 : 1,
+              cursor: invitation.event.isCancelled ? "not-allowed" : "default",
+            }}
+          >
             <Card
               style={{
                 width: "100%",
@@ -341,14 +383,13 @@ function Invitationlst({ searchQuery }) {
                   }}
                 >
                   <img
-                    // src={invitation.event.newimage && invitation.event.newimage !== "null" ? `${process.env.REACT_APP_BASE_URL}/${invitation.event.newimage}` : `${process.env.PUBLIC_URL}/img/eventdefault.png`}
                     src={
                       invitation.event?.newimage &&
                       invitation.event.newimage !== "null"
-                        ? `${process.env.REACT_APP_BASE_URL}/${invitation.event.newimage}`
+                        ? `<span class="math-inline">\{process\.env\.REACT\_APP\_BASE\_URL\}/</span>{invitation.event.newimage}`
                         : invitation.event?.image &&
                           invitation.event.image !== "null"
-                        ? `${process.env.REACT_APP_BASE_URL}/${invitation.event.image}`
+                        ? `<span class="math-inline">\{process\.env\.REACT\_APP\_BASE\_URL\}/</span>{invitation.event.image}`
                         : `${process.env.PUBLIC_URL}/img/eventdefault1.png`
                     }
                     alt="Event"
@@ -366,31 +407,31 @@ function Invitationlst({ searchQuery }) {
                       fontWeight: "bold",
                       backgroundColor: "#EE4266",
                       padding: "5px",
-                      fontFamily: 'Poppins',
-fontWeight: '700',
-fontSize: '15px',
-
-letterSpacing: '0%',
+                      fontFamily: "Poppins",
+                      fontWeight: "700",
+                      letterSpacing: "0%",
                     }}
                   >
-                 {calculateAgeAndBirthdayText(
-  invitation.event?.date ?? "Default Date",
-  invitation.event?.isCancelled
-)}
-
+                    {calculateAgeAndBirthdayText(
+                      invitation.event?.date ?? "Default Date",
+                      invitation.event?.isCancelled
+                    )}
                   </div>
                 </Card>
               </div>
               <Card.Body>
-                <Card.Title style={{fontFamily: 'Poppins',
-fontWeight: '500',
-fontSize: '14px',
-leadingTrim: 'Cap height',
-lineHeight: '100%',
-letterSpacing: '0%',
-color:'#000000',
-marginBottom:'5px',
-                }}>
+                <Card.Title
+                  style={{
+                    fontFamily: "Poppins",
+                    fontWeight: "500",
+                    fontSize: "14px",
+                    leadingTrim: "Cap height",
+                    lineHeight: "100%",
+                    letterSpacing: "0%",
+                    color: "#000000",
+                    marginBottom: "5px",
+                  }}
+                >
                   {invitation.event?.name}
                   {""}&nbsp;
                   {invitation.event?.relation &&
@@ -403,7 +444,12 @@ marginBottom:'5px',
                   style={{ gap: "10px" }}
                 >
                   <div
-                    style={{ display: "flex", justifyContent: "space-between",gap: "5px",marginBottom:'5px' }}
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      gap: "5px",
+                      marginBottom: "5px",
+                    }}
                   >
                     <img
                       className="m-0.5"
@@ -411,16 +457,18 @@ marginBottom:'5px',
                       height="17px"
                       alt="calendar"
                     />
-                    <h6 style={{
-                      fontSize:'13px' ,fontFamily: 'Poppins',
-fontWeight:' 600',
-
-leadingTrim: 'Cap height',
-lineHeight: '100%',
-letterSpacing: '0%',
-color:'#000000',
-marginBottom:'0px'
-                    }}>
+                    <h6
+                      style={{
+                        fontSize: "13px",
+                        fontFamily: "Poppins",
+                        fontWeight: " 600",
+                        leadingTrim: "Cap height",
+                        lineHeight: "100%",
+                        letterSpacing: "0%",
+                        color: "#000000",
+                        marginBottom: "0px",
+                      }}
+                    >
                       {invitation.event?.displayDate
                         ? formatDateWithCurrentYear(
                             invitation.event.displayDate,
@@ -429,76 +477,57 @@ marginBottom:'0px'
                         : "Date not available"}
                     </h6>
                   </div>
-                  {/* <div>
-                                     {invitation.event.relation &&
-                                      invitation.event.relation.toLowerCase() !== "parent anniversary" &&
-                                     invitation.event.relation.toLowerCase() !==
-                                       "marriage anniversary" ? (
-                                       <h4
-                                         style={{
-                                           background: "white",
-                                           color: "#ff3366",
-                                           border: "1px solid #ff3366",
-                                           paddingLeft: "10px",
-                                           padding: "3px 27px 0px 26px",
-                                           borderRadius: "10px",
-                                         }}
-                                       >
-                                         {invitation.event.relation}
-                                       </h4>
-                                     ) : null}
-                                   </div> */}
                 </Card.Text>
-                {/* <Button variant="danger" onClick={() => handleInvitation(invitation.event.eventId, invitation._id)}>
-                  Plan and Celebrate
-                </Button> */}
                 <div style={{ display: "flex", gap: "8px" }}>
-                <Button
-  className="planbtn"
-  variant="danger"
-  onClick={() =>
-    !invitation.event.isCanceled &&
-    handleInvitation(invitation.event.eventId, invitation._id)
-  }
-  disabled={invitation.event.isCancelled}
->
-  View Detail
-</Button>
+                  <Button
+                    className="planbtn"
+                    variant="danger"
+                    onClick={() =>
+                      !invitation.event.isCanceled &&
+                      handleInvitation(invitation.event.eventId, invitation._id)
+                    }
+                    disabled={invitation.event.isCancelled}
+                  >
+                    View Detail
+                  </Button>
 
-<div
-  className="heartimage"
+                  <div
+                    className="heartimage"
+                    style={{
+                      backgroundColor: invitation.invitations[0]?.isFavourite===true
+                        ? "white"
+                        : "#FF3366",
+                      padding: "5px",
+                      width: "40px",
+                      height: "34px",
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      borderBottomRightRadius: "5px",
+                      borderTopLeftRadius: "0px",
+                      borderTopRightRadius: "5px",
+                      border: invitation.invitations[0]?.isFavourite? "1px solid white" : "1px solid #EE4266",
+                      cursor: invitation.event.isCancelled
+                        ? "not-allowed"
+                        : "pointer",
+                      opacity: invitation.event.isCancelled ? 0.5 : 1,
+                    }}
+                    onClick={() => {
+                      if (!invitation.event.isCancelled) {
+                        handlefavourite(invitation.event.eventId); 
+                      }
+                    }}
+                  >
+      <FontAwesomeIcon
+  icon={solidHeart}
   style={{
-    backgroundColor: invitation.invitations[0].isFavourite ? "white" : "#FF3366",
-    padding: "5px",
-    width: "40px",
-    height: "34px",
-    display: "flex",
-    alignItems: "center",
-    justifyContent: "center",
-    borderBottomRightRadius: "5px",
-    borderTopLeftRadius: "0px",
-    borderTopRightRadius: "5px",
-    border: "1px solid #FF3366",
-    cursor: invitation.event.isCancelled ? "not-allowed" : "pointer",
-    opacity: invitation.event.isCancelled ? 0.5 : 1,
+    color: invitation.invitations[0]?.isFavourite ? "#FF3366" : "white",
+    fontSize: "26px",
   }}
-  onClick={() =>
-    !invitation.event.isCancelled &&
-    handlefavourite(invitation.event.eventId)
-  }
->
-  <FontAwesomeIcon
-    icon={
-      solidHeart 
-    }
-    style={{
-      color: invitation.invitations[0].isFavourite ? "#FF3366" : "white",
-      fontSize: "22px",
-    }}
-  />
-</div>
-
-
+/>
+                  </div> 
+                
+             
                 </div>
               </Card.Body>
             </Card>
@@ -522,5 +551,4 @@ marginBottom:'0px'
     </div>
   );
 }
-
-export default Invitationlst;
+  export default Invitationlst;

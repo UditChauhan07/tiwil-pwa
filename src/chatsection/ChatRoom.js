@@ -269,7 +269,7 @@ const ChatRoom = () => {
     return (
         <div className={styles.chatRoomContainer}>
             {eventDetails && (
-                <div className={`${styles.eventInfo} fixed_Top`}>
+                <div className={`${styles.eventInfo} fixed_Top`} style={{height:'60px'}}>
 
                     <FiArrowLeft className={styles.backIcon} onClick={() => navigate("/chats")} />
                     <img
@@ -284,10 +284,10 @@ const ChatRoom = () => {
                     />
                     <div className={styles.eventText}  onClick={() => navigate(`/group/${groupId}/details`)}>
                         <h2 style={{ fontSize: "15px", margin: "5px" }}>{eventDetails.eventName}</h2>
-                        <div><p style={{ marginTop: "10px" }}>
+                        <div className="d-flex gap-2"><p style={{ marginTop: "6px" }}>
                             {eventDetails.totalMembers ? ` ${eventDetails.totalMembers} members` : 'Loading...'}
                         </p>
-                        <p style={{ marginTop: "10px" }}>
+                        <p style={{ marginTop: "6px" }}>
   {count !== null ? `${count} online` : null}
 </p>
 </div>

@@ -10,44 +10,11 @@ const Chatlist = () => {
   const [search, setSearch] = useState("");
   const [activeTab, setActiveTab] = useState("all");
   const [loading, setLoading] = useState(true); // new
-  const [unreadCounts, setUnreadCounts] = useState({});
-  const [lastMessages, setLastMessages] = useState({});
-  
+
   const token = localStorage.getItem("token");
   const navigate = useNavigate();
 
-
-
-
-  const userId = localStorage.getItem("userId"); // Assuming you have the user ID stored in local storage
   // ✅ Fetch Group Chats with Event Details in One Call
-  // useEffect(() => {
-  //   const fetchGroups = async () => {
-  //     try {
-  //       setLoading(true); // start loading
-  //       const response = await axios.get(
-  //         `${process.env.REACT_APP_BASE_URL}/chats`,
-  //         {
-  //           headers: { Authorization: `Bearer ${token}` },
-  //         }
-  //       );
-  
-  //       if (response.data.success) {
-  //         setGroups(response.data.data);
-  //       }
-  //     } catch (error) {
-  //       console.error("❌ Error fetching groups:", error);
-  //     } finally {
-  //       setLoading(false); // stop loading
-  //     }
-  //   };
-  
-  //   fetchGroups();
-  // }, [token]);
-  
-
-
-
   useEffect(() => {
     const fetchGroups = async () => {
       try {
@@ -61,33 +28,6 @@ const Chatlist = () => {
   
         if (response.data.success) {
           setGroups(response.data.data);
-          
-          // Fetch unread counts and last messages
-          const unreadCountsData = {};
-          const lastMessagesData = {};
-  
-          for (let group of response.data.data) {
-            // Fetch unread count for the current user
-            const unreadResponse = await axios.get(
-              `${process.env.REACT_APP_BASE_URL}/messages/unread/${group.groupId}`,
-              {
-                headers: { Authorization: `Bearer ${token}` },
-              }
-            );
-            unreadCountsData[group.groupId] = unreadResponse.data.count;
-  
-            // Fetch the last message in the group
-            const lastMessageResponse = await axios.get(
-              `${process.env.REACT_APP_BASE_URL}/messages/last/${group.groupId}`,
-              {
-                headers: { Authorization: `Bearer ${token}` },
-              }
-            );
-            lastMessagesData[group.groupId] = lastMessageResponse.data.message;
-          }
-  
-          setUnreadCounts(unreadCountsData);
-          setLastMessages(lastMessagesData);
         }
       } catch (error) {
         console.error("❌ Error fetching groups:", error);
@@ -153,7 +93,7 @@ const Chatlist = () => {
       </div>
 
  
-      {/* <div className={styles.groupList}>
+      <div className={styles.groupList}>
   {loading ? (
     <p className={styles.noDataText}>Loading chats...</p> // You can style this or use a spinner
   ) : filteredGroups.length === 0 ? (
@@ -177,39 +117,6 @@ const Chatlist = () => {
           <h4 className={styles.groupName}>{group.eventName}</h4>
           <p className={styles.lastMessage}>
             Participants: {group.participants.length}
-          </p>
-        </div>
-      </div>
-    ))
-  )}
-</div> */}
-
-
-<div className={styles.groupList}>
-  {loading ? (
-    <p className={styles.noDataText}>Loading chats...</p>
-  ) : filteredGroups.length === 0 ? (
-    <p className={styles.noDataText}>No chat Found</p>
-  ) : (
-    filteredGroups.map((group) => (
-      <div
-        key={group._id}
-        className={`${styles.groupItem} ${unreadCounts[group.groupId] > 0 ? styles.unreadGroup : ""}`} // Highlight group if unread messages exist
-        onClick={() => handleGroupClick(group.groupId)}
-      >
-        <img
-          src={group.eventImage ? `${process.env.REACT_APP_BASE_URL}/${group.eventImage}` : `${process.env.PUBLIC_URL}/defaultUser.png`}
-          className={styles.profileImage}
-        />
-        <div className={styles.groupInfo}>
-          <h4 className={styles.groupName}>{group.eventName}</h4>
-          <p className={styles.lastMessage}>
-            <span className={styles.messageText}>
-              {lastMessages[group.groupId]?.content || "No messages yet."}
-            </span>
-            {unreadCounts[group.groupId] > 0 && (
-              <span className={styles.unreadBadge}>{unreadCounts[group.groupId]}</span>
-            )}
           </p>
         </div>
       </div>

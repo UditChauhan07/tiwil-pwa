@@ -46,6 +46,9 @@ self.addEventListener('fetch', (event) => {
     })
   );
 });
+
+
+
 self.addEventListener("push", (event) => {
   const data = event.data.json(); // Get push notification data
   const options = {

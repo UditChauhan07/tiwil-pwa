@@ -711,9 +711,10 @@ const SignUpForm = () => {
   
   if (loading) {
     return (
-      <div style={{ display: "flex",width:"100%" ,height:"100vh", justifyContent: "center", alignItems: "center",  }}>
+      <div style={{ display: "flex", justifyContent: "center", alignItems: "center",position:'fixed', top:'0',right:'0',left:'0',bottom:'0'  }}>
+      
       <div className="LoaderRooler" style={{position:"relative", }}>
-        <div className="spinner-border text-danger custom-spinner" role="status" style={{  width: '5rem', height: '5rem', color: '#ff3366' }}>
+        <div className="spinner-border text-danger custom-spinner" role="status" style={{  width: '10px', height: '10px', color: '#ff3366' }}>
           <span className="visually-hidden" >Loading...</span>
         </div>
         <p style={{ marginTop: '20px', fontWeight: 'bold', fontSize: '1.2rem', color: '#333', position:"absolute", width:"100%", left:"0", right:"0" }}>
