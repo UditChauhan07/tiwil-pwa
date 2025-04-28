@@ -27,6 +27,7 @@ const ChatRoom = () => {
     const currentUserId = useRef(null);
     const navigate = useNavigate();
     const [mediaFile, setMediaFile] = useState(null);
+    const [count,setCount]=useState(null)
 
     useEffect(() => {
         if (token) {
@@ -103,7 +104,7 @@ const ChatRoom = () => {
     useEffect(() => {
         fetchMessages(1);
     }, [fetchMessages]);
-
+  
     
     useEffect(() => {
         if (!token || !groupId) return;
@@ -139,8 +140,7 @@ const ChatRoom = () => {
             
                 scrollToBottom();
             };
-            
-
+        
         socket.on("connect", () => {
             console.log("✅ Socket connected:", socket.id);
             socket.emit("joinGroup", groupId);
@@ -162,7 +162,15 @@ const ChatRoom = () => {
         socket.on("userJoined", (data) => console.log("👤 User joined:", data.userId));
         socket.on("userLeft", (data) => console.log("👤 User left:", data.userId));
         socket.onAny((event, ...args) => console.log(`📡 Received event: ${event}`, args));
-
+        socket.on("groupOnlineCount", ({ groupId, onlineCount }) => {
+            console.log(`Group ${groupId} has ${onlineCount} users online`);
+            setCount(onlineCount);
+          });
+        // socket.on("groupOnlineCount", ({ groupId, onlineCount }) => {
+        //     console.log(`Group ${groupId} has ${onlineCount} users online`);
+        //     setCount(onlineCount); // Update the online count state
+            
+        //   });
         return () => {
             console.log("Cleaning up socket connection...");
             socket.emit("leaveGroup", groupId);
@@ -176,6 +184,16 @@ const ChatRoom = () => {
             socketRef.current = null;
         };
     }, [groupId, token, scrollToBottom]);
+    
+    // useEffect(() => {
+    //     if (!socket) return;
+      
+      
+      
+    //     return () => {
+    //       socket.off("groupOnlineCount");
+    //     };
+    //   }, [socketRef.current, groupId]);
 
     const handleScroll = () => {
         if (chatContainerRef.current?.scrollTop === 0 && hasMore && !loading) {
@@ -265,9 +283,14 @@ const ChatRoom = () => {
                     />
                     <div className={styles.eventText}  onClick={() => navigate(`/group/${groupId}/details`)}>
                         <h2 style={{ fontSize: "15px", margin: "5px" }}>{eventDetails.eventName}</h2>
-                        <p style={{ marginTop: "10px" }}>
+                        <div><p style={{ marginTop: "10px" }}>
                             {eventDetails.totalMembers ? ` ${eventDetails.totalMembers} members` : 'Loading...'}
                         </p>
+                        <p style={{ marginTop: "10px" }}>
+  {count !== null ? `${count} online` : null}
+</p>
+</div>
+
                     </div>
                 </div>
             )}
