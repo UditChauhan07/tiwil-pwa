@@ -269,7 +269,8 @@ const ChatRoom = () => {
     return (
         <div className={styles.chatRoomContainer}>
             {eventDetails && (
-                <div className={styles.eventInfo}>
+                <div className={`${styles.eventInfo} fixed_Top`}>
+
                     <FiArrowLeft className={styles.backIcon} onClick={() => navigate("/chats")} />
                     <img
                         src={
@@ -295,7 +296,7 @@ const ChatRoom = () => {
                 </div>
             )}
 
-            <div ref={chatContainerRef} onScroll={handleScroll} className={styles.messagesContainer}>
+            <div ref={chatContainerRef} onScroll={handleScroll} className={styles.messagesContainer} style={{ marginTop: "70px" }}>
                 {loading && page > 1 && <p className={styles.loadingIndicator}>Loading older messages...</p>}
                 {messages.length === 0 && !loading && (
                     <p className={styles.noMessages}>No messages yet. Start the conversation!</p>
@@ -378,7 +379,8 @@ const ChatRoom = () => {
                 <div ref={messagesEndRef} />
             </div>
 
-            <div className={styles.inputContainer}>
+            <div className={`${styles.inputContainer} fixed_bottom`}>
+
                 <label htmlFor="mediaUpload" className={styles.mediaButton}><svg width="18" height="30" viewBox="0 0 18 20" fill="none" xmlns="http://www.w3.org/2000/svg">
 <path d="M10.8791 6.37503L5.39309 11.861C4.56709 12.687 4.56709 14.027 5.39309 14.853V14.853C6.21909 15.679 7.55909 15.679 8.38509 14.853L15.6171 7.62103C17.1321 6.10603 17.1321 3.65003 15.6171 2.13503V2.13503C14.1021 0.620029 11.6461 0.620029 10.1311 2.13503L2.89909 9.36703C0.695094 11.571 0.695094 15.143 2.89909 17.347V17.347C5.10309 19.551 8.67509 19.551 10.8791 17.347L15.2681 12.958" stroke="#000E08" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>
