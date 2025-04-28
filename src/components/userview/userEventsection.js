@@ -559,8 +559,8 @@ const EventDetails = () => {
     <>
       <section className="page-controls">
         <div className="container mt-4 ">
-          <div className="d-flex justify-content-between align-items-center fixed_Top">
-          <div className="d-flex align-items-center">
+          <div className="d-flex justify-content-between align-items-center fixed_Top pt-5 pb-5">
+          <div className="d-flex align-items-center gap-2">
             <FontAwesomeIcon
               icon={faArrowLeft}
               onClick={() => navigate("/home")}
