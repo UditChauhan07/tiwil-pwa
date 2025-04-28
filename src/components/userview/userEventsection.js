@@ -559,7 +559,7 @@ const EventDetails = () => {
     <>
       <section className="page-controls">
         <div className="container mt-4 ">
-          <div className="d-flex justify-content-between align-items-center fixed_Top mt-2 mb-2">
+          <div className="d-flex justify-content-between align-items-center fixed_Top " style={{paddingTop:'20px',paddingBottom:'20px'}}>
           <div className="d-flex align-items-center gap-2">
             <FontAwesomeIcon
               icon={faArrowLeft}
@@ -732,7 +732,7 @@ letterSpacing: '0%'}}>
                             <div className="row">
                               <div
                                 className="col-lg-4 col-md-6 col-sm-12"
-                                style={{ marginBottom: "10px" }}
+                                style={{ marginBottom: "8px" }}
                               >
                                 <div
                                   className="card"
@@ -745,6 +745,7 @@ letterSpacing: '0%'}}>
                                     position: "relative",
                                     backgroundRepeat: "no-repeat",
                                     backgroundSize: "cover",
+                                     borderRadius: "20px",
                                   }}
                                 >
                                   <div
