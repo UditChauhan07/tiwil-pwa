@@ -108,7 +108,7 @@ function WishlistCard() {
           <div>
           <div className="card mb-3 mx-auto m-2" style={{ maxWidth: "720px",borderColor:'white' }}>
           <div style={{width: "100%",
-height: "180px",
+height: "250px",
 top: "20px",
 left: "15px",
 borderRadius: "5px",
@@ -117,7 +117,7 @@ borderRadius: "5px",
   <img 
     src={wishlistItem.imageUrl ? `${process.env.REACT_APP_BASE_URL}/${wishlistItem.imageUrl}` : `${process.env.PUBLIC_URL}/img/wishlistdefault.png`} 
     alt="image" 
-    style={{ width: "100%",maxHeight:'180px' ,border:"1px solid #ffffff,border-radius:'5px"}} 
+    style={{ width: "100%",maxHeight:'250px' ,border:"1px solid #ffffff,border-radius:'5px"}} 
   />
 </div>
 

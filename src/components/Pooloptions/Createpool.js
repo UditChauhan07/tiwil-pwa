@@ -369,7 +369,7 @@ fetchPoolData();
       </div>
 
       {/* Image Section */}
-      <div  style={{ height:'280x',width:'100%'}}>
+      <div  style={{ height:'320x',width:'100%'}}>
  
   
       <img
@@ -380,7 +380,7 @@ fetchPoolData();
   }
   alt={pool?.wishName || "Default Gift"}
   className="img-fluid rounded"
-  style={{ width: "100%", maxHeight: "280px" }}
+  style={{ width: "100%", maxHeight: "320px" }}
   onError={(e) => {
     e.target.onerror = null; // Prevent infinite loop
     e.target.src = `${process.env.PUBLIC_URL}/img/wishlistdefault.png`;
