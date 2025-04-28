@@ -23,6 +23,35 @@ overflow: hidden !important;
   gap:10px;
   width: 100%;
 }
+.chatScreen {
+  display: flex;
+  flex-direction: column;
+  height: 100vh; /* full viewport height */
+  overflow: hidden;
+}
+
+.messagesContainer {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  margin-top: 85px; /* you already added */
+  margin-bottom: 70px; /* make space for input box */
+}
+
+.chatInputArea {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border-top: 1px solid #ccc;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+}
+
+
+
 .receivedMessage .messageHeader{
   display: flex;
   gap:10px;
