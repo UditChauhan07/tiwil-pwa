@@ -296,7 +296,7 @@ const ChatRoom = () => {
                 </div>
             )}
 
-            <div ref={chatContainerRef} onScroll={handleScroll} className={styles.messagesContainer} style={{ marginTop: "70px" }}>
+            <div ref={chatContainerRef} onScroll={handleScroll} className={styles.messagesContainer} style={{ marginTop: "85px" }}>
                 {loading && page > 1 && <p className={styles.loadingIndicator}>Loading older messages...</p>}
                 {messages.length === 0 && !loading && (
                     <p className={styles.noMessages}>No messages yet. Start the conversation!</p>
