@@ -574,11 +574,12 @@ const EventDetails = () => {
           </div>
 
           <div
-            className="mt-6"
+          
             style={{
               width: "100%",
               maxHeight: "300px",
               top: "97px",
+              marginTop: "60px",
               left: "21px",
               borderRadius: "10px",
             }}
