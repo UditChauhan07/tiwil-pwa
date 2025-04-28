@@ -558,7 +558,7 @@ const EventDetails = () => {
   return (
     <>
       <section className="page-controls">
-        <div className="container mt-4">
+        <div className="container mt-4 fixed_Top">
           <div className="d-flex justify-content-between align-items-center">
             <FontAwesomeIcon
               icon={faArrowLeft}
