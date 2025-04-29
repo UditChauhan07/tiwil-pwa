@@ -383,15 +383,13 @@ function Invitationlst({ searchQuery }) {
                   }}
                 >
                   <img
-                    src={
-                      invitation.event?.newimage &&
-                      invitation.event.newimage !== "null"
-                        ? `<span class="math-inline">\{process\.env\.REACT\_APP\_BASE\_URL\}/</span>{invitation.event.newimage}`
-                        : invitation.event?.image &&
-                          invitation.event.image !== "null"
-                        ? `<span class="math-inline">\{process\.env\.REACT\_APP\_BASE\_URL\}/</span>{invitation.event.image}`
-                        : `${process.env.PUBLIC_URL}/img/eventdefault1.png`
-                    }
+                   src={
+  invitation.event?.newimage && invitation.event.newimage !== "null"
+    ? `${process.env.REACT_APP_BASE_URL}/${invitation.event.newimage}`
+    : invitation.event?.image && invitation.event.image !== "null"
+    ? `${process.env.REACT_APP_BASE_URL}/${invitation.event.image}`
+    : `${process.env.PUBLIC_URL}/img/eventdefault1.png`
+}
                     alt="Event"
                     style={{ width: "100%", height: "162px", padding: "5px" }}
                     className="imgEvent"

@@ -302,7 +302,7 @@ div:where(.swal2-container) div:where(.swal2-html-container) {
   top: 0 !important;
   left: 0 !important;
   right: 0 !important;
-  z-index: 9999 !important;
+  z-index: 999 !important;
   background-color: #fff !important;
 
   padding: 0px 20px ;

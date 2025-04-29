@@ -315,7 +315,7 @@ const SignUpForm = () => {
   const [resendAttempts, setResendAttempts] = useState(0); // Optional: Limit resends
   const [messageIndex, setMessageIndex] = useState(0);
   const messages = [
-    "Sending your OTP...",
+    
     "Almost there...",
     "Securing the connection...",
     "Hang tight, verifying...",
@@ -714,7 +714,7 @@ const SignUpForm = () => {
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center",position:'fixed', top:'0',right:'0',left:'0',bottom:'0'  }}>
       
       <div className="LoaderRooler" style={{position:"relative", }}>
-        <div className="spinner-border text-danger custom-spinner" role="status" style={{  width: '10px', height: '10px', color: '#ff3366' }}>
+        <div className="spinner-border text-danger custom-spinner" role="status" style={{  width: '5rem', height: '10rem', color: '#ff3366' }}>
           <span className="visually-hidden" >Loading...</span>
         </div>
         <p style={{ marginTop: '20px', fontWeight: 'bold', fontSize: '1.2rem', color: '#333', position:"absolute", width:"100%", left:"0", right:"0" }}>

@@ -33,7 +33,7 @@ const SignInForm = () => {
     const [resendAttempts, setResendAttempts] = useState(0);
      const [messageIndex, setMessageIndex] = useState(0);
       const messages = [
-        "Sending your OTP...",
+       
         "Almost there...",
         "Securing the connection...",
         "Hang tight, verifying...",
