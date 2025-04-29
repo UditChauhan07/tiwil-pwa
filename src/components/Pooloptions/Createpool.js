@@ -423,7 +423,7 @@ fetchPoolData();
           <h6 className="text-danger">
             Pending: <strong>&#8377;{pendingAmount}</strong>
           </h6>
-    
+          </div>
 
    </div>
    
@@ -446,6 +446,7 @@ fetchPoolData();
 
       </div>
      </div> 
+
  {pool.status === "Completed" && (
   <div
     className="d-flex justify-content-between align-items-center mt-2 gap-3"
@@ -636,7 +637,7 @@ fetchPoolData();
              onClick={handleStartChat}   >
                   Start Chat
                 </button> */}
-    </div>
+   
     </div>
   );
 }
