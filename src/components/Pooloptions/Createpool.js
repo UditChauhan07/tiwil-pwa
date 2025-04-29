@@ -380,7 +380,7 @@ fetchPoolData();
   }
   alt={pool?.wishName || "Default Gift"}
   className="img-fluid rounded"
-  style={{ width: "100%", minHeight: "300px" }}
+  style={{ width: "100%", maxHeight: "300px" }}
   onError={(e) => {
     e.target.onerror = null; // Prevent infinite loop
     e.target.src = `${process.env.PUBLIC_URL}/img/wishlistdefault.png`;

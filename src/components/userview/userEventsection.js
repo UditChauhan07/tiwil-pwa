@@ -815,7 +815,7 @@ letterSpacing: '0%'}}>
                                             : item.status === "Purchase"
                                             ? "Purchased"
                                             : item.status === "Pooling"
-                                            ? "Pool"
+                                            ? "Pooling"
                                             : item.status}
                                         </p>
                                       )}
@@ -829,23 +829,18 @@ letterSpacing: '0%'}}>
                                       <div className="row align-items-center">
                                         {/* Left Side: Image */}
                                         <div className="col-2">
-                                              <img
-                                                src={
-                                                  events.image &&
-                                                  events.image !== "null" &&
-                                                  events.image !==
-                                                    `${process.env.REACT_APP_BASE_URL}/null`
-                                                    ? `${process.env.REACT_APP_BASE_URL}/${events.image}`
-                                                    : events.image &&
-                                                      events.image !== "null" &&
-                                                      events.image !==
-                                                        `${process.env.REACT_APP_BASE_URL}/null`
-                                                    ? `${process.env.REACT_APP_BASE_URL}/${events.image}`
-                                                    : `${process.env.PUBLIC_URL}/img/defaultUser1.png`
-                                                }
-                                        
-                                                style={{height:'43px',width:'43px',borderRadius:'50%',objectFit:'cover'}}
-                                              />
+                                        <img
+  src={
+    events.newimage && events.newimage !== "null" && events.newimage !== `${process.env.REACT_APP_BASE_URL}/null`
+      ? `${process.env.REACT_APP_BASE_URL}/${events.newimage}`
+      : events.image && events.image !== "null" && events.image !== `${process.env.REACT_APP_BASE_URL}/null`
+      ? `${process.env.REACT_APP_BASE_URL}/${events.image}`
+      : `${process.env.PUBLIC_URL}/img/defaultUser.png`
+  }
+  style={{ height: '43px', width: '43px', borderRadius: '50%', objectFit: 'cover' }}
+  alt="Event"
+/>
+
                                             </div>
 
                                         {/* Middle: Content */}
