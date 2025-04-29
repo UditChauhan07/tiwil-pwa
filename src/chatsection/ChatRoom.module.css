@@ -2,8 +2,8 @@
 .chatRoomContainer {
   display: flex;
   flex-direction: column;
-  height: 100vh;
-overflow: hidden !important;
+  
+overflow: scroll !important;
   padding: 5px;
   font-family: "Poppins";
 }
@@ -71,7 +71,7 @@ overflow: hidden !important;
   border-radius: 15px;
   margin: 15px 0;
   height: 100vh !important;
-  overflow: hidden !important;
+  overflow: scroll !important;
 }
 
 /* Sent Message */
