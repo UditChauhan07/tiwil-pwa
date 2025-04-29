@@ -215,8 +215,11 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
       <div className={styles.header}>
         <FontAwesomeIcon icon={faArrowLeft} onClick={onBack} style={{cursor: 'pointer',fontSize:'x-large'}} /> {/* Make icon clickable */}
         {/* Removed button wrapper around "Profile" text for simplicity */}
-        <span style={{fontWeight: '700', marginLeft: '10px',fontSize:'22px'}}>Profile</span> {/* Simple text header */}
+        <span style={{fontWeight: '700', marginLeft: '10px',fontSize:'25px'}}>Profile</span> {/* Simple text header */}
       </div>
+      <form className={styles.form} onSubmit={handleSave}>
+      <div>
+
       <div className={styles.profileSection}>
         <div className={styles.profileImageWrapper}>
           <img
@@ -242,12 +245,12 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
             />
           </label>
         </div>
-      </div>
+    
 
       {/* Use a form element for better semantics and accessibility */}
-      <form className={styles.form} onSubmit={handleSave}>
+    
         {/* Full Name */}
-        <div className={styles.formGroup}>
+        <div className={styles.formGroup} style={{marginTop:'30px'}}>
           <label htmlFor="fullNameInput">Full Name</label> {/* Use htmlFor */}
           <input
             id="fullNameInput" // Match label's htmlFor
@@ -266,7 +269,7 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
              </p>
           )}
         </div>
-
+</div>  </div>
         {/* Email (Disabled) */}
         <div className={styles.formGroup}>
           <label htmlFor="emailInput">Email</label>
@@ -315,7 +318,7 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
             value={profileData.maritalStatus || ''}
             onChange={(e) => handleChange("maritalStatus", e.target.value)}
           >
-            <option value="">Select</option>
+            <option value="">{profileData.maritalStatus }</option>
             <option value="Single">Single</option> {/* Changed from Unmarried */}
             <option value="Married">Married</option>
             <option value="Divorced">Divorced</option> {/* Added option */}
@@ -323,7 +326,8 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
              <option value="Prefer not to say">Prefer not to say</option> {/* Added option */}
           </select>
         </div>
-
+<br/>
+<br/>
         <div className={styles.saveButtonWrapper}>
           {/* Disable button if there are errors */}
           <button type="submit" className={styles.saveButton} disabled={!!errors.fullName /* || !!errors.otherField */}>
