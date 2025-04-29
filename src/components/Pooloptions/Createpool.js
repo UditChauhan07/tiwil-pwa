@@ -428,6 +428,7 @@ function PoolingWish() {
         
       )}
        */}
+       <span style={{display:'flex',justifyContent:'center',fontSize:'10px'}}>Collected</span>
             </div>
           </div>
 
@@ -647,7 +648,6 @@ verticalAlign: "middle"
                       {" "}
                       
                       <span style={{fontFamily:'Poppins',
-
 fontSize: "14px",
 lineHeight: "100%",
 letterSpacing: "0px",
@@ -659,7 +659,7 @@ verticalAlign: "middle"}}>&#8377;{contributor.amount}</span>
             </ul>
             {/* Buttons for contributors */}
             {isOwner && (
-              <div className="d-flex gap-2 mt-3">
+              <div className="d-flex gap-2 mt-3 fixed_bottom">
                 <button
                   style={{
                     padding: "6px",
@@ -693,7 +693,7 @@ verticalAlign: "middle"}}>&#8377;{contributor.amount}</span>
         ) : (
           isOwner && (
             <div
-              className="d-flex justify-content-center "
+              className="d-flex justify-content-center fixed_bottom"
               style={{ position: "relative", bottom: "-25px" }}
             >
               <button
