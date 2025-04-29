@@ -609,7 +609,7 @@ const EventDetails = () => {
               width: "100%",
               maxHeight: "300px",
               
-              marginTop: "50px",
+              marginTop: "65px",
             
               borderRadius: "10px",
               position:'relative'
