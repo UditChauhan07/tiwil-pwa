@@ -13,17 +13,8 @@ const Starting = () => {
   const navigate = useNavigate();
 
 
-useEffect=()=>{
 
-  const onboardingCompleted = localStorage.getItem("onboardingCompleted");
-  if (onboardingCompleted) {
-    setShowOnboarding(false);
-    navigate('/signin') // Skip onboarding if already completed
-  } else {
-    setShowOnboarding(true); // Show onboarding if not completed
-  }
-}
-
+  
   // Hide Onboarding after 3 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
