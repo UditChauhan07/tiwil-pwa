@@ -533,6 +533,31 @@ const EventDetails = () => {
     }
   };
 
+
+
+
+  const calculateAgeAndBirthdayText = (eventDate) => {
+    // <-- Add this check
+    if (!eventDate) return "N/A";
+
+    const today = new Date();
+    const targetDate = new Date(eventDate);
+    const currentYear = today.getFullYear();
+    targetDate.setFullYear(currentYear);
+
+    const birthDate = new Date(eventDate);
+    const age = today.getFullYear() - birthDate.getFullYear();
+
+    const diffTime = targetDate - today;
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+    if (diffDays === 0) return "Today!";
+    if (diffDays < 0) targetDate.setFullYear(currentYear + 1);
+
+    const nextDiffTime = targetDate - today;
+    const nextDiffDays = Math.ceil(nextDiffTime / (1000 * 60 * 60 * 24));
+    return `${nextDiffDays} Days Left`;
+  };
   if (isLoading) {
     return (
       <div
@@ -587,6 +612,7 @@ const EventDetails = () => {
               marginTop: "60px",
               left: "21px",
               borderRadius: "10px",
+              position:'relative'
             }}
           >
             <img
@@ -610,7 +636,27 @@ const EventDetails = () => {
                 borderRadius: "10px",
               }}
             />
-          </div>
+           <div
+                      style={{
+                        borderRadius: "6px 7px 2px 4px",
+                        position: "absolute",
+                        top: "0px",
+                        right: "0px",
+                        color: "white",
+                        fontSize: "15px",
+                        fontWeight: "bold",
+                        backgroundColor: "#EE4266",
+                        padding: "5px",
+                      }}
+                    >
+                      {calculateAgeAndBirthdayText(
+                        events.displayDate,
+                        events.isCancelled
+                      )}
+                    </div>
+                  </div>
+          
+
 
           {events && (
             <div>
