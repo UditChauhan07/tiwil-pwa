@@ -26,8 +26,8 @@ overflow: hidden !important;
 .chatScreen {
   display: flex;
   flex-direction: column;
-  height: 100vh; /* full viewport height */
-  overflow: hidden;
+ /* full viewport height */
+  overflow: scroll;
 }
 
 .messagesContainer {
