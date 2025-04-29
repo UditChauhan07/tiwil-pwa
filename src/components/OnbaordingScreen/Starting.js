@@ -12,6 +12,18 @@ const Starting = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const navigate = useNavigate();
 
+
+useEffect=()=>{
+
+  const onboardingCompleted = localStorage.getItem("onboardingCompleted");
+  if (onboardingCompleted) {
+    setShowOnboarding(false);
+    navigate('/signin') // Skip onboarding if already completed
+  } else {
+    setShowOnboarding(true); // Show onboarding if not completed
+  }
+}
+
   // Hide Onboarding after 3 seconds
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -36,6 +48,7 @@ const Starting = () => {
 
   // Handle Skip button
   const handleSkip = () => {
+    localStorage.setItem("onboardingCompleted", "true");
     navigate("/signin");
   };
 
