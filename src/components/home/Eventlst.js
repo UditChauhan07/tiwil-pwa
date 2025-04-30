@@ -333,8 +333,8 @@ const Eventlst = ({ searchQuery }) => {
 
 
             <Card style={{ width: "100%", minWidth: "310px", border: "0.5px solid rgb(229 229 229)", borderRadius: "10px", marginBottom: index === filteredEvents.length - 1 ? "80px" : "10px" }}>
-              <div style={{ maxHeight: "320px",padding:'3px' }}>
-                <Card variant="top" style={{ position: "relative", width: "100%" ,border:'none'}}>
+              <div style={{ maxHeight: "320px",padding:'3px',  }}>
+                <Card variant="top" style={{ position: "relative", width: "100%" ,border:'none',minHeight:'150px'}}>
                   <img
                     src={event.newimage && event.newimage !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.newimage}` : event.image && event.image !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.image}` : `${process.env.PUBLIC_URL}/img/eventdefault1.png`}
                     alt="Event" loading="lazy"   
