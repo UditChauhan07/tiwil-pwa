@@ -120,7 +120,7 @@ borderRadius: "5px",
 }} className="imagediv">
   <img 
     src={wishlistItem.imageUrl ? `${process.env.REACT_APP_BASE_URL}/${wishlistItem.imageUrl}` : `${process.env.PUBLIC_URL}/img/wishlistdefault.png`} 
-    alt="image" 
+    alt="image"  loading="lazy"   
     style={{ width: "100%",maxHeight:'250px' ,border:"1px solid #ffffff,border-radius:'5px"}} 
   />
 </div>
@@ -151,7 +151,7 @@ borderRadius: "5px",
                   <img
   src={`${process.env.REACT_APP_BASE_URL}/${wishlistItem.eventImage}`} 
   alt="Event"
-  style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '10px' }}
+  style={{ width: '50px', height: '50px', objectFit: 'cover', borderRadius: '10px' }} loading="lazy"   
   onError={(e) => {
     e.target.onerror = null;
     e.target.src = `${process.env.PUBLIC_URL}/img/eventdefault1.png`; 

@@ -177,7 +177,7 @@ const PoolRequests = () => {
           role="status"
           style={{ width: "10rem", height: "10rem" }}
         /> */}
-        <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '7vh', height: '7vh',color:'#ff3366'}}>
+        <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '5rem', height: '5rem',color:'#ff3366'}}>
   <span class="visually-hidden">Loading...</span>
 </div>
       </div>
@@ -215,7 +215,7 @@ const PoolRequests = () => {
                   
                   <div key={notification._id} className="notification-item">
                     <div className="notification-text d-flex align-items-center justify-content-between">
-                      <div><img src={userImage} alt="User Profile" height="35px" width="35px" style={{ borderRadius: "20px" }} /></div>
+                      <div><img src={userImage} alt="User Profile" height="35px" width="35px" style={{ borderRadius: "20px" }} loading="lazy"    /></div>
                       <p className="message">{notification.message}</p>
                       <p className="timestamp">{getRelativeTime(notification.timestamp)}</p>
                     </div>
@@ -240,7 +240,7 @@ const PoolRequests = () => {
                     <div className="notification-text d-flex align-items-center justify-content-between">
                     
                     <div>  
-                    <img src={userImage} alt="User Profile" height="35px" width="35px" style={{border:"1px solid #e6e6e6", borderRadius: "50%" }} />
+                    <img src={userImage} alt="User Profile" height="35px" width="35px"  loading="lazy"    style={{border:"1px solid #e6e6e6", borderRadius: "50%" }} />
                       </div><p className="message">{notification.message}</p>
                       <p className="timestamp">{getRelativeTime(notification.timestamp)}</p>
                     </div>

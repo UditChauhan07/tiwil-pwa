@@ -156,7 +156,7 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist,  }) => {
               <img
                 src={preview || `${process.env.PUBLIC_URL}/img/ps5.webp`}
                 alt="Wishlist Item"
-                className={styles.wishlistImage}
+                className={styles.wishlistImage} loading="lazy"   
               />
               <input
                 type="file"

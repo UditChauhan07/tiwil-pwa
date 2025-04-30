@@ -123,7 +123,7 @@ const unreadNotificationCount = Array.isArray(notifications)
         <div className="container-fluid" style={{padding:'0px'}}>
           {/* Logo */}
           <Link to="/home" className="navbar-brand">
-            <img     src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="Logo" style={{ width: "60px", height:'30px'}} />
+            <img     src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="Logo" style={{ width: "60px", height:'30px'}} loading="lazy"    />
           </Link>
 <div >     
     {/* Hamburger Toggle Button */}
@@ -159,7 +159,7 @@ const unreadNotificationCount = Array.isArray(notifications)
   {profileImage && profileImage !== "undefined" ? (
     <img
       src={`${process.env.REACT_APP_BASE_URL}/${profileImage}`}
-      
+      loading="lazy"   
       style={{
         width: "100%",
         height: "100%",

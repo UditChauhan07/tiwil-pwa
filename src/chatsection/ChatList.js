@@ -111,7 +111,7 @@ const Chatlist = () => {
               ? `${process.env.REACT_APP_BASE_URL}/${group.eventImage}`
               : `${process.env.PUBLIC_URL}/defaultUser.png`
           }
-          className={styles.profileImage}
+          className={styles.profileImage} loading="lazy"
         />
         <div className={styles.groupInfo}>
           <h4 className={styles.groupName}>{group.eventName}</h4>

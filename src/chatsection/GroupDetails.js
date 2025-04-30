@@ -88,7 +88,7 @@ const GroupDetails = () => {
                   : `${PUBLIC_URL}/DefaultUser.png`
               }
             
-              className={styles.eventImage}
+loading="lazy"              className={styles.eventImage}
             />
             <h2>{groupDetails.eventName}</h2>
             <button className={styles.wishlistButton} onClick={handleWishlistNavigation}>
@@ -106,7 +106,7 @@ const GroupDetails = () => {
             {groupDetails.mediaFiles.map((media, index) => (
               <div key={index} className={styles.mediaItem}>
                 {media.messageType === "image" ? (
-                  <img src={`${process.env.REACT_APP_BASE_URL}${media.mediaUrl}`} alt="Media" />
+                  <img src={`${process.env.REACT_APP_BASE_URL}${media.mediaUrl}`} alt="Media" loading="lazy"   />
                 ) : media.messageType === "video" ? (
                   <video src={`${process.env.REACT_APP_BASE_URL}${media.mediaUrl}`} controls />
                 ) : (
@@ -127,7 +127,7 @@ const GroupDetails = () => {
                       ? `${process.env.REACT_APP_BASE_URL}/${member.profileImage}`
                       : `${process.env.PUBLIC_URL}/DefaultUser.png`
                   }
-              
+                  loading="lazy"   
                   className={styles.profileImage}
                 />
                 <p>{member._id === loggedInUserId ? "Me" : member.fullName}</p>

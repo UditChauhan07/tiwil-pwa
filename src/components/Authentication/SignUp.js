@@ -651,7 +651,7 @@ const SignUpForm = () => {
 
         Swal.fire({
           title: `<div  style="font-size: 20px; color: #EE4266; font-weight: bold;">Dear ${user.fullName}</div>`,
-          text: `Account created successfully`,
+          text: `Account Created Successfully`,
           confirmButtonText: "Let's Go",
           confirmButtonColor: "#FF3366",
           imageUrl: logo,
@@ -714,10 +714,10 @@ const SignUpForm = () => {
       <div style={{ display: "flex", justifyContent: "center", alignItems: "center",position:'fixed', top:'0',right:'0',left:'0',bottom:'0'  }}>
       
       <div className="LoaderRooler" style={{position:"relative", }}>
-        <div className="spinner-border text-danger custom-spinner" role="status" style={{  width: '5rem', height: '10rem', color: '#ff3366' }}>
+        <div className="spinner-border text-danger custom-spinner" role="status" style={{  width: '5rem', height: '5rem', color: '#ff3366' }}>
           <span className="visually-hidden" >Loading...</span>
         </div>
-        <p style={{ marginTop: '20px', fontWeight: 'bold', fontSize: '1.2rem', color: '#333', position:"absolute", width:"100%", left:"0", right:"0" }}>
+        <p style={{ marginTop: '20px', fontWeight: 'bold', fontSize: '1.2rem', color: '#333',  }}>
           {messages[messageIndex]}
         </p>
         </div>
@@ -733,7 +733,7 @@ const SignUpForm = () => {
               src={`${process.env.PUBLIC_URL}/img/logomain.svg`}
               alt="logo"
               height="100px"
-              width="200px"
+              width="200px" loading="lazy"   
             />
             <h2
               className="font-weight-bold mt-4"
@@ -934,7 +934,7 @@ const SignUpForm = () => {
               alt="logo"
               height="100%"
               width="80%"
-           
+              loading="lazy"   
             />
           </div>
           <div className="mb-3">
@@ -958,7 +958,7 @@ const SignUpForm = () => {
               style={{
                 fontSize: "20px",
                 fontWeight: "600",
-                color: "#ff3366",
+                color: "black",
                 display: "flex",
                 justifyContent: "center",
                 alignItems: "center",

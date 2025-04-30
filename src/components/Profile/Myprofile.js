@@ -108,7 +108,7 @@ const handleeditprofile=()=>{
             <img
                src={`${process.env.PUBLIC_URL}/img/userimage3.jpg`} // Replace with actual profile picture
        
-              style={{ width: "100%", height: "100%" }}
+              style={{ width: "100%", height: "100%" }} loading="lazy"   
             />
           </div>
         </div>

@@ -52,12 +52,12 @@ const EventHistory = () => {
           <div className={styles.eventContent}>
             <img
               src={event.image ? `${process.env.REACT_APP_BASE_URL}/${event.image}` : "/assets/sample-event.jpg"}
-              alt="Event"
+              alt="Event" loading="lazy"   
               className={styles.eventImage}
             />
             <div className={styles.wishlist}>
               {event.wishlist?.slice(0, 3).map((item, i) => (
-                <img key={i} src={item} alt="Wishlist Item" className={styles.wishlistItem} />
+                <img key={i} src={item} alt="Wishlist Item" className={styles.wishlistItem}  loading="lazy"   />
               ))}
               <button className={styles.viewWishlist}>View Full Wishlist →</button>
             </div>

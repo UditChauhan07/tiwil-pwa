@@ -46,12 +46,12 @@ console.log(wishlistItems)
           wishlistItems.map((item, index) => (
             <div key={index} className={styles.wishlistItem}>
               <div className={styles.wishlistImageContainer}>
-                <img src={`${process.env.REACT_APP_BASE_URL}/${item.imageUrl}`} alt={item.giftName} className={styles.itemImage} />
+                <img src={`${process.env.REACT_APP_BASE_URL}/${item.imageUrl}`} alt={item.giftName} className={styles.itemImage} loading="lazy"   />
               </div>
               <div className={styles.wishlistContent}>
                 <div className={styles.wishlistHeader}>
                   <div className={styles.userInfo}>
-                    <img src={imgUrl}  className={styles.userImage} />
+                    <img src={imgUrl}  className={styles.userImage} loading="lazy"   />
                     <span className={styles.userName}>{item.userName}</span>
                   </div>
                   <span className={styles.price}>${item.price}</span>

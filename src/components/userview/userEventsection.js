@@ -626,7 +626,7 @@ const EventDetails = () => {
                     events.image !== `${process.env.REACT_APP_BASE_URL}/null`
                   ? `${process.env.REACT_APP_BASE_URL}/${events.image}` // Fallback to image
                   : `${process.env.PUBLIC_URL}/img/eventdefault1.png` // Default image
-              }
+              } loading="lazy"   
               alt="event"
               className="img-fluid"
               style={{
@@ -836,7 +836,7 @@ letterSpacing: '0%'}}>
       : events.image && events.image !== "null" && events.image !== `${process.env.REACT_APP_BASE_URL}/null`
       ? `${process.env.REACT_APP_BASE_URL}/${events.image}`
       : `${process.env.PUBLIC_URL}/img/defaultUser.png`
-  }
+  } loading="lazy"   
   style={{ height: '43px', width: '43px', borderRadius: '50%', objectFit: 'cover' }}
   alt="Event"
 />
@@ -896,7 +896,7 @@ letterSpacing: '0%'}}>
                                           {/* Button */}
                                           <img
                                             src={`${process.env.PUBLIC_URL}/img/Group 33582.svg`}
-                                            alt="svg"
+                                            alt="svg" loading="lazy"   
                                             style={{
                                               maxWidth: "100%",
                                               height: "auto",
@@ -950,7 +950,7 @@ letterSpacing: '0%'}}>
                                 guest.profileImage
                                   ? `${process.env.REACT_APP_BASE_URL}/${guest.profileImage}`
                                   : `${process.env.PUBLIC_URL}/img/defaultUser.png`
-                              }
+                              } loading="lazy"   
                               height="45px"
                               width="45px"
                               style={{

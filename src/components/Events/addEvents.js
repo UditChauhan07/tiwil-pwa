@@ -35,7 +35,11 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
       ...prevData,
       [name]: value,
     }));
-  };
+    setErrors((prevErrors) => ({
+      ...prevErrors,
+      [name]: "", // Clear error for the field being edited
+
+  }))};
 
   const handleImageChange = (event) => {
     const file = event.target.files[0];
@@ -67,8 +71,8 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
       newErrors.location = "Location must be less than 100 characters.";
     }
 
-    if (formData.description.length > 200) {
-      newErrors.description = "Description must be less than 200 characters.";
+    if (formData.description.length > 100 || formData.description.length < 5) {
+      newErrors.description = "Description must be between 5 to 100 characters.";
     }
 
     setErrors(newErrors);
@@ -162,7 +166,7 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
             <img
               src={image || ""}
               className="img-fluid rounded wishlist-image"
-              alt="Wishlist"
+              alt="Wishlist" loading="lazy"   
             />
             <div className="camera-icon position-absolute">
               <FaCamera size={20} />
