@@ -79,7 +79,7 @@ const InviteButton = ({ style, children ,onInviteSuccess }) => {
 
 
   return (
-    <button onClick={handleInvite} style={{ ...styles.button, ...style }}>
+    <button onClick={handleInvite} style={{ ...styles.button, ...style }} className="fixed_bottom">
       {children}
     </button>
   );

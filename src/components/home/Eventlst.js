@@ -12,13 +12,14 @@ import "../home/Home.css";
 const Eventlst = ({ searchQuery }) => {
   const [events, setEvents] = useState([]);
   const [filteredEvents, setFilteredEvents] = useState([]);
-  const [loading, setLoading] = useState(true);
+ 
   const [filterData, setFilterData] = useState({
     months: [],
     relations: [],
     eventTypes: [],
     favoritesOnly: false,
   });
+  const [loading, setLoading] = useState(true);
   const [loaded, setLoaded] = useState(false);
   const [favoriteStatus, setFavoriteStatus] = useState(false); 
   const navigate = useNavigate();
@@ -340,7 +341,7 @@ const Eventlst = ({ searchQuery }) => {
                     src={event.newimage && event.newimage !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.newimage}` : event.image && event.image !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.image}` : `${process.env.PUBLIC_URL}/img/eventdefault1.png`}
                     alt="Event" loading="lazy"   
                     style={{ width: '100%', maxHeight: '190px' ,padding:'5px'}}
-                    onLoad={() => setLoaded(true)}
+                    onLoad={(e) => e.currentTarget.classList.add("loaded")}
                     className={`imgEvent fade-image ${loaded ? 'loaded' : ''}`}
                   />
                 <div
