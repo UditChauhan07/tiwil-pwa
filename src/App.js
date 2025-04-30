@@ -25,10 +25,12 @@ import EventsFilter from "./components/home/filterModal";
 import './App.css'
 import { useNavigate } from 'react-router-dom';
 import { restoreAuthFromCookie } from "./components/Authentication/auth";
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
 function App() {
   const [deferredPrompt, setDeferredPrompt] = useState(null);
   const [showInstallDialog, setShowInstallDialog] = useState(false);
- 
+  const queryClient = new QueryClient();
   useEffect(() => {
     const handler = (event) => {
       event.preventDefault();
@@ -91,6 +93,7 @@ function App() {
   };
 
   return (
+    
     <>
       <div className="mainapp">
         <div style={{ textAlign: "center" }}>
@@ -115,7 +118,7 @@ function App() {
 
           )}
         </div>
-
+        <QueryClientProvider client={queryClient}>
         <Router>
           <Routes>
             {/* Public Routes */}
@@ -150,7 +153,7 @@ function App() {
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Router>
-
+</QueryClientProvider>
 
         <div id="recaptcha-container" style={{ marginTop: "10px" }}></div>
       </div>

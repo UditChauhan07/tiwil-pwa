@@ -250,7 +250,7 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
       {/* Use a form element for better semantics and accessibility */}
     
         {/* Full Name */}
-        <div className={styles.formGroup} style={{marginTop:'30px'}}>
+        <div className={styles.formGroup} style={{marginTop:'7px'}}>
           <label htmlFor="fullNameInput">Full Name</label> {/* Use htmlFor */}
           <input
             id="fullNameInput" // Match label's htmlFor

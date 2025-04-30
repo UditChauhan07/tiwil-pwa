@@ -280,7 +280,9 @@ function Profile() {
             <div className={styles.formGroup}>
               <label>Date of Birth</label>
               <input
-                placeholder="YYYY-MM-DD"
+
+                placeholder="date"
+                onfocus="(this.type='date')" onblur="(this.type='text')"
                 type="date"
                 value={userData.dob}
                 min="1900-12-01"

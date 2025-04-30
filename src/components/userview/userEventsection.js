@@ -608,7 +608,7 @@ const EventDetails = () => {
             style={{
               width: "100%",
               maxHeight: "300px",
-              
+              minHeight: "180px",
               marginTop: "65px",
             
               borderRadius: "10px",
