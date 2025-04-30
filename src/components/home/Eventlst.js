@@ -20,7 +20,8 @@ const Eventlst = ({ searchQuery }) => {
     favoritesOnly: false,
   });
   const [loading, setLoading] = useState(true);
-  const [loaded, setLoaded] = useState(false);
+  const [loadedImages, setLoadedImages] = useState({});
+
   const [favoriteStatus, setFavoriteStatus] = useState(false); 
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -337,13 +338,41 @@ const Eventlst = ({ searchQuery }) => {
             <Card style={{ width: "100%", minWidth: "310px", border: "0.5px solid rgb(229 229 229)", borderRadius: "10px", marginBottom: index === filteredEvents.length - 1 ? "80px" : "10px" }}>
               <div style={{ maxHeight: "320px",padding:'3px',  }}>
                 <Card variant="top" style={{ position: "relative", width: "100%" ,border:'none',minHeight:'150px'}}>
-                  <img
-                    src={event.newimage && event.newimage !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.newimage}` : event.image && event.image !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.image}` : `${process.env.PUBLIC_URL}/img/eventdefault1.png`}
-                    alt="Event" loading="lazy"   
-                    style={{ width: '100%', maxHeight: '190px' ,padding:'5px'}}
-                    onLoad={(e) => e.currentTarget.classList.add("loaded")}
-                    className={`imgEvent fade-image ${loaded ? 'loaded' : ''}`}
-                  />
+                <div style={{ position: "relative" }}>
+  {!loadedImages[event.eventId] && (
+    <div
+      className="img-loader"
+      style={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        zIndex: 2,
+        marginTop:'50px'
+      }}
+    >
+      <div className="spinner-border text-danger" role="status" style={{ width: "2rem", height: "2rem" }}>
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>
+  )}
+  <img
+    src={
+      event.newimage && event.newimage !== "null"
+        ? `${process.env.REACT_APP_BASE_URL}/${event.newimage}`
+        : event.image && event.image !== "null"
+        ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
+        : `${process.env.PUBLIC_URL}/img/eventdefault1.png`
+    }
+    alt="Event"
+    loading="lazy"
+    onLoad={() =>
+      setLoadedImages((prev) => ({ ...prev, [event.eventId]: true }))
+    }
+    className={`imgEvent ${loadedImages[event.eventId] ? "loaded" : ""}`}
+    style={{ width: "100%", maxHeight: "190px", padding: "5px" }}
+  />
+</div>
                 <div
   style={{
     borderRadius: "2px 5px 2px 10px",
