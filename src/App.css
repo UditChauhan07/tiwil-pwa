@@ -328,3 +328,26 @@ div:where(.swal2-container) div:where(.swal2-html-container) {
 .css-w8dmq8 {
   margin-top: 131px !important;
 }
+
+.custom-date {
+  position: relative;
+  padding-right: 40px; /* space for custom icon */
+}
+
+.custom-date::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  z-index: 1;
+}
+
+.custom-date::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: 10px;
+  width: 20px;
+  height: 20px;
+  background: url("../public/img/calender.svg") no-repeat center center;
+  background-size: contain;
+  transform: translateY(-50%);
+  pointer-events: none; /* let clicks fall through to the input */
+}
