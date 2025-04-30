@@ -487,6 +487,7 @@ const EventDetails = () => {
                       maxWidth: "760px",
                       width: "100%",
                       maxHeight: "320px",
+                      minHeight:'180px',
                       borderRadius: "10px",
                       position: "relative",
                     }}

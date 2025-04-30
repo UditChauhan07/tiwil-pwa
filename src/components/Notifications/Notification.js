@@ -209,7 +209,7 @@ const PoolRequests = () => {
               .map((notification) => {
                 const userImage = notification?.senderProfileImage
                   ? `${process.env.REACT_APP_BASE_URL}/${notification.senderProfileImage}`
-                  : `${process.env.PUBLIC_URL}/img/defaultUser.png`;
+                  : `${process.env.PUBLIC_URL}/img/Default_pfp.svg`;
 
                 return (
                   
@@ -233,7 +233,7 @@ const PoolRequests = () => {
               .map((notification) => {
                 const userImage = notification?.senderProfileImage
                   ? `${process.env.REACT_APP_BASE_URL}/${notification.senderProfileImage}`
-                  : `${process.env.PUBLIC_URL}/img/userimage3.jpg`;
+                  : `${process.env.PUBLIC_URL}/img/Default_pfp.svg`;
 
                 return (
                   <div key={notification._id} className="notification-item">

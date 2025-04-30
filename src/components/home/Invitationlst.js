@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Card, Button, Spinner } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import "./Home.css";
+import "../home/Home.css";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
 import { faHeart as regularHeart } from "@fortawesome/free-regular-svg-icons";
@@ -18,6 +18,7 @@ function Invitationlst({ searchQuery }) {
     eventTypes: [],
     favoritesOnly: false,
   });
+  const [loadedImages, setLoadedImages] = useState({});
 
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -372,28 +373,53 @@ function Invitationlst({ searchQuery }) {
                   index === filteredInvitations.length - 1 ? "80px" : "10px",
               }}
             >
-              <div style={{ height: "150px" }}>
+              <div style={{ height: "190px" }}>
                 <Card
                   variant="top"
                   style={{
                     position: "relative",
                     width: "100%",
-                    height: "162px",
+                    height: "192px",
                     borderBottom: "unset",
+                    border:'none'
                   }}
                 >
-                  <img
-                   src={
+                 
+                    <div style={{ position: "relative" }}>
+  {!loadedImages[invitation.event.eventId] && (
+    <div
+      className="img-loader"
+      style={{
+        position: "absolute",
+        top: "50%",
+        left: "50%",
+        transform: "translate(-50%, -50%)",
+        zIndex: 2,
+        marginTop:'50px'
+      }}
+    >
+      <div className="spinner-border text-danger" role="status" style={{ width: "2rem", height: "2rem" }}>
+        <span className="sr-only">Loading...</span>
+      </div>
+    </div>
+  )}
+  <img
+    src={
   invitation.event?.newimage && invitation.event.newimage !== "null"
     ? `${process.env.REACT_APP_BASE_URL}/${invitation.event.newimage}`
     : invitation.event?.image && invitation.event.image !== "null"
     ? `${process.env.REACT_APP_BASE_URL}/${invitation.event.image}`
     : `${process.env.PUBLIC_URL}/img/eventdefault1.png`
 }
-                    alt="Event"
-                    style={{ width: "100%", height: "162px", padding: "5px" }}
-                    className="imgEvent" loading="lazy"   
-                  />
+    alt="Event"
+    loading="lazy"
+    onLoad={() =>
+      setLoadedImages((prev) => ({ ...prev, [invitation.event.eventId]: true }))
+    }
+    className={`imgEvent ${loadedImages[invitation.event.eventId] ? "loaded" : ""}`}
+    style={{ width: "100%", maxHeight: "190px", padding: "7px" }}
+  />
+</div>
                   <div
                     style={{
                       borderRadius: "0px 4px 0px 0px",
@@ -417,7 +443,7 @@ function Invitationlst({ searchQuery }) {
                   </div>
                 </Card>
               </div>
-              <Card.Body>
+              <Card.Body style={{ padding: "7px" }}>
                 <Card.Title
                   style={{
                     fontFamily: "Poppins",

@@ -225,7 +225,7 @@ const SignInForm = () => {
       return;
     }
     if (!formData.otp) {
-      setPhoneError({ hasError: true, message: "Enter OTP first" });
+      setPhoneError({ hasError: true, message: "Please Enter OTP first" });
       return; // Don't proceed if OTP is empty
     }
   
@@ -418,7 +418,10 @@ marginBottom:'5px'
         >
      
             <form style={{border:'none'}} >
-              <div className="mb-3 phoneBorder" >
+              <div className="mb-3 phoneBorder" style={{position:'relative'}}>
+              <div style={{position:'absolute',right:'15px',top:'17px',zIndex:'999'}}><svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M17.0098 12.9267V15.3248C17.0107 15.5474 16.9651 15.7678 16.8759 15.9717C16.7867 16.1757 16.6559 16.3588 16.4918 16.5093C16.3278 16.6598 16.1341 16.7744 15.9232 16.8457C15.7123 16.9171 15.4889 16.9435 15.2671 16.9235C12.8073 16.6562 10.4445 15.8157 8.36858 14.4694C6.43717 13.2421 4.79967 11.6046 3.57237 9.67323C2.22142 7.58784 1.38069 5.21355 1.1183 2.7427C1.09833 2.52165 1.1246 2.29886 1.19544 2.08852C1.26629 1.87818 1.38015 1.68489 1.52979 1.52096C1.67943 1.35704 1.86156 1.22607 2.06459 1.13639C2.26762 1.04671 2.4871 1.00029 2.70905 1.00008H5.10716C5.4951 0.996259 5.87119 1.13363 6.16533 1.3866C6.45948 1.63956 6.6516 1.99085 6.7059 2.37499C6.80711 3.14244 6.99483 3.89597 7.26545 4.62122C7.373 4.90733 7.39628 5.21828 7.33253 5.51722C7.26877 5.81615 7.12066 6.09055 6.90574 6.30789L5.89054 7.32309C7.02849 9.32434 8.6855 10.9814 10.6868 12.1193L11.702 11.1041C11.9193 10.8892 12.1937 10.7411 12.4926 10.6773C12.7916 10.6136 13.1025 10.6368 13.3886 10.7444C14.1139 11.015 14.8674 11.2027 15.6349 11.3039C16.0232 11.3587 16.3778 11.5543 16.6313 11.8535C16.8848 12.1527 17.0195 12.5346 17.0098 12.9267Z" stroke="#EE4266" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>
                 <label htmlFor="phone" className="form-label" >Phone Number</label>
                 <PhoneInput
                   international
@@ -486,8 +489,8 @@ marginBottom:'5px'
       </div>
     ) : (
             <div>
-            <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "50px",height:'80%x',width:'100%',marginBottom:'20px' }}>
-              <img src={`${process.env.PUBLIC_URL}/img/Otps.webp`} alt="logo" height="100%" width="80%"  loading="lazy"   />
+            <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "20px",height:'80%x',width:'100%',marginBottom:'20px' }}>
+              <img src={`${process.env.PUBLIC_URL}/img/Otps.webp`} alt="logo" height="60%" width="60%"  loading="lazy"   />
             </div>
               <div className="mb-3">
                 <label htmlFor="otp" className="form-label" style={{fontSize:'20px',fontWeight:'600',color:'black' ,display:'flex',justifyContent:'center',alignItems:'center'}}>
@@ -526,18 +529,23 @@ marginBottom:'5px'
     }
   }}
   numInputs={6}
-  renderSeparator={<span>-</span>}
+ 
   renderInput={(props) => <input {...props} type="tel" />}
 
   inputStyle={{
-    width: '33px',
-    height: '45px',
+    width: '40px',
+    height: '40px',
     margin: '0 6px',
     fontSize: '20px',
-    borderRadius: '8px',
-    border: '1px solid #ff3366',
-    color: '#ff3366',
+    fontWeight:'600',
+    borderRadius: '10px',
+    border: '1px solid none',
+    color: 'black',
+    border:'none',
+    boxShadow: "0px 0px 2px 0px #00000040 inset",
+    background:'#F2F2F2',
     textAlign: 'center',
+    outline:'none'
   }}
 />
  </div> {phoneError.hasError && <div className="invalid-feedback d-block " style={{textAlign:'center'}}>{phoneError.message}</div>}
@@ -545,7 +553,7 @@ marginBottom:'5px'
               </div>
               
               <br/>
-              <br/>
+              
               
               {canResend ? (
             <div style={{ textAlign: "center", marginTop: "10px" }}>
@@ -554,12 +562,11 @@ marginBottom:'5px'
                 onClick={handleSendOTP}
                 className="btn  "
                 style={{
-                  textDecoration: "underline",
                   fontWeight: "600",
                   color: "#EE4266",
                 }}
               >
-                Resend OTP
+              <span style={{color:'black',fontWeight:'500px',textDecoration:'unset'}}>Didn't get code?</span>Resend OTP
               </button>
             </div>
           ) : (

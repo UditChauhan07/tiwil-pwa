@@ -11,8 +11,8 @@
 
 }
 .searchbarw{
-    margin-top: 11px;
-    margin-bottom: 11px;
+    margin-top: 7px;
+    margin-bottom: 7px;
 width: 100%;
 gap: 10px;
 align-items: center;
@@ -136,10 +136,10 @@ color: #fff !important;
     border-radius: 10px;
     transition: opacity 0.9s ease-in-out;
 }
-.containers1 {
+/* .containers1 {
     padding-left: 4px !important;
     padding-right: 4px !important;
-}
+} */
 .css-13xfq8m-MuiTabPanel-root{
 padding: 0px !important;
 }
@@ -234,3 +234,12 @@ padding: 0px !important;
     opacity: 1;
   }
   
+
+  .imgEvent {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+  }
+  
+  .imgEvent.loaded {
+    opacity: 1;
+  }

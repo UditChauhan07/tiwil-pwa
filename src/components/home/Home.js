@@ -102,6 +102,7 @@ const HomePage = () => {
   return (
     <>
       <section className="page-controls">
+      <div style={{ position: "fixed", top: "0px", left: "0px", width: "100%" ,padding:'0px 10px',zIndex:'999',background:'white'}}>
         <Navbar />
         <div className="mobileMode">
           <div className="d-flex">
@@ -160,7 +161,7 @@ const HomePage = () => {
                 </div>
               </div>
             </div>
-          </div>
+          </div>   </div>
 
           {/* SEARCH RESULTS */}
           {/* {searchQuery && (
@@ -211,6 +212,8 @@ const HomePage = () => {
             </div>
           )} */}
 
+
+</div>
           {/* TABS */}
           <div style={{ position: "relative" }}>
             <Box sx={{ width: "100%", typography: "body1" }}>
@@ -232,6 +235,7 @@ const HomePage = () => {
                     <Tab className="btn1" label="Invitation" value="2" />
                   </TabList>
                 </Box>
+
                 <TabPanel value="1">
                   <Eventlst searchQuery={searchQuery} filterData={filterData} />
                 </TabPanel>
@@ -241,7 +245,7 @@ const HomePage = () => {
               </TabContext>
             </Box>
           </div>
-        </div>
+     
 
         <div className="tabnav">
           <FooterNavBar />
