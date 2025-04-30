@@ -64,5 +64,18 @@
 <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-storage.js"></script>
 <script src="https://www.gstatic.com/firebasejs/9.0.0/firebase-recaptcha.js"></script> -->
 
-  </body>
+  
+<script>
+  // Dynamically set placeholder text on load
+  const input = document.getElementById("dateInput");
+  input.setAttribute("data-placeholder", "Select a date");
+
+  // Remove placeholder style when date is selected
+  input.addEventListener("change", () => {
+    input.classList.remove("has-placeholder");
+  });
+</script>
+
+
+</body>
 </html>

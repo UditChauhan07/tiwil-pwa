@@ -351,3 +351,22 @@ div:where(.swal2-container) div:where(.swal2-html-container) {
   transform: translateY(-50%);
   pointer-events: none; /* let clicks fall through to the input */
 }
+
+.date-wrapper {
+  position: relative;
+}
+
+input[type="date"].has-placeholder {
+  color: #000;
+  position: relative;
+}
+
+input[type="date"].has-placeholder::before {
+  content: attr(data-placeholder);
+  color: #aaa;
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+}
