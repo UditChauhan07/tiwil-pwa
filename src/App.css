@@ -357,16 +357,17 @@ div:where(.swal2-container) div:where(.swal2-html-container) {
 }
 
 input[type="date"].has-placeholder {
-  color: #000;
+  color: transparent;
   position: relative;
 }
 
 input[type="date"].has-placeholder::before {
   content: attr(data-placeholder);
-  color: #aaa;
+  color: #999;
   position: absolute;
-  left: 10px;
+  left: 12px;
   top: 50%;
   transform: translateY(-50%);
   pointer-events: none;
+  font-size: 16px;
 }
