@@ -134,6 +134,7 @@ color: #fff !important;
     width: 100%;
     height: 100%;
     border-radius: 10px;
+    transition: opacity 0.3s ease-in-out;
 }
 .containers1 {
     padding-left: 4px !important;
@@ -222,5 +223,14 @@ padding: 0px !important;
     opacity: 0.5; /* Makes it look faded */
     filter: blur(0.5px); /* Optional: adds slight blur */
     cursor: not-allowed;
+  }
+  
+  .lazy-image {
+    opacity: 0;
+    transition: opacity 0.6s ease-in;
+  }
+  
+  .lazy-image.loaded {
+    opacity: 1;
   }
   

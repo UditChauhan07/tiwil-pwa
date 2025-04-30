@@ -19,6 +19,7 @@ const Eventlst = ({ searchQuery }) => {
     eventTypes: [],
     favoritesOnly: false,
   });
+  const [loaded, setLoaded] = useState(false);
   const [favoriteStatus, setFavoriteStatus] = useState(false); 
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
@@ -339,7 +340,8 @@ const Eventlst = ({ searchQuery }) => {
                     src={event.newimage && event.newimage !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.newimage}` : event.image && event.image !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.image}` : `${process.env.PUBLIC_URL}/img/eventdefault1.png`}
                     alt="Event" loading="lazy"   
                     style={{ width: '100%', maxHeight: '190px' ,padding:'5px'}}
-                    className="imgEvent"
+                    onLoad={() => setLoaded(true)}
+                    className={`imgEvent fade-image ${loaded ? 'loaded' : ''}`}
                   />
                 <div
   style={{
