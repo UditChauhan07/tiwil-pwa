@@ -280,7 +280,8 @@ function Profile() {
             <div className={styles.formGroup}>
               <label>Date of Birth</label>
               <input
-className="custom-date"
+className="custom-date has-placeholder"
+id="dateInput"  oninput="this.classList.remove('has-placeholder')"
                 placeholder="date"
                 onfocus="(this.type='date')" onblur="(this.type='text')"
                 type="date"
