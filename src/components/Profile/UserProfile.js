@@ -19,7 +19,7 @@ function Profile() {
     email: "",
     phoneNumber: localStorage.getItem("phoneNumber") || "",
     gender: "",
-    dob: "",
+    dob: "YYYY-MM-DD",
     maritalStatus: "",
     profileImage: "",
   });
