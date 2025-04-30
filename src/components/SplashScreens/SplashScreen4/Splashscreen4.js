@@ -14,7 +14,7 @@ const SplashScreen4 = () => (
       <img
              src={`${process.env.PUBLIC_URL}/img/SplashScreen4.webp`}
         alt="Plan"
-        className="img-fluid  imagefirstsplash"
+        className="img-fluid  imagefirstsplash" loading="lazy"   
         style={{ height:"350px",width:"100%" }} // Ensuring height matches other screens
       />
       {/* Text */}

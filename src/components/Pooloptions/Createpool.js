@@ -382,7 +382,7 @@ function PoolingWish() {
           }
           alt={pool?.wishName || "Default Gift"}
           className="img-fluid rounded"
-          style={{ width: "100%", minHeight: "290px" }}
+          style={{ width: "100%", minHeight: "290px" }} loading="lazy"   
           onError={(e) => {
             e.target.onerror = null; // Prevent infinite loop
             e.target.src = `${process.env.PUBLIC_URL}/img/wishlistdefault.png`;
@@ -458,7 +458,7 @@ function PoolingWish() {
               ? `${process.env.REACT_APP_BASE_URL}/${pool.eventOwner.profileImage}`
               : `${process.env.PUBLIC_URL}/img/defaultproduct.jpg`
           }
-          style={{ width: "40px", height: "40px", borderRadius: "50%" }}
+          style={{ width: "40px", height: "40px", borderRadius: "50%" }} loading="lazy"   
         />
 
         <div className="d-flex " style={{ width: "100%", height: "60px" }}>
@@ -627,7 +627,7 @@ function PoolingWish() {
                               ? `${process.env.REACT_APP_BASE_URL}/${contributor.profileImage}`
                               : `${process.env.PUBLIC_URL}/img/eventdefault.png`
                           }
-                          alt=""
+                          alt="" loading="lazy"   
                           style={{
                             width: "30px",
                             height: "30px",

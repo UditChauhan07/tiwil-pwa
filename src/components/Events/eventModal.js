@@ -282,7 +282,7 @@ const EditEventModal = ({ show, setShow, event, fetchevent }) => {
   {image ? (
     <img  
       src={image.startsWith("blob") ? image : `${process.env.REACT_APP_BASE_URL}/${image}`}  
-      className="uploaded-image"  
+      className="uploaded-image"   loading="lazy"   
     />
   ) : (
     <div className="upload-icon">

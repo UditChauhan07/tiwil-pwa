@@ -67,7 +67,7 @@ const Starting = () => {
             <button  className="next-btn">
               {currentSlide === slides.length - 1 ? "Start" : "Next"}
             </button>
-              <img  src={`${process.env.PUBLIC_URL}/img/Arrow.svg`} alt="arrow" className="image" />
+              <img  src={`${process.env.PUBLIC_URL}/img/Arrow.svg`} alt="arrow" className="image" loading="lazy"    />
 </div>
 
             <button onClick={handleSkip} className="skip-btn">

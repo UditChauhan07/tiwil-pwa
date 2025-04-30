@@ -277,7 +277,7 @@ const ChatRoom = () => {
                             eventDetails.eventImage
                                 ? `${BASE_API_URL}/${eventDetails.eventImage}`
                                 : `${process.env.PUBLIC_URL}/img/defaultUser.png`
-                        }
+                        } loading="lazy"
                         alt={eventDetails.eventName}
                         className={styles.eventImage}
                         onError={(e) => e.target.src = `${process.env.PUBLIC_URL}/img/defaultUser.png`}
@@ -328,7 +328,7 @@ const ChatRoom = () => {
   <img
     src={profileImage}
     alt={senderName}
-    className={styles.profileImage}
+    className={styles.profileImage} loading="lazy"
     onError={(e) => e.target.src = `${process.env.PUBLIC_URL}/img/defaultUser.png`}
   />
 </div>
@@ -346,7 +346,7 @@ const ChatRoom = () => {
                                     <img
                                         src={msg.isOptimistic ? msg.mediaUrl : `${BASE_API_URL}${msg.mediaUrl.replace(/\\/g, '/')}`}
                                         alt="Chat attachment"
-                                        className={styles.chatMediaImage}
+                                        className={styles.chatMediaImage} loading="lazy"
                                     />
                                 )}
                                 {msg.messageType === "video" && msg.mediaUrl && (
@@ -408,7 +408,7 @@ const ChatRoom = () => {
       <img
         src={URL.createObjectURL(mediaFile)}
         alt="Preview"
-        className={styles.previewImage}
+        className={styles.previewImage} loading="lazy"
       />
     )}
     

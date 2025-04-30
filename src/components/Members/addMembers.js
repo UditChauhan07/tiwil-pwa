@@ -127,7 +127,7 @@ const Memberform = ({ show, setShow }) => {
             <img
               src={URL.createObjectURL(formData.image)}
               className="img-fluid rounded wishlist-image"
-              alt="Profile"
+              alt="Profile" loading="lazy"   
             />
           )}
           <div className="camera-icon position-absolute">
@@ -208,7 +208,7 @@ const Memberform = ({ show, setShow }) => {
           <Form.Group className="mb-3">
             <div className="upload-container" onClick={() => document.getElementById("fileInput").click()}>
               {formData.image ? (
-                <img src={URL.createObjectURL(formData.image)} alt="Preview" className="uploaded-image" />
+                <img src={URL.createObjectURL(formData.image)} alt="Preview" className="uploaded-image" loading="lazy"    />
               ) : (
                 <div className="upload-icon">
                   <FaCloudUploadAlt size={50} color="#E11531" />

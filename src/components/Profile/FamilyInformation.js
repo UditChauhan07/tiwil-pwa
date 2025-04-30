@@ -120,7 +120,7 @@ const FamilyCard = ({ relation, detail, onEdit }) => {
       ? `${process.env.REACT_APP_BASE_URL}/${detail.image}` // ✅ Corrected relative path
       : `${process.env.PUBLIC_URL}/assets/ProfilDefaulticon.png`
   }
-
+  loading="lazy"   
   className={styles.image}
 />
 

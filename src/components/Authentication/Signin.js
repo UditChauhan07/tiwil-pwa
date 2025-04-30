@@ -340,7 +340,7 @@ const SignInForm = () => {
         
 
       <div className="text-center ">
-          <img src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" height="100px" width="200px" />
+          <img src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" height="100px" width="200px" loading="lazy"    />
           <h2 className="font-weight-bold mt-4 mb-0" style={{ fontSize: "48px",fontFamily: "Poppins",
 fontWeight: "500",
 fontSize: "48px",
@@ -487,10 +487,10 @@ marginBottom:'5px'
     ) : (
             <div>
             <div style={{ display: "flex", justifyContent: "center",alignItems:'center', marginTop: "50px",height:'80%x',width:'100%',marginBottom:'20px' }}>
-              <img src={`${process.env.PUBLIC_URL}/img/Otps.webp`} alt="logo" height="100%" width="80%"  />
+              <img src={`${process.env.PUBLIC_URL}/img/Otps.webp`} alt="logo" height="100%" width="80%"  loading="lazy"   />
             </div>
               <div className="mb-3">
-                <label htmlFor="otp" className="form-label" style={{fontSize:'20px',fontWeight:'600',color:'#ff3366' ,display:'flex',justifyContent:'center',alignItems:'center'}}>
+                <label htmlFor="otp" className="form-label" style={{fontSize:'20px',fontWeight:'600',color:'black' ,display:'flex',justifyContent:'center',alignItems:'center'}}>
                   Please Enter Otp
                 </label>
                 {/* <input

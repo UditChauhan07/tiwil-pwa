@@ -504,8 +504,8 @@ const EventDetails = () => {
                               `${process.env.REACT_APP_BASE_URL}/null`
                           ? `${process.env.REACT_APP_BASE_URL}/${event.image}` // Fallback to image
                           : `${process.env.PUBLIC_URL}/img/eventdefault1.png` // Default image
-                      }
-                      className="img-fluid event-img1"
+                      } loading="lazy"   
+                      className="img-fluid event-img1" 
                       style={{
                         maxWidth: "760px",
                         width: "100%",
@@ -698,7 +698,7 @@ const EventDetails = () => {
                                                         `${process.env.REACT_APP_BASE_URL}/null`
                                                     ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
                                                     : `${process.env.PUBLIC_URL}/img/defaultUser1.png`
-                                                }
+                                                } loading="lazy"   
                                                 style={{
                                                   height: "43px",
                                                   width: "43px",
@@ -870,7 +870,7 @@ const EventDetails = () => {
                                             g.profileImage
                                               ? `${process.env.REACT_APP_BASE_URL}/${g.profileImage}`
                                               : `${process.env.PUBLIC_URL}/img/defaultUser.png`
-                                          }
+                                          } loading="lazy"   
                                           height="45px"
                                           width="45px"
                                           style={{
@@ -1061,7 +1061,7 @@ const EventDetails = () => {
 
                                       src={`${process.env.REACT_APP_BASE_URL}/${imageUrl}`}
                                       className="img-fluid event-image"
-                                      alt={name}
+                                      alt={name} loading="lazy"   
                                     />
                                   </div>
 
@@ -1083,7 +1083,7 @@ const EventDetails = () => {
                                             key={i}
                                             // src={item.image}
                                             src={`${process.env.REACT_APP_BASE_URL}/${item.image}`}
-                                            alt={item.giftName || "wishlist"}
+                                            alt={item.giftName || "wishlist"} loading="lazy"   
                                           />
                                         ))}
                                         {wishlist.length > 3 && (
@@ -1103,7 +1103,7 @@ const EventDetails = () => {
                                             // }
                                             src={`${process.env.REACT_APP_BASE_URL}/${guest.profileImage}`}
                                             className="guest-img"
-                                            alt={guest.name || "Guest"}
+                                            alt={guest.name || "Guest"} loading="lazy"   
                                           />
                                         ))}
                                         <span className="guest-count">

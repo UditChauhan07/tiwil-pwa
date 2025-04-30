@@ -13,7 +13,7 @@ const SplashScreen2 = () => (
     <div className="splashdiv d-flex  justify-content-center align-items-center" style={{height:"350px",width:'100%'}}>
     <img
      src={`${process.env.PUBLIC_URL}/img/SplashScreen2img.webp`}
-      alt="Plan"
+      alt="Plan" loading="lazy"   
       className="img-fluid my-3 imagefirstsplash"
       style={{ maxHeight:"350px",width:'100%' }}
     />

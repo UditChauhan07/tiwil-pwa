@@ -65,7 +65,7 @@ const SurpriseReveal = () => {
         height={"20px"}
         width={"20px"}
         onClick={handleBack}
-        style={{ cursor: "pointer" }}
+        style={{ cursor: "pointer" }} loading="lazy"   
       />
       <h2 className="text-center text-danger"> Surprise Reveal </h2>
       </div>
@@ -82,7 +82,7 @@ const SurpriseReveal = () => {
                         src={item.imageUrl ? `${process.env.REACT_APP_BASE_URL}${item.imageUrl}` : "/img/placeholder.jpg"}
                         alt={item.giftName}
                         className="rounded-circle me-3"
-                        style={{ width: "60px", height: "60px", objectFit: "cover" }}
+                        style={{ width: "60px", height: "60px", objectFit: "cover" }} loading="lazy"   
                       />
                       <div>
                         <h5>{item.giftName}</h5>

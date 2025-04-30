@@ -337,7 +337,7 @@ const Eventlst = ({ searchQuery }) => {
                 <Card variant="top" style={{ position: "relative", width: "100%" ,border:'none'}}>
                   <img
                     src={event.newimage && event.newimage !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.newimage}` : event.image && event.image !== "null" ? `${process.env.REACT_APP_BASE_URL}/${event.image}` : `${process.env.PUBLIC_URL}/img/eventdefault1.png`}
-                    alt="Event"
+                    alt="Event" loading="lazy"   
                     style={{ width: '100%', maxHeight: '190px' ,padding:'5px'}}
                     className="imgEvent"
                   />

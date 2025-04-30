@@ -198,7 +198,7 @@ const profileImage=localStorage.getItem('profileImage')
         <div
           class="spinner-border text-danger custom-spinner"
           role="status"
-          style={{ width: "10vh", height: "10vh", color: "#ff3366" }}
+          style={{ width: "5rem", height: "5rem", color: "#ff3366" }}
         >
           <span class="visually-hidden">Loading...</span>
         </div>
@@ -244,7 +244,7 @@ const profileImage=localStorage.getItem('profileImage')
                   ? `${process.env.REACT_APP_BASE_URL}/${profileData.profileImage}`
                   : `${process.env.PUBLIC_URL}/img/Default_pfp.svg`
               }
-            
+              loading="lazy"   
               className={styles.profileImage}
             />
             </div>

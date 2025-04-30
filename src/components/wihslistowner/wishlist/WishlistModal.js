@@ -151,14 +151,14 @@ const WishlistModal = ({ closeModal, eventId, refreshWishlist, show, setShow }) 
                 <img
                   src={previewImage}
                   alt="Wishlist Item"
-                  className={styles.wishlistImage}
+                  className={styles.wishlistImage} loading="lazy"   
                   style={{ filter: uploading ? "blur(10px)" : "none", transition: "filter 0.5s ease-in-out" }}
                 />
               ) : (
                 <img
                   src={`${process.env.PUBLIC_URL}/assets/ps5.png`}
                   alt="Wishlist Item"
-                  className={styles.wishlistImage}
+                  className={styles.wishlistImage} loading="lazy"   
                 />
               )}
               <input type="file" accept="image/*" onChange={handleImageUpload} className={styles.fileInput} id="fileUpload" />

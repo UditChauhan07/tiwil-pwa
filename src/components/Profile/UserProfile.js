@@ -199,7 +199,7 @@ function Profile() {
                     : `${process.env.PUBLIC_URL}/img/Default_pfp.svg`
                 }
                 className={styles.profileImage}
-                alt="Profile"
+                alt="Profile" loading="lazy"   
               />
               <label className={styles.cameraIcon}>
                 {/* <img
@@ -252,7 +252,7 @@ function Profile() {
             <div className={`${styles.formGroup} ${styles.phoneIcon}`}>
               <label>Phone Number</label>
               <input className={styles.inputphone} type="tel" value={userData.phoneNumber} disabled />
-              <img src="img/PhoneIcon.svg" alt="Phone"  />
+              <img src="img/PhoneIcon.svg" alt="Phone"  loading="lazy"   />
             </div>
 
             <div className={styles.formGroup}>

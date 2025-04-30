@@ -392,7 +392,7 @@ function Invitationlst({ searchQuery }) {
 }
                     alt="Event"
                     style={{ width: "100%", height: "162px", padding: "5px" }}
-                    className="imgEvent"
+                    className="imgEvent" loading="lazy"   
                   />
                   <div
                     style={{

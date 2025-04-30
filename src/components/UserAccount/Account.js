@@ -145,7 +145,7 @@ const Account = () => {
                 profileData.profileImage
                   ? `${process.env.REACT_APP_BASE_URL}/${profileData.profileImage}`
                   : `${process.env.PUBLIC_URL}/assets/ProfilDefaulticon.png`
-              }
+              } loading="lazy"   
             
               className={styles.profileImage}
             />

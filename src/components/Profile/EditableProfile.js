@@ -232,8 +232,8 @@ const EditableProfile = ({ profileData: initialProfileData, onBack, onSave }) =>
                 // Fallback placeholder
                 : `${process.env.PUBLIC_URL}/assets/profile-placeholder.png` // Adjust placeholder path if needed
             }
-            alt="Profile" // Add alt text
-            className={styles.profileImage}
+            alt="Profile" // Add alt text 
+            className={styles.profileImage} loading="lazy"   
           />
           <label className={styles.cameraIcon}>
             <IoMdCamera size={20} />
