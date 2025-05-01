@@ -46,19 +46,19 @@ function App() {
   }, []);
 
 
-  useEffect(() => {
-    const hasRedirected = sessionStorage.getItem('hasRedirected');
-    if (!hasRedirected) {
-      const token = localStorage.getItem('token');
-      sessionStorage.setItem('hasRedirected', 'true');
+  // useEffect(() => {
+  //   const hasRedirected = sessionStorage.getItem('hasRedirected');
+  //   if (!hasRedirected) {
+  //     const token = localStorage.getItem('token');
+  //     sessionStorage.setItem('hasRedirected', 'true');
   
-      if (token) {
-        window.location.href = '/home';
-      } else {
-        window.location.href = '/';
-      }
-    }
-  }, []);
+  //     if (token) {
+  //       window.location.href = '/home';
+  //     } else {
+  //       window.location.href = '/';
+  //     }
+  //   }
+  // }, []);
   
    // empty dependency array: runs once on initial render
 
