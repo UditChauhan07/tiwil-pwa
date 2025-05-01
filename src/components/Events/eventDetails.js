@@ -264,7 +264,7 @@ const EventDetails = () => {
   const handleShare = () => {
     const shareData = {
       text: `Check out this event i am celeberating`,
-      url: window.location.href, // Share the current event page URL
+      url: `https://tiwil-pwa.vercel.app/${eventId}`, // Share the current event page URL
     };
 
     if (navigator.share) {
