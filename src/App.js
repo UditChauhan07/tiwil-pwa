@@ -149,7 +149,7 @@ function App() {
             <Route path="/filter" element={<EventsFilter/>}/>
             </Route>
 
-            {/* Redirect to Home if Route Not Found */}
+          <Route path="/:eventId" element={<UserEventSection />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Router>
