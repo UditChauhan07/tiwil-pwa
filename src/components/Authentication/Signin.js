@@ -340,7 +340,7 @@ const SignInForm = () => {
         
 
       <div className="text-center ">
-          <img src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" height="100px" width="200px" loading="lazy"    />
+          <img src={`${process.env.PUBLIC_URL}/img/logomain.svg`} alt="logo" height="100px" width="200px"     />
           <h2 className="font-weight-bold mt-4 mb-0" style={{ fontSize: "48px",fontFamily: "Poppins",
 fontWeight: "500",
 fontSize: "48px",

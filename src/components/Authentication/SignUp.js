@@ -730,7 +730,7 @@ const SignUpForm = () => {
               src={`${process.env.PUBLIC_URL}/img/logomain.svg`}
               alt="logo"
               height="100px"
-              width="200px" loading="lazy"   
+              width="200px"    
             />
             <h2
               className="font-weight-bold mt-4"
