@@ -453,12 +453,12 @@ const EventDetails = () => {
                       style={{ height: "23px", width: "23px" }}
                     />
                   </Dropdown.Toggle>
-                  <Dropdown.Menu>
+                  <Dropdown.Menu >
                     <Dropdown.Item onClick={() => setShowEditModal(true)}>
                       Edit Event
                     </Dropdown.Item>
                     <Dropdown.Item
-                      className="text-danger"
+                     
                       onClick={handledeletevent}
                     >
                       Cancel Event
@@ -645,8 +645,8 @@ const EventDetails = () => {
                         <div>
                           <div className="wishlist-items">
                             {wishlist.length > 0 ? (
-                              wishlist.map((item) => (
-                                <div key={item._id} className="row">
+                              wishlist.map((item,index) => (
+                                <div key={item._id} className="row"  style={{marginBottom: index === item.length - 1 ? "280px" : "10px"}}>
                                   <div
                                     className="col-lg-4 col-md-6 col-sm-12"
                                     style={{ marginBottom: "8px" }}
@@ -698,7 +698,7 @@ const EventDetails = () => {
                                                       event.image !==
                                                         `${process.env.REACT_APP_BASE_URL}/null`
                                                     ? `${process.env.REACT_APP_BASE_URL}/${event.image}`
-                                                    : `${process.env.PUBLIC_URL}/img/defaultUser1.png`
+                                                    : `${process.env.PUBLIC_URL}/img/Default_pfp.svg`
                                                 } loading="lazy"   
                                                 style={{
                                                   height: "43px",
@@ -870,7 +870,7 @@ const EventDetails = () => {
                                           src={
                                             g.profileImage
                                               ? `${process.env.REACT_APP_BASE_URL}/${g.profileImage}`
-                                              : `${process.env.PUBLIC_URL}/img/defaultUser.png`
+                                              : `${process.env.PUBLIC_URL}/img/Default_pfp.svg`
                                           } loading="lazy"   
                                           height="45px"
                                           width="45px"
@@ -953,8 +953,8 @@ const EventDetails = () => {
                                   fontWeight: "500",
                                   borderRadius: "15px",
                                   color: "white",
-                                  fontSize: "12px",
-                                  padding: "12px 15px", // Custom background color
+                                  fontSize: "16px",
+                                  padding: "16px 0px", // Custom background color
                                 }}
                               >
                                 ADD MORE
@@ -963,9 +963,9 @@ const EventDetails = () => {
                               <button
                                 className="btn   d-flex align-items-center justify-content-center"
                                 style={{
-                                  fontSize: "12px",
+                                  fontSize: "16px",
                                   background: "#EE4266",
-                                  padding: "12px 15px",
+                                  padding: "16px 0px",
                                   color: "white",
                                   fontWeight: "500",
                                   borderRadius: "15px",

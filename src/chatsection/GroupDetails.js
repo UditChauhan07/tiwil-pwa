@@ -85,7 +85,7 @@ const GroupDetails = () => {
               src={
                 groupDetails.eventImage
                   ? `${process.env.REACT_APP_BASE_URL}/${groupDetails.eventImage}`
-                  : `${PUBLIC_URL}/DefaultUser.png`
+                  : `${PUBLIC_URL}/img/Default_pfp.svg`
               }
             
 loading="lazy"              className={styles.eventImage}
@@ -125,7 +125,7 @@ loading="lazy"              className={styles.eventImage}
                   src={
                     member.profileImage
                       ? `${process.env.REACT_APP_BASE_URL}/${member.profileImage}`
-                      : `${process.env.PUBLIC_URL}/DefaultUser.png`
+                      : `${process.env.PUBLIC_URL}/img/Default_pfp.svg`
                   }
                   loading="lazy"   
                   className={styles.profileImage}

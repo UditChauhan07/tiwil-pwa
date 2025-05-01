@@ -276,11 +276,11 @@ const ChatRoom = () => {
                         src={
                             eventDetails.eventImage
                                 ? `${BASE_API_URL}/${eventDetails.eventImage}`
-                                : `${process.env.PUBLIC_URL}/img/defaultUser.png`
+                                : `${process.env.PUBLIC_URL}/img/Default_pfp.svg`
                         } loading="lazy"
                         alt={eventDetails.eventName}
                         className={styles.eventImage}
-                        onError={(e) => e.target.src = `${process.env.PUBLIC_URL}/img/defaultUser.png`}
+                        onError={(e) => e.target.src = `${process.env.PUBLIC_URL}/img/Default_pfp.svg`}
                     />
                     <div className={styles.eventText}  onClick={() => navigate(`/group/${groupId}/details`)}>
                         <h2 style={{ fontSize: "15px", margin: "5px" }}>{eventDetails.eventName}</h2>
@@ -307,7 +307,7 @@ const ChatRoom = () => {
                     const senderName = isCurrentUser ? "You" : (msg.senderId?.fullName || "Unknown User");
                     const profileImage = msg.senderProfileImage
                         ? `${BASE_API_URL}/${msg.senderProfileImage.replace(/\\/g, '/')}`
-                        : `${process.env.PUBLIC_URL}/img/defaultUser.png`;
+                        : `${process.env.PUBLIC_URL}/img/Default_pfp.svg`;
 
                     return (
                         <div
@@ -329,7 +329,7 @@ const ChatRoom = () => {
     src={profileImage}
     alt={senderName}
     className={styles.profileImage} loading="lazy"
-    onError={(e) => e.target.src = `${process.env.PUBLIC_URL}/img/defaultUser.png`}
+    onError={(e) => e.target.src = `${process.env.PUBLIC_URL}/img/Default_pfp.svg`}
   />
 </div>
 

@@ -835,7 +835,7 @@ letterSpacing: '0%'}}>
       ? `${process.env.REACT_APP_BASE_URL}/${events.newimage}`
       : events.image && events.image !== "null" && events.image !== `${process.env.REACT_APP_BASE_URL}/null`
       ? `${process.env.REACT_APP_BASE_URL}/${events.image}`
-      : `${process.env.PUBLIC_URL}/img/defaultUser.png`
+      : `${process.env.PUBLIC_URL}/img/Default_pfp.svg`
   } loading="lazy"   
   style={{ height: '43px', width: '43px', borderRadius: '50%', objectFit: 'cover' }}
   alt="Event"
@@ -949,7 +949,7 @@ letterSpacing: '0%'}}>
                               src={
                                 guest.profileImage
                                   ? `${process.env.REACT_APP_BASE_URL}/${guest.profileImage}`
-                                  : `${process.env.PUBLIC_URL}/img/defaultUser.png`
+                                  : `${process.env.PUBLIC_URL}/img/Default_pfp.svg`
                               } loading="lazy"   
                               height="45px"
                               width="45px"

@@ -154,7 +154,7 @@ function App() {
           </Routes>
         </Router>
 </QueryClientProvider>
-
+<Route path="/:eventId" element={<UserEventSection />} />
         <div id="recaptcha-container" style={{ marginTop: "10px" }}></div>
       </div>
     </>

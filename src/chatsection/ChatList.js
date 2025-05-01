@@ -109,7 +109,7 @@ const Chatlist = () => {
           src={
             group.eventImage
               ? `${process.env.REACT_APP_BASE_URL}/${group.eventImage}`
-              : `${process.env.PUBLIC_URL}/defaultUser.png`
+              : `${process.env.PUBLIC_URL}/img/Default_pfp.svg`
           }
           className={styles.profileImage} loading="lazy"
         />
