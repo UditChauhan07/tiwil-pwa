@@ -167,6 +167,8 @@ top: 0% !important;
      border: 1px solid #00000000 !important;
      outline: none !important;
      padding: 0px 6px 0px 0 !important;  ;
+     font-weight: 500 !important;
+     
   }
   .PhoneInput{
     /* border: 1px solid #b3b3b3 !important;  */
@@ -326,7 +328,7 @@ div:where(.swal2-container) div:where(.swal2-html-container) {
 
 
 .css-w8dmq8 {
-  margin-top: 131px !important;
+  margin-top: 108px !important;
 }
 
 .custom-date {

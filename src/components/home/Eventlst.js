@@ -423,7 +423,7 @@ marginBottom:'0px',
                 </div>
                 <Card.Text className="d-flex justify-content-between" style={{ gap: "10px" }}>
                   <div style={{ display: "flex", justifyContent: "space-between" ,alignItems: "center" }}>
-                    <img className="m-0.5" src={`${process.env.PUBLIC_URL}/img/calender.svg`} height="17px" alt="calendar" />
+                    <img className="m-0.5" src={`${process.env.PUBLIC_URL}/img/calender1.svg`} height="17px" alt="calendar" />
                     <h6 style={{ marginRight: "3px", marginBottom: "5px", fontWeight: "600", marginLeft: "5px",fontSize:'13px' ,fontFamily: 'Poppins',
 fontWeight:' 600',
 
