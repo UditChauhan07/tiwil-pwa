@@ -170,10 +170,11 @@
 /* Save Button */
 .saveButton {
   width: 100%;
-  background: #ff3366;
+  background: #EE4266;
   color: white;
   font-size: 18px;
   padding: 12px;
+  font-weight: 500;
   border-radius: 8px;
   cursor: pointer;
   border: none;

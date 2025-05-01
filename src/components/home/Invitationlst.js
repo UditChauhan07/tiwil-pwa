@@ -477,7 +477,7 @@ function Invitationlst({ searchQuery }) {
                   >
                     <img
                       className="m-0.5"
-                      src={`${process.env.PUBLIC_URL}/img/calender.svg`}
+                      src={`${process.env.PUBLIC_URL}/img/calender1.svg`}
                       height="17px"
                       alt="calendar"
                     />

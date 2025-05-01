@@ -469,7 +469,7 @@ const EventDetails = () => {
             </div>
             {events.length > 0 ? (
               events.map((event) => (
-                <div key={event._id} style={{ marginTop: "60px" }}>
+                <div key={event._id} style={{ marginTop: "52px" }}>
                   {/* Event Image */}
                   {/* <Card variant="top" style={{ position: "relative", width: "100%", height: "162px" ,borderBottom:'unset'}}>
                                     <img
@@ -1005,16 +1005,18 @@ const EventDetails = () => {
                             <div className="invtebtn">
                               <InviteButton onInviteSuccess={fetchGuest}>
                                 {" "}
-                                Invite{" "}
+                                <span style={{justifyContent:'end',width:'50%',display:'flex'}}>INVITE</span>{" "}
+                                <div style={{display:'flex',justifyContent:'end',width:'41%'}}>
                                 <FaArrowRight
                                   style={{
                                     color: "#ff3366",
                                     background: "white",
-                                    fontSize: "24px",
+                                    fontSize: "26px",
                                     borderRadius: "50%",
-                                    padding: "3px",
+                                    padding: "5px",
                                   }}
                                 />
+                                </div>
                               </InviteButton>
                             </div>
                           </div>

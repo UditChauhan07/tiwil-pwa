@@ -369,7 +369,7 @@ marginBottom:'5px'
         {/* Apply blur effect to the background */}
         {isLoading && <div className="blur-background"></div>}
 
-        <div className="d-flex justify-content-center mt-3" style={{padding:'4px',border:'1px solid whitesmoke',width:'100%',height:'40px',    borderRadius: '7px' }}>
+        <div className="d-flex justify-content-center mt-4" style={{padding:'4px',border:'1px solid whitesmoke',width:'100%',height:'40px',    borderRadius: '7px' }}>
           <Link to="/signin"   onClick={() => setActive("signin")}
               style={{
                 width:'50%',
@@ -493,7 +493,7 @@ marginBottom:'5px'
               <img src={`${process.env.PUBLIC_URL}/img/Otps.webp`} alt="logo" height="60%" width="60%"  loading="lazy"   />
             </div>
               <div className="mb-3">
-                <label htmlFor="otp" className="form-label" style={{fontSize:'20px',fontWeight:'600',color:'black' ,display:'flex',justifyContent:'center',alignItems:'center'}}>
+                <label htmlFor="otp" className="form-label" style={{fontSize:'20px',fontWeight:'600',color:'black' ,display:'flex',justifyContent:'center',alignItems:'center',marginTop:'85px',marginBottom:'30px'}}>
                   Please Enter Otp
                 </label>
                 {/* <input
@@ -566,7 +566,7 @@ marginBottom:'5px'
                   color: "#EE4266",
                 }}
               >
-              <span style={{color:'black',fontWeight:'500px',textDecoration:'unset'}}>Didn't get code?</span>Resend OTP
+              <span style={{color:'black',fontWeight:'500px',textDecoration:'unset',fontWeight:'500',fontSize:'14px'}}>Didn't get code?</span> &nbsp;Resend OTP
               </button>
             </div>
           ) : (

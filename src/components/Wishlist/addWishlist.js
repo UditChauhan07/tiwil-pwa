@@ -241,7 +241,7 @@ const WishlistModal = ({ eventId, setShow, fetchWishlist,  }) => {
               {errors.description && <span className={styles.error}>{errors.description}</span>}
 
               <button className={styles.saveButton} onClick={handleSave} disabled={loading}>
-                {loading ? "Saving..." : "Save"}
+                {loading ? "Saving..." : `Save  +`}
               </button>
             </div>
           </>
