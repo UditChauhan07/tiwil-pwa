@@ -149,12 +149,12 @@ function App() {
             <Route path="/filter" element={<EventsFilter/>}/>
             </Route>
 
-            {/* Redirect to Home if Route Not Found */}
+          <Route path="/:eventId" element={<UserEventSection />} />
             <Route path="*" element={<Navigate to="/" />} />
           </Routes>
         </Router>
 </QueryClientProvider>
-<Route path="/:eventId" element={<UserEventSection />} />
+
         <div id="recaptcha-container" style={{ marginTop: "10px" }}></div>
       </div>
     </>
