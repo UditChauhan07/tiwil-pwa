@@ -158,9 +158,12 @@
     transition: background-color 0.2s;
 }
 
-.apply-filter-button:hover {
-    background-color: #333;
-}
+/* .apply-filter-button:hover {
+    background-color: white;
+    border:1px solid ;
+    border-color:#EE4266;
+    color:#EE4266;
+} */
 
 .filter-modal-overlay {
     transition: cubic-bezier(1);
@@ -186,12 +189,17 @@
 }
 
 .close-button {
-    background: none;
-    color: #EE4266 ;
-    padding: 0px 19px;
-    border: none;
-    font-size: 24px;
-    border-radius: 20px;
+    width: 100%;
+    margin-top: 20px;
+    background-color: white;
+    border:1px solid ;
+    border-color:#EE4266;
+    color:#EE4266;
+    font-weight: 500;
+    padding: 12px;
+    
+    font-size:16px;
+    border-radius: 4px;
     cursor: pointer;
 }
 

@@ -51,18 +51,24 @@ const FamilyInformation = () => {
   
   return (
     <div className={styles.container} >
-    <div className="d-flex " style={{gap:"69px"}}>
+    <div className="d-flex " style={{gap:"29px"}}>
         <FontAwesomeIcon icon={faArrowLeft} style={{fontSize:'x-large'}} onClick={() => navigate(-1)}/>
       <h1 className={styles.header}>View Detail</h1>
 </div>
-      {familyMembers.map((member, index) => (
+    {familyMembers.length > 0 ? (
+      familyMembers.map((member, index) => (
         <FamilyCard
           key={index}
           relation={member.relationType}
           detail={member}
           onEdit={() => handleOpenEditModal(member.relationType, member)}
-        />
-      ))}
+        /> ))
+) : (
+  <div className="no-wishlist">
+    <p style={{marginTop:'70px'}}>Family Details Not Found</p>
+  </div>
+)}
+
 
       {editModal.isOpen && (
         <EditFamilyModal
@@ -101,6 +107,7 @@ const FamilyCard = ({ relation, detail, onEdit }) => {
   
   return (
     <>
+    
     <div className={`${styles.card} ${relation.includes("Anniversary") ? styles.anniversaryCard : ""}`}>
 
       <div className={styles.cardHeader}>
@@ -154,6 +161,8 @@ const FamilyCard = ({ relation, detail, onEdit }) => {
 >
   Let's Go
 </button>
+
+
 
     </>
   )};

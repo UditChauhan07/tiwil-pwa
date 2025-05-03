@@ -186,9 +186,13 @@ const WishlistEditModal = ({ show, setShow, wishlist, fetchWishlist }) => {
       </Modal.Body>
 
       <Modal.Footer>
-        <Button variant="danger" onClick={handleSave}>
-        {loading ? <Spinner animation="border" role="status" style={{ width: "1rem", height: "1rem" }} />: "Save"}
-        </Button>
+      <Button variant="danger" onClick={handleSave} disabled={loading}>
+  {loading ? (
+    <Spinner animation="border" role="status" style={{ width: "1rem", height: "1rem" }} />
+  ) : (
+    "Save"
+  )}
+</Button>
       </Modal.Footer>
     </Modal>
   );

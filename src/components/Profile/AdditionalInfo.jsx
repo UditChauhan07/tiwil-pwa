@@ -223,7 +223,7 @@ function AddInformation() {
       if (response.data.success) {
         console.log("Family information saved successfully!");
         localStorage.setItem("onboardingStatus", true);
-        navigate("/home");
+        navigate("/home",{replace:true}); // Navigate to home page
       } else {
         console.error("Error saving family information:", response.data.message);
       }
@@ -259,7 +259,7 @@ const handleSkips=()=>{
       if (response.data.success) {
         console.log("Family information saved successfully!");
         localStorage.setItem("onboardingStatus", true); // Update onboarding status
-        navigate("/home"); // Navigate to home page
+        navigate("/home",{replace:true}); // Navigate to home page
       } else {
         console.error("Error saving family information:", response.data.message);
       }

@@ -777,7 +777,7 @@ letterSpacing: '0%'}}>
                       }}
                     ></div>
                     <div className="wishlist-items">
-                      <h5> Wishlist</h5>
+                      <h5 className='wishlisth'> Wishlist</h5>
                       {wishlistItems.length > 0 ? (
                         wishlistItems.map((item) => (
                           <div key={item._id}>
@@ -804,11 +804,11 @@ letterSpacing: '0%'}}>
                                     className="card-img-top"
                                     style={{ height: "161px" }}
                                   >
-                                    <div className="d-flex justify-content-end m-2">
+                                    <div className="d-flex justify-content-end m-2" >
                                       {item.status !== "Unmark" && (
                                         <p
                                           className="card-text status d-flex justify-content-center"
-                                          style={{ background: "cornsilk" }}
+                                          style={{background:'white'}}
                                         >
                                           {item.status === "Mark"
                                             ? "Marked"
@@ -844,9 +844,9 @@ letterSpacing: '0%'}}>
                                             </div>
 
                                         {/* Middle: Content */}
-                                        <div className="col-7">
+                                        <div className="col-7 gitnameclamp">
                                           <h6
-                                            className="card-title mb-0"
+                                            className="card-title mb-0 "
                                             style={{
                                               color: "black",
                                               fontSize: "15px",

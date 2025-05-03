@@ -403,7 +403,7 @@ const EventDetails = () => {
         <div
           class="spinner-border text-danger custom-spinner"
           role="status"
-          style={{ width: "7vh", height: "7vh", color: "#ff3366" }}
+          style={{ width: "5rem", height: "5rem", color: "#ff3366" }}
         >
           <span class="visually-hidden">Loading...</span>
         </div>
@@ -644,12 +644,13 @@ const EventDetails = () => {
                         ></div>
                         <div>
                           <div className="wishlist-items">
+                           <h5 className='wishlisth'> Wishlist</h5>
                             {wishlist.length > 0 ? (
                               wishlist.map((item,index) => (
-                                <div key={item._id} className="row"  style={{marginBottom: index === item.length - 1 ? "280px" : "10px"}}>
+                                <div key={item._id} className="row" >
                                   <div
                                     className="col-lg-4 col-md-6 col-sm-12"
-                                    style={{ marginBottom: "8px" }}
+                                     style={{marginBottom: index === item.length - 1 ? "280px" : "10px"}}
                                   >
                                     <div
                                       className="card"
@@ -676,16 +677,16 @@ const EventDetails = () => {
                             className="img-fluid"
                             style={{ height: "100%", width: "100%", objectFit: "cover" }}
                           /> */}
-                                        {/* <div className="d-flex justify-content-end m-2">
-                            <p className="card-text status d-flex justify-content-center" style={{ background: "cornsilk" }}>
+                                        <div className="d-flex justify-content-end m-2" >
+                            <p className="card-text status d-flex justify-content-center" style={{background:'white'}} >
                               {item.status}
                             </p>
-                          </div> */}
+                          </div>
 
                                         <div className="card-body cards11">
                                           <div className="row align-items-center">
                                             {/* Left - Image */}
-                                            <div className="col-2">
+                                            <div className="col-2" style={{paddingLeft:'3px',paddingBottom:'2px'}}>
                                               <img
                                                 src={
                                                   event.newimage &&
@@ -701,29 +702,30 @@ const EventDetails = () => {
                                                     : `${process.env.PUBLIC_URL}/img/Default_pfp.svg`
                                                 } loading="lazy"   
                                                 style={{
-                                                  height: "43px",
-                                                  width: "43px",
+                                                  height: "45px",
+                                                  width: "45px",
                                                   borderRadius: "50%",
                                                   objectFit: "cover",
                                                 }}
                                               />
                                             </div>
-
+                                           
                                             {/* Middle - Info */}
-                                            <div className="col-7">
+                                            <div className="col-7 ">
                                               <h6
-                                                className="card-title "
+                                                className="card-title gitnameclamp"
                                                 style={{
                                                   color: "black",
                                                   marginBottom: "0px",
                                                   fontSize: "15px",
+                                             
                                                 }}
                                               >
                                                 {item.giftName}
                                               </h6>
                                               <p
                                                 className=""
-                                                style={{ fontSize: "13px" }}
+                                                style={{ fontSize: "13px" ,     marginTop: '-10px'}}
                                               >
                                                 {event.name}
                                               </p>
@@ -900,7 +902,7 @@ const EventDetails = () => {
                                       style={{
                                         display: "flex",
                                         justifyContent: "end",
-                                        width: "30%",
+                                        width: "35%",
                                       }}
                                     >
                                       <span
@@ -916,7 +918,28 @@ const EventDetails = () => {
                                         }}
                                       >
                                         {" "}
-                                        {g.status}
+                                        {g.status} {g.status === "Accepted" && (
+                                          <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<circle cx="9" cy="9" r="9" fill="#FFACC1"/>
+<circle cx="9" cy="9" r="9" fill="#FFACC1"/>
+<path d="M5 9L8 12L13 6" stroke="white" stroke-width="1.2"/>
+</svg>
+
+
+  )}
+  {g.status === "Declined" && (
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M18 9C18 13.9706 13.9706 18 9 18C4.02944 18 0 13.9706 0 9C0 4.02944 4.02944 0 9 0C13.9706 0 18 4.02944 18 9ZM4.29289 13.7071C3.90237 13.3166 3.90237 12.6834 4.29289 12.2929L7.58579 9L4.29289 5.70711C3.90237 5.31658 3.90237 4.68342 4.29289 4.29289C4.68342 3.90237 5.31658 3.90237 5.70711 4.29289L9 7.58579L12.2929 4.29289C12.6834 3.90237 13.3166 3.90237 13.7071 4.29289C14.0976 4.68342 14.0976 5.31658 13.7071 5.70711L10.4142 9L13.7071 12.2929C14.0976 12.6834 14.0976 13.3166 13.7071 13.7071C13.3166 14.0976 12.6834 14.0976 12.2929 13.7071L9 10.4142L5.70711 13.7071C5.31658 14.0976 4.68342 14.0976 4.29289 13.7071Z" fill="#FFACC1"/>
+</svg>
+
+  )}
+  {g.status === "invited" && (
+    <svg width="20" height="15" viewBox="0 0 20 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path d="M18.5113 0H0.929688L9.71842 6.0127L18.5113 0Z" fill="#FFACC1"/>
+<path d="M19.4405 13.9954V1.87134L9.96084 8.35288C9.87448 8.40223 9.80045 8.43513 9.71408 8.43513C9.64005 8.43513 9.53724 8.40634 9.48377 8.35288L0 1.87134V13.9954L5.79061 8.67778C5.96334 8.51738 6.21833 8.53384 6.37872 8.69834C6.53089 8.86696 6.53089 9.12606 6.35405 9.28645L0.653911 14.5301H18.7784L13.0988 9.28645C12.9055 9.13017 12.9055 8.86696 13.0659 8.69834C13.2181 8.53384 13.4854 8.51738 13.6376 8.67778L19.4405 13.9954Z" fill="#FFACC1"/>
+</svg>
+
+  )}
                                       </span>
                                     </div>
                                   </div>
@@ -954,7 +977,7 @@ const EventDetails = () => {
                                   borderRadius: "15px",
                                   color: "white",
                                   fontSize: "16px",
-                                  padding: "16px 0px", // Custom background color
+                                  padding: "10px 0px", // Custom background color
                                 }}
                               >
                                 ADD MORE
@@ -965,7 +988,7 @@ const EventDetails = () => {
                                 style={{
                                   fontSize: "16px",
                                   background: "#EE4266",
-                                  padding: "16px 0px",
+                                  padding: "10px 0px",
                                   color: "white",
                                   fontWeight: "500",
                                   borderRadius: "15px",
