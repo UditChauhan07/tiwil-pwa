@@ -1036,7 +1036,7 @@ outline:'none',
               </span>
             </div>
           )}
-          <div className="d-flex justify-content-center align-items-center">
+          <div className="d-flex justify-content-center align-items-center" style={{marginTop:'10px'}}>
             <button
               type="submit"
               className=" btn-primary w-80 py-2 mb-3 d-flex justify-content-center align-items-center"
