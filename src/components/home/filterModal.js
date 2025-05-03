@@ -192,7 +192,7 @@ export default function EventsFilter({ closeFilter, isOpen, onApplyFilters, filt
         <button className="apply-filter-button" onClick={handleApplyFilters}>
           Apply
         </button>
-        <button className="apply-filter-button" onClick={closeFilter}>
+        <button className="close-button" onClick={closeFilter}>
            Close
             </button>
       </div>

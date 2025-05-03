@@ -39,6 +39,20 @@ function WishlistCard() {
 
   const handlePurchase = async (e) => {
     const value = e.target.value;
+  
+    const confirm = await Swal.fire({
+      text: `Please confirm you are ${value} this gift ?`,
+      showCancelButton: true,
+      confirmButtonText: "Yes",
+      cancelButtonText: "No",
+      confirmButtonColor: "#FF3366",
+      imageUrl: logo,
+      imageWidth: 120,
+      imageHeight: 120,
+    });
+  
+    if (!confirm.isConfirmed) return; // ❌ User clicked No, exit early
+  
     try {
       const response = await axios.put(
         `${process.env.REACT_APP_BASE_URL}/update-status/${itemId}`,
@@ -48,14 +62,16 @@ function WishlistCard() {
   
       setWishlistItem((prev) => ({
         ...prev,
-        status: value, // just update status, keep other fields like eventName, eventImage
+        status: value,
       }));
   
       Swal.fire({
-        icon: "success",
-        title: "Updated!",
-        text: `Wishlist item status updated to: ${value}`,
+        text: `${value} Successfully`,
+        confirmButtonText: "Cool!",
         confirmButtonColor: "#FF3366",
+        imageUrl: logo,
+        imageWidth: 120,
+        imageHeight: 120,
       });
   
     } catch (err) {

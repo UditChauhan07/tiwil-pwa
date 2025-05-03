@@ -47,6 +47,20 @@ const Starting = () => {
     setCurrentSlide(index);
   };
 
+  // Check if onboarding is completed
+
+    useEffect(() => {
+      const onboardingCompleted = localStorage.getItem("onboardingCompleted");
+  
+      if (onboardingCompleted) {
+        setShowOnboarding(false);
+        navigate("/signin"); // Skip onboarding if already completed
+      } else {
+        setShowOnboarding(true); // Show onboarding if not completed
+      }
+    }, [navigate]);
+  
+
   // Handle Skip button
   const handleSkip = () => {
     localStorage.setItem("onboardingCompleted", "true");

@@ -58,10 +58,13 @@ const PoolRequests = () => {
 
     fetchRequests();
   }, []);
-  const getRelativeTime = (timestamp) => {
-    const raw = formatDistanceToNow(new Date(timestamp), { addSuffix: true });
-  
+  // const getRelativeTime = (timestamp) => {
+  //   const raw = formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+    const getRelativeTime = (timestamp) => {
+      const raw = formatDistanceToNow(new Date(timestamp), { addSuffix: true });
+      
     return raw
+    .replace(/^about /, "")
       .replace(/minutes?/, 'mins')
       .replace(/hours?/, 'hrs')
       .replace(/seconds?/, 'secs')
@@ -242,7 +245,8 @@ const PoolRequests = () => {
                     <div>  
                     <img src={userImage} alt="User Profile" height="35px" width="35px"  loading="lazy"    style={{border:"1px solid #e6e6e6", borderRadius: "50%" }} />
                       </div><p className="message">{notification.message}</p>
-                      <p className="timestamp">{getRelativeTime(notification.timestamp)}</p>
+                      <p className="timestamp">{getRelativeTime(notification.timestamp).replace(/^about\s/, '')}</p>
+
                     </div>
 
                     <div className="notification-actions">

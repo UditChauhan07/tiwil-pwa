@@ -33,6 +33,23 @@ const HomePage = () => {
 
   const navigate = useNavigate();
 
+
+
+  useEffect(() => {
+    const handlePopState = (e) => {
+      // Prevent going back to previous screen
+      window.history.pushState(null, "", window.location.href);
+    };
+
+    // Push fake state so there's no "back"
+    window.history.pushState(null, "", window.location.href);
+    window.addEventListener("popstate", handlePopState);
+
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
+  
   useEffect(() => {
     if (searchQuery.trim() !== "") {
       fetchSearchResults();

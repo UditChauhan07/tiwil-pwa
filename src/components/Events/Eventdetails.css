@@ -141,7 +141,7 @@ opacity: 0.84;
       opacity: 87%;
       width: 95%;
       height: 70px;
-      bottom: 18px;
+      bottom: 10px;
       /* padding: 20px; */
       left: 0;
       padding: 7px 20px;
@@ -158,14 +158,22 @@ opacity: 0.84;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;  
     overflow: hidden;
+    
+  }
+  .gitnameclamp{
+    display: inline-block;         /* Make the element behave like inline for text */
+  max-width: 10ch;               /* Limit the width to the first 10 characters */
+  overflow: hidden;              /* Hide any extra text that overflows */
+  text-overflow: ellipsis;       /* Add ellipsis (...) when text overflows */
+  white-space: nowrap;
   }
 
-  .card-title {
+  /* .card-title {
     display: -webkit-box;
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;  
     overflow: hidden;
-  }
+  } */
 
   .history-card {
     border: 1px solid #ddd;
@@ -311,3 +319,11 @@ color: #120D26;
 
 }
 
+.wishlisth{
+  font-family: Poppins;
+font-weight: 500;
+font-size: 14px;
+line-height: 88%;
+letter-spacing: 0%;
+
+}

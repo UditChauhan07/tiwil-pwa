@@ -125,7 +125,8 @@ function Profile() {
           cancelButtonText: "No, Thanks",
         }).then(async (result) => {
           // Navigate based on user choice
-          navigate(result.isConfirmed ? "/additionalinfo" : "/home");
+          navigate(result.isConfirmed ? "/additionalinfo" : "/home", { replace: true });
+
   
           // ✅ Always call family-info API regardless of confirmation
           try {
@@ -176,7 +177,7 @@ function Profile() {
   return (
     <>
       {loading ? (
-        <div style={{ display: "flex",position:'fixed', justifyContent: "center", marginTop: "200px", }}>
+        <div style={{ display: "flex",position:'fixed', justifyContent: "center", marginTop: "200px",left:'0',right:'0' }}>
           {/* <Spinner animation="border" role="status" style={{ width: "5rem", height: "5rem" }} /> */}
           <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '5rem', height: '5rem',color:'#ff3366'}}>
   <span class="visually-hidden">Loading...</span>
