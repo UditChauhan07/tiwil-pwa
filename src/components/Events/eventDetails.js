@@ -963,7 +963,7 @@ const EventDetails = () => {
                             <br />
                             {/* ADD MORE and START CHAT buttons when guests are available */}
                             <div
-                              className="text-center mt-4 d-flex fixed_bottom"
+                              className="text-center mt-4 d-flex "
                               style={{
                                 justifyContent: "space-between",
                                 gap: "20px",
