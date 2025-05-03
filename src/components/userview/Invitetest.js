@@ -11,14 +11,14 @@ const InviteButton = ({ style, children ,onInviteSuccess }) => {
 
   const handleInvite = async () => {
     if ("contacts" in navigator && "select" in navigator.contacts) {
-      setLoading(true);
+     
       try {
         // Ask user to select contacts
         const contacts = await navigator.contacts.select(["name", "email", "tel"], { multiple: true });
 
         if (contacts.length > 0) {
           console.log("Selected Contacts:", contacts);
-
+          setLoading(true);
           // Send contacts to backend for processing
           const response = await fetch(`${process.env.REACT_APP_BASE_URL}/contactss/${eventId}`, {
             method: "POST",
@@ -59,16 +59,23 @@ const InviteButton = ({ style, children ,onInviteSuccess }) => {
         
       } catch (error) {
         console.error("Error accessing contacts:", error);
+        setLoading(false);
       }
-    } else {
+    
+     finally {
+      setLoading(false);
+     }
+    }
+    else {
       alert("Contacts API is not supported on this device.");
     }
+    
   };
 
 
   if(loading) {
     return (
-      <div style={{ display: "flex",position:'fixed', justifyContent: "center",alignItems:'center', marginTop: "30px" }}>
+      <div style={{ display: "flex",position:'fixed', justifyContent: "center",alignItems:'center', marginTop: "30px",top:'50%',left:'50%',zIndex:'9999'}}>
         {/* <Spinner animation="border" role="status" style={{ width: "7rem", height: "7rem" }} /> */}
         <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '5vh', height: '5vh',color:'#ff3366'}}>
   <span class="visually-hidden">Loading...</span>
