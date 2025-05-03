@@ -68,9 +68,9 @@ const InviteButton = ({ style, children ,onInviteSuccess }) => {
 
   if(loading) {
     return (
-      <div style={{ display: "flex",position:'fixed', justifyContent: "center",alignItems:'center', marginTop: "250px" }}>
+      <div style={{ display: "flex",position:'fixed', justifyContent: "center",alignItems:'center', marginTop: "30px" }}>
         {/* <Spinner animation="border" role="status" style={{ width: "7rem", height: "7rem" }} /> */}
-        <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '5rem', height: '5rem',color:'#ff3366'}}>
+        <div class="spinner-border text-danger custom-spinner" role="status" style={{width: '5vh', height: '5vh',color:'#ff3366'}}>
   <span class="visually-hidden">Loading...</span>
 </div>
       </div>
