@@ -577,10 +577,10 @@ marginBottom:'5px'
             </div>
           )}
 
-              <div className="d-flex justify-content-center align-items-center " style={{marginTop:'10px'}} >
+              <div className="d-flex justify-content-center align-items-center " style={{marginTop:'15px'}} >
               <button
                 className=" btn-primary w-80 py-2 mb-3 d-flex justify-content-center align-items-center"
-                style={{ background: "#ff3366", border: "none", color: "#fff", width: "70%", height: "50px", fontSize: "16px", fontWeight: "600", marginTop:'15px'}}
+                style={{ background: "#ff3366", border: "none", color: "#fff", width: "80%", height: "50px", fontSize: "16px", fontWeight: "600", marginTop:'15px'}}
                 onClick={handleVerifyOTP}
                 disabled={isLoading} // Disable button when loadings
               >

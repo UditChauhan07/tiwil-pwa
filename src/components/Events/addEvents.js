@@ -190,6 +190,8 @@ const AddEvents = ({ show, setShow, setActiveTab }) => {
             <Form.Group className="mb-3">
               <Form.Label className="fw-bold">Event Date</Form.Label>
               <Form.Control
+                className={!formData.eventDate ? "has-placeholder custom-date" : "custom-date"}
+        data-placeholder="DD-MM-YYYY"
                 type="date"
                 name="eventDate"
                 value={formData.eventDate}
