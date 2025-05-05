@@ -1036,7 +1036,7 @@ outline:'none',
               </span>
             </div>
           )}
-          <div className="d-flex justify-content-center align-items-center" style={{marginTop:'10px'}}>
+          <div className="d-flex justify-content-center align-items-center" style={{marginTop:'15px'}}>
             <button
               type="submit"
               className=" btn-primary w-80 py-2 mb-3 d-flex justify-content-center align-items-center"
@@ -1044,7 +1044,7 @@ outline:'none',
                 background: "#ff3366",
                 border: "none",
                 color: "#fff",
-                width: "70%",
+                width: "80%",
                 height: "50px",
                 fontSize: "16px",
                 fontWeight: "600",

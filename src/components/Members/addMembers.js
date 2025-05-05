@@ -175,6 +175,10 @@ const Memberform = ({ show, setShow }) => {
             <Form.Label className="fw-bold">Date of Birth</Form.Label>
             <InputGroup>
               <Form.Control
+
+
+                className={!formData.dob ? "has-placeholder custom-date" : "custom-date"}
+        data-placeholder="DD-MM-YYYY"
                 type="date"
                 name="dob"
                 min="1900-01-01"
