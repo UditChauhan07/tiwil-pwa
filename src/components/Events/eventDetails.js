@@ -650,7 +650,8 @@ const EventDetails = () => {
                                 <div key={item._id} className="row" >
                                   <div
                                     className="col-lg-4 col-md-6 col-sm-12"
-                                     style={{marginBottom: index === item.length - 1 ? "280px" : "10px"}}
+                                    style={{ marginBottom: index === wishlist.length - 1 ? "100px" : "10px" }}
+
                                   >
                                     <div
                                       className="card"

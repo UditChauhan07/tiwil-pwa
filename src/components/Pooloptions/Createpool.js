@@ -602,7 +602,7 @@ function PoolingWish() {
       )} */}
 
       {/* Contributors List */}
-      <div className="mt-4">
+      <div className="mt-4" style={{paddingBottom:'65px'}}>
         {otherContributors.length > 0 ? (
           <>
             <h2 style={{ textAlign: "left" }}>Contributors</h2>
@@ -673,7 +673,7 @@ verticalAlign: "middle"}}>&#8377;{contributor.amount}</span>
                 >
                   Invite more member
                 </button>
-                <button
+                 <button
                   variant="danger"
                   style={{
                     padding: "6px",
@@ -687,6 +687,7 @@ verticalAlign: "middle"}}>&#8377;{contributor.amount}</span>
                 >
                   Start Chat
                 </button>
+               
               </div>
             )}
           </>
@@ -733,6 +734,9 @@ verticalAlign: "middle"}}>&#8377;{contributor.amount}</span>
             </div>
           )
         )}
+
+
+       
         <InviteModal
           wishId={wishId}
           show={showInviteModal}

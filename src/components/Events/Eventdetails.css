@@ -276,10 +276,11 @@ opacity: 0.84;
 }
 
 .tab-content{
+  padding: 10px 0 90px 0 !important;
   border-top:2px solid #F2F2F2 !important;
   border-radius:0px !important;
   margin: 0 !important;
-  padding: 20px 0 0 0;
+  /* padding: 20px 0 0 0; */
   position: relative;
   
   top: -1px;

@@ -84,16 +84,12 @@ function Invitationlst({ searchQuery }) {
 
     // Apply search query filter
     if (searchQuery.trim()) {
-      filtered = filtered.filter(
-        (invitation) =>
-          invitation.event.name
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase()) ||
-          invitation.event.eventType
-            .toLowerCase()
-            .includes(searchQuery.toLowerCase())
-      );
-      // console.log("After search filter:", filtered);
+      const lowerQuery = searchQuery.toLowerCase();
+      filtered = filtered.filter((invitation) => {
+        const name = invitation.event?.name?.toLowerCase() || "";
+        const type = invitation.event?.eventType?.toLowerCase() || "";
+        return name.includes(lowerQuery) || type.includes(lowerQuery);
+      });
     }
 
     // Apply month filter

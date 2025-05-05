@@ -733,7 +733,7 @@ letterSpacing: '0%'}}>
                       <div className="headersevent">
                         <h5>About event</h5>
                       </div>
-                      <div className="aboutevent2">  <span classname="eventdesc">{events.description || 'Not provided by owner'}</span></div>
+                      <div className="aboutevent2">  <span classname="eventdesc">{events.description || 'Not provided by owner'}</span></div> </div>
                       {invitationStatus === "Pending" ||
                     invitationStatus === "invited" ||
                     null ||
@@ -756,14 +756,14 @@ letterSpacing: '0%'}}>
                     ) : invitationStatus === "Accepted" ? (
                       <div className="text-center mt-4 fixed_bottom">
                         <button
-                          style={{ marginTop: "30px" }}
+                          
                           className="btn btn-danger w-30"
                           onClick={handleStartChat}
                         >
                           START CHAT
                         </button>
                       </div>
-                    ) : null}    </div>
+                    ) : null}   
                    
                   </>
                 )}
@@ -777,7 +777,7 @@ letterSpacing: '0%'}}>
                       }}
                     ></div>
                     <div className="wishlist-items">
-                      <h5 className='wishlisth'> Wishlist</h5>
+                      <h5 className='wishlisth'  > Wishlist</h5>
                       {wishlistItems.length > 0 ? (
                         wishlistItems.map((item) => (
                           <div key={item._id}>
@@ -881,7 +881,7 @@ letterSpacing: '0%'}}>
                                         </div>
 
                                         {/* Right Side: Price and Button */}
-                                        <div className="col-3 d-flex flex-column justify-content-between align-items-end h-100">
+                                        <div className="col-3 d-flex flex-column justify-content-between align-items-end h-100" style={{marginLeft:"auto"}}>
                                           {/* Price */}
                                           <p
                                             className="card-text"
@@ -936,7 +936,7 @@ letterSpacing: '0%'}}>
                   <div>
                     {guest.length > 0 ? (
                       guest.map((guest) => (
-                        <div key={guest.id} className="d-flex gap-3 align-items-center">
+                        <div key={guest.id} className="d-flex gap-3 align-items-center" style={{marginTop:'3px'}}>
                           <div
                             style={{
                               height: "45px",

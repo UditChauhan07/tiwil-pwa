@@ -46,7 +46,7 @@ function WishlistCard() {
       confirmButtonText: "Yes",
       cancelButtonText: "No",
       confirmButtonColor: "#FF3366",
-      imageUrl: logo,
+     
       imageWidth: 120,
       imageHeight: 120,
     });
@@ -69,7 +69,7 @@ function WishlistCard() {
         text: `${value} Successfully`,
         confirmButtonText: "Cool!",
         confirmButtonColor: "#FF3366",
-        imageUrl: logo,
+       
         imageWidth: 120,
         imageHeight: 120,
       });
